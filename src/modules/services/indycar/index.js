@@ -1,6 +1,9 @@
 import { useCallback, useContext, useEffect, useState } from "react";
+
+import deepEqual from 'deep-equal';
+
 import { PluginContext } from "../../pluginBridge";
-import { translate } from "./translate";
+import { getManifest, translate } from "./translate";
 
 const DATA_URL = 'https://indycarsso.blob.core.windows.net/racecontrol/timingscoring.json';
 
@@ -8,19 +11,22 @@ export const IndyCar = () => {
 
   const port = useContext(PluginContext);
   const [raceState, setRaceState] = useState();
+  const [manifest, setManifest] = useState();
 
   const handleMessage = useCallback(
     (message) => {
       if (message.type === 'FETCH_RETURN' && message.originalMessage && message.originalMessage.url === DATA_URL) {
         const data = message.data.replace(/^jsonCallback\(/, '').replace(/\);\r\n$/, '');
-        setRaceState(
-          translate(
-            JSON.parse(data)
-          )
-        );
+        const jsonData = JSON.parse(data);
+
+        const newManifest = getManifest(jsonData);
+        if (!deepEqual(newManifest, manifest)) {
+          setManifest(newManifest);
+        }
+        setRaceState(translate(jsonData));
       }
     },
-    []
+    [manifest]
   );
 
   useEffect(

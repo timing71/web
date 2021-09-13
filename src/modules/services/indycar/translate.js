@@ -1,3 +1,4 @@
+import { Stat } from "../../../racing";
 import { parseTime } from "../utils";
 
 const mapCarState = (car) => {
@@ -12,6 +13,47 @@ const TYRE_MAP = {
   'A': ["O", "tyre-soft"],
   'W': ["W", "tyre-wet"],
   'WX': ["W", "tyre-wet"]
+};
+
+export const getManifest = ({ timing_results: { heartbeat } }) => {
+  const isOval = heartbeat.trackType === 'O' || heartbeat.trackType === 'I';
+
+  const ptpCol = isOval ? [] : [Stat.PUSH_TO_PASS];
+  const sectorCols = isOval ?
+    [
+      Stat.T1_SPEED,
+      Stat.BEST_T1_SPEED,
+      Stat.T3_SPEED,
+      Stat.BEST_T3_SPEED
+    ]
+    : [
+      Stat.S1,
+      Stat.BS1,
+      Stat.S2,
+      Stat.BS2,
+      Stat.S3,
+      Stat.BS3
+    ];
+
+  return {
+    name: 'IndyCar',
+    description: heartbeat['eventName'],
+    columnSpec: [
+      Stat.NUM,
+      Stat.STATE,
+      Stat.DRIVER,
+      Stat.TEAM,
+      Stat.LAPS,
+      Stat.TYRE
+    ].concat(ptpCol).concat([
+      Stat.GAP,
+      Stat.INT,
+    ]).concat(sectorCols).concat([
+      Stat.LAST_LAP,
+      Stat.BEST_LAP,
+      Stat.PITS
+    ])
+  };
 };
 
 export const translate = (rawData) => {

@@ -1,4 +1,4 @@
-import { PluginDetector } from '../modules/pluginBridge/components/PluginDetector';
+import { PluginDetector } from '../modules/pluginBridge';
 
 export const Start = ({ location: { search } }) => {
 

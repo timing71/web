@@ -1,5 +1,5 @@
-/* global chrome */
 import { useCallback, useEffect, useState } from "react";
+import { PluginContextProvider } from "./PluginContextProvider";
 
 const META_NAME = 'X-Timing71-Extension';
 
@@ -15,8 +15,6 @@ const getMetaValue = key => {
 export const PluginDetector = ({ children }) => {
 
   const [extensionID, setExtensionID] = useState(null);
-
-  const [found, setFound] = useState(false);
 
   const findExtension = useCallback(
     () => {
@@ -40,38 +38,15 @@ export const PluginDetector = ({ children }) => {
     [findExtension]
   );
 
-  useEffect(
-    () => {
-      if (extensionID) {
-        const port = chrome.runtime.connect(extensionID);
-
-        port.onMessage.addListener(
-          (message) => {
-            if (message.type === 'HANDSHAKE_RETURN') {
-              setFound(true);
-            }
-          }
-        );
-
-        port.postMessage({ type: 'HANDSHAKE' });
-
-        return () => {
-          port.disconnect();
-        };
-      }
-    },
-    [extensionID]
-  );
-
-  if (!found) {
+  if (!extensionID) {
     return (
-      <p>Connecting to plugin...</p>
+      <p>Locating plugin...</p>
     );
   }
 
   return (
-    <>
+    <PluginContextProvider extensionID={extensionID}>
       {children}
-    </>
+    </PluginContextProvider>
     );
 };

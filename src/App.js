@@ -1,15 +1,23 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { PluginDetector } from './modules/pluginBridge';
 import { Start } from './pages/Start';
+import { Timing } from './pages/Timing';
 
 function App() {
   return (
     <BrowserRouter>
-      <Switch>
-        <Route
-          component={Start}
-          path='/start'
-        />
-      </Switch>
+      <PluginDetector>
+        <Switch>
+          <Route
+            component={Start}
+            path='/start'
+          />
+          <Route
+            component={Timing}
+            path='/timing/:serviceUUID'
+          />
+        </Switch>
+      </PluginDetector>
     </BrowserRouter>
   );
 }

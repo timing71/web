@@ -7,10 +7,9 @@ import { getManifest, translate } from "./translate";
 
 const DATA_URL = 'https://indycarsso.blob.core.windows.net/racecontrol/timingscoring.json';
 
-export const IndyCar = () => {
+export const IndyCar = ({ service, state, updateState }) => {
 
   const port = useContext(PluginContext);
-  const [raceState, setRaceState] = useState();
   const [manifest, setManifest] = useState();
 
   const handleMessage = useCallback(
@@ -23,10 +22,10 @@ export const IndyCar = () => {
         if (!deepEqual(newManifest, manifest)) {
           setManifest(newManifest);
         }
-        setRaceState(translate(jsonData));
+        updateState(translate(jsonData));
       }
     },
-    [manifest]
+    [manifest, updateState]
   );
 
   useEffect(
@@ -62,7 +61,7 @@ export const IndyCar = () => {
 
   return (
     <pre>
-      {JSON.stringify(raceState, null, 2)}
+      {JSON.stringify(state, null, 2)}
     </pre>
   );
 };

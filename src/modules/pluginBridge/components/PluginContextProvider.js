@@ -1,29 +1,37 @@
 /* global chrome */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PluginContext } from "../context";
 
 export const PluginContextProvider = ({ extensionID, children }) => {
 
   const [port, setPort] = useState();
+  const myPort = useRef(null);
 
   useEffect(
     () => {
       if (extensionID) {
-        const myPort = chrome.runtime.connect(extensionID);
+        myPort.current = chrome.runtime.connect(extensionID);
 
-        myPort.onMessage.addListener(
+        myPort.current.onMessage.addListener(
           (message) => {
             if (message.type === 'HANDSHAKE_RETURN') {
-              setPort(myPort);
+              setPort(myPort.current);
             }
           }
         );
 
-        myPort.postMessage({ type: 'HANDSHAKE' });
+        myPort.current.postMessage({ type: 'HANDSHAKE' });
+
+        myPort.current.onDisconnect.addListener(
+          () => {
+            myPort.current = chrome.runtime.connect(extensionID);
+            setPort(myPort.current);
+          }
+        );
 
         return () => {
-          myPort.disconnect();
+          myPort.current.disconnect();
         };
       }
     },

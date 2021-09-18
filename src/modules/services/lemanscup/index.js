@@ -119,13 +119,16 @@ class Client {
     const sortedEntries = Object.values(this.entries).sort((a, b) => a.ranking - b.ranking);
     return {
       cars: sortedEntries.map(mapCar),
-      session: {}
+      session: {
+        timeElapsed: this.params.elapsedTime,
+        timeRemaining: Math.max(this.params.remaining, 0)
+      }
     };
   }
 
 }
 
-export const LeMansCup = ({ children, state, updateManifest, updateState }) => {
+export const LeMansCup = ({ children, updateManifest, updateState }) => {
 
   const port = useContext(PluginContext);
 

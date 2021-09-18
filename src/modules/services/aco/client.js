@@ -1,8 +1,14 @@
 import { Stat } from "../../../racing";
 
 const CATEGORIES = {
+  2: 'LMGTEPro',
+  3: 'LMP2',
+  4: 'LMGTEAm',
   6: 'LMP3',
-  16: 'GT3'
+  10: 'GTE',
+  16: 'GT3',
+  18: 'INV',
+  4169: 'Hypercar'
 };
 
 const CAR_STATES = {

@@ -1,10 +1,4 @@
-import { useCallback, useContext, useEffect, useRef } from "react";
-import { PluginContext } from "../../pluginBridge";
-import { v4 as uuid } from 'uuid';
 import { Stat } from "../../../racing";
-const { Decoder } = require('socket.io-parser');
-
-const WS_URL = 'wss://data.lemanscup.com/socket.io/?EIO=4&transport=websocket';
 
 const CATEGORIES = {
   6: 'LMP3',
@@ -45,11 +39,12 @@ const mapCar = (car) => {
   ]);
 };
 
-class Client {
+export class Client {
 
-  constructor(onUpdate) {
+  constructor(name, onUpdate) {
     this.entries = {};
     this.params = {};
+    this.name = name;
     this.onUpdate = () => onUpdate(this);
   }
 
@@ -88,7 +83,7 @@ class Client {
 
   getManifest() {
     return {
-      name: 'Le Mans Cup',
+      name: this.name,
       description: this.params.sessionName,
       columnSpec: [
         Stat.NUM,
@@ -127,57 +122,3 @@ class Client {
   }
 
 }
-
-export const LeMansCup = ({ children, updateManifest, updateState }) => {
-
-  const port = useContext(PluginContext);
-
-  const onUpdate = useCallback(
-    (client) => {
-      updateManifest(client.getManifest());
-      updateState(client.getState());
-    },
-    [updateManifest, updateState]
-  );
-
-  const client = useRef(new Client(onUpdate));
-
-  useEffect(
-    () => {
-
-      const tag = uuid();
-
-      const decoder = new Decoder();
-      decoder.on('decoded', (packet) => {
-        if (packet.type === 4 && packet.data) {
-          const [event, data] = packet.data;
-          client.current.handle(event, data);
-        }
-      });
-
-      port.onMessage.addListener(
-        msg => {
-          if (msg.type === 'WEBSOCKET_MESSAGE' && msg.tag === tag) {
-            decoder.add(msg.data);
-          }
-        }
-      );
-
-      port.postMessage({
-        tag,
-        type: 'WEBSOCKET',
-        url: WS_URL
-      });
-    },
-    [port]
-  );
-
-  return (
-    <>
-      { children }
-    </>
-  );
-
-};
-
-LeMansCup.regex = /live\.lemanscup\.com/;

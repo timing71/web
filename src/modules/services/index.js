@@ -1,9 +1,11 @@
 import { IndyCar } from "./indycar";
-import { LeMansCup } from "./lemanscup";
+import { ELMS, LeMansCup, WEC } from "./aco";
 
 const SERVICE_PROVIDERS = [
+  ELMS,
   IndyCar,
-  LeMansCup
+  LeMansCup,
+  WEC
 ];
 
 export const mapServiceProvider = (source) => {

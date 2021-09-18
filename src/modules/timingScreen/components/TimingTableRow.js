@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import { timeInSeconds } from "../../../formats";
 
 
@@ -25,9 +26,15 @@ const TimingTableCell = ({ stat, value }) => {
   );
 };
 
+const Position = styled.td`
+  color: #54FFFF;
+  text-align: right;
+`;
 
-export const TimingTableRow = ({ car, manifest }) => (
+
+export const TimingTableRow = ({ car, manifest, position }) => (
   <tr>
+    <Position>{position}</Position>
     {
       manifest.columnSpec && manifest.columnSpec.map(
         (stat, idx) => (

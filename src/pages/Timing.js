@@ -7,6 +7,7 @@ import { generateMessages } from "../messages";
 import { PluginContext } from "../modules/pluginBridge";
 import { TimingScreen } from "../modules/timingScreen";
 import { mapServiceProvider } from "../modules/services";
+import { createGlobalStyle } from "styled-components";
 
 const DEFAULT_STATE = {
   cars: [],
@@ -14,6 +15,16 @@ const DEFAULT_STATE = {
   messages: [],
   manifest: {}
 };
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+
+    background-color: black;
+    color: white;
+  }
+`;
 
 const TimingInner = () => {
 
@@ -90,6 +101,7 @@ const TimingInner = () => {
         updateManifest={updateManifest}
         updateState={updateState}
       >
+        <GlobalStyle />
         <TimingScreen
           state={state}
         />

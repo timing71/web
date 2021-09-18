@@ -1,5 +1,5 @@
 export const timeInSeconds = (seconds, places=3) => {
-  if (isNaN(seconds) || seconds === '') {
+  if (isNaN(seconds) || seconds === '' || seconds === null) {
     return seconds;
   }
 

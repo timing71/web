@@ -17,6 +17,7 @@ const TimingTableInner = styled.table`
   td, th {
     padding: 0.5em;
     line-height: 1;
+    white-space: nowrap;
   }
 
   tbody tr:nth-of-type(odd) {

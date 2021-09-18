@@ -1,7 +1,9 @@
 import { IndyCar } from "./indycar";
+import { LeMansCup } from "./lemanscup";
 
 const SERVICE_PROVIDERS = [
-  IndyCar
+  IndyCar,
+  LeMansCup
 ];
 
 export const mapServiceProvider = (source) => {

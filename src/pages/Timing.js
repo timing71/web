@@ -5,7 +5,7 @@ import { useEffect, useState } from "react/cjs/react.development";
 import withGracefulUnmount from "../components/withGracefulUnmount";
 import { generateMessages } from "../messages";
 import { PluginContext } from "../modules/pluginBridge";
-import { TimingScreen } from "../modules/pluginBridge/components/timingScreen";
+import { TimingScreen } from "../modules/timingScreen";
 import { mapServiceProvider } from "../modules/services";
 
 const DEFAULT_STATE = {

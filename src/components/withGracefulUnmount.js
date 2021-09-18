@@ -42,5 +42,7 @@ export default function withGracefulUnmount(WrappedComponent) {
     }
   }
 
+  WithGracefulUnmount.displayName = `withGracefulUnmount(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+
   return WithGracefulUnmount;
 }

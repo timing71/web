@@ -5,7 +5,7 @@ import { getManifest, translate } from "./translate";
 
 const DATA_URL = 'https://indycarsso.blob.core.windows.net/racecontrol/timingscoring.json';
 
-export const IndyCar = ({ state, updateManifest, updateState }) => {
+export const IndyCar = ({ children, state, updateManifest, updateState }) => {
 
   const port = useContext(PluginContext);
 
@@ -53,6 +53,14 @@ export const IndyCar = ({ state, updateManifest, updateState }) => {
     },
     [port]
   );
+
+    if (children) {
+      return (
+        <>
+          {children}
+        </>
+      );
+    }
 
   return (
     <pre>

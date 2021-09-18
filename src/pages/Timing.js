@@ -5,6 +5,7 @@ import { useEffect, useState } from "react/cjs/react.development";
 import withGracefulUnmount from "../components/withGracefulUnmount";
 import { generateMessages } from "../messages";
 import { PluginContext } from "../modules/pluginBridge";
+import { TimingScreen } from "../modules/pluginBridge/components/timingScreen";
 import { mapServiceProvider } from "../modules/services";
 
 const DEFAULT_STATE = {
@@ -57,7 +58,7 @@ const TimingInner = () => {
           const newState = { ...oldState, ...updatedState };
 
           newState.messages = [
-            generateMessages(newState.manifest, oldState, newState),
+            ...generateMessages(newState.manifest, oldState, newState),
             ...oldState.messages
           ].slice(0, 100);
 
@@ -88,7 +89,11 @@ const TimingInner = () => {
         state={state}
         updateManifest={updateManifest}
         updateState={updateState}
-      />
+      >
+        <TimingScreen
+          state={state}
+        />
+      </ServiceProvider>
     );
   }
 

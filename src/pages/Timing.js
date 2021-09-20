@@ -73,10 +73,15 @@ const TimingInner = () => {
             ...oldState.messages
           ].slice(0, 100);
 
-          port.postMessage({
-            type: 'UPDATE_SERVICE_STATE',
-            state: newState
-          });
+          try {
+            port.postMessage({
+              type: 'UPDATE_SERVICE_STATE',
+              state: newState
+            });
+          }
+          catch (error) {
+            // sometimes we end up with a disconnected port here
+          }
           return newState;
         }
       );

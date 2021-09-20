@@ -19,19 +19,13 @@ export const Start = ({ location: { search } }) => {
     () => {
       const myUUID = uuid();
 
-      port.onMessage.addListener(
-        msg => {
-          if (msg.type === 'START_SERVICE_RETURN' && msg.originalMessage?.uuid === myUUID) {
-            setServiceUUID(myUUID);
-          }
-        }
-      );
-
-      port.postMessage({
+      port.send({
         type: 'START_SERVICE',
         uuid: myUUID,
         source
-      });
+      }).then(
+        setServiceUUID(myUUID)
+      );
     },
     [port, source]
   );

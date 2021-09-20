@@ -46,18 +46,16 @@ const TimingInner = () => {
 
   useEffect(
     () => {
-      port.onMessage.addListener(
-        (msg) => {
-          if (msg.type === 'FETCH_SERVICE_RETURN' && msg.service.uuid === serviceUUID) {
-            setService(msg.service);
-            setState(msg.state);
-          }
-        }
-      );
-      port.postMessage({
+
+      port.send({
         type: 'FETCH_SERVICE',
         uuid: serviceUUID
-      });
+      }).then(
+        msg => {
+          setService(msg.service);
+          setState(msg.state);
+        }
+      );
 
     },
     [port, serviceUUID]
@@ -104,6 +102,7 @@ const TimingInner = () => {
     return (
       <ThemeProvider theme={Theme}>
         <ServiceProvider
+          service={service}
           state={state}
           updateManifest={updateManifest}
           updateState={updateState}

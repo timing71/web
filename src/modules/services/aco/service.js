@@ -1,13 +1,11 @@
 import { useCallback, useContext, useEffect, useRef } from "react";
 
-import { v4 as uuid } from 'uuid';
-
 import { Client } from './client';
-import { PluginContext } from "../../pluginBridge";
+import { PluginContext, WrappedWebsocket } from "../../pluginBridge";
 
 const { Decoder } = require('socket.io-parser');
 
-export const Service = ({ children, host, name, updateManifest, updateState }) => {
+export const Service = ({ children, host, name, service: { uuid }, updateManifest, updateState }) => {
 
   const port = useContext(PluginContext);
   const wsUrl = `wss://${host}/socket.io/?EIO=4&transport=websocket`;
@@ -25,7 +23,7 @@ export const Service = ({ children, host, name, updateManifest, updateState }) =
   useEffect(
     () => {
 
-      const tag = uuid();
+      const ws = new WrappedWebsocket(wsUrl, port, uuid);
 
       const decoder = new Decoder();
       decoder.on('decoded', (packet) => {
@@ -35,21 +33,15 @@ export const Service = ({ children, host, name, updateManifest, updateState }) =
         }
       });
 
-      port.onMessage.addListener(
-        msg => {
-          if (msg.type === 'WEBSOCKET_MESSAGE' && msg.tag === tag) {
-            decoder.add(msg.data);
-          }
+      ws.on(
+        'message',
+        data => {
+          decoder.add(data);
         }
       );
 
-      port.postMessage({
-        tag,
-        type: 'WEBSOCKET',
-        url: wsUrl
-      });
     },
-    [port, wsUrl]
+    [port, uuid, wsUrl]
   );
 
   return (

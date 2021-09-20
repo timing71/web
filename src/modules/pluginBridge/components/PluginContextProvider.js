@@ -1,34 +1,35 @@
 /* global chrome */
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { PluginContext } from "../context";
+import { Port } from "../port";
 
 export const PluginContextProvider = ({ extensionID, children }) => {
 
-  const [port, setPort] = useState();
+  const port = useRef(new Port());
+  const [active, setActive] = useState(false);
 
   const openPort = useCallback(
     (extensionID) => {
       const myPort = chrome.runtime.connect(extensionID);
+      port.current.wrap(myPort);
 
-      myPort.onMessage.addListener(
-        (message) => {
-          if (message.type === 'HANDSHAKE_RETURN') {
-            setPort(myPort);
+      // myPort.onMessage.addListener(console.log);
+
+      port.current.send({ type: 'HANDSHAKE' }).then(
+        reply => {
+          if (reply.type === 'HANDSHAKE_RETURN') {
+            setActive(true);
           }
         }
       );
 
-      myPort.postMessage({ type: 'HANDSHAKE' });
-
       myPort.onDisconnect.addListener(
         () => {
           // console.log('Remote port is disconnected, reconnecting...');
-          setPort(openPort(extensionID));
+          openPort(extensionID);
         }
       );
-
-      return myPort;
     },
     []
   );
@@ -36,24 +37,24 @@ export const PluginContextProvider = ({ extensionID, children }) => {
   useEffect(
     () => {
       if (extensionID) {
-        setPort(openPort(extensionID));
+        openPort(extensionID);
 
         return () => {
-          port && port.disconnect();
+          port.current && port.current.disconnect();
         };
       }
     },
     [extensionID, openPort] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
-  if (!port) {
+  if (!active) {
     return (
       <p>Connecting to plugin...</p>
     );
   }
 
   return (
-    <PluginContext.Provider value={port}>
+    <PluginContext.Provider value={port.current}>
       { children }
     </PluginContext.Provider>
   );

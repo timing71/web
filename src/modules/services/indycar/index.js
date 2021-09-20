@@ -9,49 +9,32 @@ export const IndyCar = ({ children, state, updateManifest, updateState }) => {
 
   const port = useContext(PluginContext);
 
-  const handleMessage = useCallback(
-    (message) => {
-      if (message.type === 'FETCH_RETURN' && message.originalMessage && message.originalMessage.url === DATA_URL) {
-        const data = message.data.replace(/^jsonCallback\(/, '').replace(/\);\r\n$/, '');
-        const jsonData = JSON.parse(data);
-
-        const newManifest = getManifest(jsonData);
-        updateManifest(newManifest);
-        updateState(translate(jsonData));
-      }
-    },
-    [updateManifest, updateState]
-  );
-
-  useEffect(
+  const getData = useCallback(
     () => {
-      port.onMessage.addListener(handleMessage);
-      return () => {
-        port.onMessage.removeListener(handleMessage);
-      };
-    },
-    [handleMessage, port]
-  );
+      port.fetch(DATA_URL).then(
+        message => {
+          const data = message.replace(/^jsonCallback\(/, '').replace(/\);\r\n$/, '');
+          const jsonData = JSON.parse(data);
 
-  useEffect(
-    () => {
-      port.postMessage({
-        type: 'FETCH',
-        url: DATA_URL
-      });
-      const interval = window.setInterval(
-        () => port.postMessage({
-          type: 'FETCH',
-          url: DATA_URL
-        }),
-        10000
+          const newManifest = getManifest(jsonData);
+          updateManifest(newManifest);
+          updateState(translate(jsonData));
+        }
       );
+    },
+    [port, updateManifest, updateState]
+  );
+
+  useEffect(
+    () => {
+      getData();
+      const interval = window.setInterval(getData, 10000);
 
       return () => {
         window.clearInterval(interval);
       };
     },
-    [port]
+    [getData]
   );
 
     if (children) {

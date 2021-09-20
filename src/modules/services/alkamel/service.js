@@ -4,7 +4,19 @@ import EJSON from "ejson";
 
 import { PluginContext, WrappedWebsocket } from "../../pluginBridge";
 
-EJSON.addType('oid', a => a);
+class oid {
+  constructor(value) {
+    this.value = value;
+  }
+  toJSONValue() {
+    return this.value;
+  }
+  typeName() {
+    return 'oid';
+  }
+}
+
+EJSON.addType('oid', a => new oid(a));
 
 export const Service = ({ children, service }) => {
 
@@ -47,7 +59,12 @@ export const Service = ({ children, service }) => {
       ddp.current = server;
 
       server.on('ready', console.log)
-      server.on('added', console.log)
+      server.on('added', ({ collection, fields }) => {
+        console.log("Added", collection, fields)
+        if (collection === 'feeds') {
+          server.sub('sessions', [fields.sessions || []]);
+        }
+      });
 
       server.sub('livetimingFeed', ['imsa']);
 

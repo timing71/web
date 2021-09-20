@@ -99,6 +99,11 @@ const TimingInner = () => {
 
   if (service && state) {
     const ServiceProvider = mapServiceProvider(service.source);
+
+    if (!ServiceProvider) {
+      return <p>No service provider found for <cite>{service.source}</cite>!</p>;
+    }
+
     return (
       <ThemeProvider theme={Theme}>
         <ServiceProvider

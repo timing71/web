@@ -7,7 +7,8 @@ import { generateMessages } from "../messages";
 import { PluginContext } from "../modules/pluginBridge";
 import { TimingScreen } from "../modules/timingScreen";
 import { mapServiceProvider } from "../modules/services";
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { Theme } from "../theme";
 
 const DEFAULT_STATE = {
   cars: [],
@@ -101,16 +102,18 @@ const TimingInner = () => {
   if (service && state) {
     const ServiceProvider = mapServiceProvider(service.source);
     return (
-      <ServiceProvider
-        state={state}
-        updateManifest={updateManifest}
-        updateState={updateState}
-      >
-        <GlobalStyle />
-        <TimingScreen
+      <ThemeProvider theme={Theme}>
+        <ServiceProvider
           state={state}
-        />
-      </ServiceProvider>
+          updateManifest={updateManifest}
+          updateState={updateState}
+        >
+          <GlobalStyle />
+          <TimingScreen
+            state={state}
+          />
+        </ServiceProvider>
+      </ThemeProvider>
     );
   }
 

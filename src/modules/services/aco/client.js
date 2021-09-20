@@ -17,6 +17,16 @@ const CAR_STATES = {
   'Stop': 'STOP'
 };
 
+const FLAGS = {
+  'green': 'GREEN',
+  'red': 'RED',
+  'yellow': 'YELLOW',
+  'full_yellow': 'FCY',
+  'safety_car': 'SC',
+  'chk': 'CHEQUERED',
+  'off': 'NONE'
+};
+
 const mapCar = (car) => {
 
   const llFlag = (car.lastlapTime === car.bestlapTime) ? 'pb' : '';
@@ -122,7 +132,8 @@ export class Client {
       cars: sortedEntries.map(mapCar),
       session: {
         timeElapsed: this.params.elapsedTime,
-        timeRemaining: Math.max(this.params.remaining, 0)
+        timeRemaining: Math.max(this.params.remaining, 0),
+        flagState: FLAGS[this.params.raceState.toLowerCase()] || 'NONE'
       }
     };
   }

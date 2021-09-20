@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const Header = styled.th`
+  font-family: Play, sans-serif;
   text-transform: uppercase;
   text-align: left;
   color: #54FFFF;

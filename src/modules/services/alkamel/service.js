@@ -1,6 +1,10 @@
 import { useContext, useEffect, useRef } from "react";
 import simpleDDP from "simpleddp";
+import EJSON from "ejson";
+
 import { PluginContext, WrappedWebsocket } from "../../pluginBridge";
+
+EJSON.addType('oid', a => a);
 
 export const Service = ({ children, service }) => {
 
@@ -42,9 +46,10 @@ export const Service = ({ children, service }) => {
 
       ddp.current = server;
 
-      server.sub('livetimingFeed', ['imsa']);
-
       server.on('ready', console.log)
+      server.on('added', console.log)
+
+      server.sub('livetimingFeed', ['imsa']);
 
       return () => {
         console.log("Disconnecting");

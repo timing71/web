@@ -1,26 +1,21 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useReducer, useRef } from "react";
 import simpleDDP from "simpleddp";
-import EJSON from "ejson";
 
 import { PluginContext, WrappedWebsocket } from "../../pluginBridge";
+import { dispatchAdded } from "./ddp";
+import { Session } from "./session";
 
-class oid {
-  constructor(value) {
-    this.value = value;
-  }
-  toJSONValue() {
-    return this.value;
-  }
-  typeName() {
-    return 'oid';
-  }
-}
+const stateReducer = (state, action) => {
+  const [name, collection] = action;
+  return {
+    ...state,
+    [name]: collection
+  };
+};
 
-EJSON.addType('oid', a => new oid(a));
-
-export const Service = ({ children, service }) => {
-
+export const Service = ({ children, service, updateManifest, updateState }) => {
   const port = useContext(PluginContext);
+  const [collections, dispatch] = useReducer(stateReducer, {});
 
   const ddp = useRef();
 
@@ -35,9 +30,11 @@ export const Service = ({ children, service }) => {
 
         onReceivedMessage(msg) {
 
+          const mungedData = msg.data.slice(2, -1);
+
           const mungedMessage = {
             ...msg,
-            data: JSON.parse(msg.data.slice(2, -1))
+            data: mungedData.length > 0 ? JSON.parse(mungedData) : null
           };
 
           this.emit('message', mungedMessage);
@@ -55,14 +52,24 @@ export const Service = ({ children, service }) => {
         endpoint: 'wss://livetiming.alkamelsystems.com/sockjs/123/abcdefgh/websocket',
         SocketConstructor: AlkamelSocket
       });
+      // Evil monkeypatch:
+      server.dispatchAdded = dispatchAdded;
 
       ddp.current = server;
 
-      server.on('ready', console.log)
+      server.collection('sessions').reactive().onChange(
+        s => dispatch(['sessions', s])
+      );
+      server.collection('session_info').reactive().onChange(
+        s => dispatch(['session_info', s])
+      );
+
       server.on('added', ({ collection, fields }) => {
-        console.log("Added", collection, fields)
+        // We make the assumption here that we'll only ever get the single "feed"
+        // we're after!
         if (collection === 'feeds') {
           server.sub('sessions', [fields.sessions || []]);
+          server.sub('sessionInfo', [fields.sessions || []]);
         }
       });
 
@@ -73,12 +80,21 @@ export const Service = ({ children, service }) => {
         server.disconnect();
       };
     },
-    [port, service]
+    [dispatch, port, service]
   );
 
   return (
-    <p>Soon™ { JSON.stringify(service) }</p>
+    <>
+      <Session
+        collections={collections}
+        server={ddp.current}
+        updateManifest={updateManifest}
+        updateState={updateState}
+      />
+      {children}
+    </>
   );
 };
+
 
 Service.regex = /livetiming\.alkamelsystems\.com/;

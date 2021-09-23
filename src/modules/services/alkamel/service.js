@@ -13,6 +13,18 @@ const stateReducer = (state, action) => {
   };
 };
 
+const MONITORED_COLLECTIONS = [
+  'best_results',
+  'race_control',
+  'sessionBestResultsByClass',
+  'sessions',
+  'session_info',
+  'session_entry',
+  'standings',
+  'track_info',
+  'weather'
+];
+
 export const Service = ({ children, service, updateManifest, updateState }) => {
   const port = useContext(PluginContext);
   const [collections, dispatch] = useReducer(stateReducer, {});
@@ -57,11 +69,10 @@ export const Service = ({ children, service, updateManifest, updateState }) => {
 
       ddp.current = server;
 
-      server.collection('sessions').reactive().onChange(
-        s => dispatch(['sessions', s])
-      );
-      server.collection('session_info').reactive().onChange(
-        s => dispatch(['session_info', s])
+      MONITORED_COLLECTIONS.forEach(
+        c => server.collection(c).reactive().onChange(
+          s => dispatch([c, s])
+        )
       );
 
       server.on('added', ({ collection, fields }) => {
@@ -76,7 +87,7 @@ export const Service = ({ children, service, updateManifest, updateState }) => {
       server.sub('livetimingFeed', ['imsa']);
 
       return () => {
-        console.log("Disconnecting");
+        console.log("Disconnecting"); // eslint-disable-line no-console
         server.disconnect();
       };
     },

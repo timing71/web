@@ -8,6 +8,9 @@ const formatValue = (value, formatKey) => {
   if (formatKey === 'time') {
     return timeInSeconds(value);
   }
+  else if (formatKey === 'delta' && value.toFixed) {
+    return value.toFixed(3);
+  }
 
   return value;
 };

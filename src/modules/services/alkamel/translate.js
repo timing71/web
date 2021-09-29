@@ -43,6 +43,21 @@ const CAR_STATES = {
   'EXCLUDED': 'DSQ'
 };
 
+const FLAG_STATES = {
+  'YF': 'YELLOW',
+  'FCY': 'FCY',
+  'RF': 'RED',
+  'SC': 'SC',
+  'GF': 'GREEN'
+};
+
+const mapFlag = (status) => {
+  if (status.isFinished) {
+    return 'CHEQUERED';
+  }
+  return FLAG_STATES[status.currentFlag] || 'none';
+};
+
 
 const mapCarState = (status, trackStatus, chequered) => {
   if (status === '' && trackStatus === '') {
@@ -171,7 +186,41 @@ const mapCars = (standings, entries, numSectors, gapFunc) => {
   return cars;
 };
 
-export const Translator = ({ collections: { session_entry, session_info, track_info, standings }, session, updateManifest, updateState }) => {
+const mapSession = (status={}) => {
+  const session = {
+    flagState: mapFlag(status)
+  };
+
+  const now = Date.now() / 1000;
+
+  if (status.isForcedByTime || status.finalType === 'BY_TIME' || status.finalType === 'BY_TIME_PLUS_LAPS') {
+    if (status.isSessionRunning) {
+      session['timeRemain'] = Math.max((status.startTime + status.finalTime) - now + status.stoppedSeconds, 0);
+    }
+    else if (status.startTime > 0) {
+      session['timeRemain'] = Math.max((status.startTime + status.finalTime) - status.stopTime - now + status.stoppedSeconds, 0);
+    }
+    else {
+      session['timeRemain'] = status.finalTime;
+    }
+  }
+  else {
+    session['lapsRemain'] = Math.max(0, (status.finalLaps || 0) - (status.elapsedLaps || 0));
+  }
+
+  if (status.startTime > 0) {
+    if (status.stopTime > 0 && ! status.isSessionRunning) {
+      session['timeElapsed'] = status.stopTime - status.startTime;
+    }
+    else {
+      session['timeElapsed'] = (now - status.startTime) - (status.stoppedSeconds || 0);
+    }
+  }
+
+  return session;
+};
+
+export const Translator = ({ collections: { session_entry, session_info, session_status, track_info, standings }, session, updateManifest, updateState }) => {
 
   const numSectors = getSectorCount(track_info);
 
@@ -196,10 +245,11 @@ export const Translator = ({ collections: { session_entry, session_info, track_i
     () => {
       const gapFunc = getGapFunction(session_info?.type);
       updateState({
-        cars: mapCars(standings, session_entry, numSectors, gapFunc)
+        cars: mapCars(standings, session_entry, numSectors, gapFunc),
+        session: mapSession(session_status)
       });
     },
-    [numSectors, session_entry, session_info?.type, standings, updateState]
+    [numSectors, session_entry, session_info?.type, session_status, standings, updateState]
   );
 
   return null;

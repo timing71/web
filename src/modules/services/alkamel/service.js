@@ -20,6 +20,7 @@ const MONITORED_COLLECTIONS = [
   'sessions',
   'session_info',
   'session_entry',
+  'session_status',
   'standings',
   'track_info',
   'weather'

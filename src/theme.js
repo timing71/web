@@ -89,10 +89,22 @@ export const Theme = {
     'h4': '#FFFFAA'
   },
   carStates: {
-    'RUN': '#00FF00',
-    'PIT': '#DC291E',
-    'OUT': '#FF6418',
-    'STOP': 'grey'
+    'RUN': {
+      color: '#00FF00',
+    },
+    'PIT': {
+      color: '#DC291E',
+    },
+    'OUT': {
+      color: '#FF6418',
+    },
+    'STOP': {
+      color: 'grey',
+    },
+    'FIN': {
+      color: 'transparent',
+      background: css`left/1.7em repeat-x url(${chequer})`
+    }
   },
   modifiers: {
     'old': 'yellow',

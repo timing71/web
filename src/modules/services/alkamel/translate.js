@@ -81,6 +81,35 @@ const parseSectors = (raw, defaultFlag = '') => {
   return sectors;
 };
 
+const parseLoops = (loopString) => {
+  const loops = {};
+
+  const parts = (loopString || '').split(';');
+
+  if (parts.length > 1) {
+    for(let i = 0; i < parts.length; i += 2) {
+      loops[parseInt(parts[i], 10)] = parseInt(parts[i + 1], 10);
+    }
+  }
+
+
+  return loops;
+};
+
+const augment = (standing) => {
+
+  const data = (standing.data || '').split(';');
+
+  return ({
+    ...standing,
+    currentLoops: parseLoops(standing.currentLoopSectors),
+    previousLoops: parseLoops(standing.previousLoopSectors),
+    laps: parseInt(data[4], 10) || 0,
+    currentLapNumber: parseInt(data[9], 10) || 0,
+    currentLapStartTime: parseInt(data[7], 10) || 0
+  });
+};
+
 const mapCars = (standings, entries, numSectors, gapFunc) => {
   let leadCar = null;
   let prevCar = null;
@@ -106,8 +135,10 @@ const mapCars = (standings, entries, numSectors, gapFunc) => {
         );
       }
 
-      const gap = leadCar ? gapFunc(leadCar, { standing, entry }) : '';
-      const interval = prevCar ? gapFunc(prevCar, { standing, entry }) : '';
+      const augmentedStanding = augment(standing);
+
+      const gap = leadCar ? gapFunc(leadCar, augmentedStanding) : '';
+      const interval = prevCar ? gapFunc(prevCar, augmentedStanding) : '';
 
       const lastLapTime = (standing.lastLapTime || 0) / 1000;
       const bestLapTime = (standing.bestLapTime || 0) / 1000;
@@ -130,9 +161,9 @@ const mapCars = (standings, entries, numSectors, gapFunc) => {
         data[5]
       ]));
 
-      prevCar = { standing, entry };
+      prevCar = augmentedStanding;
       if (!leadCar) {
-        leadCar = { standing, entry };
+        leadCar = augmentedStanding;
       }
     }
   );

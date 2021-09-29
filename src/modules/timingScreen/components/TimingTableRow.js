@@ -8,7 +8,11 @@ const formatValue = (value, formatKey) => {
   if (formatKey === 'time') {
     return timeInSeconds(value);
   }
-  else if (formatKey === 'delta' && value.toFixed) {
+  else if (formatKey === 'delta' && value?.toFixed) {
+    if (value >= 60) {
+      const mins = Math.floor(value / 60);
+      return `${mins}:${(value - (60 * mins)).toFixed(3)}`;
+    }
     return value.toFixed(3);
   }
 

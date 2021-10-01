@@ -15,6 +15,13 @@ const TimingTableRowInner = styled.tr`
   &:nth-of-type(odd) {
     background: ${ props => props.carState && (props.theme.carStates[props.carState].rowBackground || [null, 'black'])[1] };
   }
+
+  ${
+    props => (props.carState && props.theme.carStates[props.carState].rowColor) && `
+    & td {
+      color: ${props.theme.carStates[props.carState].rowColor};
+    }`
+  }
 `;
 
 export const TimingTableRow = ({ car, manifest, position, statExtractor }) => (

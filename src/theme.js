@@ -104,7 +104,8 @@ export const Theme = {
     'STOP': {
       color: 'grey',
       rowBackground: ['#000000', '#202020'],
-      rowStyle: 'italic'
+      rowStyle: 'italic',
+      rowColor: 'grey'
     },
     'FIN': {
       color: 'transparent',

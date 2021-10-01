@@ -26,14 +26,13 @@ jobs:
       - name: Build webapp
         run: yarn run build
 
-      - name: Deploy to beta.timing71.org
-        uses: appleboy/scp-action@master
+      - name: Deploy to beta web server
+        uses: marcodallasanta/ssh-scp-deploy@v1.0.5
         with:
           host: ${{ secrets.SSH_HOST }}
           port: ${{ secrets.SSH_PORT }}
-          username: ${{ secrets.SSH_USERNAME }}
+          user: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "build/*"
-          strip_components: 1
-          target: "~/webroot-beta/"
-          rm: true
+          local: "build/*"
+          remote: "~/webroot-beta/"
+          pre_upload: rm -r ~/webroot-beta/*

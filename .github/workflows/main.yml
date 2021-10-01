@@ -27,7 +27,7 @@ jobs:
         run: yarn run build
 
       - name: Deploy to beta web server
-        uses: marcodallasanta/ssh-scp-deploy@v1.0.5
+        uses: jamesremuscat/ssh-scp-deploy@main
         with:
           host: ${{ secrets.SSH_HOST }}
           port: ${{ secrets.SSH_PORT }}

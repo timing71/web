@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { StatExtractor } from "../statExtractor";
 import { TimingTableHeader } from "./TimingTableHeader";
 import { TimingTableRow } from "./TimingTableRow";
 
@@ -19,13 +20,12 @@ const TimingTableInner = styled.table`
     line-height: 1;
     white-space: nowrap;
   }
-
-  tbody tr:nth-of-type(odd) {
-    background-color: #202020;
-  }
 `;
 
 export const TimingTable = ({ state }) => {
+
+  const statExtractor = new StatExtractor(state.manifest?.columnSpec || []);
+
   return (
     <TimingTableWrapper>
       <TimingTableInner>
@@ -39,6 +39,7 @@ export const TimingTable = ({ state }) => {
                   key={car[0]}
                   manifest={state.manifest}
                   position={idx + 1}
+                  statExtractor={statExtractor}
                 />
               )
             )

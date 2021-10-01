@@ -91,19 +91,25 @@ export const Theme = {
   carStates: {
     'RUN': {
       color: '#00FF00',
+      rowBackground: ['#000000', '#202020'],
     },
     'PIT': {
       color: '#DC291E',
+      rowBackground: ['#550000', '#5C0000'],
     },
     'OUT': {
       color: '#FF6418',
+      rowBackground: ['#553300', '#603F00'],
     },
     'STOP': {
       color: 'grey',
+      rowBackground: ['#000000', '#202020'],
+      rowStyle: 'italic'
     },
     'FIN': {
       color: 'transparent',
-      background: css`left/1.7em repeat-x url(${chequer})`
+      background: css`left/1.7em repeat-x url(${chequer})`,
+      rowBackground: ['#000000', '#202020'],
     }
   },
   modifiers: {
@@ -124,7 +130,7 @@ export const Theme = {
     SC: {
       background: '#DDDD00',
       color: 'black',
-      animation: css`${yellowAnim} 0.5s alternate infinite`
+      animation: css`${yellowAnim} 0.5s alternate infinite`,
     },
     CAUTION: {
       background: '#DDDD00',

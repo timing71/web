@@ -137,7 +137,7 @@ export const Theme = {
       animation: css`${yellowAnim} 0.5s alternate infinite`
     },
     CHEQUERED: {
-      background: css`center/contain repeat-x url(${chequer})`,
+      background: css`left/contain repeat-x url(${chequer})`,
       color: 'transparent'
     }
   }

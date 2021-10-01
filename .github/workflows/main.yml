@@ -34,5 +34,6 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "build/*"
+          strip_components: 1
           target: "~/webroot-beta/"
           rm: true

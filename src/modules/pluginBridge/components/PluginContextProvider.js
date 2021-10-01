@@ -30,6 +30,8 @@ export const PluginContextProvider = ({ extensionID, children }) => {
           openPort(extensionID);
         }
       );
+
+      return myPort;
     },
     []
   );
@@ -37,10 +39,10 @@ export const PluginContextProvider = ({ extensionID, children }) => {
   useEffect(
     () => {
       if (extensionID) {
-        openPort(extensionID);
+        const myInnerPort = openPort(extensionID);
 
         return () => {
-          port.current && port.current.disconnect();
+          myInnerPort.disconnect();
         };
       }
     },

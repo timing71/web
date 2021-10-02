@@ -147,5 +147,12 @@ export const Theme = {
       background: css`left/contain repeat-x url(${chequer})`,
       color: 'transparent'
     }
+  },
+  site: {
+    background: 'black',
+    textColor: 'white',
+    highlightColor: '#54FFFF',
+    headingFont: 'Play, Arial, Verdana, sans-serif',
+    textFont: 'Verdana, Arial, Helvetica, sans-serif'
   }
 };

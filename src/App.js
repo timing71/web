@@ -1,24 +1,38 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
+
 import { PluginDetector } from './modules/pluginBridge';
+
+import { Home } from './pages/Home';
 import { Start } from './pages/Start';
 import { Timing } from './pages/Timing';
+import { Theme } from './theme';
 
 function App() {
   return (
-    <BrowserRouter>
-      <PluginDetector>
+    <ThemeProvider theme={Theme}>
+      <BrowserRouter>
         <Switch>
           <Route
-            component={Start}
-            path='/start'
+            component={Home}
+            exact
+            path='/'
           />
-          <Route
-            component={Timing}
-            path='/timing/:serviceUUID'
-          />
+          <PluginDetector>
+            <Switch>
+              <Route
+                component={Start}
+                path='/start'
+              />
+              <Route
+                component={Timing}
+                path='/timing/:serviceUUID'
+              />
+            </Switch>
+          </PluginDetector>
         </Switch>
-      </PluginDetector>
-    </BrowserRouter>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

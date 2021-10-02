@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Page } from "../../../components/Page";
 import { TimingScreenHeader } from "./TimingScreenHeader";
 import { TimingTable } from "./TimingTable";
 
@@ -15,9 +16,11 @@ const TimingScreenInner = styled.div`
 
 export const TimingScreen = ({ state }) => {
   return (
-    <TimingScreenInner>
-      <TimingScreenHeader state={state} />
-      <TimingTable state={state} />
-    </TimingScreenInner>
+    <Page>
+      <TimingScreenInner>
+        <TimingScreenHeader state={state} />
+        <TimingTable state={state} />
+      </TimingScreenInner>
+    </Page>
   );
 };

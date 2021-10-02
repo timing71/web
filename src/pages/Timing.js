@@ -7,8 +7,6 @@ import { generateMessages } from "../messages";
 import { PluginContext } from "../modules/pluginBridge";
 import { TimingScreen } from "../modules/timingScreen";
 import { mapServiceProvider } from "../modules/services";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
-import { Theme } from "../theme";
 
 const DEFAULT_STATE = {
   cars: [],
@@ -16,16 +14,6 @@ const DEFAULT_STATE = {
   messages: [],
   manifest: {}
 };
-
-const GlobalStyle = createGlobalStyle`
-  body {
-    margin: 0;
-    padding: 0;
-
-    background-color: black;
-    color: white;
-  }
-`;
 
 const TimingInner = () => {
 
@@ -105,19 +93,16 @@ const TimingInner = () => {
     }
 
     return (
-      <ThemeProvider theme={Theme}>
-        <ServiceProvider
-          service={service}
+      <ServiceProvider
+        service={service}
+        state={state}
+        updateManifest={updateManifest}
+        updateState={updateState}
+      >
+        <TimingScreen
           state={state}
-          updateManifest={updateManifest}
-          updateState={updateState}
-        >
-          <GlobalStyle />
-          <TimingScreen
-            state={state}
-          />
-        </ServiceProvider>
-      </ThemeProvider>
+        />
+      </ServiceProvider>
     );
   }
 

@@ -8,7 +8,7 @@ const TimingScreenInner = styled.div`
   height: 100vh;
   display: grid;
   grid-template-rows: auto 3fr 1fr;
-  grid-template-columns: minmax(0, 1fr) 2fr 2fr minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) 2fr 1fr minmax(0, 1fr);
 
   grid-template-areas: "elapsed flag flag remain" "timing timing timing timing" "messages messages trackdata trackdata";
 

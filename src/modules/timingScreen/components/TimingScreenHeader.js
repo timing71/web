@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Clock } from "./Clock";
 
 const FlagPanel = styled.div`
   grid-area: flag;
@@ -18,6 +19,23 @@ const FlagPanel = styled.div`
 
 export const TimingScreenHeader = ({ state: { manifest, session } }) => (
   <>
+    {
+      session && session.timeElapsed >= 0 && (
+        <Clock
+          caption='elapsed'
+          seconds={session.timeElapsed}
+        />
+      )
+    }
     <FlagPanel flag={session.flagState}>{manifest.name} - {manifest.description}</FlagPanel>
+    {
+      session && session.timeRemain >= 0 && (
+        <Clock
+          caption='remaining'
+          countdown
+          seconds={session.timeRemain}
+        />
+      )
+    }
   </>
 );

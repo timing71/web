@@ -107,6 +107,12 @@ export const Theme = {
       rowStyle: 'italic',
       rowColor: 'grey'
     },
+    'N/S': {
+      color: 'grey',
+      rowBackground: ['#000000', '#202020'],
+      rowStyle: 'italic',
+      rowColor: 'grey'
+    },
     'FIN': {
       color: 'transparent',
       background: css`left/1.7em repeat-x url(${chequer})`,

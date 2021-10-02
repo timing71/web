@@ -27,8 +27,8 @@ const CellInner = styled.td`
 `;
 
 const CarStateCell = styled.td`
-  color: ${ props => (props.value && props.theme.carStates[props.value].color) || 'white' };
-  background: ${ props => (props.value && props.theme.carStates[props.value].background) || 'transparent' };
+  color: ${ props => (props.value && props.theme.carStates[props.value]?.color) || 'white' };
+  background: ${ props => (props.value && props.theme.carStates[props.value]?.background) || 'transparent' };
 `;
 
 const CentredCell = styled(CellInner)`

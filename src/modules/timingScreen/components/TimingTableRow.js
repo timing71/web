@@ -9,15 +9,15 @@ const Position = styled.td`
 `;
 
 const TimingTableRowInner = styled.tr`
-  background: ${ props => props.carState && (props.theme.carStates[props.carState].rowBackground || ['black'])[0] };
-  font-style: ${ props => props.carState && (props.theme.carStates[props.carState].rowStyle || 'normal')};
+  background: ${ props => props.carState && (props.theme.carStates[props.carState]?.rowBackground || ['black'])[0] };
+  font-style: ${ props => props.carState && (props.theme.carStates[props.carState]?.rowStyle || 'normal')};
 
   &:nth-of-type(odd) {
-    background: ${ props => props.carState && (props.theme.carStates[props.carState].rowBackground || [null, 'black'])[1] };
+    background: ${ props => props.carState && (props.theme.carStates[props.carState]?.rowBackground || [null, 'black'])[1] };
   }
 
   ${
-    props => (props.carState && props.theme.carStates[props.carState].rowColor) && `
+    props => (props.carState && props.theme.carStates[props.carState]?.rowColor) && `
     & td {
       color: ${props.theme.carStates[props.carState].rowColor};
     }`

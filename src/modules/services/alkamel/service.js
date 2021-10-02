@@ -30,6 +30,8 @@ export const Service = ({ children, service, updateManifest, updateState }) => {
   const port = useContext(PluginContext);
   const [collections, dispatch] = useReducer(stateReducer, {});
 
+  const feed = service.source.slice(service.source.lastIndexOf('/') + 1);
+
   const ddp = useRef();
 
   useEffect(
@@ -85,14 +87,14 @@ export const Service = ({ children, service, updateManifest, updateState }) => {
         }
       });
 
-      server.sub('livetimingFeed', ['imsa']);
+      server.sub('livetimingFeed', [feed]);
 
       return () => {
         console.log("Disconnecting"); // eslint-disable-line no-console
         server.disconnect();
       };
     },
-    [dispatch, port, service]
+    [dispatch, feed, port, service]
   );
 
   return (

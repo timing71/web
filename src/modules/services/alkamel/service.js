@@ -7,9 +7,11 @@ import { Session } from "./session";
 
 const stateReducer = (state, action) => {
   const [name, collection] = action;
+  console.log(`Dispatching action for ${name}`, collection);
   return {
     ...state,
-    [name]: collection
+    [name]: [...collection],
+    lastUpdate: [Date.now()]
   };
 };
 
@@ -25,6 +27,9 @@ const MONITORED_COLLECTIONS = [
   'track_info',
   'weather'
 ];
+
+const randomString = (length) => ([...Array(length)].map(() =>(~~(Math.random()*36)).toString(36)).join(''));
+const randomNum = (length) => ([...Array(length)].map(() =>(~~(Math.random()*10)).toString(10)).join(''));
 
 export const Service = ({ children, service, updateManifest, updateState }) => {
   const port = useContext(PluginContext);
@@ -64,7 +69,7 @@ export const Service = ({ children, service, updateManifest, updateState }) => {
       }
 
       const server = new simpleDDP({
-        endpoint: 'wss://livetiming.alkamelsystems.com/sockjs/123/abcdefgh/websocket',
+        endpoint: `wss://livetiming.alkamelsystems.com/sockjs/${randomNum(3)}/${randomString(8)}/websocket`,
         SocketConstructor: AlkamelSocket
       });
       // Evil monkeypatch:
@@ -86,6 +91,8 @@ export const Service = ({ children, service, updateManifest, updateState }) => {
           server.sub('sessionInfo', [fields.sessions || []]);
         }
       });
+
+      // server.on('changed', ({ collection }) => console.log(`Changed collection ${collection}`));
 
       server.sub('livetimingFeed', [feed]);
 

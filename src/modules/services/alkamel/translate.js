@@ -135,7 +135,7 @@ const mapCars = (standings, entries, numSectors, gapFunc) => {
     standing => {
       const data = standing.data.split(';');
       const raceNum = data[1];
-      const entry = entries[raceNum] || {};
+      const entry = (entries && entries[raceNum]) || {};
 
       classCount[entry.class] = (classCount[entry.class] || 0) + 1;
 

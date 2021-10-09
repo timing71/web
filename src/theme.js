@@ -20,8 +20,8 @@ export const Theme = {
     'lmp2pa': '#77AAFF',
     'lmp3': '#DD00DD',
     'p3': '#DD00DD',
-    'p3-1': '#FF661C',
-    'p3-2': '#549FFF',
+    'p31': '#FF661C',
+    'p32': '#549FFF',
     'cn': '#dbb700',
     'cn1': '#dbb700',
     'mpc': '#50C0FF',
@@ -39,8 +39,8 @@ export const Theme = {
     'gt4': '#FF4F00',
     'gs': '#2fabff',
     'tcr': '#FFFF00',
-    'gt3-pro': '#dbb700',
-    'gt3-am': '#CCCCCC',
+    'gt3pro': '#dbb700',
+    'gt3am': '#CCCCCC',
     'at': '#CCCCCC',
     'gtx': '#FF0000',
     'sp2': '#77AAFF',
@@ -86,7 +86,8 @@ export const Theme = {
     'silver': '#CCCCCC',
     'sil': '#CCCCCC',
     'pam': '#FFFF00',
-    'h4': '#FFFFAA'
+    'h4': '#FFFFAA',
+    'pa991': '#d22730'
   },
   carStates: {
     'RUN': {

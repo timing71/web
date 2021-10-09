@@ -11,10 +11,6 @@ const formatValue = (value, formatKey) => {
   return value;
 };
 
-const CarClassCell = styled.td`
-  color: ${ props => (props.value && props.theme.classColours[props.value.toLowerCase()]) || 'white' };
-`;
-
 const CellInner = styled.td`
   color: ${ props => (props.value && props.theme.modifiers[props.value]) || 'white' };
 `;
@@ -32,7 +28,12 @@ const TruncatingCell = styled(CellInner)`
   max-width: 12em;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;`;
+  white-space: nowrap;
+`;
+
+const CarClassCell = styled(CentredCell)`
+  color: ${ props => (props.value && props.theme.classColours[props.value.toLowerCase().replace(/[-/ ]/, '')]) || 'white' };
+`;
 
 const CellTypes = {
   [Stat.CLASS]: CarClassCell,

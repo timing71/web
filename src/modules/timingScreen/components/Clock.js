@@ -5,9 +5,17 @@ import { timeWithHours } from "../../../formats";
 const Inner = styled.div`
   justify-self: center;
   align-self: center;
+
+  &.left {
+    grid-column: 1;
+  }
+
+  &.right {
+    grid-column: 4;
+  }
 `;
 
-export const Clock = ({ caption, countdown, pause, seconds }) => {
+export const Clock = ({ caption, className, countdown, pause, seconds }) => {
 
   const refTime = useRef(Date.now());
 
@@ -35,7 +43,7 @@ export const Clock = ({ caption, countdown, pause, seconds }) => {
   );
 
   return (
-    <Inner>
+    <Inner className={className}>
       { timeWithHours(actualSeconds) } { caption }
     </Inner>
   );

@@ -224,7 +224,12 @@ const mapSession = (status={}) => {
   return session;
 };
 
-export const Translator = ({ collections: { session_entry, session_info, session_status, track_info, standings }, session, updateManifest, updateState }) => {
+export const Translator = ({
+  collections: { session_entry, session_info, session_status, track_info, standings },
+  session,
+  updateManifest,
+  updateState
+}) => {
 
   const numSectors = getSectorCount(track_info);
 
@@ -255,6 +260,7 @@ export const Translator = ({ collections: { session_entry, session_info, session
     },
     [numSectors, session_entry, session_info?.type, session_status, standings, updateState]
   );
+
 
   return null;
 };

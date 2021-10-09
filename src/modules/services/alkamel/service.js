@@ -2,12 +2,11 @@ import { useContext, useEffect, useReducer, useRef } from "react";
 import simpleDDP from "simpleddp";
 
 import { PluginContext, WrappedWebsocket } from "../../pluginBridge";
-import { dispatchAdded } from "./ddp";
+import { dispatchAdded, dispatchChanged, dispatchRemoved } from "./ddp";
 import { Session } from "./session";
 
 const stateReducer = (state, action) => {
   const [name, collection] = action;
-  console.log(`Dispatching action for ${name}`, collection);
   return {
     ...state,
     [name]: [...collection],
@@ -74,6 +73,8 @@ export const Service = ({ children, service, updateManifest, updateState }) => {
       });
       // Evil monkeypatch:
       server.dispatchAdded = dispatchAdded;
+      server.dispatchChanged = dispatchChanged;
+      server.dispatchRemoved = dispatchRemoved;
 
       ddp.current = server;
 

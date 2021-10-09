@@ -21,6 +21,13 @@ export const Clock = ({ caption, className, countdown, pause, seconds }) => {
 
   const [ actualSeconds, setActualSeconds ] = useState(seconds);
 
+  useEffect(
+    () => {
+      refTime.current = Date.now();
+    },
+    [seconds]
+  );
+
   const tick = useCallback(
     () => {
       const delta = (countdown ? -1 : 1) * (Date.now() - refTime.current) / 1000;
@@ -32,7 +39,7 @@ export const Clock = ({ caption, className, countdown, pause, seconds }) => {
   useEffect(
     () => {
       if (!pause) {
-        const interval = window.setInterval(tick, 500);
+        const interval = window.setInterval(tick, 100);
 
         return () => {
           window.clearInterval(interval);

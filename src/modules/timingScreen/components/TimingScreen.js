@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { Page } from "../../../components/Page";
+import { Messages } from "./Messages";
 import { TimingScreenHeader } from "./TimingScreenHeader";
 import { TimingTable } from "./TimingTable";
 
@@ -24,6 +25,7 @@ export const TimingScreen = ({ state }) => {
       <TimingScreenInner>
         <TimingScreenHeader state={state} />
         <TimingTable state={state} />
+        <Messages messages={state.messages} />
       </TimingScreenInner>
     </Page>
   );

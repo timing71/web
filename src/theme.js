@@ -7,6 +7,12 @@ const yellowAnim = keyframes`
   to { background-color: black; color: white; }
 `;
 
+const redAnim = keyframes`
+  0% { background-color: #990000 }
+  50% { background-color: black }
+  100% { background-color: #990000 }
+`;
+
 export const Theme = {
   classColours: {
     'p': '#FFFFFF',
@@ -120,6 +126,9 @@ export const Theme = {
       rowBackground: ['#000000', '#202020'],
     }
   },
+  messages: {
+
+  },
   modifiers: {
     'old': 'yellow',
     'tyre-med': 'yellow',
@@ -133,7 +142,8 @@ export const Theme = {
     },
     RED: {
       background: '#990000',
-      color: 'white'
+      color: 'white',
+      animation: css`${redAnim} 1s step-end alternate infinite`
     },
     SC: {
       background: '#DDDD00',

@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
+import { Helmet } from 'react-helmet';
 
 import { PluginDetector } from './modules/pluginBridge';
 
@@ -11,6 +12,10 @@ import { Theme } from './theme';
 function App() {
   return (
     <ThemeProvider theme={Theme}>
+      <Helmet
+        defaultTitle='Timing71 Beta'
+        titleTemplate='%s — Timing71 Beta'
+      />
       <BrowserRouter>
         <Switch>
           <Route

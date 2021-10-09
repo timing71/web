@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { Page } from "../../../components/Page";
 import { TimingScreenHeader } from "./TimingScreenHeader";
@@ -17,6 +18,9 @@ const TimingScreenInner = styled.div`
 export const TimingScreen = ({ state }) => {
   return (
     <Page>
+      <Helmet>
+        <title>{ state.manifest?.name }</title>
+      </Helmet>
       <TimingScreenInner>
         <TimingScreenHeader state={state} />
         <TimingTable state={state} />

@@ -217,6 +217,10 @@ const mapSession = (status={}) => {
     }
   }
 
+  if (!status.isSessionRunning) {
+    session['pauseClocks'] = true;
+  }
+
   return session;
 };
 

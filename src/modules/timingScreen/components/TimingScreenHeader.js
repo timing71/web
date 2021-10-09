@@ -23,6 +23,7 @@ export const TimingScreenHeader = ({ state: { manifest, session } }) => (
       session && session.timeElapsed >= 0 && (
         <Clock
           caption='elapsed'
+          pause={session?.pauseClocks}
           seconds={session.timeElapsed}
         />
       )
@@ -33,6 +34,7 @@ export const TimingScreenHeader = ({ state: { manifest, session } }) => (
         <Clock
           caption='remaining'
           countdown
+          pause={session?.pauseClocks}
           seconds={session.timeRemain}
         />
       )

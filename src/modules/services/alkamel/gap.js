@@ -1,6 +1,6 @@
 const getPracticeGap = (first, second) => {
-  if (first?.standing?.bestLapTime && second?.standing?.bestLapTime) {
-    return Math.max(0, second.standing.bestLapTime - first.standing.bestLapTime) / 1000;
+  if (first?.bestLapTime && second?.bestLapTime) {
+    return Math.max(0, second.bestLapTime - first.bestLapTime) / 1000;
   }
   return '';
 };

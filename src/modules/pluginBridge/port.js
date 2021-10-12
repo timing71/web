@@ -34,8 +34,8 @@ export class Port extends EventEmitter {
     );
   }
 
-  async fetch(url) {
-    const response = await this.send({ type: 'FETCH',  url });
+  async fetch(url, options={}) {
+    const response = await this.send({ type: 'FETCH', options, url });
     return response.data;
   }
 

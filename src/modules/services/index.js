@@ -1,12 +1,14 @@
 import { IndyCar } from "./indycar";
 import { ELMS, LeMansCup, WEC } from "./aco";
 import { AlKamel } from "./alkamel";
+import { TimeService } from "./timeservice";
 
 const SERVICE_PROVIDERS = [
   AlKamel,
   ELMS,
   IndyCar,
   LeMansCup,
+  TimeService,
   WEC
 ];
 

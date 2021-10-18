@@ -1,5 +1,10 @@
-import { useEffect } from 'react';
-import { Stat } from '../../../racing';
+import dayjs from 'dayjs';
+import { useCallback, useEffect, useRef } from 'react';
+import { FlagState, Stat } from '../../../racing';
+import { realToServerTime } from './utils';
+
+import CustomParseFormat from 'dayjs/plugin/customParseFormat';
+dayjs.extend(CustomParseFormat);
 
 const ident = a => a;
 
@@ -16,16 +21,34 @@ const CAR_STATE_MAP = {
   "12": "FUEL"
 };
 
+const FLAG_MAP = {
+  [-1]: FlagState.NONE,  // Not started
+  1: FlagState.NONE,  // Ready to start
+  2: FlagState.RED,
+  3: FlagState.SC,
+  4: FlagState.CODE_60,
+  5: FlagState.CHEQUERED,
+  6: FlagState.GREEN,
+  7: FlagState.FCY
+};
+
 const mapState = (s) => {
   return CAR_STATE_MAP[s] || s;
 };
+
+const POSSIBLE_TIME_FORMATS = [
+  'm:ss.SSS',
+  's:SSS'
+];
 
 const parseTime = (t) => {
   if (t === '9223372036854775807' || t === '') {
     return '';
   }
   try {
-    return parseFloat(t);
+    const d =  dayjs(t, POSSIBLE_TIME_FORMATS);
+
+    return (d - d.startOf('hour')).valueOf() / 1000;
   }
   catch {
     return t;
@@ -90,11 +113,43 @@ const deriveColSpec = (columns) => {
   return [spec, reverseMap, inferPosition];
 };
 
+const mapSession = (session, times, timeOffset) => {
+  const retVal = {
+    flagState: FLAG_MAP[session.flag] || FlagState.NONE
+  };
+
+  if (typeof(times.lt) !== 'undefined' && typeof(times.r) !== 'undefined' && typeof(times.q) !== 'undefined' && !!timeOffset) {
+    if ((times.s || 0) === 0 && (times.e || 0) !== 0) {
+      retVal['timeRemain'] = ((times.e || 0) - (times.s || 0)) / 1000000;
+    }
+    else if (!!times.h) {
+      retVal['timeRemain'] = ((times.lt || 0) - (times.r || 0)) / 1000000;
+    }
+    else {
+      const serverNow = realToServerTime(Date.now() / 1000 + timeOffset);
+      const elapsed = serverNow - (times.q || 0) + (times.r || 0);
+      retVal['timeElapsed'] = elapsed / 1000000;
+      retVal['timeRemain'] = ((times.lt || 0) - elapsed) / 1000000;
+    }
+  }
+
+  return retVal;
+};
+
 export const Translate = ({ state, updateManifest, updateState }) => {
 
-  const { cars, columns, session } = state;
+  const { cars, columns, session, times, timeOffset } = state;
 
-  const [columnSpec, reverseColumnMap, inferPosition] = deriveColSpec(columns);
+  const mappingState = useRef([[], [], false]);
+
+  const [columnSpec, reverseColumnMap, inferPosition] = mappingState.current;
+
+  useEffect(
+    () => {
+      mappingState.current = deriveColSpec(columns);
+    },
+    [columns]
+  );
 
   useEffect(
     () => {
@@ -107,26 +162,29 @@ export const Translate = ({ state, updateManifest, updateState }) => {
     [columnSpec, session, updateManifest]
   );
 
-  const positionSort = (a, b) => {
-    if (inferPosition) {
-      return 0;
-    }
-    const [[tsnlIndex, mappingFunc]] = reverseColumnMap.slice(-1);
-    return mappingFunc(a[tsnlIndex]) - mappingFunc(b[tsnlIndex]);
-
-  };
+  const positionSort = useCallback(
+    (a, b) => {
+      if (inferPosition) {
+        return 0;
+      }
+      const [[tsnlIndex, mappingFunc]] = reverseColumnMap.slice(-1);
+      return mappingFunc(a[tsnlIndex]) - mappingFunc(b[tsnlIndex]);
+    },
+    [inferPosition, reverseColumnMap]
+  );
 
   useEffect(
     () => {
       updateState({
-        cars: cars.sort(positionSort).map(
+        cars: Object.values(cars).sort(positionSort).map(
           car => reverseColumnMap.map(
             ([tsnlIndex, mappingFunc]) => mappingFunc(car[tsnlIndex])
           )
-        )
+        ),
+        session: mapSession(session, times, timeOffset)
       });
     },
-    [cars, updateState]
+    [cars, positionSort, reverseColumnMap, session, timeOffset, times, updateState]
   );
 
   return null;

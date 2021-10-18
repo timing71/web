@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Stat } from "../../../racing";
 import { StatExtractor } from "../statExtractor";
 import { TimingTableHeader } from "./TimingTableHeader";
 import { TimingTableRow } from "./TimingTableRow";
@@ -36,7 +37,7 @@ export const TimingTable = ({ state }) => {
               (car, idx) => (
                 <TimingTableRow
                   car={car}
-                  key={car[0]}
+                  key={statExtractor.get(car, Stat.NUM, idx)}
                   manifest={state.manifest}
                   position={idx + 1}
                   statExtractor={statExtractor}

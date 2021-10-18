@@ -1,6 +1,7 @@
 import { useContext, useEffect, useReducer } from "react";
 import { PluginContext, WrappedWebsocket } from "../../pluginBridge";
 import { Translate } from "./translate";
+import { serverToRealTime } from "./utils";
 
 const LZString = require('lz-string');
 
@@ -13,15 +14,12 @@ const getToken = async (tid, port) => {
 const getWebsocketUrl = (tid, token) => `wss://livetiming.getraceresults.com/lt/connect?transport=webSockets&clientProtocol=1.5&_tk=${tid}&_gr=w&connectionToken=${encodeURIComponent(token)}&tid=8`;
 
 const createInitialState = () => ({
-  cars: [],
+  cars: {},
   columns: [],
   session: {},
   times: {},
   timeOffset: null
 });
-
-const TIME_FACTOR = 10957 * 24 * 60 * 60 * 1000; // Don't ask, no idea
-const serverToRealTime = (serverTime) => (((serverTime / 1000) + TIME_FACTOR) / 1000);
 
 const messageHandler = (state, action) => {
   const [type, message] = action;
@@ -49,14 +47,16 @@ const messageHandler = (state, action) => {
       return nextState;
 
     case 'r_c':
-      const nextCarState = [...state['cars']];
+      const nextCarState = { ...state['cars'] };
 
       message.forEach(
         ([row, col, value]) => {
-          if (!nextCarState[row]) {
-            nextCarState[row] = [];
+          if (row >= 0) {
+            if (!nextCarState[row]) {
+              nextCarState[row] = {};
+            }
+            nextCarState[row][col] = value;
           }
-          nextCarState[row][col] = value;
         }
       );
 
@@ -131,7 +131,7 @@ const messageHandler = (state, action) => {
       return state;
 
     default:
-      console.log(`No handler in place for event type ${type}`, message);
+      console.warn(`No handler in place for event type ${type}`, message); // eslint-disable-line no-console
       return state;
   }
 

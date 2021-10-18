@@ -1,5 +1,6 @@
 import { css, keyframes } from "styled-components";
 
+import { FlagState } from "./racing";
 import chequer from './img/chequer.png';
 
 const yellowAnim = keyframes`
@@ -136,31 +137,31 @@ export const Theme = {
     'sb': '#FF53E3'
   },
   flagStates: {
-    GREEN: {
+    [FlagState.GREEN]: {
       background: '#009900',
       color: 'white'
     },
-    RED: {
+    [FlagState.RED]: {
       background: '#990000',
       color: 'white',
       animation: css`${redAnim} 1s step-end alternate infinite`
     },
-    SC: {
+    [FlagState.SC]: {
       background: '#DDDD00',
       color: 'black',
       animation: css`${yellowAnim} 0.5s alternate infinite`,
     },
-    CAUTION: {
+    [FlagState.CAUTION]: {
       background: '#DDDD00',
       color: 'black',
       animation: css`${yellowAnim} 0.5s alternate infinite`
     },
-    FCY: {
+    [FlagState.FCY]: {
       background: '#DDDD00',
       color: 'black',
       animation: css`${yellowAnim} 0.5s alternate infinite`
     },
-    CHEQUERED: {
+    [FlagState.CHEQUERED]: {
       background: css`left/contain repeat-x url(${chequer})`,
       color: 'transparent'
     }

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Stat } from '../../../racing';
+import { FlagState, Stat } from '../../../racing';
 import { getGapFunction } from './gap';
 
 const SECTOR_STATS = [
@@ -44,16 +44,16 @@ const CAR_STATES = {
 };
 
 const FLAG_STATES = {
-  'YF': 'YELLOW',
-  'FCY': 'FCY',
-  'RF': 'RED',
-  'SC': 'SC',
-  'GF': 'GREEN'
+  'YF': FlagState.YELLOW,
+  'FCY': FlagState.FCY,
+  'RF': FlagState.RED,
+  'SC': FlagState.SC,
+  'GF': FlagState.GREEN
 };
 
 const mapFlag = (status) => {
   if (status.isFinished) {
-    return 'CHEQUERED';
+    return FlagState.CHEQUERED;
   }
   return FLAG_STATES[status.currentFlag] || 'none';
 };

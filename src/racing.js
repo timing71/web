@@ -40,3 +40,19 @@ export const Stat = {
   NO_TOW_SPEED: ['NTS', 'numeric', 'No-tow speed - best speed without tow'],
   NO_TOW_RANK: ['NTR', 'numeric', 'No-tow rank']
 };
+
+export const FlagState = {
+  NONE: 'none',
+  GREEN: 'green',
+  WHITE: 'white',
+  CHEQUERED: 'chequered',
+  YELLOW: 'yellow',
+  FCY: 'fcy',
+  CODE_60: 'code_60',
+  VSC: 'vsc',
+  SC: 'sc',
+  CAUTION: 'caution',
+  RED: 'red',
+  SLOW_ZONE: 'slow_zone',
+  CODE_60_ZONE: 'code_60_zone'
+};

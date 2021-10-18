@@ -18,7 +18,8 @@ const createInitialState = () => ({
   columns: [],
   session: {},
   times: {},
-  timeOffset: null
+  timeOffset: null,
+  weather: {}
 });
 
 const messageHandler = (state, action) => {
@@ -50,12 +51,17 @@ const messageHandler = (state, action) => {
       const nextCarState = { ...state['cars'] };
 
       message.forEach(
-        ([row, col, value]) => {
+        ([row, col, value, ...rest]) => {
           if (row >= 0) {
             if (!nextCarState[row]) {
               nextCarState[row] = {};
             }
-            nextCarState[row][col] = value;
+            if (rest.length > 0) {
+              nextCarState[row][col] = [value, ...rest];
+            }
+            else {
+              nextCarState[row][col] = value;
+            }
           }
         }
       );
@@ -121,12 +127,23 @@ const messageHandler = (state, action) => {
         timeOffset: serverToRealTime(message) - (Date.now() / 1000)
       };
 
+    case 'g_weatherDataCurrent':
+      return {
+        ...state,
+        weather: {
+          ...state.weather,
+          ...message
+        }
+      };
+
     case 't_p':
     case 'a_i':
     case 'a_u':
     case 'a_r':
+    case 't_c':
     case 't_i':
     case 't_o':
+    case 't_q':
       // We ignore these messages.
       return state;
 

@@ -38,7 +38,8 @@ const mapState = (s) => {
 
 const POSSIBLE_TIME_FORMATS = [
   'm:ss.SSS',
-  's:SSS'
+  'sSSS',
+  's.SSS',
 ];
 
 const parseTime = (t) => {
@@ -64,6 +65,22 @@ const nonnegative = (v) => {
   }
 };
 
+const TIME_FLAG_MAP = {
+  '65280': 'pb',
+  '16736511': 'sb'
+};
+
+const mapSector = (sector) => {
+  if (sector.length === 2) {
+    return [parseTime(sector[0]), TIME_FLAG_MAP[sector[1]] || ''];
+  }
+  return [parseTime(sector), ''];
+};
+
+const mapLaptime = (i) => {
+  return [parseInt(i[0], 10) / 1000000, TIME_FLAG_MAP[i[1]] || ''];
+};
+
 const DEFAULT_COLUMN_SPEC = [
   [Stat.NUM, "startnumber", ident],
   [Stat.STATE, "marker", mapState],
@@ -75,15 +92,15 @@ const DEFAULT_COLUMN_SPEC = [
   [Stat.DRIVER, "name", ident],
   [Stat.CAR, "car", ident],
   [Stat.LAPS, "laps", nonnegative],
-  //[Stat.GAP, "hole", parse_gap],
+  [Stat.GAP, "hole", parseTime],
   [Stat.INT, "diff", parseTime],
-  //[Stat.S1, "sectortimes1", map_sector],
-  //[Stat.S2, "sectortimes2", map_sector],
-  //[Stat.S3, "sectortimes3", map_sector],
-  //[Stat.S4, "sectortimes4", map_sector],
-  //[Stat.S5, "sectortimes5", map_sector],
-  //[Stat.LAST_LAP, "lastroundtime", i => [parseTime(i[0]), mapTimeFlags(i[1])]],
-  //[Stat.BEST_LAP, "fastestroundtime", i => [parseTime(i[0]), mapTimeFlags(i[1])]],
+  [Stat.S1, "sectortimes1", mapSector],
+  [Stat.S2, "sectortimes2", mapSector],
+  [Stat.S3, "sectortimes3", mapSector],
+  [Stat.S4, "sectortimes4", mapSector],
+  [Stat.S5, "sectortimes5", mapSector],
+  [Stat.LAST_LAP, "lastroundtime", mapLaptime],
+  [Stat.BEST_LAP, "fastestroundtime", mapLaptime],
   [Stat.PITS, "pitstops", ident]
 ];
 

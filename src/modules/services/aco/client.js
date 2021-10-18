@@ -1,4 +1,4 @@
-import { Stat } from "../../../racing";
+import { FlagState, Stat } from "../../../racing";
 
 const CATEGORIES = {
   2: 'LMGTEPro',
@@ -18,13 +18,13 @@ const CAR_STATES = {
 };
 
 const FLAGS = {
-  'green': 'GREEN',
-  'red': 'RED',
-  'yellow': 'YELLOW',
-  'full_yellow': 'FCY',
-  'safety_car': 'SC',
-  'chk': 'CHEQUERED',
-  'off': 'NONE'
+  'green': FlagState.GREEN,
+  'red': FlagState.RED,
+  'yellow': FlagState.YELLOW,
+  'full_yellow': FlagState.FCY,
+  'safety_car': FlagState.SC,
+  'chk': FlagState.CHEQUERED,
+  'off': FlagState.NONE
 };
 
 const mapCar = (car) => {

@@ -60,10 +60,14 @@ const TimingInner = () => {
             ...oldState.messages
           ].slice(0, 100);
 
+          newState.lastUpdated = Date.now();
+
           try {
-            port.postMessage({
+            port.send({
               type: 'UPDATE_SERVICE_STATE',
-              state: newState
+              state: newState,
+              uuid: serviceUUID,
+              timestamp: newState.lastUpdated
             });
           }
           catch (error) {
@@ -73,7 +77,7 @@ const TimingInner = () => {
         }
       );
     },
-    [port]
+    [port, serviceUUID]
   );
 
   const updateManifest = useCallback(

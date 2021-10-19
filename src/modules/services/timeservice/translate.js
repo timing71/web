@@ -81,26 +81,36 @@ const mapLaptime = (i) => {
   return [parseInt(i[0], 10) / 1000000, TIME_FLAG_MAP[i[1]] || ''];
 };
 
+const parseGap = (i) => {
+  if (i[0] === '-') {
+    return i;
+  }
+  return parseTime(i);
+};
+
+const first = i => i[0];
+
 const DEFAULT_COLUMN_SPEC = [
   [Stat.NUM, "startnumber", ident],
   [Stat.STATE, "marker", mapState],
-  [Stat.CLASS, "class", ident],
-  [Stat.POS_IN_CLASS, "position_in_class", ident],
+  [Stat.CLASS, "class", first],
+  [Stat.POS_IN_CLASS, "position_in_class", first],
   [Stat.TEAM, "team name", ident],
   [Stat.TEAM, "name", ident],
   [Stat.DRIVER, "currentdriver", ident],
   [Stat.DRIVER, "name", ident],
   [Stat.CAR, "car", ident],
   [Stat.LAPS, "laps", nonnegative],
-  [Stat.GAP, "hole", parseTime],
-  [Stat.INT, "diff", parseTime],
+  [Stat.LAPS, "hole", parseGap],
+  [Stat.GAP, "hole", parseGap],
+  [Stat.INT, "diff", parseGap],
   [Stat.S1, "sectortimes1", mapSector],
   [Stat.S2, "sectortimes2", mapSector],
   [Stat.S3, "sectortimes3", mapSector],
   [Stat.S4, "sectortimes4", mapSector],
   [Stat.S5, "sectortimes5", mapSector],
   [Stat.LAST_LAP, "lastroundtime", mapLaptime],
-  [Stat.BEST_LAP, "fastestroundtime", mapLaptime],
+  [Stat.BEST_LAP, "fastestroundtime", i => (parseInt(i, 10) / 1000000)],
   [Stat.PITS, "pitstops", ident]
 ];
 
@@ -145,12 +155,49 @@ const mapSession = (session, times, timeOffset) => {
     else {
       const serverNow = realToServerTime(Date.now() / 1000 + timeOffset);
       const elapsed = serverNow - (times.q || 0) + (times.r || 0);
-      retVal['timeElapsed'] = elapsed / 1000000;
-      retVal['timeRemain'] = ((times.lt || 0) - elapsed) / 1000000;
+      retVal['timeElapsed'] = Math.ceil(elapsed / 1000000);
+      retVal['timeRemain'] = Math.ceil(((times.lt || 0) - elapsed) / 1000000);
     }
   }
 
   return retVal;
+};
+
+const postprocessCars = (cars, columnSpec) => {
+
+  const lapIdx = columnSpec.indexOf(Stat.LAPS);
+  const gapIdx = columnSpec.indexOf(Stat.GAP);
+  if (lapIdx >= 0) {
+    let lastSeenLap = null;
+    let leaderLap = null;
+    cars.forEach(
+      car => {
+        const laps = car[lapIdx];
+        if (laps[0] === '-') {
+          lastSeenLap = parseInt(laps.slice(3), 10);
+        }
+        if (lastSeenLap !== null) {
+          car[lapIdx] = lastSeenLap;
+        }
+        if (gapIdx >= 0) {
+          const gap = car[gapIdx];
+          if (gap[0] === '-') {
+            if (leaderLap) {
+              const delta = leaderLap - lastSeenLap;
+              car[gapIdx] = `${delta} lap${delta === 1 ? '' : 's'}`;
+            }
+            else {
+              leaderLap = lastSeenLap;
+              car[gapIdx] = '';
+            }
+          }
+
+        }
+      }
+    );
+  }
+
+  return cars;
 };
 
 export const Translate = ({ state, updateManifest, updateState }) => {
@@ -193,15 +240,18 @@ export const Translate = ({ state, updateManifest, updateState }) => {
   useEffect(
     () => {
       updateState({
-        cars: Object.values(cars).sort(positionSort).map(
-          car => reverseColumnMap.map(
-            ([tsnlIndex, mappingFunc]) => mappingFunc(car[tsnlIndex])
-          )
+        cars: postprocessCars(
+          Object.values(cars).sort(positionSort).map(
+            car => reverseColumnMap.map(
+              ([tsnlIndex, mappingFunc]) => mappingFunc(car[tsnlIndex])
+            )
+          ),
+          columnSpec
         ),
         session: mapSession(session, times, timeOffset)
       });
     },
-    [cars, positionSort, reverseColumnMap, session, timeOffset, times, updateState]
+    [cars, columnSpec, positionSort, reverseColumnMap, session, timeOffset, times, updateState]
   );
 
   return null;

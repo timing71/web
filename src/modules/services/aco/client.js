@@ -14,6 +14,7 @@ const CATEGORIES = {
 const CAR_STATES = {
   'Run': 'RUN',
   'In': 'PIT',
+  'Out': 'OUT',
   'Stop': 'STOP'
 };
 
@@ -31,22 +32,32 @@ const mapCar = (car) => {
 
   const llFlag = (car.lastlapTime === car.bestlapTime) ? 'pb' : '';
 
+  let driver = car.driver;
+
+  if (car.driverId) {
+    const drv = car.drivers.find(d => d.driverId === car.driverId);
+    if (drv) {
+      driver = `${drv.lastName}, ${drv.firstName}`;
+    }
+  }
+
+
   return ([
     car.number,
-    CAR_STATES[car.state],
+    CAR_STATES[car.state] || car.state,
     CATEGORIES[car.categoryId],
     car.categoryRanking,
     car.team,
-    car.driver,
+    driver,
     car.car,
     car.lap,
     car.gap,
     car.gapPrev,
-    car.currentSector1,
+    [car.currentSector1, car.currentSector1 === car.bestSector1 ? 'pb' : ''],
     [car.bestSector1, 'old'],
-    car.currentSector2,
+    [car.currentSector2, car.currentSector2 === car.bestSector2 ? 'pb' : ''],
     [car.bestSector2, 'old'],
-    car.currentSector3,
+    [car.currentSector3, car.currentSector3 === car.bestSector3 ? 'pb' : ''],
     [car.bestSector3, 'old'],
     [car.lastlapTime / 1000, llFlag],
     [car.bestlapTime / 1000, ''],
@@ -132,8 +143,8 @@ export class Client {
       cars: sortedEntries.map(mapCar),
       session: {
         timeElapsed: this.params.elapsedTime,
-        timeRemaining: Math.max(this.params.remaining, 0),
-        flagState: FLAGS[this.params.raceState.toLowerCase()] || 'NONE'
+        timeRemain: Math.max(this.params.remaining, 0),
+        flagState: FLAGS[this.params.raceState?.toLowerCase()] || FlagState.NONE
       }
     };
   }

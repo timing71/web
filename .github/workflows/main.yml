@@ -26,6 +26,9 @@ jobs:
       - name: Build webapp
         run: yarn run build
 
+      - name: Run tests
+        run: yarn run test
+
       - name: Deploy to beta web server
         uses: jamesremuscat/ssh-scp-deploy@main
         with:

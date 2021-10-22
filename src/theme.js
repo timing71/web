@@ -141,6 +141,10 @@ export const Theme = {
       background: '#009900',
       color: 'white'
     },
+    [FlagState.YELLOW]: {
+      background: '#DDDD00',
+      color: 'black',
+    },
     [FlagState.RED]: {
       background: '#990000',
       color: 'white',

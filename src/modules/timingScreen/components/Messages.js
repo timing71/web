@@ -1,28 +1,34 @@
 import dayjs from "dayjs";
 import styled from "styled-components";
 
-const MessageRow = styled.tr`
-  & td:first-child {
-    color: ${ props => props.theme.site.highlightColor }
-  }
-`;
-
 const CategoryCell = styled.td`
   color: ${ props => (props.value && props.theme.classColours[props.value.toLowerCase().replace(/[-/ ]/, '')]) || 'white' };
 `;
 
-const TextCell = styled.td`
-    background: ${ props => props.msgStyle && (props.theme.messages[props.msgStyle]?.rowBackground || ['black'])[0] };
+const TextCell = styled.td``;
 
-  &:nth-of-type(odd) {
-    background: ${ props => props.msgStyle && (props.theme.messages[props.msgStyle]?.rowBackground || [null, 'black'])[1] };
+const MessageRow = styled.tr`
+  & td {
+    padding: 4px;
   }
 
-  ${
-    props => (props.msgStyle && props.theme.messages[props.msgStyle]?.rowColor) && `
-    & td {
-      color: ${props.theme.messages[props.msgStyle].rowColor};
-    }`
+  & td:first-child {
+    color: ${ props => props.theme.site.highlightColor }
+  }
+
+  & ${TextCell} {
+    background: ${ props => props.msgStyle && (props.theme.messages[props.msgStyle]?.rowBackground || ['black'])[0] };
+
+    ${
+      props => (props.msgStyle && props.theme.messages[props.msgStyle]?.rowColor) && `
+      & td {
+        color: ${props.theme.messages[props.msgStyle].rowColor};
+      }`
+    }
+  }
+
+  &:nth-of-type(odd) ${TextCell} {
+    background: ${ props => props.msgStyle && (props.theme.messages[props.msgStyle]?.rowBackground || [null, 'black'])[1] };
   }
 `;
 
@@ -30,10 +36,10 @@ const Message = ({ message }) => {
   const [timestamp, category, text, style] = message;
 
   return (
-    <MessageRow>
+    <MessageRow msgStyle={style}>
       <td>{dayjs(timestamp).format('HH:mm:ss')}</td>
       <CategoryCell value={category}>{category}</CategoryCell>
-      <TextCell msgStyle={style}>{text}</TextCell>
+      <TextCell>{text}</TextCell>
     </MessageRow>
   );
 };
@@ -41,16 +47,16 @@ const Message = ({ message }) => {
 const Wrapper = styled.div`
   grid-area: messages;
   border-top: 2px solid ${ props => props.theme.site.highlightColor };
-  border-right: 2px solid ${ props => props.theme.site.highlightColor };
 
   min-height: 0;
   overflow-y: auto;
-  padding: 0.25em;
+  padding: 0;
 
 `;
 
 const MessagesTable = styled.table`
   width: 100%;
+  border-spacing: 1px;
 `;
 
 export const Messages = ({ messages }) => {

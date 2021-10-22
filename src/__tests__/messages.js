@@ -1,5 +1,5 @@
 import { generateMessages } from '../messages';
-import { FlagState } from '../racing';
+import { FlagState, Stat } from '../racing';
 
 const FLAG_EXPECTATIONS = [
   [FlagState.GREEN, FlagState.YELLOW, 'Yellow flags shown'],
@@ -26,3 +26,14 @@ FLAG_EXPECTATIONS.forEach(
     );
   }
 );
+
+it('generates car message on pit in', () => {
+  const columnSpec = [Stat.NUM, Stat.STATE, Stat.CLASS, Stat.DRIVER];
+
+  const oldCars = [['1', 'RUN', 'LMP1', 'John Hindhaugh'], ['2', 'RUN', 'LMP1', 'Eve Hewitt']];
+  const newCars = [['1', 'PIT', 'LMP1', 'John Hindhaugh'], ['2', 'RUN', 'LMP1', 'Eve Hewitt']];
+
+  const msgs = generateMessages({ columnSpec }, { cars: oldCars }, { cars: newCars });
+
+  expect(msgs.length).toEqual(1);
+});

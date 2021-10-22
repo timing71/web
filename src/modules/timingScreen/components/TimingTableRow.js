@@ -1,7 +1,10 @@
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { Stat } from "../../../racing";
 import { TimingTableCell } from "./TimingTableCell";
 
+const blink = keyframes`
+  50% { opacity: 0.1; }
+`;
 
 const Position = styled.td`
   color: #54FFFF;
@@ -22,11 +25,18 @@ const TimingTableRowInner = styled.tr`
       color: ${props.theme.carStates[props.carState].rowColor};
     }`
   }
+
+  ${
+    props => props.highlight && css`
+      animation: ${blink} 0.5s alternate 2;
+    `
+  }
 `;
 
-export const TimingTableRow = ({ car, manifest, position, statExtractor }) => (
+export const TimingTableRow = ({ car, highlight, manifest, position, statExtractor }) => (
   <TimingTableRowInner
     carState={statExtractor.get(car, Stat.STATE)}
+    highlight={highlight}
   >
     <Position>{position}</Position>
     {

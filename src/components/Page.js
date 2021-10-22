@@ -20,6 +20,20 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  ::-webkit-scrollbar-track {
+    background-color: #303030;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: ${ props => props.theme.site.highlightColor };
+    border-radius: 2px;
+  }
+
 `;
 
 export const Page = ({ children }) => (

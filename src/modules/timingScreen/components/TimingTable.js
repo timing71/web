@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Stat } from "../../../racing";
-import { StatExtractor } from "../statExtractor";
+import { StatExtractor } from "../../../statExtractor";
 import { TimingTableHeader } from "./TimingTableHeader";
 import { TimingTableRow } from "./TimingTableRow";
 
@@ -26,6 +26,7 @@ const TimingTableInner = styled.table`
 export const TimingTable = ({ state }) => {
 
   const statExtractor = new StatExtractor(state.manifest?.columnSpec || []);
+  const highlight = state.highlight || [];
 
   return (
     <TimingTableWrapper>
@@ -34,15 +35,19 @@ export const TimingTable = ({ state }) => {
         <tbody>
           {
             state.cars.map(
-              (car, idx) => (
-                <TimingTableRow
-                  car={car}
-                  key={statExtractor.get(car, Stat.NUM, idx)}
-                  manifest={state.manifest}
-                  position={idx + 1}
-                  statExtractor={statExtractor}
-                />
-              )
+              (car, idx) => {
+                const carNum = statExtractor.get(car, Stat.NUM, idx);
+                return (
+                  <TimingTableRow
+                    car={car}
+                    highlight={highlight.includes(carNum)}
+                    key={carNum}
+                    manifest={state.manifest}
+                    position={idx + 1}
+                    statExtractor={statExtractor}
+                  />
+                );
+              }
             )
           }
         </tbody>

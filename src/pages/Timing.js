@@ -55,8 +55,20 @@ const TimingInner = () => {
         oldState => {
           const newState = { ...oldState, ...updatedState };
 
+          const newMessages = generateMessages(newState.manifest, oldState, newState);
+
+          const highlight = [];
+          newMessages.forEach(
+            nm => {
+              if (nm.length >= 5) {
+                highlight.push(nm[4]);
+              }
+            }
+          );
+          newState.highlight = highlight;
+
           newState.messages = [
-            ...generateMessages(newState.manifest, oldState, newState),
+            ...newMessages,
             ...oldState.messages
           ].slice(0, 100);
 

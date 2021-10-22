@@ -29,6 +29,7 @@ export const Theme = {
     'p3': '#DD00DD',
     'p31': '#FF661C',
     'p32': '#549FFF',
+    'jsp4': '#FF5050',
     'cn': '#dbb700',
     'cn1': '#dbb700',
     'mpc': '#50C0FF',
@@ -128,7 +129,21 @@ export const Theme = {
     }
   },
   messages: {
-
+    'pit': {
+      rowBackground: ['#550000', '#5C0000'],
+      color: 'white'
+    },
+    'out': {
+      rowBackground: ['#553300', '#603F00'],
+      color: 'white'
+    },
+    'green': {
+      rowBackground: ['#009900', '#009900']
+    },
+    'yellow': {
+      rowBackground: ['#DDDD00', '#DDDD00'],
+      color: 'black'
+    }
   },
   modifiers: {
     'old': 'yellow',

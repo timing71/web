@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { Page } from "../../../components/Page";
@@ -26,6 +27,7 @@ export const TimingScreen = ({ state }) => {
         <TimingScreenHeader state={state} />
         <TimingTable state={state} />
         <Messages messages={state.messages} />
+        <p>Last updated: {dayjs(state.lastUpdated).format("HH:mm:ss")}</p>
       </TimingScreenInner>
     </Page>
   );

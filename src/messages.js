@@ -1,15 +1,22 @@
 import { FlagState } from './racing';
 
 class Message {
-  constructor(category, message, style) {
+  constructor(category, message, style, carNum=null) {
     this.category = category;
     this.message = message;
     this.style = style;
+    this.carNum = carNum;
     this.timestamp = Date.now();
   }
 
   toCTDFormat() {
-    return [this.timestamp, this.category, this.message, this.style];
+    const val = [this.timestamp, this.category, this.message, this.style];
+
+    if (this.carNum) {
+      val.push(this.carNum);
+    }
+
+    return val;
   }
 }
 

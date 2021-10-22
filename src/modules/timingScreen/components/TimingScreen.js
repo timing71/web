@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
 import { Page } from "../../../components/Page";
 import { Messages } from "./Messages";

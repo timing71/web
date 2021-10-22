@@ -34,8 +34,8 @@ const mapCar = (car) => {
 
   let driver = car.driver;
 
-  if (car.driverId) {
-    const drv = car.drivers.find(d => d.driverId === car.driverId);
+  if (car.driverId && car.driverId <= car.drivers.length) {
+    const drv = car.drivers[car.driverId - 1];
     if (drv) {
       driver = `${drv.lastName}, ${drv.firstName}`;
     }
@@ -64,6 +64,17 @@ const mapCar = (car) => {
     car.speed,
     car.pitstop
   ]);
+};
+
+const postprocessCars = (cars) => {
+
+  if (cars.length >= 1) {
+    // Fix data showing gap and int for leading car!
+    cars[0][8] = '';
+    cars[0][9] = '';
+  }
+
+  return cars;
 };
 
 export class Client {
@@ -121,8 +132,8 @@ export class Client {
         Stat.DRIVER,
         Stat.CAR,
         Stat.LAPS,
-        Stat.GAP,
-        Stat.INT,
+        Stat.GAP, // 8
+        Stat.INT, // 9
         Stat.S1,
         Stat.BS1,
         Stat.S2,
@@ -140,7 +151,7 @@ export class Client {
   getState() {
     const sortedEntries = Object.values(this.entries).sort((a, b) => a.ranking - b.ranking);
     return {
-      cars: sortedEntries.map(mapCar),
+      cars: postprocessCars(sortedEntries.map(mapCar)),
       session: {
         timeElapsed: this.params.elapsedTime,
         timeRemain: Math.max(this.params.remaining, 0),

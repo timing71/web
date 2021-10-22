@@ -18,12 +18,12 @@ const MessageRow = styled.tr`
 
   & ${TextCell} {
     background: ${ props => props.msgStyle && (props.theme.messages[props.msgStyle]?.rowBackground || ['black'])[0] };
+    padding: 4px 8px;
 
     ${
       props => (props.msgStyle && props.theme.messages[props.msgStyle]?.rowColor) && `
-      & td {
         color: ${props.theme.messages[props.msgStyle].rowColor};
-      }`
+      `
     }
   }
 

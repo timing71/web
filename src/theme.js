@@ -142,7 +142,7 @@ export const Theme = {
     },
     'yellow': {
       rowBackground: ['#DDDD00', '#DDDD00'],
-      color: 'black'
+      rowColor: 'black'
     }
   },
   modifiers: {

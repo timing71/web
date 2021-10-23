@@ -101,7 +101,7 @@ const PitMessage = perCar(
     if (oldState !== newState && !!carNum && oldState !== 'N/S') {
 
       const driver = se.get(newCar, Stat.DRIVER);
-      const clazz = se.get(newCar, Stat.CLASS);
+      const clazz = se.get(newCar, Stat.CLASS, 'Pits');
 
       const driverText = driver ? ` (${driver})` : '';
 
@@ -115,9 +115,39 @@ const PitMessage = perCar(
   }
 );
 
+const DriverChangeMessage = perCar(
+  (se, oldCar, newCar) => {
+    const oldDriver = se.get(oldCar, Stat.DRIVER);
+    const newDriver = se.get(newCar, Stat.DRIVER);
+    const carNum = se.get(newCar, Stat.NUM);
+    const clazz = se.get(newCar, Stat.CLASS, 'Pits');
+
+    if (!!carNum && oldDriver !== newDriver) {
+      let message = '';
+      if (!oldDriver) {
+        message = `#${carNum} Driver change (to ${newDriver})`;
+      }
+      else if (!newDriver) {
+        message = `#${carNum} Driver change (${oldDriver} to nobody)`;
+      }
+      else {
+        message = `#${carNum} Driver change (${oldDriver} to ${newDriver})`;
+      }
+
+      return new Message(
+        clazz,
+        message,
+        null,
+        carNum
+      );
+    }
+  }
+);
+
 const MESSAGE_GENERATORS = [
   FlagMessage,
-  PitMessage
+  PitMessage,
+  DriverChangeMessage
 ];
 
 export const generateMessages = (manifest, oldState, newState) => {

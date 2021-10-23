@@ -40,6 +40,15 @@ export const Service = ({ children, host, name, service: { uuid }, updateManifes
         }
       );
 
+      const pingInterval = window.setInterval(
+        () => ws.send('2'),
+        20000
+      );
+
+      return () => {
+        window.clearInterval(pingInterval);
+      };
+
     },
     [port, uuid, wsUrl]
   );

@@ -51,17 +51,17 @@ const mapCar = (car) => {
     driver,
     car.car,
     car.lap,
-    car.gap,
-    car.gapPrev,
-    [car.currentSector1, car.currentSector1 === car.bestSector1 ? 'pb' : ''],
-    [car.bestSector1, 'old'],
-    [car.currentSector2, car.currentSector2 === car.bestSector2 ? 'pb' : ''],
-    [car.bestSector2, 'old'],
-    [car.currentSector3, car.currentSector3 === car.bestSector3 ? 'pb' : ''],
-    [car.bestSector3, 'old'],
-    [car.lastlapTime / 1000, llFlag],
-    [car.bestlapTime / 1000, ''],
-    car.speed,
+    car.gap !== "0.000" ? car.gap : '',
+    car.gapPrev !== "0.000" ? car.gapPrev : '',
+    [car.currentSector1 > 0 ? car.currentSector1 : '', car.currentSector1 === car.bestSector1 ? 'pb' : ''],
+    [car.bestSector1 > 0 ? car.bestSector1 : '', 'old'],
+    [car.currentSector2 > 0 ? car.currentSector2 : '', car.currentSector2 === car.bestSector2 ? 'pb' : ''],
+    [car.bestSector2 > 0 ? car.bestSector2 : '', 'old'],
+    [car.currentSector3 > 0 ? car.currentSector3 : '', car.currentSector3 === car.bestSector3 ? 'pb' : ''],
+    [car.bestSector3 > 0 ? car.bestSector3 : '', 'old'],
+    [car.lastlapTime > 0 ? car.lastlapTime / 1000 : '', llFlag],
+    [car.bestlapTime > 0 ? car.bestlapTime / 1000 : '', ''],
+    car.speed !== '-' ? car.speed : '',
     car.pitstop
   ]);
 };
@@ -72,6 +72,62 @@ const postprocessCars = (cars) => {
     // Fix data showing gap and int for leading car!
     cars[0][8] = '';
     cars[0][9] = '';
+
+    const bestLapsByClass = {};
+    const classIdx = 2;
+    const lastLapIdx = 16;
+    const bestLapIdx = 17;
+
+    const bestSectorsByClass = {};
+
+    cars.forEach(
+      (car, idx) => {
+        const clazz = car[classIdx];
+        const blt = car[bestLapIdx][0];
+        if (!bestLapsByClass[clazz] || bestLapsByClass[clazz][1] > blt) {
+          bestLapsByClass[clazz] = [idx, blt];
+        }
+
+        if (!bestSectorsByClass[clazz]) {
+          bestSectorsByClass[clazz] = {};
+        }
+
+        [1, 2, 3].forEach(
+          sector => {
+            const st = car[9 + (2 * sector)][0];
+            if (!bestSectorsByClass[clazz][sector] || bestSectorsByClass[clazz][sector][1] > st) {
+              bestSectorsByClass[clazz][sector] = [idx, st];
+            }
+          }
+        );
+      }
+    );
+
+    Object.values(bestLapsByClass).forEach(
+      ([idx, blt]) => {
+        const llt = cars[idx][lastLapIdx][0];
+        cars[idx][bestLapIdx] = [blt, 'sb'];
+        if (llt === blt) {
+          cars[idx][lastLapIdx] = [llt, 'sb-new'];
+        }
+      }
+    );
+
+    Object.values(bestSectorsByClass).forEach(
+      bestSectors => {
+        [1, 2, 3].forEach(
+          sector => {
+            const sectorIdx = 9 + (2 * sector);
+            const [idx, st] = bestSectors[sector];
+            cars[idx][sectorIdx] = [st, 'sb'];
+
+            if (cars[idx][sectorIdx - 1][0] === st) {
+              cars[idx][sectorIdx - 1] = [st, 'sb'];
+            }
+          }
+        );
+      }
+    );
   }
 
   return cars;
@@ -106,11 +162,19 @@ export class Client {
 
       case 'race_light':
       case 'params':
-        this.params = {
-          ...this.params,
-          ...data
-        };
+        if (!!data.sessionId) {
+          this.params = {
+            ...this.params,
+            ...data
+          };
+        }
         break;
+
+      case 'laps':
+      case 'stints':
+        // Ignore these (for now)
+        break;
+
       default:
         console.warn(`Unhandled event: ${event}`, data); // eslint-disable-line no-console
 

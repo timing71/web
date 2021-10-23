@@ -143,13 +143,18 @@ export const Theme = {
     'yellow': {
       rowBackground: ['#DDDD00', '#DDDD00'],
       rowColor: 'black'
+    },
+    'red': {
+      rowBackground: ['#990000', '#990000'],
+      rowColor: 'white'
     }
   },
   modifiers: {
     'old': 'yellow',
     'tyre-med': 'yellow',
     'pb': '#00FF00',
-    'sb': '#FF53E3'
+    'sb': '#FF53E3',
+    'sb-new': '#FF53E3',
   },
   flagStates: {
     [FlagState.GREEN]: {

@@ -172,6 +172,7 @@ export class Client {
 
       case 'laps':
       case 'stints':
+      case 'flags':
         // Ignore these (for now)
         break;
 
@@ -218,8 +219,9 @@ export class Client {
       cars: postprocessCars(sortedEntries.map(mapCar)),
       session: {
         timeElapsed: this.params.elapsedTime,
-        timeRemain: Math.max(this.params.remaining, 0),
-        flagState: FLAGS[this.params.raceState?.toLowerCase()] || FlagState.NONE
+        timeRemain: Math.ceil(Math.max(this.params.remaining, 0)),
+        flagState: FLAGS[this.params.raceState?.toLowerCase()] || FlagState.NONE,
+        pauseClocks: this.params.stoppedSinceTime > 0
       }
     };
   }

@@ -1,7 +1,6 @@
 import deepEqual from "deep-equal";
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { useEffect, useState } from "react/cjs/react.development";
 import withGracefulUnmount from "../components/withGracefulUnmount";
 import { generateMessages } from "../messages";
 import { PluginContext } from "../modules/pluginBridge";

@@ -26,8 +26,10 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
+    "postbuild": "yarn run generateConfig",
     "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "generateConfig": "NODE_ENV=production babel-node --presets @babel/env,@babel/preset-react scripts/generateConfigFile.js"
   },
   "eslintConfig": {
     "extends": [
@@ -48,6 +50,9 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@babel/node": "^7.15.8",
+    "@babel/preset-react": "^7.14.5",
     "babel-plugin-styled-components": "^1.13.2",
     "customize-cra": "^1.0.0",
     "react-app-rewired": "^2.1.8"

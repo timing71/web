@@ -119,4 +119,4 @@ export const Service = ({ children, service, updateManifest, updateState }) => {
 };
 
 
-Service.regex = /livetiming\.alkamelsystems\.com/;
+Service.regex = /livetiming\.alkamelsystems\.com\/[0-9a-zA-Z]+/;

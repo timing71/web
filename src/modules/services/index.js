@@ -3,7 +3,7 @@ import { ELMS, LeMansCup, WEC } from "./aco";
 import { AlKamel } from "./alkamel";
 import { TimeService } from "./timeservice";
 
-const SERVICE_PROVIDERS = [
+export const SERVICE_PROVIDERS = [
   AlKamel,
   ELMS,
   IndyCar,

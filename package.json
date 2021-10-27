@@ -24,6 +24,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
+    "prestart": "OUTPUT_FILE=public/pluginConfig.json yarn run generateConfig",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "postbuild": "yarn run generateConfig",

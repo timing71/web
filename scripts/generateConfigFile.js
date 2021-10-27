@@ -1,7 +1,7 @@
 const { SERVICE_PROVIDERS } = require('../src/modules/services');
 const fs = require('fs');
 
-const OUTPUT_FILE = './build/pluginConfig.json';
+const OUTPUT_FILE = process.env.OUTPUT_FILE || './build/pluginConfig.json';
 
 const pluginConfig = {
   supportedURLs: []

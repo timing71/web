@@ -47,6 +47,7 @@ export const Service = ({ children, host, name, service: { uuid }, updateManifes
 
       return () => {
         window.clearInterval(pingInterval);
+        ws.close();
       };
 
     },

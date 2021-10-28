@@ -39,3 +39,4 @@ jobs:
           local: "build/*"
           remote: "~/webroot-beta/"
           pre_upload: rm -r ~/webroot-beta/*
+          scp_options: "-l 2000"

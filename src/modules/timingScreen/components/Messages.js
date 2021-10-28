@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import styled from "styled-components";
+import { useServiceState } from "../../../components/ServiceContext";
 
 const CategoryCell = styled.td`
   color: ${ props => (props.value && props.theme.classColours[props.value.toLowerCase().replace(/[-/ ]/, '')]) || 'white' };
@@ -59,7 +60,10 @@ const MessagesTable = styled.table`
   border-spacing: 1px;
 `;
 
-export const Messages = ({ messages }) => {
+export const Messages = () => {
+
+  const { state: { messages } } = useServiceState();
+
   return (
     <Wrapper>
       <MessagesTable>

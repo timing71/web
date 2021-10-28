@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
 import { Clock } from "./Clock";
 
 const FlagPanel = styled.div`
@@ -17,29 +18,35 @@ const FlagPanel = styled.div`
 
 `;
 
-export const TimingScreenHeader = ({ state: { manifest, session } }) => (
-  <>
-    {
-      session && session.timeElapsed >= 0 && (
-        <Clock
-          caption='elapsed'
-          className='left'
-          pause={session?.pauseClocks}
-          seconds={session.timeElapsed}
-        />
-      )
-    }
-    <FlagPanel flag={session.flagState}>{manifest.name} - {manifest.description}</FlagPanel>
-    {
-      session && session.timeRemain >= 0 && (
-        <Clock
-          caption='remaining'
-          className='right'
-          countdown
-          pause={session?.pauseClocks}
-          seconds={session.timeRemain}
-        />
-      )
-    }
-  </>
-);
+export const TimingScreenHeader = () => {
+
+  const { manifest } = useServiceManifest();
+  const { state: { session } } = useServiceState();
+
+  return (
+    <>
+      {
+        session && session.timeElapsed >= 0 && (
+          <Clock
+            caption='elapsed'
+            className='left'
+            pause={session?.pauseClocks}
+            seconds={session.timeElapsed}
+          />
+        )
+      }
+      <FlagPanel flag={session.flagState}>{manifest.name} - {manifest.description}</FlagPanel>
+      {
+        session && session.timeRemain >= 0 && (
+          <Clock
+            caption='remaining'
+            className='right'
+            countdown
+            pause={session?.pauseClocks}
+            seconds={session.timeRemain}
+          />
+        )
+      }
+    </>
+  );
+};

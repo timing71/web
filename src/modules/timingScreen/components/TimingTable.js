@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
 import { Stat } from "../../../racing";
 import { StatExtractor } from "../../../statExtractor";
 import { TimingTableHeader } from "./TimingTableHeader";
@@ -23,15 +24,18 @@ const TimingTableInner = styled.table`
   }
 `;
 
-export const TimingTable = ({ state }) => {
+export const TimingTable = () => {
 
-  const statExtractor = new StatExtractor(state.manifest?.columnSpec || []);
+  const { manifest } = useServiceManifest();
+  const { state } = useServiceState();
+
+  const statExtractor = new StatExtractor(manifest?.columnSpec || []);
   const highlight = state.highlight || [];
 
   return (
     <TimingTableWrapper>
       <TimingTableInner>
-        <TimingTableHeader manifest={state.manifest} />
+        <TimingTableHeader manifest={manifest} />
         <tbody>
           {
             state.cars.map(
@@ -42,7 +46,7 @@ export const TimingTable = ({ state }) => {
                     car={car}
                     highlight={highlight.includes(carNum)}
                     key={carNum}
-                    manifest={state.manifest}
+                    manifest={manifest}
                     position={idx + 1}
                     statExtractor={statExtractor}
                   />

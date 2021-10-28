@@ -1,8 +1,8 @@
-import dayjs from "dayjs";
 import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
 import { Page } from "../../../components/Page";
-import { useServiceState } from "../../../components/ServiceContext";
+import { useServiceManifest } from "../../../components/ServiceContext";
+import { DataPanel } from "./DataPanel";
 import { Messages } from "./Messages";
 import { TimingScreenHeader } from "./TimingScreenHeader";
 import { TimingTable } from "./TimingTable";
@@ -14,24 +14,24 @@ const TimingScreenInner = styled.div`
   grid-template-rows: auto 3fr 1fr;
   grid-template-columns: minmax(0, 1fr) 2fr 1fr minmax(0, 1fr);
 
-  grid-template-areas: "elapsed flag flag remain" "timing timing timing timing" "messages messages trackdata trackdata";
+  grid-template-areas: "elapsed flag flag remain" "timing timing timing timing" "messages messages data data";
 
 `;
 
 export const TimingScreen = () => {
 
-  const { state } = useServiceState();
+  const { manifest } = useServiceManifest();
 
   return (
     <Page>
       <Helmet>
-        <title>{ state.manifest?.name }</title>
+        <title>{ manifest?.name }</title>
       </Helmet>
       <TimingScreenInner>
-        <TimingScreenHeader state={state} />
-        <TimingTable state={state} />
-        <Messages messages={state.messages} />
-        <p>Last updated: {dayjs(state.lastUpdated).format("HH:mm:ss")}</p>
+        <TimingScreenHeader />
+        <TimingTable />
+        <Messages />
+        <DataPanel />
       </TimingScreenInner>
     </Page>
   );

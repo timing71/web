@@ -4,6 +4,8 @@ import { useServiceState } from "../../../components/ServiceContext";
 
 const Inner = styled.div`
   grid-area: data;
+
+  padding-bottom: 2.5em;
 `;
 
 export const DataPanel = () => {

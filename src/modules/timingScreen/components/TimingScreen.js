@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Page } from "../../../components/Page";
 import { useServiceManifest } from "../../../components/ServiceContext";
 import { DataPanel } from "./DataPanel";
+import { MenuBar } from "./MenuBar";
 import { Messages } from "./Messages";
 import { TimingScreenHeader } from "./TimingScreenHeader";
 import { TimingTable } from "./TimingTable";
@@ -32,6 +33,7 @@ export const TimingScreen = () => {
         <TimingTable />
         <Messages />
         <DataPanel />
+        <MenuBar />
       </TimingScreenInner>
     </Page>
   );

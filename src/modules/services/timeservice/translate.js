@@ -82,7 +82,10 @@ const mapSector = (sector) => {
 };
 
 const mapLaptime = (i) => {
-  return [parseInt(i[0], 10) / 1000000, TIME_FLAG_MAP[i[1]] || ''];
+  if (i[0] !== MAX_INT64_STRING) {
+    return [parseInt(i[0], 10) / 1000000, TIME_FLAG_MAP[i[1]] || ''];
+  }
+  return ['', ''];
 };
 
 const parseGap = (i) => {
@@ -114,7 +117,7 @@ const DEFAULT_COLUMN_SPEC = [
   [Stat.S4, "sectortimes4", mapSector],
   [Stat.S5, "sectortimes5", mapSector],
   [Stat.LAST_LAP, "lastroundtime", mapLaptime],
-  [Stat.BEST_LAP, "fastestroundtime", i => (parseInt(i, 10) / 1000000)],
+  [Stat.BEST_LAP, "fastestroundtime", i => mapLaptime([i, null])],
   [Stat.PITS, "pitstops", ident]
 ];
 

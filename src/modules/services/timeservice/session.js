@@ -154,7 +154,7 @@ const messageHandler = (state, action) => {
 
 };
 
-export const Session = ({ serviceData, updateManifest, updateState }) => {
+export const Session = ({ serviceData }) => {
 
   const port = useContext(PluginContext);
 
@@ -193,10 +193,6 @@ export const Session = ({ serviceData, updateManifest, updateState }) => {
   );
 
   return (
-    <Translate
-      state={state}
-      updateManifest={updateManifest}
-      updateState={updateState}
-    />
+    <Translate state={state} />
   );
 };

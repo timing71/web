@@ -13,7 +13,7 @@ const SESSION_SUBSCRIPTIONS = [
     'sessionBestResultsByClass'
 ];
 
-const CurrentSessionMonitor = ({ collections, sessionID, sessionInfo, server, updateManifest, updateState }) => {
+const CurrentSessionMonitor = ({ collections, sessionID, sessionInfo, server }) => {
 
   const [filteredCollections, setFilteredCollections] = useState({});
   const [currentSession, setCurrentSession] = useState(null);
@@ -62,8 +62,6 @@ const CurrentSessionMonitor = ({ collections, sessionID, sessionInfo, server, up
     <Translator
       collections={filteredCollections}
       session={currentSession}
-      updateManifest={updateManifest}
-      updateState={updateState}
     />
   );
 

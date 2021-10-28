@@ -6,6 +6,7 @@ import { generateMessages } from "../messages";
 import { PluginContext } from "../modules/pluginBridge";
 import { TimingScreen } from "../modules/timingScreen";
 import { mapServiceProvider } from "../modules/services";
+import { ServiceManifestContext, ServiceStateContext } from "../components/ServiceContext";
 
 const DEFAULT_STATE = {
   cars: [],
@@ -108,16 +109,12 @@ const TimingInner = () => {
     }
 
     return (
-      <ServiceProvider
-        service={service}
-        state={state}
-        updateManifest={updateManifest}
-        updateState={updateState}
-      >
-        <TimingScreen
-          state={state}
-        />
-      </ServiceProvider>
+      <ServiceManifestContext.Provider value={{ manifest: state.manifest, updateManifest }}>
+        <ServiceStateContext.Provider value={{ state, updateState }}>
+          <ServiceProvider service={service} />
+          <TimingScreen />
+        </ServiceStateContext.Provider>
+      </ServiceManifestContext.Provider>
     );
   }
 

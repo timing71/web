@@ -4,6 +4,7 @@ import { FlagState, Stat } from '../../../racing';
 import { realToServerTime } from './utils';
 
 import CustomParseFormat from 'dayjs/plugin/customParseFormat';
+import { useServiceManifest, useServiceState } from '../../../components/ServiceContext';
 dayjs.extend(CustomParseFormat);
 
 const ident = a => a;
@@ -200,13 +201,16 @@ const postprocessCars = (cars, columnSpec) => {
   return cars;
 };
 
-export const Translate = ({ state, updateManifest, updateState }) => {
+export const Translate = ({ state }) => {
 
   const { cars, columns, session, times, timeOffset } = state;
 
   const mappingState = useRef([[], [], false]);
 
   const [columnSpec, reverseColumnMap, inferPosition] = mappingState.current;
+
+  const { updateManifest } = useServiceManifest();
+  const { updateState } = useServiceState();
 
   useEffect(
     () => {

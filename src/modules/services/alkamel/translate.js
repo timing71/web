@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useServiceManifest, useServiceState } from '../../../components/ServiceContext';
 import { FlagState, Stat } from '../../../racing';
 import { getGapFunction } from './gap';
 
@@ -227,11 +228,12 @@ const mapSession = (status={}) => {
 export const Translator = ({
   collections: { session_entry, session_info, session_status, track_info, standings },
   session,
-  updateManifest,
-  updateState
 }) => {
 
   const numSectors = getSectorCount(track_info);
+
+  const { updateManifest } = useServiceManifest();
+  const { updateState } = useServiceState();
 
   useEffect(
     () => {

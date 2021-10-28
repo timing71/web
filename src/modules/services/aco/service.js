@@ -2,8 +2,12 @@ import { useCallback, useRef } from "react";
 
 import { Client } from './client';
 import { useSocketIo } from "../../socketio";
+import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
 
-export const Service = ({ children, host, name, service: { uuid }, updateManifest, updateState }) => {
+export const Service = ({ host, name, service: { uuid } }) => {
+
+  const { updateManifest } = useServiceManifest();
+  const { updateState } = useServiceState();
 
   const onUpdate = useCallback(
     (client) => {
@@ -17,10 +21,5 @@ export const Service = ({ children, host, name, service: { uuid }, updateManifes
 
   useSocketIo(host, uuid, client.current.handle);
 
-  return (
-    <>
-      { children }
-    </>
-  );
-
+  return null;
 };

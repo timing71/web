@@ -30,7 +30,7 @@ const MONITORED_COLLECTIONS = [
 const randomString = (length) => ([...Array(length)].map(() =>(~~(Math.random()*36)).toString(36)).join(''));
 const randomNum = (length) => ([...Array(length)].map(() =>(~~(Math.random()*10)).toString(10)).join(''));
 
-export const Service = ({ children, service, updateManifest, updateState }) => {
+export const Service = ({ service }) => {
   const port = useContext(PluginContext);
   const [collections, dispatch] = useReducer(stateReducer, {});
 
@@ -106,15 +106,10 @@ export const Service = ({ children, service, updateManifest, updateState }) => {
   );
 
   return (
-    <>
-      <Session
-        collections={collections}
-        server={ddp.current}
-        updateManifest={updateManifest}
-        updateState={updateState}
-      />
-      {children}
-    </>
+    <Session
+      collections={collections}
+      server={ddp.current}
+    />
   );
 };
 

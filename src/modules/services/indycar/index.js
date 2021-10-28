@@ -1,13 +1,17 @@
 import { useCallback, useContext, useEffect } from "react";
+import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
 
 import { PluginContext } from "../../pluginBridge";
 import { getManifest, translate } from "./translate";
 
 const DATA_URL = 'https://indycarsso.blob.core.windows.net/racecontrol/timingscoring.json';
 
-export const IndyCar = ({ children, state, updateManifest, updateState }) => {
+export const IndyCar = () => {
 
   const port = useContext(PluginContext);
+
+  const { updateManifest } = useServiceManifest();
+  const { updateState } = useServiceState();
 
   const getData = useCallback(
     () => {
@@ -35,20 +39,6 @@ export const IndyCar = ({ children, state, updateManifest, updateState }) => {
       };
     },
     [getData]
-  );
-
-    if (children) {
-      return (
-        <>
-          {children}
-        </>
-      );
-    }
-
-  return (
-    <pre>
-      {JSON.stringify(state, null, 2)}
-    </pre>
   );
 };
 

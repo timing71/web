@@ -11,7 +11,7 @@ const getServiceData = async (source, port) => {
 
 };
 
-export const Service = ({ children, service, updateManifest, updateState }) => {
+export const Service = ({ service }) => {
 
   const port = useContext(PluginContext);
   const [serviceData, setServiceData] = useState(null);
@@ -23,20 +23,7 @@ export const Service = ({ children, service, updateManifest, updateState }) => {
     [port, service]
   );
 
-  return (
-    <>
-      {
-        serviceData && (
-          <Session
-            serviceData={serviceData}
-            updateManifest={updateManifest}
-            updateState={updateState}
-          />
-        )
-      }
-      {children}
-    </>
-  );
+  return serviceData && <Session serviceData={serviceData} />;
 };
 
 Service.regex = /livetiming\.getraceresults\.com\/[0-9a-zA-Z]+/;

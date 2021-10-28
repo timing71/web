@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
 import { Page } from "../../../components/Page";
+import { useServiceState } from "../../../components/ServiceContext";
 import { Messages } from "./Messages";
 import { TimingScreenHeader } from "./TimingScreenHeader";
 import { TimingTable } from "./TimingTable";
@@ -17,7 +18,10 @@ const TimingScreenInner = styled.div`
 
 `;
 
-export const TimingScreen = ({ state }) => {
+export const TimingScreen = () => {
+
+  const { state } = useServiceState();
+
   return (
     <Page>
       <Helmet>

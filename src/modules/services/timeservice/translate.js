@@ -43,8 +43,11 @@ const POSSIBLE_TIME_FORMATS = [
   's.SSS',
 ];
 
+const MAX_INT = 2147483647;
+const MAX_INT64_STRING = "9223372036854775807";
+
 const parseTime = (t) => {
-  if (t === '9223372036854775807' || t === '') {
+  if (t === MAX_INT64_STRING || t === '' || t === MAX_INT) {
     return '';
   }
   try {

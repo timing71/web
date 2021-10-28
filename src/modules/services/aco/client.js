@@ -140,6 +140,9 @@ export class Client {
     this.params = {};
     this.name = name;
     this.onUpdate = () => onUpdate(this);
+    this.handle = this.handle.bind(this);
+    this.getManifest = this.getManifest.bind(this);
+    this.getState = this.getState.bind(this);
   }
 
   handle(event, data) {

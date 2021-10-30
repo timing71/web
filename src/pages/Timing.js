@@ -7,6 +7,8 @@ import { PluginContext } from "../modules/pluginBridge";
 import { TimingScreen } from "../modules/timingScreen";
 import { mapServiceProvider } from "../modules/services";
 import { ServiceManifestContext, ServiceStateContext } from "../components/ServiceContext";
+import { StateStorer } from "../components/StateStorer";
+import { Debouncer } from "../components/Debouncer";
 
 const DEFAULT_STATE = {
   cars: [],
@@ -74,22 +76,11 @@ const TimingInner = () => {
 
           newState.lastUpdated = Date.now();
 
-          try {
-            port.send({
-              type: 'UPDATE_SERVICE_STATE',
-              state: newState,
-              uuid: serviceUUID,
-              timestamp: newState.lastUpdated
-            });
-          }
-          catch (error) {
-            // sometimes we end up with a disconnected port here
-          }
           return newState;
         }
       );
     },
-    [port, serviceUUID]
+    []
   );
 
   const updateManifest = useCallback(
@@ -112,7 +103,10 @@ const TimingInner = () => {
       <ServiceManifestContext.Provider value={{ manifest: state.manifest, updateManifest }}>
         <ServiceStateContext.Provider value={{ state, updateState }}>
           <ServiceProvider service={service} />
-          <TimingScreen />
+          <Debouncer>
+            <StateStorer serviceUUID={serviceUUID} />
+            <TimingScreen />
+          </Debouncer>
         </ServiceStateContext.Provider>
       </ServiceManifestContext.Provider>
     );

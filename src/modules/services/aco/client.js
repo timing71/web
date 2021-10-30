@@ -1,4 +1,5 @@
 import { FlagState, Stat } from "../../../racing";
+import { ReferenceData } from "./reference";
 
 const CATEGORIES = {
   2: 'LMGTEPro',
@@ -135,7 +136,7 @@ const postprocessCars = (cars) => {
 
 export class Client {
 
-  constructor(name, onUpdate, updateManifest) {
+  constructor(host, name, onUpdate, updateManifest, fetchFunc) {
     this.entries = {};
     this.params = {};
     this.name = name;
@@ -144,6 +145,9 @@ export class Client {
     this.handle = this.handle.bind(this);
     this.getManifest = this.getManifest.bind(this);
     this.getState = this.getState.bind(this);
+
+    this.reference = new ReferenceData(host, fetchFunc);
+    this.reference.load();
   }
 
   handle(event, data) {
@@ -193,9 +197,14 @@ export class Client {
   }
 
   getManifest() {
+
+    const description = (this.reference.data.race) ?
+      `${this.reference.data.race.name_en} - ${ this.params.sessionName }` :
+      this.params.sessionName;
+
     return {
       name: this.name,
-      description: this.params.sessionName,
+      description,
       columnSpec: [
         Stat.NUM,
         Stat.STATE,

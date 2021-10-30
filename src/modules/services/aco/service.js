@@ -1,11 +1,12 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useContext, useRef } from "react";
 
 import { Client } from './client';
 import { useSocketIo } from "../../socketio";
 import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
+import { PluginContext } from "../../pluginBridge";
 
 export const Service = ({ host, name, service: { uuid } }) => {
-
+  const port = useContext(PluginContext);
   const { updateManifest } = useServiceManifest();
   const { updateState } = useServiceState();
 
@@ -16,9 +17,13 @@ export const Service = ({ host, name, service: { uuid } }) => {
     [updateState]
   );
 
-  const client = useRef(new Client(name, onUpdate, updateManifest));
+  const client = useRef();
 
-  useSocketIo(host, uuid, client.current.handle);
+  if (!client.current) {
+    client.current = new Client(host.replace('data.', 'live.'), name, onUpdate, updateManifest, port.fetch);
+  }
+
+  useSocketIo(host, uuid, client.current?.handle);
 
   return null;
 };

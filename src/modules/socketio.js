@@ -45,7 +45,7 @@ export const useSocketIo = (host, uuid, callback) => {
       decoder.on('decoded', (packet) => {
         if (packet.type === 4 && packet.data) {
           const [event, data] = packet.data;
-          callback(event, data);
+          callback && callback(event, data);
         }
       });
 

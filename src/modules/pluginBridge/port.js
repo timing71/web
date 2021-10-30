@@ -4,6 +4,8 @@ export class Port extends EventEmitter {
   constructor() {
     super();
     this._messageCount = 0;
+    this.send = this.send.bind(this);
+    this.fetch = this.fetch.bind(this);
   }
 
   wrap(port) {

@@ -164,7 +164,6 @@ export class Client {
         );
         break;
 
-      case 'race_light':
       case 'params':
         if (!!data.sessionId) {
           const newManifest = data.sessionId !== this.params.sessionId || data.sessionName !== this.params.sessionName;
@@ -181,6 +180,7 @@ export class Client {
       case 'laps':
       case 'stints':
       case 'flags':
+      case 'race_light':
         // Ignore these (for now)
         break;
 

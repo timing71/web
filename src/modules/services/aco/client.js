@@ -29,44 +29,6 @@ const FLAGS = {
   'off': FlagState.NONE
 };
 
-const mapCar = (car) => {
-
-  const llFlag = (car.lastlapTime === car.bestlapTime) ? 'pb' : '';
-
-  let driver = car.driver;
-
-  if (car.driverId && car.driverId <= car.drivers.length) {
-    const drv = car.drivers[car.driverId - 1];
-    if (drv) {
-      driver = `${drv.lastName}, ${drv.firstName}`;
-    }
-  }
-
-
-  return ([
-    car.number,
-    CAR_STATES[car.state] || car.state,
-    CATEGORIES[car.categoryId],
-    car.categoryRanking,
-    car.team,
-    driver,
-    car.car,
-    car.lap,
-    car.gap !== "0.000" ? car.gap : '',
-    car.gapPrev !== "0.000" ? car.gapPrev : '',
-    [car.currentSector1 > 0 ? car.currentSector1 : '', car.currentSector1 === car.bestSector1 ? 'pb' : ''],
-    [car.bestSector1 > 0 ? car.bestSector1 : '', 'old'],
-    [car.currentSector2 > 0 ? car.currentSector2 : '', car.currentSector2 === car.bestSector2 ? 'pb' : ''],
-    [car.bestSector2 > 0 ? car.bestSector2 : '', 'old'],
-    [car.currentSector3 > 0 ? car.currentSector3 : '', car.currentSector3 === car.bestSector3 ? 'pb' : ''],
-    [car.bestSector3 > 0 ? car.bestSector3 : '', 'old'],
-    [car.lastlapTime > 0 ? car.lastlapTime / 1000 : '', llFlag],
-    [car.bestlapTime > 0 ? car.bestlapTime / 1000 : '', ''],
-    car.speed !== '-' ? car.speed : '',
-    car.pitstop
-  ]);
-};
-
 const postprocessCars = (cars) => {
 
   if (cars.length >= 1) {
@@ -145,6 +107,7 @@ export class Client {
     this.handle = this.handle.bind(this);
     this.getManifest = this.getManifest.bind(this);
     this.getState = this.getState.bind(this);
+    this.mapCar = this.mapCar.bind(this);
 
     this.reference = new ReferenceData(host, fetchFunc);
     this.reference.load();
@@ -233,7 +196,7 @@ export class Client {
   getState() {
     const sortedEntries = Object.values(this.entries).sort((a, b) => a.ranking - b.ranking);
     return {
-      cars: postprocessCars(sortedEntries.map(mapCar)),
+      cars: postprocessCars(sortedEntries.map(this.mapCar)),
       session: {
         timeElapsed: this.params.elapsedTime,
         timeRemain: Math.ceil(Math.max(this.params.remaining, 0)),
@@ -241,6 +204,49 @@ export class Client {
         pauseClocks: this.params.stoppedSinceTime > 0
       }
     };
+  }
+
+  mapCar(car) {
+
+    const llFlag = (car.lastlapTime === car.bestlapTime) ? 'pb' : '';
+
+    let driver = car.driver;
+
+    if (car.driverId && car.driverId <= car.drivers.length) {
+      const drv = car.drivers[car.driverId - 1];
+      if (drv) {
+        driver = `${drv.lastName}, ${drv.firstName}`;
+      }
+    }
+
+    const carId = car.id;
+    const entry = (this.reference.data.entries || []).find(c => c.id === carId);
+
+    const category = entry?.category_label?.replace('LM ', 'LM') || CATEGORIES[car.categoryId];
+
+
+    return ([
+      car.number,
+      CAR_STATES[car.state] || car.state,
+      category,
+      car.categoryRanking,
+      car.team,
+      driver,
+      car.car,
+      car.lap,
+      car.gap !== "0.000" ? car.gap : '',
+      car.gapPrev !== "0.000" ? car.gapPrev : '',
+      [car.currentSector1 > 0 ? car.currentSector1 : '', car.currentSector1 === car.bestSector1 ? 'pb' : ''],
+      [car.bestSector1 > 0 ? car.bestSector1 : '', 'old'],
+      [car.currentSector2 > 0 ? car.currentSector2 : '', car.currentSector2 === car.bestSector2 ? 'pb' : ''],
+      [car.bestSector2 > 0 ? car.bestSector2 : '', 'old'],
+      [car.currentSector3 > 0 ? car.currentSector3 : '', car.currentSector3 === car.bestSector3 ? 'pb' : ''],
+      [car.bestSector3 > 0 ? car.bestSector3 : '', 'old'],
+      [car.lastlapTime > 0 ? car.lastlapTime / 1000 : '', llFlag],
+      [car.bestlapTime > 0 ? car.bestlapTime / 1000 : '', ''],
+      car.speed !== '-' ? car.speed : '',
+      car.pitstop
+    ]);
   }
 
 }

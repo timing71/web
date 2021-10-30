@@ -8,13 +8,9 @@ export const Debouncer = ({ children }) => {
 
   useEffect(
     () => {
-      pendingState.current = {
-        ...state,
-        highlight: [
-          ...(pendingState.current.highlight || []),
-          state.highlight
-        ]
-      };
+      const oldHighlight = pendingState.highlight || [];
+      pendingState.current = state;
+      pendingState.current.highlight = oldHighlight.concat(pendingState.current.highlight || []);
     },
     [state]
   );
@@ -24,7 +20,7 @@ export const Debouncer = ({ children }) => {
       const interval = window.setInterval(
         () => {
           setDebouncedState(pendingState.current);
-          pendingState.current = { ...pendingState.current, highlight: [] };
+          pendingState.current.highlight = [];
         },
         1000
       );

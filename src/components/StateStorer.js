@@ -13,6 +13,7 @@ export const StateStorer = ({ serviceUUID }) => {
       const now = Date.now();
 
       if (lastStoreTime.current + 1000 <= now) {
+        // console.log("Saving state at time", state.lastUpdated)
         try {
           port.send({
             type: 'UPDATE_SERVICE_STATE',

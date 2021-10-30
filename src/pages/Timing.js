@@ -9,6 +9,7 @@ import { mapServiceProvider } from "../modules/services";
 import { ServiceManifestContext, ServiceStateContext } from "../components/ServiceContext";
 import { StateStorer } from "../components/StateStorer";
 import { Debouncer } from "../components/Debouncer";
+import { StateRetriever } from "../components/StateRetriever";
 
 const DEFAULT_STATE = {
   cars: [],
@@ -105,7 +106,9 @@ const TimingInner = () => {
           <ServiceProvider service={service} />
           <Debouncer>
             <StateStorer serviceUUID={serviceUUID} />
-            <TimingScreen />
+            <StateRetriever serviceUUID={serviceUUID}>
+              <TimingScreen />
+            </StateRetriever>
           </Debouncer>
         </ServiceStateContext.Provider>
       </ServiceManifestContext.Provider>

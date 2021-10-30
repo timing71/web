@@ -135,11 +135,12 @@ const postprocessCars = (cars) => {
 
 export class Client {
 
-  constructor(name, onUpdate) {
+  constructor(name, onUpdate, updateManifest) {
     this.entries = {};
     this.params = {};
     this.name = name;
     this.onUpdate = () => onUpdate(this);
+    this.updateManifest = updateManifest;
     this.handle = this.handle.bind(this);
     this.getManifest = this.getManifest.bind(this);
     this.getState = this.getState.bind(this);
@@ -166,10 +167,14 @@ export class Client {
       case 'race_light':
       case 'params':
         if (!!data.sessionId) {
+          const newManifest = data.sessionId !== this.params.sessionId || data.sessionName !== this.params.sessionName;
           this.params = {
             ...this.params,
             ...data
           };
+          if (newManifest) {
+            this.updateManifest(this.getManifest());
+          }
         }
         break;
 

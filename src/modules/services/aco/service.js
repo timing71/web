@@ -11,13 +11,12 @@ export const Service = ({ host, name, service: { uuid } }) => {
 
   const onUpdate = useCallback(
     (client) => {
-      updateManifest(client.getManifest());
       updateState(client.getState());
     },
-    [updateManifest, updateState]
+    [updateState]
   );
 
-  const client = useRef(new Client(name, onUpdate));
+  const client = useRef(new Client(name, onUpdate, updateManifest));
 
   useSocketIo(host, uuid, client.current.handle);
 

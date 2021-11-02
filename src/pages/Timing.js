@@ -10,6 +10,7 @@ import { ServiceManifestContext, ServiceStateContext } from "../components/Servi
 import { StateStorer } from "../components/StateStorer";
 import { Debouncer } from "../components/Debouncer";
 import { StateRetriever } from "../components/StateRetriever";
+import { useSetting } from '../modules/settings';
 
 const DEFAULT_STATE = {
   cars: [],
@@ -86,12 +87,20 @@ const TimingInner = () => {
 
   const updateManifest = useCallback(
     (newManifest) => {
-      if (!deepEqual(newManifest, state.manifest)) {
-        updateState({ manifest: newManifest });
+
+      const newManifestWithStartTime = {
+        ...newManifest,
+        startTime: service.startTime
+      };
+
+      if (!deepEqual(newManifestWithStartTime, state.manifest)) {
+        updateState({ manifest: newManifestWithStartTime });
       }
     },
-    [state.manifest, updateState]
+    [service?.startTime, state.manifest, updateState]
   );
+
+  const [ delay ] = useSetting('delay');
 
   if (service && state) {
     const ServiceProvider = mapServiceProvider(service.source);
@@ -106,7 +115,10 @@ const TimingInner = () => {
           <ServiceProvider service={service} />
           <Debouncer>
             <StateStorer serviceUUID={serviceUUID} />
-            <StateRetriever serviceUUID={serviceUUID}>
+            <StateRetriever
+              delay={delay * 1000}
+              serviceUUID={serviceUUID}
+            >
               <TimingScreen />
             </StateRetriever>
           </Debouncer>

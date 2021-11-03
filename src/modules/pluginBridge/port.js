@@ -6,14 +6,24 @@ export class Port extends EventEmitter {
     this._messageCount = 0;
     this.send = this.send.bind(this);
     this.fetch = this.fetch.bind(this);
+
+    this._interval = null;
   }
 
   wrap(port) {
+    if (this._interval) {
+      window.clearInterval(this._interval);
+      this._interval = null;
+    }
     this._wrapped = port;
     port.onMessage.addListener(
       (msg) => {
         this.emit('message', msg);
       }
+    );
+    this._interval = window.setInterval(
+      () => this.send({ type: 'KEEP_ALIVE' }),
+      60000
     );
   }
 

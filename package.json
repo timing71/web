@@ -31,6 +31,7 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "postbuild": "yarn run generateConfig",
+    "lint": "eslint src/",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "generateConfig": "NODE_ENV=production babel-node --presets @babel/env,@babel/preset-react scripts/generateConfigFile.js"

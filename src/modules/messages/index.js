@@ -2,6 +2,7 @@ import { Stat } from '../../racing';
 import { StatExtractor } from '../../statExtractor';
 
 import { DriverChangeMessage } from './DriverChangeMessage';
+import { FastLapMessage } from './FastLapMessage';
 import { FlagMessage } from './FlagMessage';
 import { PitMessage } from './PitMessage';
 
@@ -11,6 +12,7 @@ const GLOBAL_GENERATORS = [
 ];
 
 const PER_CAR_GENERATORS = [
+  FastLapMessage,
   PitMessage,
   DriverChangeMessage
 ];

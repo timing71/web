@@ -147,6 +147,12 @@ export const Theme = {
     'red': {
       rowBackground: ['#990000', '#990000'],
       rowColor: 'white'
+    },
+    'pb': {
+      rowColor: '#00FF00'
+    },
+    'sb': {
+      rowColor: '#FF53E3'
     }
   },
   modifiers: {

@@ -21,45 +21,6 @@ class Message {
   }
 }
 
-const perCar = (generator) => (manifest, oldState, newState) => {
-
-  const messages = [];
-
-  if (manifest.columnSpec?.includes(Stat.NUM)) {
-    const se = new StatExtractor(manifest.columnSpec);
-    (newState.cars || []).forEach(
-      newCar => {
-        // You'd have hoped that race number would be enough to uniquely
-        // identify a car within a session, right? You'd be wrong...
-        const wantedNum = se.get(newCar, Stat.NUM);
-        const wantedCar = se.get(newCar, Stat.CAR);
-        const wantedClass = se.get(newCar, Stat.CLASS);
-
-        const possibleMatches = (oldState.cars || []).filter(
-          oldCar => (
-            se.get(oldCar, Stat.NUM) === wantedNum &&
-            se.get(oldCar, Stat.CAR) === wantedCar &&
-            se.get(oldCar, Stat.CLASS) === wantedClass
-          )
-        );
-
-        if (possibleMatches.length > 1) {
-          console.warn(`Found ${possibleMatches.length} possible matches for car ${wantedNum}!`); // eslint-disable-line no-console
-        }
-        else if (possibleMatches.length === 1) {
-          const possibleMessage = generator(se, possibleMatches[0], newCar);
-          if (possibleMessage) {
-            messages.push(possibleMessage);
-          }
-        }
-      }
-    );
-  }
-
-  return messages;
-
-};
-
 
 const FlagMessage = (manifest, oldState, newState) => {
 
@@ -92,66 +53,65 @@ const FlagMessage = (manifest, oldState, newState) => {
   }
 };
 
-const PitMessage = perCar(
-  (se, oldCar, newCar) => {
-    const oldState = se.get(oldCar, Stat.STATE);
-    const newState = se.get(newCar, Stat.STATE);
-    const carNum = se.get(newCar, Stat.NUM);
+const PitMessage = (se, oldCar, newCar) => {
+  const oldState = se.get(oldCar, Stat.STATE);
+  const newState = se.get(newCar, Stat.STATE);
+  const carNum = se.get(newCar, Stat.NUM);
 
-    if (oldState !== newState && !!carNum && oldState !== 'N/S') {
+  if (oldState !== newState && !!carNum && oldState !== 'N/S') {
 
-      const driver = se.get(newCar, Stat.DRIVER);
-      const clazz = se.get(newCar, Stat.CLASS, 'Pits');
-
-      const driverText = driver ? ` (${driver})` : '';
-
-      if ((oldState !== 'RUN' && newState === 'OUT') || (oldState === 'PIT' && newState === 'RUN')) {
-        return new Message(clazz, `#${carNum}${driverText} has left the pits`, 'out', carNum);
-      }
-      else if (newState === 'PIT') {
-        return new Message(clazz, `#${carNum}${driverText} has entered the pits`, 'pit', carNum);
-      }
-    }
-  }
-);
-
-const DriverChangeMessage = perCar(
-  (se, oldCar, newCar) => {
-    const oldDriver = se.get(oldCar, Stat.DRIVER);
-    const newDriver = se.get(newCar, Stat.DRIVER);
-    const carNum = se.get(newCar, Stat.NUM);
+    const driver = se.get(newCar, Stat.DRIVER);
     const clazz = se.get(newCar, Stat.CLASS, 'Pits');
 
-    if (!!carNum && oldDriver !== newDriver) {
-      let message = '';
-      if (!oldDriver) {
-        message = `#${carNum} Driver change (to ${newDriver})`;
-      }
-      else if (!newDriver) {
-        message = `#${carNum} Driver change (${oldDriver} to nobody)`;
-      }
-      else {
-        message = `#${carNum} Driver change (${oldDriver} to ${newDriver})`;
-      }
+    const driverText = driver ? ` (${driver})` : '';
 
-      return new Message(
-        clazz,
-        message,
-        null,
-        carNum
-      );
+    if ((oldState !== 'RUN' && newState === 'OUT') || (oldState === 'PIT' && newState === 'RUN')) {
+      return new Message(clazz, `#${carNum}${driverText} has left the pits`, 'out', carNum);
+    }
+    else if (newState === 'PIT') {
+      return new Message(clazz, `#${carNum}${driverText} has entered the pits`, 'pit', carNum);
     }
   }
-);
+};
 
-const MESSAGE_GENERATORS = [
-  FlagMessage,
+const DriverChangeMessage = (se, oldCar, newCar) => {
+  const oldDriver = se.get(oldCar, Stat.DRIVER);
+  const newDriver = se.get(newCar, Stat.DRIVER);
+  const carNum = se.get(newCar, Stat.NUM);
+  const clazz = se.get(newCar, Stat.CLASS, 'Pits');
+
+  if (!!carNum && oldDriver !== newDriver) {
+    let message = '';
+    if (!oldDriver) {
+      message = `#${carNum} Driver change (to ${newDriver})`;
+    }
+    else if (!newDriver) {
+      message = `#${carNum} Driver change (${oldDriver} to nobody)`;
+    }
+    else {
+      message = `#${carNum} Driver change (${oldDriver} to ${newDriver})`;
+    }
+
+    return new Message(
+      clazz,
+      message,
+      null,
+      carNum
+    );
+  }
+};
+
+const GLOBAL_GENERATORS = [
+  FlagMessage
+];
+
+const PER_CAR_GENERATORS = [
   PitMessage,
   DriverChangeMessage
 ];
 
 export const generateMessages = (manifest, oldState, newState) => {
-  return MESSAGE_GENERATORS.flatMap(
+  const globalMessages = GLOBAL_GENERATORS.flatMap(
     mg => {
       const maybeMessages = mg(manifest, oldState, newState);
       if (Array.isArray(maybeMessages)) {
@@ -163,4 +123,43 @@ export const generateMessages = (manifest, oldState, newState) => {
       return [];
     }
   );
+
+  const perCarMessages = [];
+
+  if (manifest.columnSpec?.includes(Stat.NUM)) {
+    const se = new StatExtractor(manifest.columnSpec);
+    (newState.cars || []).forEach(
+      newCar => {
+        // You'd have hoped that race number would be enough to uniquely
+        // identify a car within a session, right? You'd be wrong...
+        const wantedNum = se.get(newCar, Stat.NUM);
+        const wantedCar = se.get(newCar, Stat.CAR);
+        const wantedClass = se.get(newCar, Stat.CLASS);
+
+        const possibleMatches = (oldState.cars || []).filter(
+          oldCar => (
+            se.get(oldCar, Stat.NUM) === wantedNum &&
+            se.get(oldCar, Stat.CAR) === wantedCar &&
+            se.get(oldCar, Stat.CLASS) === wantedClass
+          )
+        );
+
+        if (possibleMatches.length > 1) {
+          console.warn(`Found ${possibleMatches.length} possible matches for car ${wantedNum}!`); // eslint-disable-line no-console
+        }
+        else if (possibleMatches.length === 1) {
+          PER_CAR_GENERATORS.forEach(
+            generator => {
+              const possibleMessage = generator(se, possibleMatches[0], newCar);
+              if (possibleMessage) {
+                perCarMessages.push(possibleMessage.toCTDFormat());
+              }
+            }
+          );
+        }
+      }
+    );
+  }
+
+  return globalMessages.concat(perCarMessages);
 };

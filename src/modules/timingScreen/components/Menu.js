@@ -5,13 +5,14 @@ import {
   MenuButton,
 } from "reakit/Menu";
 
-import { Settings } from '@styled-icons/material-sharp';
+import { Check, FormatColorFill, Settings } from '@styled-icons/material-sharp';
 
 import styled from "styled-components";
 import { lighten } from "polished";
 
 import { useSetting } from '../../settings';
 import { Spinner } from "../../../components/Spinner";
+import { useCallback } from "react";
 
 const SettingsIcon = styled(Settings)`
   fill: ${ props => props.theme.site.highlightColor };
@@ -49,11 +50,67 @@ const MyMenuItem = styled(MenuItem).attrs({ as: 'div' })`
   min-width: 15vw;
 `;
 
+const DelaySetting = () => {
+  const [ delay, setDelay ] = useSetting('delay');
+  return (
+    <MyMenuItem>
+      Delay (seconds):
+      <Spinner
+        min={0}
+        onChange={e => setDelay(e)}
+        value={delay}
+      />
+    </MyMenuItem>
+  );
+};
+
+const ToggleMenuItem = styled(MyMenuItem)`
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background-color: ${ props => props.theme.site.highlightColor };
+    color: black;
+  }
+
+  & span {
+    width: 24px;
+  }
+
+  & label {
+    flex-grow: 1;
+    margin: 0 1em;
+  }
+`;
+
+const ToggleSetting = ({ icon, label, name }) => {
+  const [setting, setSetting] = useSetting(name);
+  const toggle = useCallback(
+    () => {
+      setSetting(!setting);
+    },
+    [setSetting, setting]
+  );
+
+  return (
+    <ToggleMenuItem
+      onClick={toggle}
+    >
+      <span>
+        { icon }
+      </span>
+      <label>{label}</label>
+      <span>
+        { !!setting && <Check size={24} /> }
+      </span>
+    </ToggleMenuItem>
+  );
+
+};
+
 
 export const Menu = () => {
   const menuState = useMenuState();
-
-  const [ delay, setDelay ] = useSetting('delay');
 
   return (
     <>
@@ -64,14 +121,12 @@ export const Menu = () => {
         tabIndex={0}
         {...menuState}
       >
-        <MyMenuItem>
-          Delay (seconds):
-          <Spinner
-            min={0}
-            onChange={e => setDelay(e)}
-            value={delay}
-          />
-        </MyMenuItem>
+        <DelaySetting />
+        <ToggleSetting
+          icon={<FormatColorFill size={24} />}
+          label='Use row background colours'
+          name='backgrounds'
+        />
       </MenuInner>
     </>
   );

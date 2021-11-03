@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useState } from "react";
 
 const DEFAULT_SETTINGS = {
+  backgrounds: true,
   delay: 0
 };
 

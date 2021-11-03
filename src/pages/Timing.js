@@ -2,7 +2,7 @@ import deepEqual from "deep-equal";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import withGracefulUnmount from "../components/withGracefulUnmount";
-import { generateMessages } from "../messages";
+import { generateMessages } from "../modules/messages";
 import { PluginContext } from "../modules/pluginBridge";
 import { TimingScreen } from "../modules/timingScreen";
 import { mapServiceProvider } from "../modules/services";

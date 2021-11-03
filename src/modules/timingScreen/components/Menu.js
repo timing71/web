@@ -11,6 +11,7 @@ import styled from "styled-components";
 import { lighten } from "polished";
 
 import { useSetting } from '../../settings';
+import { Spinner } from "../../../components/Spinner";
 
 const SettingsIcon = styled(Settings)`
   fill: ${ props => props.theme.site.highlightColor };
@@ -26,6 +27,9 @@ const SettingsIcon = styled(Settings)`
 
 const MenuInner = styled(RkMenu)`
   border: 1px solid ${ props => props.theme.site.highlightColor };
+  padding: 0.5em;
+  background-color: rgba(32, 32, 32, 0.9);
+  border-radius: 0.25em;
 
 `;
 
@@ -35,20 +39,14 @@ const MyMenuButton = styled(MenuButton)`
   border: 0;
 `;
 
-const MyMenuItem = styled(MenuItem)`
+const MyMenuItem = styled(MenuItem).attrs({ as: 'div' })`
   font-size: medium;
-  height: 2em;
-  background-color: rgba(32, 32, 32, 0.9);
+  min-height: 2em;
   color: ${ props => props.theme.site.highlightColor };
   border: 0;
   padding: 0.25em;
 
   min-width: 15vw;
-
-  &:hover {
-    background-color: ${ props => props.theme.site.highlightColor };
-    color: black;
-  }
 `;
 
 
@@ -67,11 +65,10 @@ export const Menu = () => {
         {...menuState}
       >
         <MyMenuItem>
-          Delay:
-          <input
+          Delay (seconds):
+          <Spinner
             min={0}
-            onChange={e => setDelay(e.target.valueAsNumber)}
-            type='number'
+            onChange={e => setDelay(e)}
             value={delay}
           />
         </MyMenuItem>

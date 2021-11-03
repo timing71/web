@@ -25,6 +25,14 @@ export class Port extends EventEmitter {
       () => this.send({ type: 'KEEP_ALIVE' }),
       60000
     );
+    port.onDisconnect.addListener(
+      () => {
+        if (this._interval) {
+          window.clearInterval(this._interval);
+          this._interval = null;
+        }
+      }
+    );
   }
 
   send(message) {

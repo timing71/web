@@ -12,7 +12,7 @@ export const FastLapMessage = (se, oldCar, newCar) => {
     const driver = se.get(newCar, Stat.DRIVER);
     const driverText = driver ? ` (${driver})` : '';
     //const newBestLap = se.get(newCar, Stat.BEST_LAP);
-    if (oldLastLap[1] !== 'pb' && newLastLap[1] === 'pb') {
+    if (newLastLap[1] === 'pb' && (oldLastLap[1] !== 'pb' || oldLastLap[0] !== newLastLap[0])) {
       return new Message(
         clazz,
         `#${carNum}${driverText} set a new personal best (${timeInSeconds(newLastLap[0])})`,
@@ -20,7 +20,7 @@ export const FastLapMessage = (se, oldCar, newCar) => {
         carNum
       );
     }
-    else if (oldLastLap[1] !== 'sb' && (newLastLap[1] === 'sb' || newLastLap[1] === 'sb-new')) {
+    else if ((newLastLap[1] === 'sb' || newLastLap[1] === 'sb-new') && (oldLastLap[1] !== newLastLap[1] || oldLastLap[0] !== newLastLap[0])) {
       return new Message(
         clazz,
         `#${carNum}${driverText} set a new overall best (${timeInSeconds(newLastLap[0])})`,

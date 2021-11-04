@@ -146,8 +146,10 @@ const mapCars = (standings, entries, numSectors, gapFunc) => {
       const prevSectors = parseSectors(standing.lastSectors, 'old');
 
       for (let i = 0; i < numSectors; i++) {
+        const current = currentSectors[i + 1];
+        const prev = prevSectors[i + 1];
         sectorCols.push(
-          currentSectors[i + 1] || prevSectors[i + 1] || ['', '']
+          (current && current[0] > 0) ? current : (prev && prev[0] > 0) ? prev : ['', '']
         );
       }
 
@@ -169,8 +171,8 @@ const mapCars = (standings, entries, numSectors, gapFunc) => {
         entry.team,
         entry.vehicle,
         data[4],
-        gap,
-        interval
+        gap > 0 || typeof(gap) === 'string' ? gap : '',
+        interval > 0 || typeof(interval) === 'string' ? interval : ''
       ]).concat(sectorCols).concat([
         lastLapTime > 0 ? [lastLapTime, standing.isLastLapBestPersonal ? 'pb' : ''] : ['', ''],
         [bestLapTime > 0 ? bestLapTime : '', ''],

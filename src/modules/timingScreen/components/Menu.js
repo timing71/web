@@ -3,9 +3,10 @@ import {
   Menu as RkMenu,
   MenuItem,
   MenuButton,
+  MenuSeparator
 } from "reakit/Menu";
 
-import { Check, FormatColorFill, Settings } from '@styled-icons/material-sharp';
+import { Check, FormatColorFill, Highlight, Settings } from '@styled-icons/material-sharp';
 
 import styled from "styled-components";
 import { lighten } from "polished";
@@ -122,10 +123,16 @@ export const Menu = () => {
         {...menuState}
       >
         <DelaySetting />
+        <MenuSeparator />
         <ToggleSetting
           icon={<FormatColorFill size={24} />}
           label='Use row background colours'
           name='backgrounds'
+        />
+        <ToggleSetting
+          icon={<Highlight size={24} />}
+          label='Use row flashing animations'
+          name='animation'
         />
       </MenuInner>
     </>

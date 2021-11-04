@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
 import { Stat } from "../../../racing";
 import { StatExtractor } from "../../../statExtractor";
+import { useSetting } from "../../settings";
 import { TimingTableHeader } from "./TimingTableHeader";
 import { TimingTableRow } from "./TimingTableRow";
 
@@ -31,6 +32,7 @@ export const TimingTable = () => {
 
   const statExtractor = new StatExtractor(manifest?.columnSpec || []);
   const highlight = state.highlight || [];
+  const [ doHighlight ] = useSetting('animation');
 
   return (
     <TimingTableWrapper>
@@ -44,7 +46,7 @@ export const TimingTable = () => {
                 return (
                   <TimingTableRow
                     car={car}
-                    highlight={highlight.includes(carNum)}
+                    highlight={doHighlight && highlight.includes(carNum)}
                     key={carNum}
                     manifest={manifest}
                     position={idx + 1}

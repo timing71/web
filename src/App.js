@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 import { PluginDetector } from './modules/pluginBridge';
@@ -7,13 +6,13 @@ import { PluginDetector } from './modules/pluginBridge';
 import { Home } from './pages/Home';
 import { Start } from './pages/Start';
 import { Timing } from './pages/Timing';
-import { Theme } from './theme';
 import { SettingsProvider } from './modules/settings';
+import { ThemeSettingsProvider } from './components/ThemeSettingsProvider';
 
 function App() {
   return (
-    <ThemeProvider theme={Theme}>
-      <SettingsProvider>
+    <SettingsProvider>
+      <ThemeSettingsProvider>
         <HelmetProvider>
           <Helmet
             defaultTitle='Timing71 Beta'
@@ -41,8 +40,8 @@ function App() {
             </Switch>
           </BrowserRouter>
         </HelmetProvider>
-      </SettingsProvider>
-    </ThemeProvider>
+      </ThemeSettingsProvider>
+    </SettingsProvider>
   );
 }
 

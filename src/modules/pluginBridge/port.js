@@ -1,55 +1,45 @@
 import { EventEmitter } from "./eventEmitter";
 
 export class Port extends EventEmitter {
-  constructor() {
+  constructor(extensionID, targetWindow) {
     super();
     this._messageCount = 0;
     this.send = this.send.bind(this);
     this.fetch = this.fetch.bind(this);
+    this.receive = this.receive.bind(this);
 
-    this._interval = null;
+    this._target = targetWindow;
+    this._expectedOrigin = `chrome-extension://${extensionID}`;
+    this._promises = {};
+
+    window.addEventListener('message', this.receive);
   }
 
-  wrap(port) {
-    if (this._interval) {
-      window.clearInterval(this._interval);
-      this._interval = null;
+  receive({ data, origin }) {
+    if (origin === this._expectedOrigin) {
+      if (data.id !== undefined && this._promises[data.id]) {
+        // Handle replies being received
+        this._promises[data.id](data.message);
+        delete this._promises[data.id];
+      }
+      else {
+        this.emit('message', data);
+      }
     }
-    this._wrapped = port;
-    port.onMessage.addListener(
-      (msg) => {
-        this.emit('message', msg);
-      }
-    );
-    this._interval = window.setInterval(
-      () => this.send({ type: 'KEEP_ALIVE' }),
-      60000
-    );
-    port.onDisconnect.addListener(
-      () => {
-        if (this._interval) {
-          window.clearInterval(this._interval);
-          this._interval = null;
-        }
-      }
-    );
   }
 
   send(message) {
-    const messageIdx = this._messageCount++;
+    const id = this._messageCount++;
 
     return new Promise(
       (resolve, reject) => {
 
-        const listener = (msg) => {
-          if (msg.messageIdx === messageIdx) {
-            resolve(msg.message);
-            this._wrapped.onMessage.removeListener(listener);
-          }
-        };
+        this._promises[id] = resolve;
+        this._target.postMessage(
+          { id, message },
+          this._expectedOrigin
+        );
 
-        this._wrapped.onMessage.addListener(listener);
-        this._wrapped.postMessage({ messageIdx, message });
       }
     );
   }
@@ -60,7 +50,7 @@ export class Port extends EventEmitter {
   }
 
   disconnect() {
-    this._wrapped && this._wrapped.disconnect();
+    window.removeEventListener('message', this.receive);
   }
 
 }

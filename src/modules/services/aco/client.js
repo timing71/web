@@ -47,7 +47,7 @@ const postprocessCars = (cars) => {
       (car, idx) => {
         const clazz = car[classIdx];
         const blt = car[bestLapIdx][0];
-        if (!bestLapsByClass[clazz] || bestLapsByClass[clazz][1] > blt) {
+        if (blt > 0 && (!bestLapsByClass[clazz] || bestLapsByClass[clazz][1] > blt)) {
           bestLapsByClass[clazz] = [idx, blt];
         }
 
@@ -58,7 +58,7 @@ const postprocessCars = (cars) => {
         [1, 2, 3].forEach(
           sector => {
             const st = car[9 + (2 * sector)][0];
-            if (!bestSectorsByClass[clazz][sector] || bestSectorsByClass[clazz][sector][1] > st) {
+            if (st > 0 && (!bestSectorsByClass[clazz][sector] || bestSectorsByClass[clazz][sector][1] > st)) {
               bestSectorsByClass[clazz][sector] = [idx, st];
             }
           }
@@ -80,12 +80,14 @@ const postprocessCars = (cars) => {
       bestSectors => {
         [1, 2, 3].forEach(
           sector => {
-            const sectorIdx = 9 + (2 * sector);
-            const [idx, st] = bestSectors[sector];
-            cars[idx][sectorIdx] = [st, 'sb'];
+            if (bestSectors[sector]) {
+              const sectorIdx = 9 + (2 * sector);
+              const [idx, st] = bestSectors[sector];
+              cars[idx][sectorIdx] = [st, 'sb'];
 
-            if (cars[idx][sectorIdx - 1][0] === st) {
-              cars[idx][sectorIdx - 1] = [st, 'sb'];
+              if (cars[idx][sectorIdx - 1][0] === st) {
+                cars[idx][sectorIdx - 1] = [st, 'sb'];
+              }
             }
           }
         );
@@ -208,7 +210,7 @@ export class Client {
 
   mapCar(car) {
 
-    const llFlag = (car.lastlapTime === car.bestlapTime) ? 'pb' : '';
+    const llFlag = (car.lastLapTime > 0 && car.lastlapTime === car.bestlapTime) ? 'pb' : '';
 
     let driver = car.driver;
 

@@ -39,6 +39,7 @@ const MyMenuButton = styled(MenuButton)`
   background-color: transparent;
   padding: 0;
   border: 0;
+  margin-left: 0.5em;
 `;
 
 const MyMenuItem = styled(MenuItem).attrs({ as: 'div' })`

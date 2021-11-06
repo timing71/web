@@ -4,6 +4,7 @@ import { StyledIconBase } from '@styled-icons/styled-icon';
 import { Menu } from "./Menu";
 import { WallClock } from "./WallClock";
 import { UpdateTime } from "./UpdateTime";
+import { DelayIndicator } from './DelayIndicator';
 
 const Spacer = styled.div`
   flex-grow: 1;
@@ -46,6 +47,7 @@ export const MenuBar = () => {
       <WallClock />
       <UpdateTime />
       <Spacer />
+      <DelayIndicator />
       <Menu />
     </Inner>
   );

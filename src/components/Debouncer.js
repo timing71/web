@@ -5,12 +5,12 @@ export const Debouncer = ({ children }) => {
   const { state, updateState } = useServiceState();
   const [debouncedState, setDebouncedState] = useState(state);
   const pendingState = useRef(state);
+  const pendingHighlights = useRef([]);
 
   useEffect(
     () => {
-      const oldHighlight = pendingState.highlight || [];
       pendingState.current = state;
-      pendingState.current.highlight = oldHighlight.concat(pendingState.current.highlight || []);
+      pendingHighlights.current = [...pendingHighlights.current, ...(state.highlight || [])];
     },
     [state]
   );
@@ -19,8 +19,11 @@ export const Debouncer = ({ children }) => {
     () => {
       const interval = window.setInterval(
         () => {
-          setDebouncedState(pendingState.current);
-          pendingState.current.highlight = [];
+          setDebouncedState({
+            ...pendingState.current,
+            highlight: [...pendingHighlights.current]
+          });
+          pendingHighlights.current = [];
         },
         1000
       );

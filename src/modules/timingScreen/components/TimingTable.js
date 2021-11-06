@@ -1,3 +1,5 @@
+import { useRef } from "react";
+import { useEffect } from "react/cjs/react.development";
 import styled from "styled-components";
 import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
 import { Stat } from "../../../racing";
@@ -30,8 +32,23 @@ export const TimingTable = () => {
   const { manifest } = useServiceManifest();
   const { state } = useServiceState();
 
+  const highlights = useRef({});
+  const now = Date.now();
+
   const statExtractor = new StatExtractor(manifest?.columnSpec || []);
-  const highlight = state.highlight || [];
+
+  useEffect(
+    () => {
+      const now = Date.now();
+      (state.highlight || []).forEach(
+        hlCar => {
+          highlights.current[hlCar] = now + 3000;
+        }
+      );
+    },
+    [state.highlight]
+  );
+
   const [ doHighlight ] = useSetting('animation');
 
   return (
@@ -46,7 +63,7 @@ export const TimingTable = () => {
                 return (
                   <TimingTableRow
                     car={car}
-                    highlight={doHighlight && highlight.includes(carNum)}
+                    highlight={doHighlight && (highlights.current[carNum] || 0) > now}
                     key={carNum}
                     manifest={manifest}
                     position={idx + 1}

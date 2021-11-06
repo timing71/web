@@ -6,7 +6,7 @@ import {
   MenuSeparator
 } from "reakit/Menu";
 
-import { Check, FormatColorFill, Highlight, Settings } from '@styled-icons/material-sharp';
+import { Check, FormatColorFill, Highlight, Settings } from '@styled-icons/material';
 
 import styled from "styled-components";
 import { lighten } from "polished";

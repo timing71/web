@@ -37,6 +37,7 @@ const SpinnerInput = styled.input`
   border: 1px solid ${ props => props.theme.site.highlightColor };
   border-left: 0;
   border-right: 0;
+  font-family: ${ props => props.theme.site.headingFont };
   font-size: large;
   text-align: center;
   flex-grow: 1;

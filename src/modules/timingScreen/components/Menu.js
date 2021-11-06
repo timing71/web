@@ -119,6 +119,7 @@ export const Menu = () => {
         <SettingsIcon />
       </MyMenuButton>
       <MenuInner
+        aria-label='Settings'
         tabIndex={0}
         {...menuState}
       >

@@ -82,6 +82,49 @@ export const useSocketIo = (host, uuid, callback) => {
       let polling = true;
 
       const decoder = new Decoder();
+
+      const doPoll = () => {
+        if (polling) {
+          let myUrl = `${pollingUrl}&t=${yeast()}`;
+          if (sid) {
+            myUrl += `&sid=${sid}`;
+          }
+          port.fetch(myUrl).then(
+            pollData => {
+              splitPayload(pollData).forEach(
+                msg => decoder.add(msg)
+              );
+              setTimeout(doPoll, 1000);
+            }
+          ).catch(
+            () => {
+              sid = null;
+              doPoll();
+            }
+          );
+        }
+      };
+
+      const doWebsocket = () => {
+        // Technically we should include the sid in the websocket URL;
+        // but I don't want to reimplement socket.io's session handling...
+        ws = new WrappedWebsocket(wsUrl, port, uuid);
+        ws.on('open', () => {
+          ws.send('2probe');
+        });
+        ws.on('close', () => {
+          pingInterval && window.clearInterval(pingInterval);
+          polling = true;
+          sid = null;
+          doPoll();
+        });
+        ws.on('message', data => decoder.add(data));
+        pingInterval = window.setInterval(
+          () => ws.send('2'),
+          20000
+        );
+      };
+
       decoder.on('decoded', (packet) => {
         if (packet.type === 4 && packet.data) {
           const [event, data] = packet.data;
@@ -91,53 +134,17 @@ export const useSocketIo = (host, uuid, callback) => {
           // Successful response from websocket
           polling = false;
         }
-      });
-
-      port.fetch(pollingUrl).then(
-        firstPollData => {
-          try {
-            const data = JSON.parse(firstPollData.slice(4, -4));
-
-            sid = encodeURIComponent(data.sid);
-
-            const doPoll = () => {
-              if (polling) {
-                port.fetch(`${pollingUrl}&sid=${sid}&t=${yeast()}`).then(
-                  pollData => {
-                    splitPayload(pollData).forEach(
-                      msg => decoder.add(msg)
-                    );
-                    setTimeout(doPoll, 1000);
-                  }
-                );
-              }
-            };
-            doPoll();
-
-            if ((data.upgrades || []).includes('websocket')) {
-              // Technically we should include the sid in the websocket URL;
-              // but I don't want to reimplement socket.io's session handling...
-              ws = new WrappedWebsocket(wsUrl, port, uuid);
-              ws.on('open', () => {
-                ws.send('2probe');
-              });
-              ws.on('message', data => decoder.add(data));
-              pingInterval = window.setInterval(
-                () => ws.send('2'),
-                20000
-              );
-
-            }
-            else {
-              // No websockets available
-
-            }
+        else if (packet.type === 0) {
+          if (packet.data.sid) {
+            sid = encodeURIComponent(packet.data.sid);
           }
-          catch (e) {
-
+          if (packet.data.upgrades.includes('websocket')) {
+            doWebsocket();
           }
         }
-      );
+      });
+
+      doPoll();
 
       return () => {
         pingInterval && window.clearInterval(pingInterval);

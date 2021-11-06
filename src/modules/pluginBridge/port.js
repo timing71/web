@@ -19,7 +19,12 @@ export class Port extends EventEmitter {
     if (origin === this._expectedOrigin) {
       if (data.id !== undefined && this._promises[data.id]) {
         // Handle replies being received
-        this._promises[data.id](data.message);
+        if (data.message?.error) {
+          this._promises[data.id][1](data.message);
+        }
+        else {
+          this._promises[data.id][0](data.message);
+        }
         delete this._promises[data.id];
       }
       else {
@@ -34,7 +39,7 @@ export class Port extends EventEmitter {
     return new Promise(
       (resolve, reject) => {
 
-        this._promises[id] = resolve;
+        this._promises[id] = [resolve, reject];
         this._target.postMessage(
           { id, message },
           this._expectedOrigin

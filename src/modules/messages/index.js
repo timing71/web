@@ -43,26 +43,28 @@ export const generateMessages = (manifest, oldState, newState) => {
         const wantedCar = se.get(newCar, Stat.CAR);
         const wantedClass = se.get(newCar, Stat.CLASS);
 
-        const possibleMatches = (oldState.cars || []).filter(
-          oldCar => (
-            se.get(oldCar, Stat.NUM) === wantedNum &&
-            se.get(oldCar, Stat.CAR) === wantedCar &&
-            se.get(oldCar, Stat.CLASS) === wantedClass
-          )
-        );
-
-        if (possibleMatches.length > 1) {
-          console.warn(`Found ${possibleMatches.length} possible matches for car ${wantedNum}!`); // eslint-disable-line no-console
-        }
-        else if (possibleMatches.length === 1) {
-          PER_CAR_GENERATORS.forEach(
-            generator => {
-              const possibleMessage = generator(se, possibleMatches[0], newCar);
-              if (possibleMessage) {
-                perCarMessages.push(possibleMessage.toCTDFormat());
-              }
-            }
+        if (wantedNum !== undefined) {
+          const possibleMatches = (oldState.cars || []).filter(
+            oldCar => (
+              se.get(oldCar, Stat.NUM) === wantedNum &&
+              se.get(oldCar, Stat.CAR) === wantedCar &&
+              se.get(oldCar, Stat.CLASS) === wantedClass
+            )
           );
+
+          if (possibleMatches.length > 1) {
+            console.warn(`Found ${possibleMatches.length} possible matches for car ${wantedNum}!`); // eslint-disable-line no-console
+          }
+          else if (possibleMatches.length === 1) {
+            PER_CAR_GENERATORS.forEach(
+              generator => {
+                const possibleMessage = generator(se, possibleMatches[0], newCar);
+                if (possibleMessage) {
+                  perCarMessages.push(possibleMessage.toCTDFormat());
+                }
+              }
+            );
+          }
         }
       }
     );

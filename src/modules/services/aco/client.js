@@ -150,6 +150,7 @@ export class Client {
       case 'stints':
       case 'flags':
       case 'race_light':
+      case 'best_sectors':
         // Ignore these (for now)
         break;
 

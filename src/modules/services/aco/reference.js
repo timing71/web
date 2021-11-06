@@ -17,5 +17,12 @@ export class ReferenceData {
       const refData = await this.fetchFunc(`${REF_URL}/${raceID[1]}.json`);
       this.data = JSON.parse(refData);
     }
+    else {
+      // try again in 30 seconds
+      setTimeout(
+        this.load,
+        30000
+      );
+    }
   }
 }

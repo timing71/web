@@ -41,20 +41,20 @@ const splitPayload = (data) => {
       continue;
     }
 
-    if (length === '' || (length !== (n = Number(length)))) {
+    if (length === '' || (length != (n = Number(length)))) { // eslint-disable-line eqeqeq
       // parser error - ignoring payload
       return messages;
     }
 
     msg = data.substr(i + 1, n);
 
-    if (length !== msg.length) {
+    if (length != msg.length) { // eslint-disable-line eqeqeq
       // parser error - ignoring payload
       return messages;
     }
 
     if (msg.length) {
-      messages.append(msg);
+      messages.push(msg);
     }
 
     // advance cursor

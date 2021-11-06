@@ -40,6 +40,14 @@ const SpinnerInput = styled.input`
   font-size: large;
   text-align: center;
   flex-grow: 1;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  -moz-appearance: textfield;
+
 `;
 
 export const Spinner = ({ min, max, onChange, step = 1, value }) => {

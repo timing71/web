@@ -1,6 +1,13 @@
 import styled from "styled-components";
+import { StyledIconBase } from '@styled-icons/styled-icon';
+
 import { Menu } from "./Menu";
 import { WallClock } from "./WallClock";
+import { UpdateTime } from "./UpdateTime";
+
+const Spacer = styled.div`
+  flex-grow: 1;
+`;
 
 const Inner = styled.div`
 
@@ -21,13 +28,24 @@ const Inner = styled.div`
   flex-direction: row;
 
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+
+  & > div:not(:first-child):not(:last-child) {
+    margin-left: 1em;
+  }
+
+  & ${StyledIconBase} {
+    margin-bottom: 2px;
+    margin-right: 0.25em;
+  }
 `;
 
 export const MenuBar = () => {
   return (
     <Inner>
       <WallClock />
+      <UpdateTime />
+      <Spacer />
       <Menu />
     </Inner>
   );

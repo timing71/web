@@ -1,20 +1,19 @@
-import dayjs from "dayjs";
 import styled from "styled-components";
-import { useServiceState } from "../../../components/ServiceContext";
 
 const Inner = styled.div`
   grid-area: data;
 
+  border-top: 2px solid ${ props => props.theme.site.highlightColor };
+
   padding-bottom: 2.5em;
+
+  overflow-y: auto;
 `;
 
 export const DataPanel = () => {
 
-  const { state } = useServiceState();
-
   return (
     <Inner>
-      <p>Last updated: {dayjs(state.lastUpdated).format("HH:mm:ss")}</p>
     </Inner>
   );
 };

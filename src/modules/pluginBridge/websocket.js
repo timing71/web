@@ -3,7 +3,7 @@ import { EventEmitter } from './eventEmitter';
 
 export class WrappedWebsocket extends EventEmitter {
 
-  constructor(url, port, tag=uuid()) {
+  constructor(url, port, tag=uuid(), autoReconnect=true) {
     super();
     this.tag = tag;
     this._port = port;
@@ -19,13 +19,20 @@ export class WrappedWebsocket extends EventEmitter {
             this.onopen();
           }
         }
+        else if (msg.type === 'WEBSOCKET_CLOSE') {
+          this.emit('close');
+          if (this.onclose) {
+            this.onclose();
+          }
+        }
       }
     });
 
     port.send({
       tag: this.tag,
       type: 'OPEN_WEBSOCKET',
-      url
+      url,
+      autoReconnect
     });
   }
 

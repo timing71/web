@@ -211,7 +211,7 @@ export class Client {
 
   mapCar(car) {
 
-    const llFlag = (car.lastLapTime > 0 && car.lastlapTime === car.bestlapTime) ? 'pb' : '';
+    const llFlag = (car.lastlapTime > 0 && car.lastlapTime === car.bestlapTime) ? 'pb' : '';
 
     let driver = car.driver;
 

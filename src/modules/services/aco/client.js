@@ -192,7 +192,15 @@ export class Client {
         Stat.BEST_LAP,
         Stat.SPEED,
         Stat.PITS
-    ]
+      ],
+      trackDataSpec: [
+        'Track temp',
+        'Air temp',
+        'Humidity',
+        'Pressure',
+        'Wind speed',
+        'Wind direction'
+      ]
     };
   }
 
@@ -204,7 +212,15 @@ export class Client {
         timeElapsed: this.params.elapsedTime,
         timeRemain: Math.ceil(Math.max(this.params.remaining, 0)),
         flagState: FLAGS[this.params.raceState?.toLowerCase()] || FlagState.NONE,
-        pauseClocks: this.params.stoppedSinceTime > 0
+        pauseClocks: this.params.stoppedSinceTime > 0,
+        trackData: [
+          `${this.params.trackTemp?.toFixed(1) || '-'}°C`,
+          `${this.params.airTemp?.toFixed(1) || '-'}°C`,
+          `${this.params.humidity?.toFixed(0) || '-'}%`,
+          `${this.params.pressure?.toFixed(1) || '-'}mbar`,
+          `${this.params.windSpeed?.toFixed(1) || '-'}kph`,
+          `${this.params.windDirection?.toFixed(0) || '-'}°`,
+        ]
       }
     };
   }

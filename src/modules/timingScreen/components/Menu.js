@@ -6,14 +6,16 @@ import {
   MenuSeparator
 } from "reakit/Menu";
 
-import { Check, FormatColorFill, Highlight, Settings } from '@styled-icons/material';
+import { Check, Download, FormatColorFill, Highlight, Settings } from '@styled-icons/material';
 
 import styled from "styled-components";
 import { lighten } from "polished";
 
 import { useSetting } from '../../settings';
 import { Spinner } from "../../../components/Spinner";
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
+import { useServiceManifest } from "../../../components/ServiceContext";
+import { PluginContext } from "../../pluginBridge";
 
 const SettingsIcon = styled(Settings)`
   fill: ${ props => props.theme.site.highlightColor };
@@ -110,6 +112,30 @@ const ToggleSetting = ({ icon, label, name }) => {
 
 };
 
+const DownloadReplay = ({ hide }) => {
+  const { manifest } = useServiceManifest();
+  const port = useContext(PluginContext);
+
+  const startDownload = useCallback(
+    () => {
+      port.send({ type: 'GENERATE_SERVICE_REPLAY', uuid: manifest.uuid });
+      hide();
+    },
+    [hide, manifest, port]
+  );
+
+  return (
+    <ToggleMenuItem onClick={startDownload}>
+      <span>
+        <Download size={24} />
+      </span>
+      <label>
+        Download replay...
+      </label>
+    </ToggleMenuItem>
+  );
+};
+
 
 export const Menu = () => {
   const menuState = useMenuState();
@@ -136,6 +162,8 @@ export const Menu = () => {
           label='Use row flashing animations'
           name='animation'
         />
+        <MenuSeparator />
+        <DownloadReplay hide={menuState.hide} />
       </MenuInner>
     </>
   );

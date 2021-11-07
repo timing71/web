@@ -110,9 +110,20 @@ export class Client {
     this.getManifest = this.getManifest.bind(this);
     this.getState = this.getState.bind(this);
     this.mapCar = this.mapCar.bind(this);
+    this._load_ref_data = this._load_ref_data.bind(this);
 
     this.reference = new ReferenceData(host, fetchFunc);
-    this.reference.load();
+    this._load_ref_data();
+  }
+
+  _load_ref_data() {
+    this.reference.load().then(
+      (d) => this.handle('reference_data', d)
+    ).catch(
+      () => {
+        setTimeout(this._load_ref_data, 30000);
+      }
+    );
   }
 
   handle(event, data) {
@@ -152,6 +163,10 @@ export class Client {
       case 'race_light':
       case 'best_sectors':
         // Ignore these (for now)
+        break;
+
+      case 'reference_data':
+        this.updateManifest(this.getManifest());
         break;
 
       default:

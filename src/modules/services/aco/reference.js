@@ -9,20 +9,27 @@ export class ReferenceData {
     this.data = {};
   }
 
-  async load() {
-    const url = `https://${this.host}/en/live`;
-    const webPage = await this.fetchFunc(url);
-    const raceID = webPage.match(/.*data-race="([0-9]+)"/);
-    if (raceID) {
-      const refData = await this.fetchFunc(`${REF_URL}/${raceID[1]}.json`);
-      this.data = JSON.parse(refData);
-    }
-    else {
-      // try again in 30 seconds
-      setTimeout(
-        this.load,
-        30000
-      );
-    }
+  load() {
+    return new Promise(
+      (resolve, reject) => {
+        const url = `https://${this.host}/en/live`;
+        this.fetchFunc(url).then(
+          webPage => {
+            const raceID = webPage.match(/.*data-race="([0-9]+)"/);
+            if (raceID) {
+              this.fetchFunc(`${REF_URL}/${raceID[1]}.json`).then(
+                refData => {
+                  this.data = JSON.parse(refData);
+                  resolve(this.data);
+                }
+              ).catch(reject);
+            }
+            else {
+              reject();
+            }
+          }
+        ).catch(reject);
+      }
+    );
   }
 }

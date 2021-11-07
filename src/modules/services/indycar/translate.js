@@ -38,7 +38,7 @@ export const getManifest = ({ timing_results: { heartbeat } }) => {
   return {
     name: 'IndyCar',
     description: heartbeat['eventName'],
-    columnSpec: [
+    colSpec: [
       Stat.NUM,
       Stat.STATE,
       Stat.DRIVER,

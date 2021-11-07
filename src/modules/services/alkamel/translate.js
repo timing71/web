@@ -242,7 +242,7 @@ export const Translator = ({
       updateManifest({
         name: session_info?.champName || '',
         description: `${session_info?.eventName} - ${session?.name}`,
-        columnSpec: createColspec(numSectors, standings?.hasClasses)
+        colSpec: createColspec(numSectors, standings?.hasClasses)
       });
     },
     [

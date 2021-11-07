@@ -213,7 +213,7 @@ export const Translate = ({ state }) => {
 
   const mappingState = useRef([[], [], false]);
 
-  const [columnSpec, reverseColumnMap, inferPosition] = mappingState.current;
+  const [colSpec, reverseColumnMap, inferPosition] = mappingState.current;
 
   const { updateManifest } = useServiceManifest();
   const { updateState } = useServiceState();
@@ -230,10 +230,10 @@ export const Translate = ({ state }) => {
       updateManifest({
         name: (session.name && session.name.slice(0, session.name.lastIndexOf('-') - 1)) || '',
         description: (session.name && session.name.slice(session.name.lastIndexOf('-') + 1)) || '',
-        columnSpec
+        colSpec
       });
     },
-    [columnSpec, session, updateManifest]
+    [colSpec, session, updateManifest]
   );
 
   const positionSort = useCallback(
@@ -256,12 +256,12 @@ export const Translate = ({ state }) => {
               ([tsnlIndex, mappingFunc]) => mappingFunc(car[tsnlIndex])
             )
           ),
-          columnSpec
+          colSpec
         ),
         session: mapSession(session, times, timeOffset)
       });
     },
-    [cars, columnSpec, positionSort, reverseColumnMap, session, timeOffset, times, updateState]
+    [cars, colSpec, positionSort, reverseColumnMap, session, timeOffset, times, updateState]
   );
 
   return null;

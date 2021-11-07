@@ -35,7 +35,7 @@ export const TimingTable = () => {
   const highlights = useRef({});
   const now = Date.now();
 
-  const statExtractor = new StatExtractor(manifest?.columnSpec || []);
+  const statExtractor = new StatExtractor(manifest?.colSpec || []);
 
   useEffect(
     () => {

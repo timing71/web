@@ -33,8 +33,8 @@ export const generateMessages = (manifest, oldState, newState) => {
 
   const perCarMessages = [];
 
-  if (manifest.columnSpec?.includes(Stat.NUM)) {
-    const se = new StatExtractor(manifest.columnSpec);
+  if (manifest.colSpec?.includes(Stat.NUM)) {
+    const se = new StatExtractor(manifest.colSpec);
     (newState.cars || []).forEach(
       newCar => {
         // You'd have hoped that race number would be enough to uniquely

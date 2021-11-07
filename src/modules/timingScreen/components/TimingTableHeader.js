@@ -15,7 +15,7 @@ export const TimingTableHeader = ({ manifest }) => (
     <tr>
       <Header>Pos</Header>
       {
-        manifest.columnSpec && manifest.columnSpec.map(
+        manifest.colSpec && manifest.colSpec.map(
           (stat, idx) => (
             <Header key={idx}>{stat[0]}</Header>
           )

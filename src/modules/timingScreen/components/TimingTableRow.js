@@ -40,7 +40,7 @@ export const TimingTableRow = ({ car, highlight, manifest, position, statExtract
   >
     <Position>{position}</Position>
     {
-      manifest.columnSpec && manifest.columnSpec.map(
+      manifest.colSpec && manifest.colSpec.map(
         (stat, idx) => (
           <TimingTableCell
             key={idx}

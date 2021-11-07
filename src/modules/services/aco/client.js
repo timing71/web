@@ -186,7 +186,7 @@ export class Client {
     return {
       name: this.name,
       description,
-      columnSpec: [
+      colSpec: [
         Stat.NUM,
         Stat.STATE,
         Stat.CLASS,

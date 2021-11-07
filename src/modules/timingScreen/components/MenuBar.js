@@ -5,6 +5,7 @@ import { Menu } from "./Menu";
 import { WallClock } from "./WallClock";
 import { UpdateTime } from "./UpdateTime";
 import { DelayIndicator } from './DelayIndicator';
+import { SystemMessage, SystemMessageProvider } from "./SystemMessage";
 
 const Spacer = styled.div`
   flex-grow: 1;
@@ -44,11 +45,14 @@ const Inner = styled.div`
 export const MenuBar = () => {
   return (
     <Inner>
-      <WallClock />
-      <UpdateTime />
-      <Spacer />
-      <DelayIndicator />
-      <Menu />
+      <SystemMessageProvider>
+        <WallClock />
+        <UpdateTime />
+        <Spacer />
+        <SystemMessage />
+        <DelayIndicator />
+        <Menu />
+      </SystemMessageProvider>
     </Inner>
   );
 };

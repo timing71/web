@@ -8,14 +8,16 @@ import {
 
 import { Check, Download, FormatColorFill, Highlight, Settings } from '@styled-icons/material';
 
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { lighten } from "polished";
 
 import { useSetting } from '../../settings';
 import { Spinner } from "../../../components/Spinner";
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import { useServiceManifest } from "../../../components/ServiceContext";
 import { PluginContext } from "../../pluginBridge";
+import { SystemMessageContext } from "./SystemMessage";
+import logoNoText from '../../../img/logo_no_text.svg';
 
 const SettingsIcon = styled(Settings)`
   fill: ${ props => props.theme.site.highlightColor };
@@ -112,16 +114,54 @@ const ToggleSetting = ({ icon, label, name }) => {
 
 };
 
+const spin = keyframes`
+  100% {
+      transform: rotate(360deg);
+    }
+`;
+
+const SpinnyLogo = styled.img.attrs({ alt: '', src: logoNoText })`
+    animation: ${spin} 2s linear infinite;
+    margin-right: 0.25em;
+`;
+
+const ReplayGenerationMessage = () => (
+  <>
+    <SpinnyLogo />
+    Creating replay file...
+  </>
+);
+
 const DownloadReplay = ({ hide }) => {
   const { manifest } = useServiceManifest();
   const port = useContext(PluginContext);
+  const { setMessage } = useContext(SystemMessageContext);
+
+  useEffect(
+    () => {
+      const handleMessage = (message) => {
+        if (message?.uuid === manifest.uuid && message.type === 'REPLAY_GENERATION_FINISHED') {
+          setMessage(null);
+        }
+      };
+
+      port.on('message', handleMessage);
+
+      return () => {
+        port.removeListener('message', handleMessage);
+      };
+    },
+    [manifest.uuid, port, setMessage]
+  );
 
   const startDownload = useCallback(
     () => {
-      port.send({ type: 'GENERATE_SERVICE_REPLAY', uuid: manifest.uuid });
+      port.send({ type: 'GENERATE_SERVICE_REPLAY', uuid: manifest.uuid }).then(
+        () => setMessage(<ReplayGenerationMessage />)
+      );
       hide();
     },
-    [hide, manifest, port]
+    [hide, manifest, port, setMessage]
   );
 
   return (

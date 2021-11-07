@@ -90,14 +90,15 @@ const TimingInner = () => {
 
       const newManifestWithStartTime = {
         ...newManifest,
-        startTime: service.startTime
+        startTime: service.startTime,
+        uuid: serviceUUID
       };
 
       if (!deepEqual(newManifestWithStartTime, state.manifest)) {
         updateState({ manifest: newManifestWithStartTime });
       }
     },
-    [service?.startTime, state.manifest, updateState]
+    [service?.startTime, serviceUUID, state.manifest, updateState]
   );
 
   const [ delay ] = useSetting('delay');

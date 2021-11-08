@@ -26,16 +26,33 @@ const SettingsIcon = styled(Settings)`
   height: 32px;
 
   &:hover {
-    fill: ${ props => lighten(0.2, props.theme.site.highlightColor) };
     cursor: pointer;
+    fill: white;
   }
 `;
 
-const MenuInner = styled(RkMenu)`
+const MenuInner = styled.div`
   border: 1px solid ${ props => props.theme.site.highlightColor };
   padding: 0.5em;
-  background-color: rgba(32, 32, 32, 0.9);
+  background-color: rgba(32, 32, 32, 0.95);
   border-radius: 0.25em;
+
+  & hr {
+    border: 1px outset ${ props => props.theme.site.highlightColor };
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  transition: opacity 100ms ease-in-out, transform 100ms ease-in-out;
+  opacity: 0;
+  transform-origin: bottom right;
+  transform: scale(0, 0);
+  [data-enter] & {
+    opacity: 1;
+    transform: scale(1, 1);
+  }
 
 `;
 
@@ -44,6 +61,16 @@ const MyMenuButton = styled(MenuButton)`
   padding: 0;
   border: 0;
   margin-left: 0.5em;
+
+  & svg {
+    fill: ${ props => props.visible ? lighten(0.2, props.theme.site.highlightColor) : props.theme.site.highlightColor };
+    transition: transform 100ms ease-in-out;
+    transform: ${ props => props.visible ? 'rotateZ(45deg)' : 'rotateZ(0)'};
+  }
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 const MyMenuItem = styled(MenuItem).attrs({ as: 'div' })`
@@ -178,33 +205,35 @@ const DownloadReplay = ({ hide }) => {
 
 
 export const Menu = () => {
-  const menuState = useMenuState();
+  const menuState = useMenuState({ animated: 100 });
 
   return (
     <>
       <MyMenuButton {...menuState}>
         <SettingsIcon />
       </MyMenuButton>
-      <MenuInner
+      <RkMenu
         aria-label='Settings'
         tabIndex={0}
         {...menuState}
       >
-        <DelaySetting />
-        <MenuSeparator />
-        <ToggleSetting
-          icon={<FormatColorFill size={24} />}
-          label='Use row background colours'
-          name='backgrounds'
-        />
-        <ToggleSetting
-          icon={<Highlight size={24} />}
-          label='Use row flashing animations'
-          name='animation'
-        />
-        <MenuSeparator />
-        <DownloadReplay hide={menuState.hide} />
-      </MenuInner>
+        <MenuInner>
+          <DelaySetting />
+          <MenuSeparator />
+          <ToggleSetting
+            icon={<FormatColorFill size={24} />}
+            label='Use row background colours'
+            name='backgrounds'
+          />
+          <ToggleSetting
+            icon={<Highlight size={24} />}
+            label='Use row flashing animations'
+            name='animation'
+          />
+          <MenuSeparator />
+          <DownloadReplay hide={menuState.hide} />
+        </MenuInner>
+      </RkMenu>
     </>
   );
 };

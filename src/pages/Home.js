@@ -2,11 +2,14 @@ import styled from 'styled-components';
 import { Page } from '../components/Page';
 import logo from '../img/logo.svg';
 import InlineSVG from 'react-inlinesvg';
+import background from '../img/timing_screen_blurred.jpg';
 
 const HomeInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  background: top center / cover no-repeat fixed url(${background});
 `;
 
 const Logo = styled(InlineSVG).attrs(

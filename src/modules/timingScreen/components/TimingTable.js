@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { useEffect } from "react/cjs/react.development";
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
 import { Stat } from "../../../racing";

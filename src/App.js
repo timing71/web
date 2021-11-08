@@ -5,6 +5,7 @@ import { ThemeProvider } from 'styled-components';
 import { PluginDetector } from './modules/pluginBridge';
 
 import { Home } from './pages/Home';
+import { Services } from './pages/Services';
 import { Start } from './pages/Start';
 import { Timing } from './pages/Timing';
 import { SettingsProvider } from './modules/settings';
@@ -30,6 +31,10 @@ function App() {
               <SettingsProvider>
                 <ThemeSettingsProvider>
                   <Switch>
+                    <Route
+                      component={Services}
+                      path='/services'
+                    />
                     <Route
                       component={Start}
                       path='/start'

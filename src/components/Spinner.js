@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import styled from "styled-components";
+import { Button } from "./Button";
 
 const Inner = styled.div`
   display: flex;
@@ -8,19 +9,12 @@ const Inner = styled.div`
   margin: 0.25em;
 `;
 
-const SpinnerButton = styled.button`
-  color: ${ props => props.theme.site.highlightColor };
-  background-color: transparent;
-  border: 1px solid ${ props => props.theme.site.highlightColor };
-  font-size: large;
+const SpinnerButton = styled(Button)`
 
   width: 2em;
   height: 2em;
+  padding: 0;
 
-  &:hover {
-    background-color: ${ props => props.theme.site.highlightColor };
-    color: black;
-  }
 
   &:first-child {
     border-radius: 0.25em 0 0 0.25em;

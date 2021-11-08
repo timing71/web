@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Page } from '../components/Page';
 import logo from '../img/logo.svg';
+import InlineSVG from 'react-inlinesvg';
 
 const HomeInner = styled.div`
   display: flex;
@@ -8,7 +9,7 @@ const HomeInner = styled.div`
   align-items: center;
 `;
 
-const Logo = styled.img.attrs(
+const Logo = styled(InlineSVG).attrs(
   () => ({ alt: 'Timing71.org BETA', src: logo })
 )`
   max-width: 40%;

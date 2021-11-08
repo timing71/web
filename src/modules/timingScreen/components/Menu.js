@@ -205,7 +205,7 @@ const DownloadReplay = ({ hide }) => {
 
 
 export const Menu = () => {
-  const menuState = useMenuState({ animated: 100 });
+  const menuState = useMenuState({ animated: 100, gutter: 6 });
 
   return (
     <>

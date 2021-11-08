@@ -103,8 +103,8 @@ export const Home = () => (
         </p>
         <p>
           As there's no centralised data processing, we cannot offer a library
-          of replays and post-session analysis (but hope to be able to offer
-          similar functionality, allowing you to make your own replay files).
+          of replays and post-session analysis (but you can generate your own
+          replay files, and eventually, analysis files too).
         </p>
         <p>
           And as the name suggests - Timing71 Beta is a work-in-progress, so is

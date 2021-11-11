@@ -6,7 +6,7 @@ import {
   MenuSeparator
 } from "reakit/Menu";
 
-import { Check, Download, FormatColorFill, Highlight, Settings } from '@styled-icons/material';
+import { Check, Download, FormatColorFill, Fullscreen, Highlight, Settings } from '@styled-icons/material';
 
 import styled, { keyframes } from "styled-components";
 import { lighten } from "polished";
@@ -204,8 +204,21 @@ const DownloadReplay = ({ hide }) => {
 };
 
 
-export const Menu = () => {
+export const Menu = ({ fsHandle }) => {
   const menuState = useMenuState({ animated: 100, gutter: 6 });
+
+  const toggleFS = useCallback(
+    () => {
+      if (fsHandle.active) {
+        fsHandle.exit();
+      }
+      else {
+        fsHandle.enter();
+      }
+    },
+    [fsHandle]
+  );
+
 
   return (
     <>
@@ -220,6 +233,15 @@ export const Menu = () => {
         <MenuInner>
           <DelaySetting />
           <MenuSeparator />
+          <ToggleMenuItem onClick={toggleFS}>
+            <span>
+              <Fullscreen size={24} />
+            </span>
+            <label>View full screen</label>
+            <span>
+              { !!fsHandle.active && <Check size={24} /> }
+            </span>
+          </ToggleMenuItem>
           <ToggleSetting
             icon={<FormatColorFill size={24} />}
             label='Use row background colours'

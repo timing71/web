@@ -1,5 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
+
 import { Page } from "../../../components/Page";
 import { useServiceManifest } from "../../../components/ServiceContext";
 import { DataPanel } from "./DataPanel";
@@ -22,19 +24,22 @@ const TimingScreenInner = styled.div`
 export const TimingScreen = () => {
 
   const { manifest } = useServiceManifest();
+  const fsHandle = useFullScreenHandle();
 
   return (
-    <Page>
-      <Helmet>
-        <title>{ manifest?.name }</title>
-      </Helmet>
-      <TimingScreenInner>
-        <TimingScreenHeader />
-        <TimingTable />
-        <Messages />
-        <DataPanel />
-        <MenuBar />
-      </TimingScreenInner>
-    </Page>
+    <FullScreen handle={fsHandle}>
+      <Page>
+        <Helmet>
+          <title>{ manifest?.name }</title>
+        </Helmet>
+        <TimingScreenInner>
+          <TimingScreenHeader />
+          <TimingTable />
+          <Messages />
+          <DataPanel />
+          <MenuBar fsHandle={fsHandle} />
+        </TimingScreenInner>
+      </Page>
+    </FullScreen>
   );
 };

@@ -78,13 +78,16 @@ export const Session = ({ collections, server, updateManifest, updateState }) =>
       if (session_info) {
         let newCurrentSession = session_info.find(s => !s.info?.closed);
 
-        if (!newCurrentSession) {
+        if (!newCurrentSession && !currentSessionID) {
           newCurrentSession = session_info.slice(-1)[0];
         }
 
         if (
-          newCurrentSession !== currentSessionInfo ||
-          newCurrentSession?.session?.value !== currentSessionID
+          newCurrentSession &&
+          (
+            newCurrentSession !== currentSessionInfo ||
+            newCurrentSession?.session?.value !== currentSessionID
+          )
         ) {
           setCurrentSessionInfo(newCurrentSession);
           setCurrentSessionID(newCurrentSession?.session?.value);

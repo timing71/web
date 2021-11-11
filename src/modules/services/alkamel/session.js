@@ -99,14 +99,19 @@ export const Session = ({ collections, server, updateManifest, updateState }) =>
     [currentSessionID, currentSessionInfo, server, session_info]
   );
 
-  return (
-    <CurrentSessionMonitor
-      collections={collections}
-      server={server}
-      sessionID={currentSessionID}
-      sessionInfo={currentSessionInfo}
-      updateManifest={updateManifest}
-      updateState={updateState}
-    />
-  );
+  if (currentSessionID) {
+    return (
+      <CurrentSessionMonitor
+        collections={collections}
+        server={server}
+        sessionID={currentSessionID}
+        sessionInfo={currentSessionInfo}
+        updateManifest={updateManifest}
+        updateState={updateState}
+      />
+    );
+  }
+
+  return null;
+
 };

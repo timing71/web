@@ -127,17 +127,21 @@ export const augment = (standing) => { // Exported for tests
   });
 };
 
-const mapCars = (standings, entries, numSectors, gapFunc) => {
+const mapCars = (standings, entries, numSectors, gapFunc, bestResults, bestResultsByClass) => {
   let leadCar = null;
   let prevCar = null;
   const cars = [];
   const classCount = {};
+
+  const overallBestLap = bestResults?.bestLap || {};
+  const classBestLaps = bestResultsByClass?.bestLapsByClass || {};
 
   Object.values(standings?.standings || {}).forEach(
     standing => {
       const data = standing.data.split(';');
       const raceNum = data[1];
       const entry = (entries && entries[raceNum]) || {};
+      const state = mapCarState(data[2], data[8], !!standing.isCheckered);
 
       classCount[entry.class] = (classCount[entry.class] || 0) + 1;
 
@@ -160,11 +164,29 @@ const mapCars = (standings, entries, numSectors, gapFunc) => {
       const interval = prevCar ? gapFunc(prevCar, augmentedStanding) : '';
 
       const lastLapTime = (standing.lastLapTime || 0) / 1000;
+      let lastLapFlag = standing.isLastLapBestPersonal ? 'pb' : '';
+
       const bestLapTime = (standing.bestLapTime || 0) / 1000;
+      let bestLapFlag = '';
+
+      const hasOverallBest = overallBestLap.participantNumber === raceNum;
+      const hasClassBest = entry.class && (classBestLaps[entry.class] || {}).participantNumber === raceNum;
+
+      if (hasOverallBest || hasClassBest) {
+        bestLapFlag = 'sb';
+        if (lastLapTime === bestLapTime) {
+          if ((state === 'RUN' || state === 'FIN') && '3' in currentSectors) {
+            lastLapFlag = 'sb-new';
+          }
+          else {
+            lastLapFlag = 'sb';
+          }
+        }
+      }
 
       cars.push([
         raceNum,
-        mapCarState(data[2], data[8], !!standing.isCheckered)
+        state
       ].concat(
         standings.hasClasses ? [entry.class, classCount[entry.class]] : []
       ).concat([
@@ -175,8 +197,8 @@ const mapCars = (standings, entries, numSectors, gapFunc) => {
         gap > 0 || typeof(gap) === 'string' ? gap : '',
         interval > 0 || typeof(interval) === 'string' ? interval : ''
       ]).concat(sectorCols).concat([
-        lastLapTime > 0 ? [lastLapTime, standing.isLastLapBestPersonal ? 'pb' : ''] : ['', ''],
-        [bestLapTime > 0 ? bestLapTime : '', ''],
+        lastLapTime > 0 ? [lastLapTime, lastLapFlag] : ['', ''],
+        bestLapTime > 0 ? [bestLapTime, bestLapFlag] : ['', ''],
         data[5]
       ]));
 
@@ -192,13 +214,14 @@ const mapCars = (standings, entries, numSectors, gapFunc) => {
 
 const mapSession = (status={}, weather={}, unitOfMeasure) => {
   const speedUnit = unitOfMeasure === 'US' ? 'mph' : 'kph';
+  const speedMultiplier = unitOfMeasure === 'US' ? 0.621371 : 1;
   const session = {
     flagState: mapFlag(status),
     trackData:[
       `${weather.ambientTemperature || '-'}°C`,
       `${weather.trackTemperature || '-'}°C`,
       `${weather.humidity || '-'}%`,
-      `${weather.windSpeed == null ? '-' : weather.windSpeed} ${speedUnit}`,
+      `${weather.windSpeed == null ? '-' : (weather.windSpeed * speedMultiplier).toFixed(1)} ${speedUnit}`,
     ]
   };
 
@@ -236,7 +259,7 @@ const mapSession = (status={}, weather={}, unitOfMeasure) => {
 };
 
 export const Translator = ({
-  collections: { session_entry, session_info, session_status, track_info, standings, weather },
+  collections: { best_results, sessionBestResultsByClass, session_entry, session_info, session_status, track_info, standings, weather },
   session,
 }) => {
 
@@ -272,11 +295,11 @@ export const Translator = ({
     () => {
       const gapFunc = getGapFunction(session_info?.type);
       updateState({
-        cars: mapCars(standings, session_entry, numSectors, gapFunc),
+        cars: mapCars(standings, session_entry, numSectors, gapFunc, best_results, sessionBestResultsByClass),
         session: mapSession(session_status, weather, session_info?.unitOfMeasure)
       });
     },
-    [numSectors, session_entry, session_info, session_status, standings, weather, updateState]
+    [best_results, numSectors, sessionBestResultsByClass, session_entry, session_info, session_status, standings, weather, updateState]
   );
 
 

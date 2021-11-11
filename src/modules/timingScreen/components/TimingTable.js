@@ -62,7 +62,7 @@ export const TimingTable = () => {
                 return (
                   <TimingTableRow
                     car={car}
-                    highlight={doHighlight && (highlights.current[carNum] || 0) > now}
+                    highlight={doHighlight && ((state.highlight || []).includes(carNum) || (highlights.current[carNum] || 0) > now)}
                     key={carNum}
                     manifest={manifest}
                     position={idx + 1}

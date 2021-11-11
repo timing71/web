@@ -198,7 +198,7 @@ const mapSession = (status={}, weather={}, unitOfMeasure) => {
       `${weather.ambientTemperature || '-'}°C`,
       `${weather.trackTemperature || '-'}°C`,
       `${weather.humidity || '-'}%`,
-      `${weather.windSpeed || '-'} ${speedUnit}`,
+      `${weather.windSpeed == null ? '-' : weather.windSpeed} ${speedUnit}`,
     ]
   };
 

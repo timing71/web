@@ -190,9 +190,16 @@ const mapCars = (standings, entries, numSectors, gapFunc) => {
   return cars;
 };
 
-const mapSession = (status={}) => {
+const mapSession = (status={}, weather={}, unitOfMeasure) => {
+  const speedUnit = unitOfMeasure === 'US' ? 'mph' : 'kph';
   const session = {
-    flagState: mapFlag(status)
+    flagState: mapFlag(status),
+    trackData:[
+      `${weather.ambientTemperature || '-'}°C`,
+      `${weather.trackTemperature || '-'}°C`,
+      `${weather.humidity || '-'}%`,
+      `${weather.windSpeed || '-'} ${speedUnit}`,
+    ]
   };
 
   const now = Date.now() / 1000;
@@ -229,7 +236,7 @@ const mapSession = (status={}) => {
 };
 
 export const Translator = ({
-  collections: { session_entry, session_info, session_status, track_info, standings },
+  collections: { session_entry, session_info, session_status, track_info, standings, weather },
   session,
 }) => {
 
@@ -243,7 +250,13 @@ export const Translator = ({
       updateManifest({
         name: session_info?.champName || '',
         description: `${session_info?.eventName} - ${session?.name}`,
-        colSpec: createColspec(numSectors, standings?.hasClasses)
+        colSpec: createColspec(numSectors, standings?.hasClasses),
+        trackDataSpec: [
+          'Air temp',
+          'Track temp',
+          'Humidity',
+          'Wind speed'
+        ]
       });
     },
     [
@@ -260,10 +273,10 @@ export const Translator = ({
       const gapFunc = getGapFunction(session_info?.type);
       updateState({
         cars: mapCars(standings, session_entry, numSectors, gapFunc),
-        session: mapSession(session_status)
+        session: mapSession(session_status, weather, session_info?.unitOfMeasure)
       });
     },
-    [numSectors, session_entry, session_info?.type, session_status, standings, updateState]
+    [numSectors, session_entry, session_info, session_status, standings, weather, updateState]
   );
 
 

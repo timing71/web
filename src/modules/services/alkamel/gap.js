@@ -9,8 +9,8 @@ const e = (e, t, a, n) => {
   if (t < n) {
     if (t < 0) {
       return a['currentLapStartTime'];
-    } else if (a['currentLoops'].t) {
-      return a['currentLapStartTime'] + a['currentLoops'][t];
+    } else if (a['currentLoops'][t.toString()]) {
+      return a['currentLapStartTime'] + a['currentLoops'][t.toString()];
     }
     else {
       return a['currentLapStartTime'];

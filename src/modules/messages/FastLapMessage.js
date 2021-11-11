@@ -20,7 +20,13 @@ export const FastLapMessage = (se, oldCar, newCar) => {
         carNum
       );
     }
-    else if ((newLastLap[1] === 'sb' || newLastLap[1] === 'sb-new') && (oldLastLap[1] !== newLastLap[1] || oldLastLap[0] !== newLastLap[0])) {
+    else if (
+      (newLastLap[1] === 'sb' || newLastLap[1] === 'sb-new') &&
+      (
+        (oldLastLap[1] !== newLastLap[1] && oldLastLap[1] !== 'sb-new') ||
+        oldLastLap[0] !== newLastLap[0]
+      )
+    ) {
       return new Message(
         clazz,
         `#${carNum}${driverText} set a new overall best (${timeInSeconds(newLastLap[0])})`,

@@ -21,13 +21,13 @@ const e = (e, t, a, n) => {
       return a['currentLapStartTime'];
     } else {
       const finalLoopIndex = Math.max(...Object.keys(a['previousLoops']));
-      return a['currentLapStartTime'] - a['previousLoops'][finalLoopIndex] + (a['previousLoops'].t || 0);
+      return a['currentLapStartTime'] - a['previousLoops'][finalLoopIndex] + (a['previousLoops'][t.toString()] || 0);
     }
   } else if (t < 0) {
     return a['currentLapStartTime'];
   }
   else {
-    return a['currentLapStartTime'] + (a['currentLoops'].t || 0);
+    return a['currentLapStartTime'] + (a['currentLoops'][t.toString()] || 0);
   }
 };
 

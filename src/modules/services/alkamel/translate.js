@@ -104,15 +104,16 @@ const parseLoops = (loopString) => {
 
   if (parts.length > 1) {
     for(let i = 0; i < parts.length; i += 2) {
-      loops[parseInt(parts[i], 10)] = parseInt(parts[i + 1], 10);
+      if (parts[i]) {
+        loops[parts[i]] = parseInt(parts[i + 1], 10);
+      }
     }
   }
-
 
   return loops;
 };
 
-const augment = (standing) => {
+export const augment = (standing) => { // Exported for tests
 
   const data = (standing.data || '').split(';');
 

@@ -59,7 +59,9 @@ const TimingInner = () => {
         oldState => {
           const newState = { ...oldState, ...updatedState };
 
-          const newMessages = generateMessages(newState.manifest, oldState, newState);
+          const newMessages = generateMessages(newState.manifest, oldState, newState).concat(
+            updatedState.extraMessages || [],
+          );
 
           const highlight = [];
           newMessages.forEach(
@@ -77,6 +79,7 @@ const TimingInner = () => {
           ].slice(0, 100);
 
           newState.lastUpdated = Date.now();
+          delete newState.extraMessages;
 
           return newState;
         }

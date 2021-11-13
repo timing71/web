@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useServiceManifest, useServiceState } from '../../../components/ServiceContext';
 import { FlagState, Stat } from '../../../racing';
+import { RaceControlMessage } from '../../messages/Message';
 import { getGapFunction } from './gap';
 
 const SECTOR_STATS = [
@@ -259,14 +260,35 @@ const mapSession = (status={}, weather={}, unitOfMeasure) => {
 };
 
 export const Translator = ({
-  collections: { best_results, sessionBestResultsByClass, session_entry, session_info, session_status, track_info, standings, weather },
+  collections: { best_results, race_control, sessionBestResultsByClass, session_entry, session_info, session_status, track_info, standings, weather },
   session,
 }) => {
+
+  const raceControlLastMessage = useRef(0);
 
   const numSectors = getSectorCount(track_info);
 
   const { updateManifest } = useServiceManifest();
   const { updateState } = useServiceState();
+
+  const extractRaceControlMessages = useCallback(
+    (messages) => {
+      const result = [];
+      const newMessageIndexes = Object.keys(messages).filter(k => k > raceControlLastMessage.current);
+      newMessageIndexes.reverse().forEach(
+        i => {
+          raceControlLastMessage.current = Math.max(raceControlLastMessage.current, i);
+          result.push(
+            new RaceControlMessage(
+              messages[i].message
+            ).toCTDFormat()
+          );
+        }
+      );
+      return result;
+    },
+    []
+  );
 
   useEffect(
     () => {
@@ -296,10 +318,23 @@ export const Translator = ({
       const gapFunc = getGapFunction(session_info?.type);
       updateState({
         cars: mapCars(standings, session_entry, numSectors, gapFunc, best_results, sessionBestResultsByClass),
-        session: mapSession(session_status, weather, session_info?.unitOfMeasure)
+        session: mapSession(session_status, weather, session_info?.unitOfMeasure),
+        extraMessages: extractRaceControlMessages(race_control?.log || {})
       });
     },
-    [best_results, numSectors, sessionBestResultsByClass, session_entry, session_info, session_status, standings, weather, updateState]
+    [
+      best_results,
+      extractRaceControlMessages,
+      numSectors,
+      race_control,
+      sessionBestResultsByClass,
+      session_entry,
+      session_info,
+      session_status,
+      standings,
+      weather,
+      updateState
+    ]
   );
 
 

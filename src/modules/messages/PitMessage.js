@@ -13,7 +13,7 @@ export const PitMessage = (se, oldCar, newCar) => {
 
     const driverText = driver ? ` (${driver})` : '';
 
-    if ((oldState !== 'RUN' && newState === 'OUT') || (oldState === 'PIT' && newState === 'RUN')) {
+    if ((oldState !== 'RUN' && oldState !== 'STOP' && newState === 'OUT') || (oldState === 'PIT' && newState === 'RUN')) {
       return new Message(clazz, `#${carNum}${driverText} has left the pits`, 'out', carNum);
     }
     else if (newState === 'PIT') {

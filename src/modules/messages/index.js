@@ -5,6 +5,7 @@ import { DriverChangeMessage } from './DriverChangeMessage';
 import { FastLapMessage } from './FastLapMessage';
 import { FlagMessage } from './FlagMessage';
 import { PitMessage } from './PitMessage';
+import { StopResumeMessage } from './StopResumeMessage';
 
 
 const GLOBAL_GENERATORS = [
@@ -15,6 +16,7 @@ const PER_CAR_GENERATORS = [  // Order can be significant (e.g. driver change be
   FastLapMessage,
   DriverChangeMessage,
   PitMessage,
+  StopResumeMessage
 ];
 
 export const generateMessages = (manifest, oldState, newState) => {

@@ -11,10 +11,10 @@ const GLOBAL_GENERATORS = [
   FlagMessage
 ];
 
-const PER_CAR_GENERATORS = [
+const PER_CAR_GENERATORS = [  // Order can be significant (e.g. driver change before pit out!)
   FastLapMessage,
+  DriverChangeMessage,
   PitMessage,
-  DriverChangeMessage
 ];
 
 export const generateMessages = (manifest, oldState, newState) => {

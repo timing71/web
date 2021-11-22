@@ -1,0 +1,44 @@
+import { FlagState } from "../../../racing";
+import { Session } from "../session"
+
+it('records changes in flag state', () => {
+  const session = Session.create();
+
+  const oldState = {
+    lastUpdated: 1,
+    session: {
+      flagState: FlagState.GREEN
+    }
+  };
+
+  const newState = {
+    lastUpdated: 5,
+    session: {
+      flagState: FlagState.YELLOW
+    }
+  };
+
+  session.update(oldState, newState);
+
+  expect(session.flagStats.length).toEqual(1);
+  let flagStat = session.flagStats[0];
+  expect(flagStat.flag).toEqual(FlagState.YELLOW);
+  expect(flagStat.startTime).toEqual(new Date(5));
+  expect(flagStat.endTime).toBeUndefined();
+  expect(flagStat.lapsDuration).toBeUndefined();
+
+  const thirdState = {
+    lastUpdated: 15,
+    session: {
+      flagState: FlagState.GREEN
+    }
+  };
+
+  session.update(newState, thirdState);
+  flagStat = session.flagStats[0];
+  expect(flagStat.flag).toEqual(FlagState.YELLOW);
+  expect(flagStat.startTime).toEqual(new Date(5));
+  expect(flagStat.endTime).toEqual(new Date(15));
+  expect(flagStat.secondsDuration).toEqual(10);
+
+});

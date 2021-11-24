@@ -49,6 +49,11 @@ export const Session = types.model({
           })
         );
       }
+    },
+
+    reset() {
+      self.flagStats = [];
+      self.leaderLap = 0;
     }
   })
 );

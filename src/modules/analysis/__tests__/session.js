@@ -1,5 +1,5 @@
 import { FlagState } from "../../../racing";
-import { Session } from "../session"
+import { Session } from "../session";
 
 it('records changes in flag state', () => {
   const session = Session.create();
@@ -41,4 +41,12 @@ it('records changes in flag state', () => {
   expect(flagStat.endTime).toEqual(new Date(15));
   expect(flagStat.secondsDuration).toEqual(10);
 
+});
+
+it('can be reset', () => {
+  const session = Session.create({ flagStats: [{ flag: FlagState.RED, startLap: 5, startTime: 5 }] });
+
+  expect(session.flagStats.length).toEqual(1);
+  session.reset();
+  expect(session.flagStats.length).toEqual(0);
 });

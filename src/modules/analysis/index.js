@@ -9,6 +9,10 @@ const Analyser = types.model({
     updateState(oldState, newState) {
       self.session.update(oldState, newState);
       return getSnapshot(self);
+    },
+
+    reset() {
+      self.session.reset();
     }
   })
 );

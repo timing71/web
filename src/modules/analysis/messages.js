@@ -28,6 +28,10 @@ export const Messages = types.model({
       relevantNewMessages.forEach(
         rnm => self.messages.unshift({ ...CTFMessage.fromCTDFormat(rnm) })
       );
+    },
+
+    reset() {
+      self.messages = [];
     }
   })
 );

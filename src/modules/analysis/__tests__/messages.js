@@ -45,4 +45,11 @@ describe('Messages', () => {
     expect(msgs.messages.length).toEqual(1);
     expect(msgs.messages[0].message).toEqual('six message');
   });
+
+  it('can be reset', () => {
+    const msgs = Messages.create({ messages: [{ ...new CTFMessage('m', 'ess', 'age') }] });
+    expect(msgs.messages.length).toEqual(1);
+    msgs.reset();
+    expect(msgs.messages.length).toEqual(0);
+  });
 });

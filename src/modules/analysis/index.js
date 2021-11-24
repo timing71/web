@@ -15,6 +15,7 @@ const Analyser = types.model({
     },
 
     reset() {
+      self.messages.reset();
       self.session.reset();
     }
   })

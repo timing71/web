@@ -1,17 +1,14 @@
-import { types } from 'mobx-state-tree';
+import { getSnapshot, types } from 'mobx-state-tree';
 
 import { Session } from './Session';
-import { State } from './state';
 
 const Analyser = types.model({
-  session: Session,
-  state: State
+  session: Session
 }).actions(
   self => ({
-    updateState(newState) {
-      self.session.update(self.state, newState);
-
-      self.state = newState;
+    updateState(oldState, newState) {
+      self.session.update(oldState, newState);
+      return getSnapshot(self);
     }
   })
 );

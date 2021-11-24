@@ -16,6 +16,12 @@ export class Message {
 
     return val;
   }
+
+  static fromCTDFormat(ctd) {
+    const m = new Message(ctd[1], ctd[2], ctd[3], ctd[4]);
+    m.timestamp = ctd[0];
+    return m;
+  }
 }
 
 const CAR_NUMBER_REGEX = /car #? ?(?<carNum>[0-9]+)/i;

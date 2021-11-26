@@ -41,34 +41,16 @@ export const generateMessages = (manifest, oldState, newState) => {
     const se = new StatExtractor(manifest.colSpec);
     (newState.cars || []).forEach(
       newCar => {
-        // You'd have hoped that race number would be enough to uniquely
-        // identify a car within a session, right? You'd be wrong...
-        const wantedNum = se.get(newCar, Stat.NUM);
-        const wantedCar = se.get(newCar, Stat.CAR);
-        const wantedClass = se.get(newCar, Stat.CLASS);
-
-        if (wantedNum !== undefined) {
-          const possibleMatches = (oldState.cars || []).filter(
-            oldCar => (
-              se.get(oldCar, Stat.NUM) === wantedNum &&
-              se.get(oldCar, Stat.CAR) === wantedCar &&
-              se.get(oldCar, Stat.CLASS) === wantedClass
-            )
-          );
-
-          if (possibleMatches.length > 1) {
-            console.warn(`Found ${possibleMatches.length} possible matches for car ${wantedNum}!`); // eslint-disable-line no-console
-          }
-          else if (possibleMatches.length === 1) {
-            PER_CAR_GENERATORS.forEach(
-              generator => {
-                const possibleMessage = generator(se, possibleMatches[0], newCar);
-                if (possibleMessage) {
-                  perCarMessages.push(possibleMessage.toCTDFormat());
-                }
+        const oldCar = se.findCarInList(newCar, oldState.cars);
+        if (oldCar) {
+          PER_CAR_GENERATORS.forEach(
+            generator => {
+              const possibleMessage = generator(se, oldCar, newCar);
+              if (possibleMessage) {
+                perCarMessages.push(possibleMessage.toCTDFormat());
               }
-            );
-          }
+            }
+          );
         }
       }
     );

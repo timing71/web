@@ -18,6 +18,11 @@ export const Cars = types.model({
             if (!self.cars[raceNum]) {
               self.cars.set(raceNum, Car.create({ raceNum }));
             }
+
+            self.cars.get(raceNum).update(
+              statExtractor,
+              car
+            );
           }
         );
       }

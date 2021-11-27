@@ -9,6 +9,9 @@ const Driver = types.model({
 
 export const Car = types.model({
   raceNum: types.identifier,
+  raceClass: types.union(types.string, types.null, types.undefined),
+  teamName: types.union(types.string, types.null, types.undefined),
+  make: types.union(types.string, types.null, types.undefined),
 
   drivers: types.array(Driver)
 }).actions(
@@ -24,6 +27,17 @@ export const Car = types.model({
           name: currentDriverName
         });
         self.drivers.push(currentDriver);
+      }
+
+      // We assume these things don't change mid-session!
+      if (!self.raceClass) {
+        self.raceClass = statExtractor.get(car, Stat.CLASS);
+      }
+      if (!self.teamName) {
+        self.teamName = statExtractor.get(car, Stat.TEAM);
+      }
+      if (!self.make) {
+        self.make = statExtractor.get(car, Stat.CAR);
       }
 
     }

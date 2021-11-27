@@ -11,6 +11,14 @@ const COLUMN_SPEC = [
 
 const statExtractor = new StatExtractor(COLUMN_SPEC);
 
+const STATIC_DATA_COLSPEC = [
+  ...COLUMN_SPEC,
+  Stat.TEAM,
+  Stat.CAR
+];
+
+const sdStatExtractor = new StatExtractor(STATIC_DATA_COLSPEC);
+
 const RACE_NUM = '42';
 
 describe(
@@ -44,6 +52,29 @@ describe(
       // We don't add a duplicate entry
       expect(car.drivers.length).toEqual(2);
 
+    });
+
+    it('takes the first seen value for team name, class and car make', () => {
+      const car = Car.create({ raceNum: RACE_NUM });
+      expect(car.teamName).toBeUndefined();
+
+      car.update(
+        sdStatExtractor,
+        [ RACE_NUM, 'LMP71', 'Jonny Palmer', 2, 'Team RSL', 'VW Beetle' ]
+      );
+
+      expect(car.teamName).toEqual('Team RSL');
+      expect(car.raceClass).toEqual('LMP71');
+      expect(car.make).toEqual('VW Beetle');
+
+      car.update(
+        sdStatExtractor,
+        [ RACE_NUM, 'LMP71B', 'Jonny Palmer', 2, 'XXXTeam RSL', 'XXXVW Beetle' ]
+      );
+
+      expect(car.teamName).toEqual('Team RSL');
+      expect(car.raceClass).toEqual('LMP71');
+      expect(car.make).toEqual('VW Beetle');
     });
   }
 );

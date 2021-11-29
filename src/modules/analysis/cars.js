@@ -12,6 +12,8 @@ export const Cars = types.model({
       if (newState.service?.colSpec) {
         const statExtractor = new StatExtractor(newState.service.colSpec);
 
+        const currentFlag = newState.session?.flagState;
+
         newState.cars.forEach(
           car => {
             const raceNum = statExtractor.get(car, Stat.NUM);
@@ -19,9 +21,16 @@ export const Cars = types.model({
               self.cars.set(raceNum, Car.create({ raceNum }));
             }
 
+            const oldStatExtractor = new StatExtractor(oldState.service.colSpec);
+            const oldCar = oldStatExtractor.findCarInList(car, oldState.cars);
+
             self.cars.get(raceNum).update(
+              oldStatExtractor,
+              oldCar,
               statExtractor,
-              car
+              car,
+              currentFlag,
+              newState.timestamp
             );
           }
         );

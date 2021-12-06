@@ -1,13 +1,13 @@
 import { getSnapshot, types } from 'mobx-state-tree';
 import { Cars } from './cars';
 
-import { Messages } from './Messages';
-import { Session } from './Session';
+import { Messages } from './messages';
+import { Session } from './session';
 
 const Analyser = types.model({
-  cars: Cars,
-  messages: Messages,
-  session: Session
+  cars: types.optional(Cars, () => Cars.create()),
+  messages: types.optional(Messages, () => Messages.create()),
+  session: types.optional(Session, () => Session.create())
 }).actions(
   self => ({
     updateState(oldState, newState) {
@@ -25,4 +25,4 @@ const Analyser = types.model({
   })
 );
 
-export const createAnalyser = (initialState={}) => Analyser.create(initialState);
+export const createAnalyser = (initialState) => Analyser.create(initialState);

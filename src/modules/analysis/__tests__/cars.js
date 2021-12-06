@@ -22,8 +22,8 @@ describe('Cars', () => {
     expect(cars.count).toEqual(0);
 
     cars.update(
-      { service: { colSpec: COLUMN_SPEC }, cars: [ ['1', 'LMP1', 'John Hindhaugh', 33] ] },
-      { service: { colSpec: COLUMN_SPEC }, cars: [ ['1', 'LMP1', 'John Hindhaugh', 33] ] }
+      { manifest: { colSpec: COLUMN_SPEC }, cars: [ ['1', 'LMP1', 'John Hindhaugh', 33] ] },
+      { manifest: { colSpec: COLUMN_SPEC }, cars: [ ['1', 'LMP1', 'John Hindhaugh', 33] ] }
     );
     expect(cars.count).toEqual(1);
     expect(cars.get('1')?.raceNum).toEqual('1');
@@ -34,8 +34,8 @@ describe('Cars', () => {
     expect(cars.count).toEqual(1);
 
     cars.update(
-      { service: { colSpec: COLUMN_SPEC }, cars: [ ['44', 'LMP1', 'John Hindhaugh', 33] ] },
-      { service: { colSpec: COLUMN_SPEC }, cars: [] }
+      { manifest: { colSpec: COLUMN_SPEC }, cars: [ ['44', 'LMP1', 'John Hindhaugh', 33] ] },
+      { manifest: { colSpec: COLUMN_SPEC }, cars: [] }
     );
     expect(cars.count).toEqual(1);
     expect(cars.get('44')?.raceNum).toEqual('44');

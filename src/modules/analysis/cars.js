@@ -9,29 +9,31 @@ export const Cars = types.model({
   self => ({
     update(oldState, newState) {
 
-      if (newState.service?.colSpec) {
-        const statExtractor = new StatExtractor(newState.service.colSpec);
+      if (newState.manifest?.colSpec) {
+        const statExtractor = new StatExtractor(newState.manifest.colSpec);
 
         const currentFlag = newState.session?.flagState;
 
         newState.cars.forEach(
           car => {
             const raceNum = statExtractor.get(car, Stat.NUM);
-            if (!self.cars[raceNum]) {
-              self.cars.set(raceNum, Car.create({ raceNum }));
+            if (raceNum) {
+              if (!self.cars.get(raceNum)) {
+                self.cars.set(raceNum, { raceNum });
+              }
+
+              const oldStatExtractor = new StatExtractor(oldState.manifest.colSpec);
+              const oldCar = oldStatExtractor.findCarInList(car, oldState.cars);
+
+              self.cars.get(raceNum).update(
+                oldStatExtractor,
+                oldCar,
+                statExtractor,
+                car,
+                currentFlag,
+                newState.lastUpdated
+              );
             }
-
-            const oldStatExtractor = new StatExtractor(oldState.service.colSpec);
-            const oldCar = oldStatExtractor.findCarInList(car, oldState.cars);
-
-            self.cars.get(raceNum).update(
-              oldStatExtractor,
-              oldCar,
-              statExtractor,
-              car,
-              currentFlag,
-              newState.timestamp
-            );
           }
         );
       }

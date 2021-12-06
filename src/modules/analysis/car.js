@@ -55,6 +55,7 @@ const FLAG_WEIGHTS = {
   [FlagState.FCY]: 4,
   [FlagState.VSC]: 4,
   [FlagState.CODE_60]: 5,
+  [FlagState.SC]: 6,
   [FlagState.RED]: 99
 };
 
@@ -132,16 +133,6 @@ export const Car = types.model({
         FLAG_WEIGHTS[currentFlag] || 0
       );
 
-      let fudgeLapCount = false;
-
-      const maybeLapCount = statExtractor.get(car, Stat.LAPS, null);
-      if (maybeLapCount !== null) {
-        self.currentLap = maybeLapCount + 1;
-      }
-      else {
-        fudgeLapCount = true;
-      }
-
       const currentState = statExtractor.get(car, Stat.STATE);
       const currentStateIsPit = IN_PIT_STATES.includes(currentState);
       const prevState = oldStatExtractor?.get(oldCar, Stat.STATE);
@@ -155,9 +146,19 @@ export const Car = types.model({
           Stint.create({
             startLap: self.currentLap,
             startTime: timestamp,
-            currentDriver
+            driver: currentDriver
           })
         );
+      }
+
+      let fudgeLapCount = false;
+
+      const maybeLapCount = statExtractor.get(car, Stat.LAPS, null);
+      if (maybeLapCount !== null) {
+        self.currentLap = maybeLapCount + 1;
+      }
+      else {
+        fudgeLapCount = true;
       }
 
       self.isInPit = IN_PIT_STATES.includes(currentState);

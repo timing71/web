@@ -1,5 +1,5 @@
 import deepEqual from "deep-equal";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import withGracefulUnmount from "../components/withGracefulUnmount";
 import { generateMessages } from "../modules/messages";
@@ -11,6 +11,7 @@ import { StateStorer } from "../components/StateStorer";
 import { Debouncer } from "../components/Debouncer";
 import { StateRetriever } from "../components/StateRetriever";
 import { useSetting } from '../modules/settings';
+import { createAnalyser } from "../modules/analysis";
 
 const DEFAULT_STATE = {
   cars: [],
@@ -35,6 +36,31 @@ const TimingInner = () => {
   //   },
   //   [port, serviceUUID]
   // );
+
+  const analyser = useRef(createAnalyser());
+  const prevState = useRef(state);
+  useEffect(
+    () => {
+      const newAnalysisState = analyser.current?.updateState(
+        prevState.current,
+        state
+      );
+
+      try {
+        port.send({
+          type: 'UPDATE_SERVICE_ANALYSIS',
+          analysis: newAnalysisState,
+          uuid: serviceUUID,
+          timestamp: state.lastUpdated
+        });
+      }
+      catch (error) {
+        // sometimes we end up with a disconnected port here
+      }
+      prevState.current = state;
+    },
+    [port, serviceUUID, state]
+  );
 
   useEffect(
     () => {

@@ -60,6 +60,7 @@ const FLAG_WEIGHTS = {
 
 const FLAG_WEIGHTS_INVERSE = Object.fromEntries(Object.entries(FLAG_WEIGHTS).map(a => a.reverse()));
 
+const IN_PIT_STATES = ['PIT', 'FUEL'];
 
 export const Car = types.model({
   raceNum: types.identifier,
@@ -131,10 +132,35 @@ export const Car = types.model({
         FLAG_WEIGHTS[currentFlag] || 0
       );
 
-      const maybeLapCount = statExtractor.get(car, Stat.LAPS);
-      if (maybeLapCount) {
+      let fudgeLapCount = false;
+
+      const maybeLapCount = statExtractor.get(car, Stat.LAPS, null);
+      if (maybeLapCount !== null) {
         self.currentLap = maybeLapCount + 1;
       }
+      else {
+        fudgeLapCount = true;
+      }
+
+      const currentState = statExtractor.get(car, Stat.STATE);
+      const currentStateIsPit = IN_PIT_STATES.includes(currentState);
+      const prevState = oldStatExtractor?.get(oldCar, Stat.STATE);
+      const prevStateIsPit = IN_PIT_STATES.includes(prevState);
+
+      if (currentStateIsPit && !prevStateIsPit && self.currentStint) {
+        self.currentStint.end(self.currentLap, timestamp);
+      }
+      else if (!currentStateIsPit && prevStateIsPit) {
+        self.stints.push(
+          Stint.create({
+            startLap: self.currentLap,
+            startTime: timestamp,
+            currentDriver
+          })
+        );
+      }
+
+      self.isInPit = IN_PIT_STATES.includes(currentState);
 
       const newLastLap = statExtractor.get(car, Stat.LAST_LAP, []);
       if (oldStatExtractor && oldCar) {
@@ -142,12 +168,18 @@ export const Car = types.model({
 
         if (newLastLap[0] && (!oldLastLap || oldLastLap[0] !== newLastLap[0]) ) {
           self.recordNewLap(newLastLap[0], currentDriver, self.highestSeenFlagThisLap, timestamp);
+          if (fudgeLapCount) {
+            self.currentLap++;
+          }
         }
       }
       else if (newLastLap[0]) {
         // We didn't appear in the previous state; if we have a last laptime
         // we should record it.
         self.recordNewLap(newLastLap[0], currentDriver, self.highestSeenFlagThisLap, timestamp);
+        if (fudgeLapCount) {
+          self.currentLap++;
+        }
       }
 
     },

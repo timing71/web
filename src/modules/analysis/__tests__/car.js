@@ -123,5 +123,53 @@ describe(
 
       expect(car.currentStint.laps.length).toEqual(2);
     });
+
+    it('ends a stint when car enters the pits', () => {
+
+      const colSpec = [
+        Stat.NUM,
+        Stat.STATE,
+        Stat.DRIVER,
+        Stat.LAST_LAP
+      ];
+      const se = new StatExtractor(colSpec);
+      const car = Car.create({ raceNum: RACE_NUM });
+
+      car.update(
+        se, [ RACE_NUM, 'RUN', 'Shea Adam', ['', ''] ],
+        se, [ RACE_NUM, 'RUN', 'Shea Adam', [123.456, ''] ],
+        FlagState.GREEN,
+        ARBITRARY_TIMESTAMP
+      );
+      expect(car.isInPit).toBeFalsy();
+      expect(car.currentStint).not.toBeNull();
+
+      car.update(
+        se, [ RACE_NUM, 'RUN', 'Shea Adam', [123.456, ''] ],
+        se, [ RACE_NUM, 'RUN', 'Shea Adam', [122.321, ''] ],
+        FlagState.GREEN,
+        ARBITRARY_TIMESTAMP + 1
+      );
+
+      car.update(
+        se, [ RACE_NUM, 'RUN', 'Shea Adam', [122.321, ''] ],
+        se, [ RACE_NUM, 'PIT', 'Shea Adam', [122.321, ''] ],
+        FlagState.GREEN,
+        ARBITRARY_TIMESTAMP + 2
+      );
+
+      expect(car.isInPit).toBeTruthy();
+      expect(car.currentStint).toBeNull();
+
+      expect(car.stints.length).toEqual(1);
+
+      const stint = car.stints[0];
+      expect(stint.endTime).toEqual(new Date(ARBITRARY_TIMESTAMP + 2));
+      expect(stint.laps.length).toEqual(2);
+      // Two laps across the S/F line, plus one in lap (for which the time has
+      // not yet been recorded) - so in lap was lap 3
+      expect(stint.endLap).toEqual(3);
+
+    });
   }
 );

@@ -5,7 +5,7 @@ import { Message as CTFMessage } from '../messages';
 export const Message = types.model({
   category: types.string,
   message: types.string,
-  style: types.string,
+  style: types.optional(types.string, ''),
   carNum: types.union(types.string, types.undefined, types.null),
   timestamp: types.Date
 });

@@ -20,7 +20,15 @@ export const Stint = types.model({
   startTime: types.Date,
   endLap: types.union(types.integer, types.undefined),
   endTime: types.union(types.Date, types.undefined),
-  driver: types.reference(Driver),
+  car: types.reference(types.late(() => Car)),
+  driver: types.reference(Driver, {
+    get(identifier, parent) {
+      return parent.car.drivers[identifier];
+    },
+    set(value) {
+      return value.idx;
+    }
+  }),
   laps: types.array(Lap)
 }).actions(
   self => ({
@@ -94,7 +102,8 @@ export const Car = types.model({
           Stint.create({
             startLap: self.currentLap,
             startTime: timestamp,
-            driver
+            driver,
+            car: self
           })
         );
       }

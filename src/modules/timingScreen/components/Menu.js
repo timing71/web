@@ -206,6 +206,7 @@ const DownloadReplay = ({ hide }) => {
 
 export const Menu = ({ fsHandle, serviceUUID }) => {
   const menuState = useMenuState({ animated: 100, gutter: 6 });
+  const port = useContext(PluginContext);
 
   const toggleFS = useCallback(
     () => {
@@ -221,11 +222,11 @@ export const Menu = ({ fsHandle, serviceUUID }) => {
 
   const openAnalysis = useCallback(
     () => {
-      window.open(`/analysis/${serviceUUID}`, '_blank');
+      port.send({ type: 'SHOW_T71_PAGE', page: `analysis/${serviceUUID}` });
+      menuState.hide();
     },
-    [serviceUUID]
+    [menuState, port, serviceUUID]
   );
-
 
   return (
     <>

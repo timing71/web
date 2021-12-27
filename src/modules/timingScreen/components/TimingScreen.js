@@ -37,7 +37,10 @@ export const TimingScreen = () => {
           <TimingTable />
           <Messages />
           <DataPanel />
-          <MenuBar fsHandle={fsHandle} />
+          <MenuBar
+            fsHandle={fsHandle}
+            serviceUUID={manifest.uuid}
+          />
         </TimingScreenInner>
       </Page>
     </FullScreen>

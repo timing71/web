@@ -4,6 +4,7 @@ import { ThemeProvider } from 'styled-components';
 
 import { PluginDetector } from './modules/pluginBridge';
 
+import { Analysis } from './pages/Analysis';
 import { Home } from './pages/Home';
 import { Services } from './pages/Services';
 import { Start } from './pages/Start';
@@ -42,6 +43,10 @@ function App() {
                     <Route
                       component={Timing}
                       path='/timing/:serviceUUID'
+                    />
+                    <Route
+                      component={Analysis}
+                      path='/analysis/:serviceUUID'
                     />
                   </Switch>
                 </ThemeSettingsProvider>

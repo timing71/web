@@ -6,7 +6,7 @@ import {
   MenuSeparator
 } from "reakit/Menu";
 
-import { Check, Download, FormatColorFill, Fullscreen, Highlight, Settings } from '@styled-icons/material';
+import { Check, Download, FormatColorFill, Fullscreen, Highlight, Settings, StackedBarChart } from '@styled-icons/material';
 
 import styled, { keyframes } from "styled-components";
 import { lighten } from "polished";
@@ -204,7 +204,7 @@ const DownloadReplay = ({ hide }) => {
 };
 
 
-export const Menu = ({ fsHandle }) => {
+export const Menu = ({ fsHandle, serviceUUID }) => {
   const menuState = useMenuState({ animated: 100, gutter: 6 });
 
   const toggleFS = useCallback(
@@ -217,6 +217,13 @@ export const Menu = ({ fsHandle }) => {
       }
     },
     [fsHandle]
+  );
+
+  const openAnalysis = useCallback(
+    () => {
+      window.open(`/analysis/${serviceUUID}`, '_blank');
+    },
+    [serviceUUID]
   );
 
 
@@ -232,6 +239,13 @@ export const Menu = ({ fsHandle }) => {
       >
         <MenuInner>
           <DelaySetting />
+          <MenuSeparator />
+          <ToggleMenuItem onClick={openAnalysis}>
+            <span>
+              <StackedBarChart size={24} />
+            </span>
+            <label>Launch analysis</label>
+          </ToggleMenuItem>
           <MenuSeparator />
           <ToggleMenuItem onClick={toggleFS}>
             <span>

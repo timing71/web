@@ -1,7 +1,7 @@
 import { Stat } from "./racing";
 
 export class StatExtractor {
-  constructor(columnSpec) {
+  constructor(columnSpec=[]) {
     this._colSpec = columnSpec;
     this._reverseMap = {};
     columnSpec.forEach(

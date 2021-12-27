@@ -1,10 +1,14 @@
-import { getSnapshot, types } from 'mobx-state-tree';
-import { Cars } from './cars';
+import { onPatch, onSnapshot, types } from 'mobx-state-tree';
+import { useRef, useEffect, useContext } from 'react';
 
+import { Cars } from './cars';
 import { Messages } from './messages';
 import { Session } from './session';
 
 import { migrateAnalysisState } from './migrate';
+import { PluginContext } from '../pluginBridge';
+import { useServiceState } from '../../components/ServiceContext';
+import { useBroadcastChannel } from '../../broadcastChannel';
 
 const CURRENT_VERSION = 2;
 
@@ -19,7 +23,6 @@ const Analyser = types.model({
       self.cars.update(oldState, newState);
       self.messages.update(oldState, newState);
       self.session.update(oldState, newState);
-      return getSnapshot(self);
     },
 
     reset() {
@@ -39,4 +42,79 @@ export const createAnalyser = (initialState) => {
       migrateAnalysisState(initialState)
     );
   }
+};
+
+export const Analysis = ({ serviceUUID }) => {
+
+  const port = useContext(PluginContext);
+  const { state } = useServiceState();
+  const { emit } = useBroadcastChannel(`analysis/${serviceUUID}`);
+
+  const analyser = useRef(createAnalyser());
+  const prevState = useRef(state);
+
+  const latestSnapshot = useRef();
+
+  useEffect(
+    () => {
+      if (analyser.current) {
+
+        onSnapshot(
+          analyser.current,
+          (state) => {
+            latestSnapshot.current = state;
+            try {
+              port.send({
+                type: 'UPDATE_SERVICE_ANALYSIS',
+                analysis: state,
+                uuid: serviceUUID,
+                timestamp: state.lastUpdated
+              });
+            }
+            catch (error) {
+              // sometimes we end up with a disconnected port here
+            }
+          }
+        );
+
+        onPatch(
+          analyser.current,
+          (p) => {
+            emit({ type: 'ANALYSIS_DELTA', data: p });
+          }
+        );
+      }
+    },
+    [emit, port, serviceUUID]
+  );
+
+  useEffect(
+    () => {
+      const keyframeInterval = setInterval(
+        () => {
+          latestSnapshot.current && emit({ type: 'ANALYSIS_STATE', data: latestSnapshot.current });
+        },
+        60000
+      );
+
+      return () => {
+        clearInterval(keyframeInterval);
+      };
+    },
+    [emit]
+  );
+
+  useEffect(
+    () => {
+      analyser.current?.updateState(
+        prevState.current,
+        state
+      );
+
+      prevState.current = state;
+    },
+    [port, serviceUUID, state]
+  );
+
+  return null;
 };

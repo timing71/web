@@ -155,7 +155,8 @@ export const Car = types.model({
           Stint.create({
             startLap: self.currentLap,
             startTime: timestamp,
-            driver: currentDriver
+            driver: currentDriver,
+            car: self
           })
         );
       }
@@ -163,7 +164,7 @@ export const Car = types.model({
       let fudgeLapCount = false;
 
       const maybeLapCount = statExtractor.get(car, Stat.LAPS, null);
-      if (maybeLapCount !== null) {
+      if (maybeLapCount !== null && Number.isInteger(maybeLapCount)) {
         self.currentLap = maybeLapCount + 1;
       }
       else {

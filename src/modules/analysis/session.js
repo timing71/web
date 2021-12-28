@@ -51,6 +51,10 @@ export const Session = types.model({
       }
     },
 
+    setLeaderLap(laps) {
+      self.leaderLap = laps;
+    },
+
     reset() {
       self.flagStats = [];
       self.leaderLap = 0;

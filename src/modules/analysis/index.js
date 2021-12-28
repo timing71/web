@@ -23,6 +23,12 @@ const Analyser = types.model({
       self.cars.update(oldState, newState);
       self.messages.update(oldState, newState);
       self.session.update(oldState, newState);
+
+      const maxLap = Math.max(...self.cars.map(c => c.currentLap));
+      if (maxLap > 0) {
+        self.session.setLeaderLap(maxLap);
+      }
+
     },
 
     reset() {

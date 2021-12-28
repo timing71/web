@@ -52,6 +52,11 @@ export const Cars = types.model({
 
     get(raceNum) {
       return self.cars.get(raceNum);
+    },
+
+    map(func) {
+      return [...self.cars.values()].map(func);
     }
+
   })
 );

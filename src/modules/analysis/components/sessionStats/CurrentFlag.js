@@ -75,7 +75,7 @@ export const CurrentFlag = observer(
               { dayjs.duration(duration).format('HH:mm:ss') }
             </td>
             <td>
-              { analysis.session.leaderLap - current.startLap }
+              { Math.max(0, analysis.session.leaderLap - current.startLap - 1) }
             </td>
           </tr>
         </tbody>

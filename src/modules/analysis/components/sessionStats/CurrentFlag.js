@@ -2,26 +2,12 @@ import dayjs from "dayjs";
 import duration from 'dayjs/plugin/duration';
 import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import styled from 'styled-components';
 
 import { useAnalysis } from "../context";
-import { Table } from "../Table";
+import { Cell, Heading } from "../Table";
+import { FlagCell } from "./FlagCell";
 
 dayjs.extend(duration);
-
-const FlagCell = styled.td.attrs(
-  props => ({
-    ...props,
-    children: <span>{props.flag}</span>
-  })
-)`
-
-  text-transform: uppercase;
-
-  background: ${ props => props.theme.flagStates[props.flag]?.background || 'black' };
-  color: ${ props => props.theme.flagStates[props.flag]?.color || 'white' };
-  animation: ${ props => props.theme.flagStates[props.flag]?.animation || 'none' };
-`;
 
 export const CurrentFlag = observer(
   () => {
@@ -56,31 +42,33 @@ export const CurrentFlag = observer(
     }
 
     return (
-      <Table>
+      <>
         <thead>
           <tr>
-            <th>Current flag</th>
-            <th>Since</th>
-            <th>Duration</th>
-            <th>Laps</th>
+            <Heading>Current flag</Heading>
+            <Heading right>Since</Heading>
+            <Heading right>Duration</Heading>
+            <Heading right>Laps</Heading>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <FlagCell flag={current.flag} />
-            <td>
+            <FlagCell
+              animated
+              flag={current.flag}
+            />
+            <Cell right>
               {dayjs(current.startTime).format('HH:mm:ss')}
-            </td>
-            <td>
+            </Cell>
+            <Cell right>
               { dayjs.duration(duration).format('HH:mm:ss') }
-            </td>
-            <td>
+            </Cell>
+            <Cell right>
               { Math.max(0, analysis.session.leaderLap - current.startLap - 1) }
-            </td>
+            </Cell>
           </tr>
         </tbody>
-
-      </Table>
+      </>
     );
   }
 );

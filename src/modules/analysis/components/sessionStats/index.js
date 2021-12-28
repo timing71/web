@@ -1,6 +1,8 @@
 import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
+import { Table } from "../Table";
 import { CurrentFlag } from "./CurrentFlag";
+import { FlagHistoryTable } from "./FlagHistoryTable";
 
 const Container = styled.div`
 
@@ -23,7 +25,10 @@ export const SessionStats = () => {
         <div>BBB</div>
         <div>
           <h3>Flag statistics</h3>
-          <CurrentFlag />
+          <Table>
+            <CurrentFlag />
+            <FlagHistoryTable />
+          </Table>
         </div>
         <div>DDD</div>
       </Container>

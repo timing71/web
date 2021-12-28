@@ -1,11 +1,14 @@
 import { types } from 'mobx-state-tree';
 import { FlagState, Stat } from '../../racing';
 
-const Driver = types.model({
-  idx: types.identifierNumber,
-  car: types.reference(types.late(() => Car)),
-  name: types.string
-});
+const Driver = types.union(
+  types.model({
+    idx: types.identifierNumber,
+    car: types.reference(types.late(() => Car)),
+    name: types.string
+  }),
+  types.undefined
+);
 
 const Lap = types.model({
   lapNumber: types.integer,

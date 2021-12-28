@@ -10,9 +10,11 @@ export const FlagCell = styled(Cell).attrs(
 
   text-transform: uppercase;
 
-  background: ${ props => props.theme.flagStates[props.flag]?.background || 'black' };
-  color: ${ props => props.theme.flagStates[props.flag]?.color || 'white' } !important;
-  animation: ${ props => (!!props.animated && props.theme.flagStates[props.flag]?.animation) || 'none' };
+  && {
+    background: ${ props => props.theme.flagStates[props.flag]?.background || 'black' };
+    color: ${ props => props.theme.flagStates[props.flag]?.color || 'white' };
+    animation: ${ props => (!!props.animated && props.theme.flagStates[props.flag]?.animation) || 'none' };
+  }
 
   font-style: normal !important;
 `;

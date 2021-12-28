@@ -10,9 +10,17 @@ const Driver = types.model({
 const Lap = types.model({
   lapNumber: types.integer,
   laptime: types.number,
-  driver: types.reference(Driver),
+  driver: types.reference(Driver, {
+    get(identifier, parent) {
+      return parent.car.drivers[identifier];
+    },
+    set(value) {
+      return value.idx;
+    }
+  }),
   flag: types.optional(types.string, FlagState.NONE),
-  timestamp: types.Date
+  timestamp: types.Date,
+  car: types.reference(types.late(() => Car))
 });
 
 export const Stint = types.model({
@@ -39,6 +47,7 @@ export const Stint = types.model({
 
     addLap(lap) {
       self.laps.push(lap);
+      self.driver = lap.driver;
     },
 
     end(lap, time) {
@@ -94,7 +103,8 @@ export const Car = types.model({
         laptime,
         driver,
         flag: FLAG_WEIGHTS_INVERSE[flag] || FlagState.NONE,
-        timestamp
+        timestamp,
+        car: self
       });
 
       if (self.stints.length === 0) {

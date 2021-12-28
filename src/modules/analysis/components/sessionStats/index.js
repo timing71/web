@@ -22,8 +22,12 @@ export const SessionStats = () => {
         <title>Session statistics</title>
       </Helmet>
       <Container>
-        <div>AAA</div>
-        <div>BBB</div>
+        <div>
+          <h3>Distance prediction</h3>
+        </div>
+        <div>
+          <h3>Cars</h3>
+        </div>
         <div>
           <h3>Flag statistics</h3>
           <Table>
@@ -33,7 +37,9 @@ export const SessionStats = () => {
           <h3>Flag history</h3>
           <FlagHistoryChart />
         </div>
-        <div>DDD</div>
+        <div>
+          <h3>Class leaders</h3>
+        </div>
       </Container>
     </>
   );

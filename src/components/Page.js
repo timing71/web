@@ -34,6 +34,10 @@ const GlobalStyle = createGlobalStyle`
     border-radius: 2px;
   }
 
+  h1, h2, h3, h4, h5, h6 {
+    font-family: ${ props => props.theme.site.headingFont };
+  }
+
 `;
 
 export const Page = ({ children }) => (

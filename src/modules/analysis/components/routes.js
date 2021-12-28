@@ -1,3 +1,4 @@
+import { Messages } from './Messages';
 import { SessionStats } from './sessionStats';
 
 export const routes = [
@@ -12,6 +13,7 @@ export const routes = [
   },
   {
     path: '/messages',
-    name: 'Messages'
+    name: 'Messages',
+    component: Messages
   }
 ];

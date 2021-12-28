@@ -1,7 +1,10 @@
+import { SessionStats } from './sessionStats';
+
 export const routes = [
   {
     path: '/session',
-    name: 'Session statistics'
+    name: 'Session statistics',
+    component: SessionStats
   },
   {
     path: '/strategy',

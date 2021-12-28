@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 import { Page } from '../../../components/Page';
+import { AnalysisProvider } from './context';
+import { Contents } from './Contents';
 import { Menu } from './Menu';
 
 
@@ -34,12 +36,15 @@ const MenuWrapper = styled.div`
 export const AnalysisScreen = ({ analyser, manifest }) => {
   return (
     <Page>
-      <Container>
-        <Title>{manifest.name} - {manifest.description}</Title>
-        <MenuWrapper>
-          <Menu />
-        </MenuWrapper>
-      </Container>
+      <AnalysisProvider analysis={analyser}>
+        <Container>
+          <Title>{manifest.name} - {manifest.description}</Title>
+          <MenuWrapper>
+            <Menu />
+          </MenuWrapper>
+          <Contents />
+        </Container>
+      </AnalysisProvider>
     </Page>
   );
 };

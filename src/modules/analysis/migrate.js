@@ -41,14 +41,14 @@ const MIGRATIONS = {
             let cumulativeTime = s[1];
             return {
               startLap: s[0],
-              startTime: s[1],
+              startTime: s[1] * 1000,
               endLap: s[2],
-              endTime: s[3],
+              endTime: s[3] ? s[3] * 1000 : undefined,
               driver: s[5],
               car: raceNum,
               laps: s[9].map(
                 ([laptime, flag], idx) => {
-                  cumulativeTime += laptime;
+                  cumulativeTime += laptime * 1000;
                   return {
                     lapNumber: s[0] + idx,
                     laptime,
@@ -80,9 +80,9 @@ const MIGRATIONS = {
         stat => ({
           flag: INVERSE_FLAG_MAP[stat[0]],
           startLap: stat[1],
-          startTime: stat[2],
+          startTime: stat[2] * 1000,
           endLap: stat[3] || undefined,
-          endTime: stat[4] || undefined
+          endTime: stat[4] ? stat[4] * 1000 : undefined
         })
       )
     };

@@ -29,6 +29,7 @@ describe('Analyser', () => {
     const stint = car.stints[1];
     expect(stint.startLap).toEqual(11);
     expect(stint.endLap).toEqual(21);
+    expect(stint.startTime).toEqual(new Date('2021-08-21T14:49:34.141Z'));
     expect(stint.isInProgress).toBeFalsy();
     expect(stint.driver.name).toEqual('CALDERON, Tatiana');
 

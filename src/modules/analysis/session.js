@@ -24,7 +24,7 @@ const FlagStat = types.model({
 
     get secondsDuration() {
       if (self.endTime) {
-        return self.endTime - self.startTime;
+        return Math.ceil((self.endTime - self.startTime) / 1000);
       }
       return undefined;
     }

@@ -54,6 +54,7 @@ const MIGRATIONS = {
                     laptime,
                     driver: s[5],
                     flag: INVERSE_FLAG_MAP[flag],
+                    car: raceNum,
                     timestamp: cumulativeTime // NB this is APPROXIMATE as this value was not stored in the v1 file
                   };
                 }

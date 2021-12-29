@@ -182,6 +182,10 @@ export const Theme = {
       color: 'black',
       animation: css`${yellowAnim} 0.5s alternate infinite`,
     },
+    [FlagState.SLOW_ZONE]: {
+      background: 'linear-gradient(0deg, black, #DDDD00, black) top/400% 400%',
+      fill: 'url(#slow_zone)'
+    },
     [FlagState.CAUTION]: {
       background: '#DDDD00',
       color: 'black',

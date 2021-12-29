@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import styled from "styled-components";
 import { useAnalysis } from "../context";
+import { GradientDefs } from "../GradientDefs";
 import { Cell, Table } from "../Table";
 import { FlagCell } from "./FlagCell";
 
@@ -20,8 +21,7 @@ const FlagsContainer = styled.svg.attrs(
 `;
 
 const FlagRect = styled.rect`
-  fill: ${ props => props.theme.flagStates[props.flag]?.background || 'black' };
-  animation: ${ props => (props.theme.flagStates[props.flag]?.animation) || 'none' };
+  fill: ${ props => props.theme.flagStates[props.flag]?.fill || props.theme.flagStates[props.flag]?.background || 'black' };
 `;
 
 const ShownTable = styled(Table)`
@@ -85,6 +85,9 @@ export const FlagHistoryChart = observer(
     return (
       <div>
         <FlagsContainer viewBox={`0 0 ${Math.floor((endTime - startTime) / 1000)} 48`}>
+          <defs>
+            <GradientDefs />
+          </defs>
           {
             analysis.session.flagStats.map(
               (stat, idx) => (

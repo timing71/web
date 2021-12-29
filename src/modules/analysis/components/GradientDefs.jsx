@@ -1,0 +1,30 @@
+export const GradientDefs = () => (
+  <>
+    <linearGradient
+      gradientTransform='rotate(90)'
+      id='code_60_zone'
+    >
+      <stop
+        offset='0%'
+        stopColor='black'
+      />
+      <stop
+        offset='100%'
+        stopColor='#ff53e3'
+      />
+    </linearGradient>
+    <linearGradient
+      gradientTransform='rotate(90)'
+      id='slow_zone'
+    >
+      <stop
+        offset='0%'
+        stopColor='black'
+      />
+      <stop
+        offset='100%'
+        stopColor='#DDDD00'
+      />
+    </linearGradient>
+  </>
+);

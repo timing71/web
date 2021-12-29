@@ -50,5 +50,6 @@ describe('Analyser', () => {
 
     const messages = a.messages.messages;
     expect(messages.length).toEqual(2235);
+    expect(messages[1234].timestamp).toEqual(new Date('2021-08-21T17:37:48.000Z'));
   });
 });

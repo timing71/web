@@ -2,11 +2,11 @@
 
 import { AnalysisDataDecorator } from ".";
 import { HelmetDecorator, ThemeDecorator } from "../../../stories/decorators";
-import { SessionStats as SS } from "../components/sessionStats";
+import { Messages as MessagesComponent } from "../components/Messages";
 
 export default {
-  title: 'Analysis/Session Stats',
-  component: SS,
+  title: 'Analysis/Messages',
+  component: MessagesComponent,
   decorators: [
     ThemeDecorator,
     HelmetDecorator,
@@ -14,6 +14,6 @@ export default {
   ]
 };
 
-export const SessionStats = () => (
-  <SS />
+export const Messages = () => (
+  <MessagesComponent />
 );

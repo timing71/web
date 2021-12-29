@@ -92,14 +92,14 @@ const MIGRATIONS = {
     ).flat().concat(
       oldState.messages.messages
     ).sort(
-      (a, b) => a[0] - b[0]
+      (a, b) => b[0] - a[0]
     ).map(
       msg => ({
         category: msg[1],
         message: msg[2],
         style: msg[3] || '',
         carNum: msg[4],
-        timestamp: msg[0]
+        timestamp: msg[0] * 1000
       })
     );
 

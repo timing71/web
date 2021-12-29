@@ -4,7 +4,11 @@ import { Cell } from "../Table";
 export const FlagCell = styled(Cell).attrs(
   props => ({
     ...props,
-    children: <span>{props.flag}</span>
+    children: (
+      <span>
+        {props.flag.replace('_', ' ')}
+      </span>
+    )
   })
 )`
 

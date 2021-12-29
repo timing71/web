@@ -16,13 +16,16 @@ const Analyser = types.model({
   cars: types.optional(Cars, () => Cars.create()),
   messages: types.optional(Messages, () => Messages.create()),
   session: types.optional(Session, () => Session.create()),
+  latestTimestamp: types.optional(types.Date, () => new Date()),
   version: types.optional(types.literal(CURRENT_VERSION), CURRENT_VERSION)
 }).actions(
   self => ({
-    updateState(oldState, newState) {
+    updateState(oldState, newState, timestamp) {
       self.cars.update(oldState, newState);
       self.messages.update(oldState, newState);
       self.session.update(oldState, newState);
+
+      self.latestTimestamp = timestamp || new Date();
 
       const maxLap = Math.max(...self.cars.map(c => c.currentLap));
       if (maxLap > 0) {

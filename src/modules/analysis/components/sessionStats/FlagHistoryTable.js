@@ -9,19 +9,19 @@ import { FlagCell } from "./FlagCell";
 
 dayjs.extend(duration);
 
-const AggregateRow = ({ flag, count, time, laps, additionalLapsFrom, additionalTimeFrom, leaderLap }) => {
+const AggregateRow = ({ flag, count, time, laps, additionalLapsFrom, additionalTimeFrom, leaderLap, latestTimestamp }) => {
 
-  const [extraTime, setExtraTime] = useState(additionalTimeFrom ? (Date.now() - additionalTimeFrom) : 0);
+  const [extraTime, setExtraTime] = useState(additionalTimeFrom ? ((latestTimestamp || Date.now()) - additionalTimeFrom) : 0);
 
   const extraLaps = additionalLapsFrom ? (leaderLap - 1 - additionalLapsFrom) : 0;
 
   const updateExtraTime = useCallback(
     () => {
       setExtraTime(
-        additionalTimeFrom ? (Date.now() - additionalTimeFrom) : 0
+        additionalTimeFrom ? ((latestTimestamp || Date.now()) - additionalTimeFrom) : 0
       );
     },
-    [additionalTimeFrom]
+    [additionalTimeFrom, latestTimestamp]
   );
 
   useEffect(
@@ -117,6 +117,7 @@ export const FlagHistoryTable = observer(
                 <AggregateRow
                   flag={flag}
                   key={flag}
+                  latestTimestamp={analysis.latestTimestamp}
                   leaderLap={analysis.session.leaderLap}
                   {...aggs}
                 />

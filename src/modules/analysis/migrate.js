@@ -103,6 +103,8 @@ const MIGRATIONS = {
       })
     );
 
+    migrated.latestTimestamp = oldState.session.currentTimestamp * 1000;
+
     return migrated;
 
   }

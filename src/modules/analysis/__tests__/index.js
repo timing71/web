@@ -14,6 +14,8 @@ describe('Analyser', () => {
   it('can be constructed using a v1 analysis state file', () => {
     const a = createAnalyser(LM24);
 
+    expect(a.latestTimestamp).toEqual(new Date('2021-08-22T14:01:18.128Z'));
+
     expect(a.cars.count).toEqual(61);
 
     const car = a.cars.get('1');

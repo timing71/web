@@ -80,7 +80,7 @@ export const FlagHistoryChart = observer(
       return null;
     }
 
-    const endTime = analysis.session.flagStats[analysis.session.flagStats.length - 1].endTime || Date.now();
+    const endTime = analysis.session.flagStats[analysis.session.flagStats.length - 1].endTime || analysis.latestTimestamp || Date.now();
 
     return (
       <div>
@@ -94,7 +94,7 @@ export const FlagHistoryChart = observer(
                   key={idx}
                   onMouseOut={() => setShown(null)}
                   onMouseOver={() => setShown(stat)}
-                  width={Math.floor(((stat.endTime || Date.now()) - stat.startTime) / 1000)}
+                  width={Math.floor(((stat.endTime || analysis.latestTimestamp || Date.now()) - stat.startTime) / 1000)}
                   x={Math.floor((stat.startTime - startTime) / 1000)}
                   y={0}
                 />

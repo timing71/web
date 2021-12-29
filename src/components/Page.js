@@ -2,6 +2,8 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
 
+  @import url('https://fonts.googleapis.com/css2?family=Play&display=swap');
+
   body {
     background: ${ props => props.theme.site.background };
     color: ${ props => props.theme.site.textColor };

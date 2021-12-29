@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { Redirect } from 'react-router';
+import { Redirect } from 'react-router-dom';
 
 import { v4 as uuid } from 'uuid';
 

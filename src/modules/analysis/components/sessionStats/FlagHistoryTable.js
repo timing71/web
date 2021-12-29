@@ -13,7 +13,7 @@ const AggregateRow = ({ flag, count, time, laps, additionalLapsFrom, additionalT
 
   const [extraTime, setExtraTime] = useState(additionalTimeFrom ? ((latestTimestamp || Date.now()) - additionalTimeFrom) : 0);
 
-  const extraLaps = additionalLapsFrom ? (leaderLap - 1 - additionalLapsFrom) : 0;
+  const extraLaps = additionalLapsFrom ? Math.max(0, (leaderLap - 1 - additionalLapsFrom)) : 0;
 
   const updateExtraTime = useCallback(
     () => {
@@ -62,14 +62,14 @@ export const FlagHistoryTable = observer(
             agg[stat.flag] = {
               count: prev.count + 1,
               time: prev.time + (stat.endTime - stat.startTime),
-              laps: prev.laps + (stat.endLap - stat.startLap)
+              laps: prev.laps + ((stat.endLap || stat.startLap) - stat.startLap)
             };
           }
           else {
             agg[stat.flag] = {
               count: 1,
               time: stat.endTime - stat.startTime,
-              laps: stat.endLap - stat.startLap
+              laps: (stat.endLap || stat.startLap) - stat.startLap
             };
           }
         }

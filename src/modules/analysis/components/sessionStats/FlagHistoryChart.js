@@ -35,26 +35,28 @@ const ShownTable = styled(Table)`
 const ShownStat = ({ stat }) => (
   <ShownTable>
     <tbody>
-      <FlagCell flag={stat.flag} />
-      <Cell>Start: {dayjs(stat.startTime).format('HH:mm:ss')}</Cell>
-      <Cell>
-        {
-          (stat.endTime && (
-            <span>
-              End: {dayjs(stat.endTime).format('HH:mm:ss')}
-            </span>
-          )) || <span>In progress</span>
-        }
-      </Cell>
-      <Cell>
-        {
-          (stat.endTime && (
-            <span>
-              Duration: {dayjs.duration(stat.endTime - stat.startTime).format('HH:mm:ss')}
-            </span>
-          ))
-        }
-      </Cell>
+      <tr>
+        <FlagCell flag={stat.flag} />
+        <Cell>Start: {dayjs(stat.startTime).format('HH:mm:ss')}</Cell>
+        <Cell>
+          {
+            (stat.endTime && (
+              <span>
+                End: {dayjs(stat.endTime).format('HH:mm:ss')}
+              </span>
+            )) || <span>In progress</span>
+          }
+        </Cell>
+        <Cell>
+          {
+            (stat.endTime && (
+              <span>
+                Duration: {dayjs.duration(stat.endTime - stat.startTime).format('HH:mm:ss')}
+              </span>
+            ))
+          }
+        </Cell>
+      </tr>
     </tbody>
   </ShownTable>
 );
@@ -97,7 +99,7 @@ export const FlagHistoryChart = observer(
                   key={idx}
                   onMouseOut={() => setShown(null)}
                   onMouseOver={() => setShown(stat)}
-                  width={Math.floor(((stat.endTime || analysis.latestTimestamp || Date.now()) - stat.startTime) / 1000)}
+                  width={Math.max(0, Math.floor(((stat.endTime || analysis.latestTimestamp || Date.now()) - stat.startTime) / 1000))}
                   x={Math.floor((stat.startTime - startTime) / 1000)}
                   y={0}
                 />

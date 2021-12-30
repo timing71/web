@@ -11,7 +11,7 @@ const CarClassCell = styled(Cell).attrs(
     children: <>{props.value}</>
   })
 )`
-  color: ${ props => (props.value && props.theme.classColours[(props.value || '').toLowerCase().replace(/[-/ ]/, '')]) || 'white' };
+  color: ${ props => (props.value && props.theme.classColours[props.value.toLowerCase ? props.value.toLowerCase().replace(/[-/ ]/, '') : '']) || 'white' };
 `;
 
 const Position = styled(Cell).attrs(

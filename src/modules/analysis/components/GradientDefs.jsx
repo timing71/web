@@ -26,5 +26,27 @@ export const GradientDefs = () => (
         stopColor='#DDDD00'
       />
     </linearGradient>
+    <linearGradient
+      gradientTransform='rotate(90)'
+      id='chequer'
+    >
+      <stop
+        offset='0%'
+        stopColor='black'
+      />
+      <stop
+        offset='50%'
+        stopColor='black'
+      />
+      <stop
+        offset='50%'
+        stopColor='white'
+      />
+      <stop
+        offset='100%'
+        stopColor='white'
+      />
+    </linearGradient>
+
   </>
 );

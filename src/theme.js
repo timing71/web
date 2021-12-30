@@ -204,6 +204,7 @@ export const Theme = {
     },
     [FlagState.CHEQUERED]: {
       background: css`left/contain repeat-x url(${chequer})`,
+      fill: 'url(#chequer)',
       color: 'transparent'
     }
   },

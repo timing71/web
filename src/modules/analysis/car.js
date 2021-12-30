@@ -94,6 +94,7 @@ export const Car = types.model({
   currentLap: types.optional(types.integer, 1),
 
   stints: types.array(Stint),
+  state: types.union(types.string, types.undefined),
   isInPit: types.optional(types.boolean, true),
 
   highestSeenFlagThisLap: types.optional(types.integer, 0)
@@ -156,6 +157,7 @@ export const Car = types.model({
       );
 
       const currentState = statExtractor.get(car, Stat.STATE);
+      self.state = currentState;
       const currentStateIsPit = IN_PIT_STATES.includes(currentState);
       const prevState = oldStatExtractor?.get(oldCar, Stat.STATE);
       const prevStateIsPit = IN_PIT_STATES.includes(prevState);

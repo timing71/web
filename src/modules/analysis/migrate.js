@@ -1,4 +1,5 @@
-import { FlagState } from "../../racing";
+import { FlagState, Stat } from "../../racing";
+import { StatExtractor } from '../../statExtractor';
 
 const MIGRATIONS = {
   1: (oldState) => {
@@ -24,6 +25,8 @@ const MIGRATIONS = {
       11: FlagState.SLOW_ZONE,
       12: FlagState.CODE_60_ZONE
     };
+
+    const se = new StatExtractor(oldState.service.colSpec);
 
     Object.entries(oldState.static).forEach(
       ([raceNum, [raceClass, teamName, make]]) => {
@@ -71,6 +74,14 @@ const MIGRATIONS = {
           drivers,
           stints
         };
+      }
+    );
+
+    oldState.state.cars.forEach(
+      oldCar => {
+        const num = se.get(oldCar, Stat.NUM);
+        const state = se.get(oldCar, Stat.STATE, '???');
+        migrated.cars.cars[num].state = state;
       }
     );
 

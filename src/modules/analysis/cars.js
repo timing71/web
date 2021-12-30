@@ -55,7 +55,21 @@ export const Cars = types.model({
     },
 
     map(func) {
-      return [...self.cars.values()].map(func);
+      return self.toArray.map(func);
+    },
+
+    get toArray() {
+      return [...self.cars.values()];
+    },
+
+    get perState() {
+      return self.toArray.reduce(
+        (accum, car) => {
+          accum[car.state] = (accum[car.state] || 0) + 1;
+          return accum;
+        },
+        {}
+      );
     }
 
   })

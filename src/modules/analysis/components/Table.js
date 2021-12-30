@@ -53,4 +53,10 @@ export const Row = styled.tr`
     `
   }
 
+  ${
+    props => !!props.footer && css`
+      border-top: 1px solid ${ props => props.theme.site.highlightColor };
+    `
+  }
+
 `;

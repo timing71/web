@@ -117,6 +117,12 @@ export const Theme = {
       rowStyle: 'italic',
       rowColor: 'grey'
     },
+    'RET': {
+      color: 'grey',
+      rowBackground: ['#000000', '#202020'],
+      rowStyle: 'italic',
+      rowColor: 'grey'
+    },
     'N/S': {
       color: 'grey',
       rowBackground: ['#000000', '#202020'],

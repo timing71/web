@@ -50,7 +50,7 @@ export const DistancePrediction = observer(
           </span>
           <SubLine>
             <PossiblyPredictedValue
-              formatter={v => dayjs.duration(v).format('HH:mm:ss')}
+              formatter={v => dayjs.duration(v * 1000).format('HH:mm:ss')}
               {...prediction.time}
             /> / { ' ' }
             <PossiblyPredictedValue

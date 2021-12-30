@@ -4,6 +4,7 @@ import { Page } from '../../../components/Page';
 import { AnalysisProvider } from './context';
 import { Contents } from './Contents';
 import { Menu } from './Menu';
+import { FlagPanel } from './FlagPanel';
 
 
 const Container = styled.div`
@@ -17,7 +18,6 @@ const Container = styled.div`
 
 const Title = styled.div`
   grid-area: title;
-  border-right: 1px solid ${ props => props.theme.site.highlightColor };
 
   padding: 0.5rem 0.25rem;
   text-align: center;
@@ -28,8 +28,6 @@ const Title = styled.div`
 
 const MenuWrapper = styled.div`
   grid-area: menu;
-  border-right: 1px solid ${ props => props.theme.site.highlightColor };
-
   overflow: hidden;
 `;
 
@@ -39,6 +37,7 @@ export const AnalysisScreen = ({ analyser, manifest }) => {
       <AnalysisProvider analysis={analyser}>
         <Container>
           <Title>{manifest.name} - {manifest.description}</Title>
+          <FlagPanel />
           <MenuWrapper>
             <Menu />
           </MenuWrapper>

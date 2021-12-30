@@ -5,7 +5,7 @@ import { FlagState } from '../../racing';
 const StateSession = types.model({
   timeElapsed: types.optional(types.union(types.undefined, types.number), 0),
   timeRemain: types.optional(types.union(types.undefined, types.number), 0),
-  lapsRemain: types.optional(types.union(types.undefined, types.number), 0),
+  lapsRemain: types.optional(types.union(types.undefined, types.number), undefined),
   flagState: types.optional(types.enumeration(Object.values(FlagState)), FlagState.NONE)
 });
 

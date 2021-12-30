@@ -8,6 +8,7 @@ const Container = styled.div`
 
   padding: 0.5em;
   overflow: auto;
+  border-left: 1px solid ${ props => props.theme.site.highlightColor };
 `;
 
 export const Contents = () => {

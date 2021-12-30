@@ -9,10 +9,9 @@ const StateSession = types.model({
   flagState: types.optional(types.enumeration(Object.values(FlagState)), FlagState.NONE)
 });
 
-const StateCars = types.array(types.frozen(types.array));
 
 export const State = types.model({
-  cars: types.optional(StateCars, () => StateCars.create()),
+  cars: types.optional(types.frozen(), []),
   session: types.optional(StateSession, () => StateSession.create())
 }).actions(
   self => ({

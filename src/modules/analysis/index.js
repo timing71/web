@@ -56,7 +56,7 @@ const Analyser = types.model({
       const leaderLap = self.session.leaderLap;
       const now = Date.now();
       const timeDelta = now - self.latestTimestamp;
-      const lapsPerSecond = (leaderLap - 1) / (timeElapsed - timeDelta);
+      const lapsPerSecond = (leaderLap - 1) / (timeElapsed - (timeDelta / 1000));
 
       if (lapsRemain) {
         return {

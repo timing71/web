@@ -1,13 +1,11 @@
 import { applyPatch, applySnapshot } from 'mobx-state-tree';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router';
 import { useBroadcastChannel } from '../broadcastChannel';
 import { createAnalyser } from '../modules/analysis';
 import { AnalysisScreen } from '../modules/analysis/components/AnalysisScreen';
 import { PluginContext } from '../modules/pluginBridge';
 
-export const Analysis = () => {
-  const { serviceUUID } = useParams();
+export const Analysis = ({ match: { params: { serviceUUID } } }) => {
   const port = useContext(PluginContext);
 
   const [manifest, setManifest] = useState();

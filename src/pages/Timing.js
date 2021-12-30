@@ -1,6 +1,5 @@
 import deepEqual from "deep-equal";
 import { useCallback, useContext, useEffect, useState } from "react";
-import { useParams } from "react-router";
 import withGracefulUnmount from "../components/withGracefulUnmount";
 import { generateMessages } from "../modules/messages";
 import { PluginContext } from "../modules/pluginBridge";
@@ -20,9 +19,12 @@ const DEFAULT_STATE = {
   manifest: {}
 };
 
-const TimingInner = () => {
+const TimingInner = ({ match: { params } }) => {
 
-  const { serviceUUID } = useParams();
+  // FSR useParams() is now broken here; it uses the params from too high up
+  // in the tree so never gets a serviceUUID. Fortunately the match is provided
+  // directly to us as a direct descendent of a <Route> (in App.js).
+  const { serviceUUID } = params;
   const [service, setService] = useState(null);
   const [state, setState] = useState({ ...DEFAULT_STATE });
   const port = useContext(PluginContext);

@@ -40,6 +40,11 @@ export const Row = styled.tr`
   ${
     props => !!props.inProgress && css`
 
+    border: 2px solid ${ props => props.theme.site.highlightColor };
+    border-width: 0 2px;
+
+    background-color: #202020;
+
     & ${Cell} {
       color: ${ props => props.inProgress ? '#C0C0C0' : 'white' };
       font-style: ${ props => props.inProgress ? 'italic' : 'normal' };

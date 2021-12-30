@@ -13,6 +13,8 @@ import { State } from './state';
 
 const CURRENT_VERSION = 2;
 
+const MIN_LAPS_REQUIRED_FOR_PREDICTION = 10;
+
 const Analyser = types.model({
   cars: types.optional(Cars, () => Cars.create()),
   messages: types.optional(Messages, () => Messages.create()),
@@ -42,6 +44,49 @@ const Analyser = types.model({
       self.cars.reset();
       self.messages.reset();
       self.session.reset();
+    }
+  })
+).views(
+  self => ({
+    get distancePrediction() {
+      const { timeElapsed, timeRemain, lapsRemain } = self.state.session;
+      const leaderLap = self.session.leaderLap;
+      const now = Date.now();
+      const timeDelta = now - self.latestTimestamp;
+      const lapsPerSecond = (leaderLap - 1) / (timeElapsed - timeDelta);
+
+      if (lapsRemain) {
+        return {
+          laps: {
+            value: Math.max(0, lapsRemain),
+            predicted: false
+          },
+          time: {
+            value: leaderLap < MIN_LAPS_REQUIRED_FOR_PREDICTION ?
+              timeRemain ?
+                Math.max(0, timeRemain) :
+                timeRemain :
+              Math.max(0, timeRemain || (lapsRemain / lapsPerSecond)),
+            predicted: !!timeRemain
+          }
+        };
+      }
+      if (timeRemain !== undefined) {
+        return {
+          laps: {
+            value: leaderLap < MIN_LAPS_REQUIRED_FOR_PREDICTION ?
+              null :
+              Math.max(0, Math.ceil(timeRemain * lapsPerSecond)) - 1,
+            predicted: true
+          },
+          time: {
+            value: Math.max(0, timeRemain),
+            predicted: false
+          }
+        };
+      }
+
+      return null;
     }
   })
 );

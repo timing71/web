@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
 import { Table } from "../Table";
 import { CurrentFlag } from "./CurrentFlag";
+import { DistancePrediction } from "./DistancePrediction";
 import { FlagHistoryChart } from "./FlagHistoryChart";
 import { FlagHistoryTable } from "./FlagHistoryTable";
 
@@ -24,6 +25,7 @@ export const SessionStats = () => {
       <Container>
         <div>
           <h3>Distance prediction</h3>
+          <DistancePrediction />
         </div>
         <div>
           <h3>Cars</h3>

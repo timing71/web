@@ -44,6 +44,23 @@ describe('Session', () => {
 
   });
 
+  it('calculates aggregated flag statistics', () => {
+    const session = Session.create({
+      flagStats: [
+        { flag: FlagState.GREEN, startLap: 0, startTime: 0, endLap: 5, endTime: 5000 },
+        { flag: FlagState.YELLOW, startLap: 5, startTime: 5000, endLap: 7, endTime: 8000 },
+        { flag: FlagState.GREEN, startLap: 7, startTime: 8000 },
+      ]
+    });
+
+    const agg = session.aggregateFlagStats;
+
+    expect(agg[FlagState.GREEN].count).toEqual(2);
+    expect(agg[FlagState.GREEN].laps).toEqual(5);
+    expect(agg[FlagState.YELLOW].time).toEqual(3000);
+
+  });
+
   it('can be reset', () => {
     const session = Session.create({ flagStats: [{ flag: FlagState.RED, startLap: 5, startTime: 5 }] });
 

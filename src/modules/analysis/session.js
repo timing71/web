@@ -60,4 +60,54 @@ export const Session = types.model({
       self.leaderLap = 0;
     }
   })
+).views(
+  self => ({
+    get aggregateFlagStats() {
+      return self.flagStats.reduce(
+        (agg, stat) => {
+          if (stat.endTime) {
+            if (agg[stat.flag]) {
+              const prev = agg[stat.flag];
+              agg[stat.flag] = {
+                count: prev.count + 1,
+                time: prev.time + (stat.endTime - stat.startTime),
+                laps: prev.laps + ((stat.endLap || stat.startLap) - stat.startLap)
+              };
+            }
+            else {
+              agg[stat.flag] = {
+                count: 1,
+                time: stat.endTime - stat.startTime,
+                laps: (stat.endLap || stat.startLap) - stat.startLap
+              };
+            }
+          }
+          else {
+            if (agg[stat.flag]) {
+              const prev = agg[stat.flag];
+              agg[stat.flag] = {
+                count: prev.count + 1,
+                time: prev.time,
+                laps: prev.laps,
+                additionalTimeFrom: stat.startTime,
+                additionalLapsFrom: stat.startLap
+              };
+            }
+            else {
+              agg[stat.flag] = {
+                count: 1,
+                time: 0,
+                laps: 0,
+                additionalTimeFrom: stat.startTime,
+                additionalLapsFrom: stat.startLap
+              };
+            }
+          }
+
+          return agg;
+        },
+        {}
+      );
+    }
+  })
 );

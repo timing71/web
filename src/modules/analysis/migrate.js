@@ -105,6 +105,8 @@ const MIGRATIONS = {
 
     migrated.latestTimestamp = oldState.session.currentTimestamp * 1000;
 
+    migrated.state = oldState.state;
+
     return migrated;
 
   }

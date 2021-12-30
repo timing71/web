@@ -9,6 +9,7 @@ import { migrateAnalysisState } from './migrate';
 import { PluginContext } from '../pluginBridge';
 import { useServiceState } from '../../components/ServiceContext';
 import { useBroadcastChannel } from '../../broadcastChannel';
+import { State } from './state';
 
 const CURRENT_VERSION = 2;
 
@@ -16,6 +17,7 @@ const Analyser = types.model({
   cars: types.optional(Cars, () => Cars.create()),
   messages: types.optional(Messages, () => Messages.create()),
   session: types.optional(Session, () => Session.create()),
+  state: types.optional(State, () => State.create()),
   latestTimestamp: types.optional(types.Date, () => new Date()),
   version: types.optional(types.literal(CURRENT_VERSION), CURRENT_VERSION)
 }).actions(
@@ -24,6 +26,8 @@ const Analyser = types.model({
       self.cars.update(oldState, newState);
       self.messages.update(oldState, newState);
       self.session.update(oldState, newState);
+
+      self.state.update(oldState, newState);
 
       self.latestTimestamp = timestamp || new Date();
 

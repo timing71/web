@@ -13,7 +13,7 @@ const AggregateRow = ({ flag, count, time, laps, additionalLapsFrom, additionalT
 
   const [extraTime, setExtraTime] = useState(additionalTimeFrom ? ((latestTimestamp || Date.now()) - additionalTimeFrom) : 0);
 
-  const extraLaps = additionalLapsFrom ? Math.max(0, (leaderLap - 1 - additionalLapsFrom)) : 0;
+  const extraLaps = additionalLapsFrom !== undefined ? Math.max(0, (leaderLap - 1 - additionalLapsFrom)) : 0;
 
   const updateExtraTime = useCallback(
     () => {

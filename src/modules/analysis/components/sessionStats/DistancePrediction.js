@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import { observer } from 'mobx-react-lite';
 
 import { useAnalysis } from "../context";
-import { observer } from 'mobx-react-lite';
 
 dayjs.extend(duration);
 
@@ -42,7 +42,7 @@ export const DistancePrediction = observer(
       return (
         <Container>
           <span>
-            Lap <b>{leaderLap + 1}</b> / {' '}
+            Lap <b>{leaderLap}</b> / {' '}
             <PossiblyPredictedValue
               formatter={v => v + leaderLap}
               {...prediction.laps}

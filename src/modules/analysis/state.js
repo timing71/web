@@ -12,12 +12,14 @@ const StateSession = types.model({
 
 export const State = types.model({
   cars: types.optional(types.frozen(), []),
-  session: types.optional(StateSession, () => StateSession.create())
+  session: types.optional(StateSession, () => StateSession.create()),
+  lastUpdated: types.union(types.Date, types.undefined)
 }).actions(
   self => ({
     update(oldState, newState) {
       self.cars = newState.cars;
       self.session = newState.session;
+      self.lastUpdated = newState.lastUpdated;
     }
   })
 );

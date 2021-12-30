@@ -12,7 +12,7 @@ export const Analysis = ({ match: { params: { serviceUUID } } }) => {
 
   const { data: channelData } = useBroadcastChannel(`analysis/${serviceUUID}`);
 
-  const analyser = useRef(createAnalyser());
+  const analyser = useRef(createAnalyser(undefined, true));
   const initialised = useRef(false);
 
   useEffect(

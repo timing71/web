@@ -24,94 +24,116 @@ const Analyser = types.model({
   manifest: types.optional(Manifest, () => Manifest.create()),
   latestTimestamp: types.optional(types.Date, () => new Date()),
   version: types.optional(types.literal(CURRENT_VERSION), CURRENT_VERSION)
-}).actions(
-  self => ({
-    updateState(oldState, newState, timestamp) {
-      self.cars.update(oldState, newState);
-      self.messages.update(oldState, newState);
-      self.session.update(oldState, newState);
+}).extend(
+  self => {
 
-      self.state.update(oldState, newState);
-      self.manifest = newState.manifest;
+    let liveMode = false;
 
-      self.latestTimestamp = timestamp || new Date();
+    return {
+      actions: {
+        updateState: (oldState, newState, timestamp) => {
+          self.cars.update(oldState, newState);
+          self.messages.update(oldState, newState);
+          self.session.update(oldState, newState);
 
-      const maxLap = Math.max(...self.cars.map(c => c.currentLap));
-      if (maxLap > 0) {
-        self.session.setLeaderLap(maxLap);
-      }
+          self.state.update(oldState, newState);
+          self.manifest = newState.manifest;
 
-    },
+          self.latestTimestamp = timestamp || new Date();
 
-    reset() {
-      self.cars.reset();
-      self.messages.reset();
-      self.session.reset();
-    }
-  })
-).views(
-  self => ({
-    get distancePrediction() {
-      const { timeElapsed, timeRemain, lapsRemain } = self.state.session;
-      const leaderLap = self.session.leaderLap;
-      const now = Date.now();
-      const timeDelta = now - self.latestTimestamp;
-      const lapsPerSecond = (leaderLap - 1) / (timeElapsed - (timeDelta / 1000));
-
-      if (lapsRemain) {
-        return {
-          laps: {
-            value: Math.max(0, lapsRemain),
-            predicted: false
-          },
-          time: {
-            value: leaderLap < MIN_LAPS_REQUIRED_FOR_PREDICTION ?
-              timeRemain ?
-                Math.max(0, timeRemain) :
-                timeRemain :
-              Math.max(0, timeRemain || (lapsRemain / lapsPerSecond)),
-            predicted: !!timeRemain
+          const maxLap = Math.max(...self.cars.map(c => c.currentLap));
+          if (maxLap > 0) {
+            self.session.setLeaderLap(maxLap);
           }
-        };
-      }
-      if (timeRemain !== undefined) {
-        return {
-          laps: {
-            value: leaderLap < MIN_LAPS_REQUIRED_FOR_PREDICTION ?
-              null :
-              Math.max(0, Math.ceil(timeRemain * lapsPerSecond)) - 1,
-            predicted: true
-          },
-          time: {
-            value: Math.max(0, timeRemain),
-            predicted: false
+
+        },
+
+        reset: () => {
+          self.cars.reset();
+          self.messages.reset();
+          self.session.reset();
+        },
+
+        setLive(isLive) {
+          liveMode = isLive;
+        }
+      },
+      views: {
+        get distancePrediction() {
+          const { timeElapsed, timeRemain, lapsRemain } = self.state.session;
+          const leaderLap = self.session.leaderLap;
+          const now = Date.now();
+          const timeDelta = now - self.latestTimestamp;
+          const lapsPerSecond = (leaderLap - 1) / (timeElapsed - (timeDelta / 1000));
+
+          if (lapsRemain) {
+            return {
+              laps: {
+                value: Math.max(0, lapsRemain),
+                predicted: false
+              },
+              time: {
+                value: leaderLap < MIN_LAPS_REQUIRED_FOR_PREDICTION ?
+                  timeRemain ?
+                    Math.max(0, timeRemain) :
+                    timeRemain :
+                  Math.max(0, timeRemain || (lapsRemain / lapsPerSecond)),
+                predicted: !!timeRemain
+              }
+            };
           }
-        };
+          if (timeRemain !== undefined) {
+            return {
+              laps: {
+                value: leaderLap < MIN_LAPS_REQUIRED_FOR_PREDICTION ?
+                  null :
+                  Math.max(0, Math.ceil(timeRemain * lapsPerSecond)) - 1,
+                predicted: true
+              },
+              time: {
+                value: Math.max(0, timeRemain),
+                predicted: false
+              }
+            };
+          }
+
+          return null;
+        },
+
+        get live() {
+          return liveMode;
+        },
+
+        referenceTimestamp() {
+          return liveMode ? new Date() : self.latestTimestamp;
+        },
       }
+    };
 
-      return null;
-    }
-  })
-);
+  });
 
-export const createAnalyser = (initialState) => {
-  if (initialState === undefined || initialState.version === CURRENT_VERSION ) {
-    return Analyser.create(initialState);
+export const createAnalyser = (initialState, live) => {
+  if (initialState === undefined || initialState?.version === CURRENT_VERSION) {
+    const a = Analyser.create(initialState);
+    a.setLive(live);
+    return a;
   }
   else if ((initialState.version || 0) < CURRENT_VERSION) {
-    return Analyser.create(
+    const a = Analyser.create(
       migrateAnalysisState(initialState)
     );
+    a.setLive(live);
+    return a;
   }
 };
 
-export const Analysis = ({ serviceUUID }) => {
+export const Analysis = ({ analysisState, live=false, serviceUUID }) => {
 
   const port = useContext(PluginContext);
   const { state } = useServiceState();
   const { emit } = useBroadcastChannel(`analysis/${serviceUUID}`);
 
-  const analyser = useRef(createAnalyser());
+  const analyser = useRef(createAnalyser(analysisState, live));
   const prevState = useRef(state);
 
   const latestSnapshot = useRef();
@@ -119,7 +141,6 @@ export const Analysis = ({ serviceUUID }) => {
   useEffect(
     () => {
       if (analyser.current) {
-
         onSnapshot(
           analyser.current,
           (state) => {

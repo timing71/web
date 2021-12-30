@@ -27,6 +27,7 @@ const TimingInner = ({ match: { params } }) => {
   const { serviceUUID } = params;
   const [service, setService] = useState(null);
   const [state, setState] = useState({ ...DEFAULT_STATE });
+  const [initialAnalysisState, setInitialAnalysisState] = useState(null);
   const port = useContext(PluginContext);
 
   // useEffect(
@@ -49,6 +50,7 @@ const TimingInner = ({ match: { params } }) => {
         msg => {
           setService(msg.service);
           setState(msg.state);
+          setInitialAnalysisState(msg.analysis.state);
         }
       );
 
@@ -109,7 +111,7 @@ const TimingInner = ({ match: { params } }) => {
 
   const [ delay ] = useSetting('delay');
 
-  if (service && state) {
+  if (service && state && initialAnalysisState) {
     const ServiceProvider = mapServiceProvider(service.source);
 
     if (!ServiceProvider) {
@@ -121,7 +123,11 @@ const TimingInner = ({ match: { params } }) => {
         <ServiceStateContext.Provider value={{ state, updateState }}>
           <ServiceProvider service={service} />
           <Debouncer>
-            <Analysis serviceUUID={serviceUUID} />
+            <Analysis
+              analysisState={initialAnalysisState}
+              live
+              serviceUUID={serviceUUID}
+            />
             <StateStorer serviceUUID={serviceUUID} />
             <StateRetriever
               delay={delay * 1000}

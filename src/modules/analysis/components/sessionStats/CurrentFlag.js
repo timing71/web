@@ -15,13 +15,13 @@ export const CurrentFlag = observer(
 
     const current = analysis.session.flagStats[analysis.session.flagStats.length - 1];
 
-    const [duration, setDuration] = useState(current ? Math.max(0, analysis.latestTimestamp - current.startTime) : 0);
+    const [duration, setDuration] = useState(current ? Math.max(0, analysis.referenceTimestamp() - current.startTime) : 0);
 
     const updateDuration = useCallback(
       () => {
-        current && setDuration(Math.max(0, analysis.latestTimestamp - current.startTime));
+        current && setDuration(Math.max(0, analysis.referenceTimestamp() - current.startTime));
       },
-      [analysis.latestTimestamp, current]
+      [analysis, current]
     );
 
     useEffect(

@@ -26,6 +26,8 @@ export const FlagPanel = observer(
     const analysis = useAnalysis();
     const session = analysis.state.session;
 
+    const delta = analysis.referenceTimestamp() - analysis.state.lastUpdated;
+
     return (
       <Outer>
         <Panel flag={session.flagState}>
@@ -33,7 +35,7 @@ export const FlagPanel = observer(
             session.lapsRemain !== undefined ? (
               <span>{session.lapsRemain} lap{session.lapsRemain === 1 ? '' : 's'} remaining</span>
             ) : (
-              <span>{dayjs.duration(1000 * session.timeRemain).format('HH:mm:ss')} remaining</span>
+              <span>{dayjs.duration((1000 * session.timeRemain) - delta).format('HH:mm:ss')} remaining</span>
             )
           }
         </Panel>

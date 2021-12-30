@@ -7,7 +7,8 @@ const MIGRATIONS = {
     const migrated = {
       cars: { cars: {} },
       session: {},
-      messages: {}
+      messages: {},
+      manifest: oldState.service
     };
 
     const INVERSE_FLAG_MAP = {

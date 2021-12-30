@@ -10,6 +10,7 @@ import { PluginContext } from '../pluginBridge';
 import { useServiceState } from '../../components/ServiceContext';
 import { useBroadcastChannel } from '../../broadcastChannel';
 import { State } from './state';
+import { Manifest } from './manifest';
 
 const CURRENT_VERSION = 2;
 
@@ -20,6 +21,7 @@ const Analyser = types.model({
   messages: types.optional(Messages, () => Messages.create()),
   session: types.optional(Session, () => Session.create()),
   state: types.optional(State, () => State.create()),
+  manifest: types.optional(Manifest, () => Manifest.create()),
   latestTimestamp: types.optional(types.Date, () => new Date()),
   version: types.optional(types.literal(CURRENT_VERSION), CURRENT_VERSION)
 }).actions(
@@ -30,6 +32,7 @@ const Analyser = types.model({
       self.session.update(oldState, newState);
 
       self.state.update(oldState, newState);
+      self.manifest = newState.manifest;
 
       self.latestTimestamp = timestamp || new Date();
 

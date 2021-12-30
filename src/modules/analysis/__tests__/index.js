@@ -15,6 +15,8 @@ describe('Analyser', () => {
     const a = createAnalyser(LM24);
 
     expect(a.latestTimestamp).toEqual(new Date('2021-08-22T14:01:18.128Z'));
+    expect(a.manifest.name).toEqual('Le Mans 24 Hours');
+    expect(a.manifest.colSpec.length).toEqual(20);
 
     expect(a.cars.count).toEqual(61);
 

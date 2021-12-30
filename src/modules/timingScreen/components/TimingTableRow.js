@@ -7,7 +7,7 @@ const blink = keyframes`
 `;
 
 const Position = styled.td`
-  color: #54FFFF;
+  color: ${ props => props.theme.site.highlightColor };
   text-align: right;
 `;
 

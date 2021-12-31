@@ -5,6 +5,8 @@
   "author": "James Muscat <jamesremuscat@gmail.com>",
   "license": "AGPL-3.0-or-later",
   "dependencies": {
+    "@nivo/bar": "^0.76.0",
+    "@nivo/core": "^0.76.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -81,8 +83,8 @@
     "@storybook/node-logger": "^6.4.9",
     "@storybook/preset-create-react-app": "^3.2.0",
     "@storybook/react": "^6.4.9",
-    "babel-loader": "8.1.0",
     "babel-jest": "^26.0.0",
+    "babel-loader": "8.1.0",
     "babel-plugin-styled-components": "^1.13.2",
     "customize-cra": "^1.0.0",
     "react-app-rewired": "^2.1.8",

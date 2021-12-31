@@ -6,7 +6,13 @@ const Driver = types.union(
     idx: types.identifierNumber,
     car: types.reference(types.late(() => Car)),
     name: types.string
-  }),
+  }).views(
+    self => ({
+      get stints() {
+        return self.car.stints.filter(s => s.driver === self);
+      }
+    })
+  ),
   types.undefined
 );
 
@@ -62,6 +68,12 @@ export const Stint = types.model({
   self => ({
     get inProgress() {
       return !self.endLap && !self.endTime;
+    },
+    get durationSeconds() {
+      return self.endTime ? (self.endTime - self.startTime) / 1000 : null;
+    },
+    get durationLaps() {
+      return self.endLap ? self.endLap - self.startLap : null;
     }
   })
 );

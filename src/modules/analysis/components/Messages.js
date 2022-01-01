@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite';
+import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import { Message } from '../../../components/Message';
 import { useAnalysis } from './context';
@@ -34,32 +35,37 @@ export const Messages = observer(
     const messages = analysis.messages.messages;
 
     return (
-      <Container>
-        <MessageTableContainer>
-          <table>
-            <tbody>
-              {
-                messages.map(
-                  (msg, idx) => (
-                    <Message
-                      key={idx}
-                      message={[
-                        msg.timestamp,
-                        msg.category,
-                        msg.message,
-                        msg.style
-                      ]}
-                    />
+      <>
+        <Helmet>
+          <title>Messages</title>
+        </Helmet>
+        <Container>
+          <MessageTableContainer>
+            <table>
+              <tbody>
+                {
+                  messages.map(
+                    (msg, idx) => (
+                      <Message
+                        key={idx}
+                        message={[
+                          msg.timestamp,
+                          msg.category,
+                          msg.message,
+                          msg.style
+                        ]}
+                      />
+                    )
                   )
-                )
-              }
-            </tbody>
-          </table>
-        </MessageTableContainer>
-        <FiltersContainer>
-          <h3>Filters</h3>
-        </FiltersContainer>
-      </Container>
+                }
+              </tbody>
+            </table>
+          </MessageTableContainer>
+          <FiltersContainer>
+            <h3>Filters</h3>
+          </FiltersContainer>
+        </Container>
+      </>
     );
   }
 );

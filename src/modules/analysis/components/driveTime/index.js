@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import { useAnalysis } from "../context";
 import dayjs from '../../../../datetime';
+import { Helmet } from "react-helmet-async";
 
 const Container = styled.div`
   display: flex;
@@ -153,50 +154,55 @@ export const DriveTime = observer(
     drivers.sort((a, b) => b.totalTime - a.totalTime);
 
     return (
-      <Container>
-        <h3>Total drive time per driver</h3>
-        <ChartContainer>
-          <WidthResponsiveWrapper>
-            {
-              ({ width }) => (
-                <BarCanvas
-                  axisBottom={{
-                    tickSize: 5,
-                    tickPadding: 5,
-                    tickRotation: 0,
-                    legend: 'Drive time',
-                    legendPosition: 'middle',
-                    legendOffset: 32
-                  }}
-                  axisLeft={{
-                    tickSize: 5,
-                    tickPadding: 5,
-                    tickRotation: 0
-                  }}
-                  colors={[ '#00D000', '#008000' ]}
-                  data={drivers}
-                  enableGridX={false}
-                  enableGridY={false}
-                  enableLabel={false}
-                  height={drivers.length * 48}
-                  indexBy={d => `${d.name} (#${d.car})`}
-                  keys={[...Array(mostStints + 1).keys()]}
-                  layers={['axes', 'bars', Totals, 'markers']}
-                  layout='horizontal'
-                  margin={{ top: 10, right: 150, bottom: 10, left: 240 }}
-                  minValue={0}
-                  padding={0.25}
-                  theme={theme}
-                  tooltip={Tooltip}
-                  valueFormat={(v) => dayjs.duration(v * 1000).format('HH:mm:ss')}
-                  width={width}
-                />
-              )
-            }
-          </WidthResponsiveWrapper>
-        </ChartContainer>
-        <small>Drive time excludes time in pit lane.</small>
-      </Container>
+      <>
+        <Helmet>
+          <title>Total drive time</title>
+        </Helmet>
+        <Container>
+          <h3>Total drive time per driver</h3>
+          <ChartContainer>
+            <WidthResponsiveWrapper>
+              {
+                ({ width }) => (
+                  <BarCanvas
+                    axisBottom={{
+                      tickSize: 5,
+                      tickPadding: 5,
+                      tickRotation: 0,
+                      legend: 'Drive time',
+                      legendPosition: 'middle',
+                      legendOffset: 32
+                    }}
+                    axisLeft={{
+                      tickSize: 5,
+                      tickPadding: 5,
+                      tickRotation: 0
+                    }}
+                    colors={[ '#00D000', '#008000' ]}
+                    data={drivers}
+                    enableGridX={false}
+                    enableGridY={false}
+                    enableLabel={false}
+                    height={drivers.length * 48}
+                    indexBy={d => `${d.name} (#${d.car})`}
+                    keys={[...Array(mostStints + 1).keys()]}
+                    layers={['axes', 'bars', Totals, 'markers']}
+                    layout='horizontal'
+                    margin={{ top: 10, right: 150, bottom: 10, left: 240 }}
+                    minValue={0}
+                    padding={0.25}
+                    theme={theme}
+                    tooltip={Tooltip}
+                    valueFormat={(v) => dayjs.duration(v * 1000).format('HH:mm:ss')}
+                    width={width}
+                  />
+                )
+              }
+            </WidthResponsiveWrapper>
+          </ChartContainer>
+          <small>Drive time excludes time in pit lane.</small>
+        </Container>
+      </>
     );
   }
 );

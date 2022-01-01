@@ -1,6 +1,7 @@
 import { DriveTime } from './driveTime';
 import { Messages } from './Messages';
 import { SessionStats } from './sessionStats';
+import { StrategyOverview } from './strategy';
 
 export const routes = [
   {
@@ -10,7 +11,8 @@ export const routes = [
   },
   {
     path: '/strategy',
-    name: 'Strategy overview'
+    name: 'Strategy overview',
+    component: StrategyOverview
   },
   {
     path: '/messages',

@@ -11,6 +11,8 @@ import { useServiceState } from '../../components/ServiceContext';
 import { useBroadcastChannel } from '../../broadcastChannel';
 import { State } from './state';
 import { Manifest } from './manifest';
+import { StatExtractor } from '../../statExtractor';
+import { Stat } from '../../racing';
 
 const CURRENT_VERSION = 2;
 
@@ -107,6 +109,13 @@ const Analyser = types.model({
         referenceTimestamp() {
           return liveMode ? new Date() : self.latestTimestamp;
         },
+
+        get carsInRunningOrder() {
+          const se = new StatExtractor(self.manifest.colSpec);
+          return self.state.cars.map(
+            c => self.cars.get(se.get(c, Stat.NUM))
+          );
+        }
       }
     };
 

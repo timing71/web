@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { useAnalysis } from "../context";
 import dayjs from '../../../../datetime';
 import { Helmet } from "react-helmet-async";
+import { theme } from "../../charts";
 
 const Container = styled.div`
   display: flex;
@@ -49,12 +50,6 @@ const Tooltip = ({ data, id, value }) => {
       <div>Total: {dayjs.duration(data.totalTime * 1000).format('HH:mm:ss')}</div>
     </TooltipWrapper>
   );
-};
-
-const theme = {
-  textColor: '#54FFFF',
-  fontSize: 14,
-  fontFamily: 'Play,Verdana'
 };
 
 const Totals = (ctx, { bars = [] }) => {

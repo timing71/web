@@ -11,6 +11,9 @@ const Container = styled.div`
   grid-template-rows: auto minmax(0, 1fr);
   grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
 
+  overflow: hidden;
+  height: 100%;
+
   & h3 {
     margin: 0;
   }
@@ -49,6 +52,7 @@ const TypeSelector = styled.select`
 export const StrategyOverview = () => {
 
   const [displayMode, setDisplayMode] = useState(DisplayMode.LAPS);
+  const [scale, setScale] = useState(32);
   const Chart = chartType[displayMode];
 
   return (
@@ -72,7 +76,7 @@ export const StrategyOverview = () => {
           </TypeSelector>
         </div>
         <ChartContainer>
-          <Chart />
+          <Chart scale={scale} />
         </ChartContainer>
       </Container>
     </>

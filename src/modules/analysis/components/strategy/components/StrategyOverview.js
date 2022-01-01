@@ -21,10 +21,18 @@ const Container = styled.div`
 `;
 
 const ChartContainer = styled.div`
-  overflow: auto;
-  grid-column: 2;
+  overflow-y: auto;
+  grid-column: 1 / span 2;
 
   padding: 0.5em;
+
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+`;
+
+const ChartInnerContainer = styled.div`
+  grid-column: 2;
+  overflow-x: scroll;
 `;
 
 const chartType = {
@@ -76,9 +84,11 @@ export const StrategyOverview = () => {
             <option value={DisplayMode.TIME}>Time</option>
           </TypeSelector>
         </div>
-        <CarsList />
         <ChartContainer>
-          <Chart scale={scale} />
+          <CarsList />
+          <ChartInnerContainer>
+            <Chart scale={scale} />
+          </ChartInnerContainer>
         </ChartContainer>
       </Container>
     </>

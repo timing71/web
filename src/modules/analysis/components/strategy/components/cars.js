@@ -46,7 +46,7 @@ export const CarsList = () => {
   return (
     <svg
       height={overallHeight}
-      style={{ marginTop: 33 }}
+      style={{ marginTop: 26, marginBottom: 30 }}
       width={260}
     >
       {

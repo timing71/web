@@ -1,3 +1,4 @@
+import { darken } from 'polished';
 import styled from 'styled-components';
 
 const StintBox = styled.rect.attrs({
@@ -5,7 +6,28 @@ const StintBox = styled.rect.attrs({
   y: 2,
   rx: 3
 })`
-  fill: ${ props => (props.car && props.theme.classColours[(props.car.raceClass || '').toLowerCase().replace(/[-/ ]/, '')]) || '#808080' };
+  fill: ${
+    props => (
+      props.car && darken(
+        props.inProgress ? 0.25 : 0.35,
+        props.theme.classColours[(props.car.raceClass || '').toLowerCase().replace(/[-/ ]/, '')] || '#808080'
+      )
+    )
+  };
+
+  &:hover {
+    fill: ${
+      props => (
+        props.car && darken(
+          props.inProgress ? 0.15 : 0.25,
+          props.theme.classColours[(props.car.raceClass || '').toLowerCase().replace(/[-/ ]/, '')] || '#808080'
+        )
+      )
+    };
+  }
+
+  user-select: none;
+  cursor: pointer;
 `;
 
 const StintText = styled.text`
@@ -19,6 +41,7 @@ const DriverName = styled(StintText).attrs({
   dominantBaseline: 'hanging'
 })`
   font-weight: bold;
+  clip-path: ${ props => `polygon(0 0, 0 18px, ${props.overallWidth / 2}px 18px, ${props.overallWidth / 2}px 0)` };
 `;
 
 const LapCount = styled(StintText).attrs({
@@ -38,9 +61,10 @@ const Stint = ({ height, stint, xScale }) => {
       <StintBox
         car={stint.car}
         height={height - 4}
+        inProgress={stint.inProgress}
         width={width}
       />
-      <DriverName>
+      <DriverName overallWidth={width}>
         { stint.driver.name }
       </DriverName>
       <LapCount x={width - 8}>

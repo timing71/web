@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const StintBox = styled.rect.attrs({
   x: 3,
   y: 2,
-  rx: 5
+  rx: 3
 })`
   fill: ${ props => (props.car && props.theme.classColours[(props.car.raceClass || '').toLowerCase().replace(/[-/ ]/, '')]) || '#808080' };
 `;
@@ -31,7 +31,7 @@ const Stint = ({ height, stint, xScale }) => {
 
   const laps = stint.inProgress ? 1 + stint.car.currentLap - stint.startLap : stint.durationLaps;
 
-  const width = xScale(laps) - 6;
+  const width = Math.max(2, xScale(laps) - 6);
 
   return (
     <g transform={`translate(${xScale(stint.startLap - 1)}, 0)`}>

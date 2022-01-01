@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useAnalysis } from "../../context";
 
 const CarBox = styled.rect.attrs(
   props => ({
@@ -6,7 +7,7 @@ const CarBox = styled.rect.attrs(
     width: 250,
     x: 0,
     y: 0,
-    rx: 5
+    rx: 3
   })
 )`
   stroke: ${ props => (props.car && props.theme.classColours[(props.car.raceClass || '').toLowerCase().replace(/[-/ ]/, '')]) || '#C0C0C0' };
@@ -36,44 +37,51 @@ const Detail = styled.text.attrs(
   fill: white;
 `;
 
-export const carsLayer = (args) => {
-  const { bars } = args;
+export const CarsList = () => {
+  const analysis = useAnalysis();
+  const cars = analysis.carsInRunningOrder;
+
+  const overallHeight = cars.length * 72;
+
   return (
-    <g className='cars-layer'>
+    <svg
+      height={overallHeight}
+      style={{ marginTop: 33 }}
+      width={260}
+    >
       {
-        bars.map(
-          bar => {
-            const car = bar.data.data;
-            return (
+        cars.map(
+          (car, idx) => (
+            (
               <g
                 key={`car-${car.raceNum}`}
-                transform={`translate(-260, ${bar.y})`}
+                transform={`translate(0, ${(idx * 71) + 4})`}
               >
                 <CarBox
                   car={car}
-                  height={bar.height}
+                  height={64}
                 />
                 <CarNum
                   car={car}
-                  y={bar.height / 2}
+                  y={32}
                 />
                 <Detail
                   x={60}
-                  y={18}
+                  y={20}
                 >
                   {car.teamName}
                 </Detail>
                 <Detail
                   x={60}
-                  y={bar.height - 18}
+                  y={44}
                 >
                   {car.make}
                 </Detail>
               </g>
-            );
-          }
+            )
+          )
         )
       }
-    </g>
+    </svg>
   );
 };

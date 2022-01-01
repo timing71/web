@@ -3,13 +3,14 @@ import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
 
 import { DisplayMode } from '../constants';
+import { CarsList } from './cars';
 import { LapsChart } from './LapsChart';
 import { TimeChart } from './TimeChart';
 
 const Container = styled.div`
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
-  grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+  grid-template-columns: 260px minmax(0, 1fr);
 
   overflow: hidden;
   height: 100%;
@@ -21,7 +22,7 @@ const Container = styled.div`
 
 const ChartContainer = styled.div`
   overflow: auto;
-  grid-column: 1 / span 2;
+  grid-column: 2;
 
   padding: 0.5em;
 `;
@@ -75,6 +76,7 @@ export const StrategyOverview = () => {
             <option value={DisplayMode.TIME}>Time</option>
           </TypeSelector>
         </div>
+        <CarsList />
         <ChartContainer>
           <Chart scale={scale} />
         </ChartContainer>

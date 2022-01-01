@@ -2,7 +2,6 @@ import { Bar } from "@nivo/bar";
 import { observer } from "mobx-react-lite";
 import { theme } from "../../../charts";
 import { useAnalysis } from "../../context";
-import { carsLayer } from "./cars";
 import { stintsLayer } from "./stints";
 
 export const LapsChart = observer(
@@ -14,11 +13,13 @@ export const LapsChart = observer(
     const height = cars.length * 72;
     const width = (Math.ceil(analysis.session.leaderLap / 10) * 10 * scale) + 250;
 
+    const tickValues = [...Array(Math.ceil(analysis.session.leaderLap / 10)).keys()].map(t => (t + 1) * 10);
+
     const lapsAxis = {
       tickSize: 5,
       tickPadding: 5,
       tickRotation: 0,
-      tickValues: [...Array(Math.ceil(analysis.session.leaderLap / 10)).keys()].map(t => (t + 1) * 10)
+      tickValues
     };
 
     return (
@@ -27,12 +28,15 @@ export const LapsChart = observer(
         axisLeft={null}
         axisTop={lapsAxis}
         data={cars}
+        enableGridX={true}
+        enableGridY={false}
+        gridXValues={tickValues}
         height={height}
         indexBy={'raceNum'}
         keys={['currentLap']}
-        layers={['grid', 'axes', carsLayer, stintsLayer]}
+        layers={['grid', 'axes', stintsLayer]}
         layout='horizontal'
-        margin={{ top: 30, right: 30, bottom: 30, left: 260 }}
+        margin={{ top: 20, right: 30, bottom: 30, left: 0 }}
         maxValue={Math.ceil(analysis.session.leaderLap / 10) * 10}
         minValue={0}
         theme={theme}

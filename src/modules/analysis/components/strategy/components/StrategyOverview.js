@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
 
 import { DisplayMode } from '../constants';
 import { CarsList } from './cars';
@@ -51,10 +53,39 @@ const TypeSelector = styled.select`
   border: 1px solid ${ props => props.theme.site.highlightColor };
   border-radius: 0.25em;
 
-  margin-left: 1em;
-
   &:focus-visible {
     outline: none;
+  }
+`;
+
+const Controls = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+
+  & div {
+    flex-grow: 1;
+  }
+
+  label {
+    margin: 0 0.5em;
+  }
+`;
+
+const Control = styled.div`
+  display: flex;
+  align-items: center;
+
+  .rc-slider-track {
+    background-color: ${ props => props.theme.site.highlightColor };
+  }
+
+  .rc-slider-rail {
+    background-color: #808080;
+  }
+
+  .rc-slider-handle {
+    border-color: ${ props => props.theme.site.highlightColor };
+    background-color: ${ props => props.theme.site.highlightColor };
   }
 `;
 
@@ -71,19 +102,33 @@ export const StrategyOverview = () => {
       </Helmet>
       <Container>
         <h3>Strategy overview</h3>
-        <div>
-          <label htmlFor='chart-type'>
-            X-axis shows:
-          </label>
-          <TypeSelector
-            id='chart-type'
-            onChange={(e) => setDisplayMode(e.target.value)}
-            value={displayMode}
-          >
-            <option value={DisplayMode.LAPS}>Laps</option>
-            <option value={DisplayMode.TIME}>Time</option>
-          </TypeSelector>
-        </div>
+        <Controls>
+          <Control>
+            <label htmlFor='chart-type'>
+              X-axis shows:
+            </label>
+            <TypeSelector
+              id='chart-type'
+              onChange={(e) => setDisplayMode(e.target.value)}
+              value={displayMode}
+            >
+              <option value={DisplayMode.LAPS}>Laps</option>
+              <option value={DisplayMode.TIME}>Time</option>
+            </TypeSelector>
+          </Control>
+
+          <Control>
+            <label>
+              Scale:
+            </label>
+            <Slider
+              max={40}
+              min={10}
+              onChange={setScale}
+              value={scale}
+            />
+          </Control>
+        </Controls>
         <ChartContainer>
           <CarsList />
           <ChartInnerContainer>

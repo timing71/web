@@ -133,7 +133,7 @@ export const DriveTime = observer(
               (s, idx) => {
                 let duration = 0;
                 if (s.inProgress) {
-                  duration = (analysis.referenceTime - s.startTime) / 1000;
+                  duration = (analysis.referenceTimestamp() - s.startTime) / 1000;
                 }
                 else {
                   duration = s.durationSeconds;

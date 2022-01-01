@@ -9,7 +9,7 @@ const CarBox = styled.rect.attrs(
     rx: 5
   })
 )`
-  stroke: ${ props => (props.car && props.theme.classColours[props.car.raceClass.toLowerCase().replace(/[-/ ]/, '')]) || props.theme.site.highlightColor };
+  stroke: ${ props => (props.car && props.theme.classColours[(props.car.raceClass || '').toLowerCase().replace(/[-/ ]/, '')]) || '#C0C0C0' };
 `;
 
 const CarNum = styled.text.attrs(
@@ -17,10 +17,10 @@ const CarNum = styled.text.attrs(
     children: props.car.raceNum,
     dominantBaseline: 'middle',
     textAnchor: 'middle',
-    x: 25,
+    x: 30,
   })
 )`
-  fill: ${ props => (props.car && props.theme.classColours[props.car.raceClass.toLowerCase().replace(/[-/ ]/, '')]) || props.theme.site.highlightColor };
+  fill: ${ props => (props.car && props.theme.classColours[(props.car.raceClass || '').toLowerCase().replace(/[-/ ]/, '')]) || '#C0C0C0' };
   font-size: 28px;
   font-family: ${ props => props.theme.site.headingFont };
 `;
@@ -30,7 +30,7 @@ const Detail = styled.text.attrs(
     dominantBaseline: 'middle'
   }
 )`
-  clip-path: polygon(0 0, 0 18px, 190px 18px, 190px 0);
+  clip-path: polygon(0 0, 0 18px, 180px 18px, 180px 0);
   font-family: ${ props => props.theme.site.headingFont };
   font-size: 16px;
   fill: white;
@@ -38,36 +38,42 @@ const Detail = styled.text.attrs(
 
 export const carsLayer = (args) => {
   const { bars } = args;
-  return bars.map(
-    bar => {
-      const car = bar.data.data;
-      return (
-        <g
-          key={`car-${car.raceNum}`}
-          transform={`translate(-250, ${bar.y})`}
-        >
-          <CarBox
-            car={car}
-            height={bar.height}
-          />
-          <CarNum
-            car={car}
-            y={bar.height / 2}
-          />
-          <Detail
-            x={50}
-            y={18}
-          >
-            {car.teamName}
-          </Detail>
-          <Detail
-            x={50}
-            y={bar.height - 18}
-          >
-            {car.make}
-          </Detail>
-        </g>
-      );
-    }
+  return (
+    <g className='cars-layer'>
+      {
+        bars.map(
+          bar => {
+            const car = bar.data.data;
+            return (
+              <g
+                key={`car-${car.raceNum}`}
+                transform={`translate(-260, ${bar.y})`}
+              >
+                <CarBox
+                  car={car}
+                  height={bar.height}
+                />
+                <CarNum
+                  car={car}
+                  y={bar.height / 2}
+                />
+                <Detail
+                  x={60}
+                  y={18}
+                >
+                  {car.teamName}
+                </Detail>
+                <Detail
+                  x={60}
+                  y={bar.height - 18}
+                >
+                  {car.make}
+                </Detail>
+              </g>
+            );
+          }
+        )
+      }
+    </g>
   );
 };

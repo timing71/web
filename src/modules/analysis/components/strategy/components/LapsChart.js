@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import { theme } from "../../../charts";
 import { useAnalysis } from "../../context";
 import { carsLayer } from "./cars";
+import { stintsLayer } from "./stints";
 
 export const LapsChart = observer(
   ({ scale }) => {
@@ -29,9 +30,9 @@ export const LapsChart = observer(
         height={height}
         indexBy={'raceNum'}
         keys={['currentLap']}
-        layers={['grid', 'axes', carsLayer]}
+        layers={['grid', 'axes', carsLayer, stintsLayer]}
         layout='horizontal'
-        margin={{ top: 30, right: 30, bottom: 30, left: 250 }}
+        margin={{ top: 30, right: 30, bottom: 30, left: 260 }}
         maxValue={Math.ceil(analysis.session.leaderLap / 10) * 10}
         minValue={0}
         theme={theme}

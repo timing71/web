@@ -73,7 +73,7 @@ export const Stint = types.model({
       return self.endTime ? (self.endTime - self.startTime) / 1000 : null;
     },
     get durationLaps() {
-      return self.endLap ? self.endLap - self.startLap : null;
+      return self.endLap ? 1 + self.endLap - self.startLap : null;
     }
   })
 );

@@ -1,5 +1,6 @@
 import { darken } from 'polished';
 import styled from 'styled-components';
+import { Text } from '@visx/text';
 
 import dayjs from '../../../../../datetime';
 
@@ -32,7 +33,9 @@ const StintBox = styled.rect.attrs({
   cursor: pointer;
 `;
 
-const StintText = styled.text`
+const StintText = styled(Text).attrs({
+  scaleToFit: 'shrink-only'
+})`
   fill: white;
   font-family: ${ props => props.theme.site.headingFont };
 `;
@@ -56,14 +59,12 @@ const Best = styled(StintText).attrs({
   x: 10,
   dominantBaseline: 'auto',
   textAnchor: 'start'
-})`
-  clip-path: ${ props => `polygon(0 0, 0 18px, ${props.overallWidth / 2}px 18px, ${props.overallWidth / 2}px 0)` };
-`;
+})``;
 
 const Mean = styled(StintText).attrs({
   dominantBaseline: 'auto',
   textAnchor: 'end'
-})``; // Can't see a way of getting clip-path to work with textAnchor: 'end'
+})``;
 
 const sum = (acc, val) => acc + val;
 
@@ -89,24 +90,31 @@ const Stint = ({ height, stint, xScale }) => {
         inProgress={stint.inProgress}
         width={width}
       />
-      <DriverName overallWidth={width}>
+      <DriverName
+        overallWidth={width}
+      >
         { stint.driver.name }
       </DriverName>
-      <LapCount x={width - 8}>
-        {laps} lap{laps === 1 ? '' : 's'}
+      <LapCount
+        width={width / 2}
+        x={width - 8}
+      >
+        {`${laps} lap${laps === 1 ? '' : 's'}`}
       </LapCount>
       <Best
         overallWidth={width}
+        width={width / 2}
         y={height - 12}
       >
-        Best {best ? dayjs.duration(Math.round(best * 1000)).format("m:ss.SSS") : '-'}
+        {`Best ${best ? dayjs.duration(Math.round(best * 1000)).format("m:ss.SSS") : '-'}`}
       </Best>
       <Mean
         overallWidth={width}
+        width={width / 2}
         x={width - 8}
         y={height - 12}
       >
-        Ave {mean ? dayjs.duration(Math.round(mean * 1000)).format("m:ss.SSS") : '-'}
+        {`Ave ${mean ? dayjs.duration(Math.round(mean * 1000)).format("m:ss.SSS") : '-'}`}
       </Mean>
     </g>
   );

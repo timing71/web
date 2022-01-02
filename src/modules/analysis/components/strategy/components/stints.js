@@ -40,13 +40,15 @@ const StintText = styled(Text).attrs({
   font-family: ${ props => props.theme.site.headingFont };
 `;
 
-const DriverName = styled(StintText).attrs({
+const DriverName = styled(StintText).attrs(props => ({
   x: 10,
   y: 10,
-  dominantBaseline: 'hanging'
-})`
+  dominantBaseline: 'hanging',
+  style: {
+    clipPath: `polygon(0 0, 0 18px, ${props.overallWidth / 2}px 18px, ${props.overallWidth / 2}px 0)`
+  }
+}))`
   font-weight: bold;
-  clip-path: ${ props => `polygon(0 0, 0 18px, ${props.overallWidth / 2}px 18px, ${props.overallWidth / 2}px 0)` };
 `;
 
 const LapCount = styled(StintText).attrs({

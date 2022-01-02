@@ -69,11 +69,11 @@ const sum = (acc, val) => acc + val;
 
 const Stint = ({ height, stint, xScale }) => {
 
-  const laps = stint.inProgress ? 1 + stint.car.currentLap - stint.startLap : stint.durationLaps;
+  const laps = stint.inProgress ? stint.car.currentLap - stint.startLap : stint.durationLaps;
 
-  const width = Math.max(2, xScale(laps) - 6);
+  const width = Math.max(2, xScale(Math.max(0.5, laps)) - 6);
 
-  const relevantLaps = stint.laps.slice(1, -1); // ignore out and in laps
+  const relevantLaps = stint.laps.slice(1, stint.inProgress ? undefined : -1); // ignore out and in laps
 
   const best = relevantLaps.length > 0 ? Math.min(
     ...relevantLaps.map(l => l.laptime)
@@ -99,14 +99,14 @@ const Stint = ({ height, stint, xScale }) => {
         overallWidth={width}
         y={height - 12}
       >
-        Best {best ? dayjs.duration(best * 1000).format("m:ss.SSS") : '-'}
+        Best {best ? dayjs.duration(Math.round(best * 1000)).format("m:ss.SSS") : '-'}
       </Best>
       <Mean
         overallWidth={width}
         x={width - 8}
         y={height - 12}
       >
-        Ave {mean ? dayjs.duration(mean * 1000).format("m:ss.SSS") : '-'}
+        Ave {mean ? dayjs.duration(Math.round(mean * 1000)).format("m:ss.SSS") : '-'}
       </Mean>
     </g>
   );

@@ -122,7 +122,7 @@ export const StrategyOverview = () => {
               Scale:
             </label>
             <Slider
-              max={40}
+              max={50}
               min={10}
               onChange={setScale}
               value={scale}

@@ -35,7 +35,7 @@ export const FlagPanel = observer(
             session.lapsRemain !== undefined ? (
               <span>{session.lapsRemain} lap{session.lapsRemain === 1 ? '' : 's'} remaining</span>
             ) : (
-              <span>{dayjs.duration((1000 * session.timeRemain) - delta).format('HH:mm:ss')} remaining</span>
+              <span>{dayjs.duration(Math.max(0, (1000 * session.timeRemain) - delta)).format('HH:mm:ss')} remaining</span>
             )
           }
         </Panel>

@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { animated, useTransition } from '@react-spring/web';
+
 import { useAnalysis } from "../../context";
 
 const CarBox = styled.rect.attrs(
@@ -43,6 +45,19 @@ export const CarsList = () => {
 
   const overallHeight = cars.length * 72;
 
+  const yPosTransition = useTransition(
+    cars,
+    {
+      keys: car => car.raceNum,
+      from: (_, idx) => ({
+        transform: `translate(0, ${(idx * 71) + 4})`,
+      }),
+      update: (_, idx) => ({
+        transform: `translate(0, ${(idx * 71) + 4})`
+      }),
+    }
+  );
+
   return (
     <svg
       height={overallHeight}
@@ -50,35 +65,33 @@ export const CarsList = () => {
       width={260}
     >
       {
-        cars.map(
-          (car, idx) => (
-            (
-              <g
-                key={`car-${car.raceNum}`}
-                transform={`translate(0, ${(idx * 71) + 4})`}
+        yPosTransition(
+          (style, car) => (
+            <animated.g
+              key={`car-${car.raceNum}`}
+              {...style}
+            >
+              <CarBox
+                car={car}
+                height={64}
+              />
+              <CarNum
+                car={car}
+                y={32}
+              />
+              <Detail
+                x={60}
+                y={20}
               >
-                <CarBox
-                  car={car}
-                  height={64}
-                />
-                <CarNum
-                  car={car}
-                  y={32}
-                />
-                <Detail
-                  x={60}
-                  y={20}
-                >
-                  {car.teamName}
-                </Detail>
-                <Detail
-                  x={60}
-                  y={44}
-                >
-                  {car.make}
-                </Detail>
-              </g>
-            )
+                {car.teamName}
+              </Detail>
+              <Detail
+                x={60}
+                y={44}
+              >
+                {car.make}
+              </Detail>
+            </animated.g>
           )
         )
       }

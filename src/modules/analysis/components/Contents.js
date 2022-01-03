@@ -21,6 +21,10 @@ const Container = styled.div`
     transition: opacity 150ms ease-in;
   }
 
+  & > div {
+    height: 100%;
+  }
+
 `;
 
 export const Contents = () => {

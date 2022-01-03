@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { darken } from 'polished';
 import styled from 'styled-components';
 import { Text } from '@visx/text';
@@ -206,29 +205,5 @@ export const StintsLayer = ({ bars, widthFunc, xFunc }) => {
         )
       }
     </g>
-  );
-};
-
-export const LapStintsLayer = ({ xScale, ...props }) => {
-
-  const widthFunc = useCallback(
-    (stint) => {
-      const laps = stint.inProgress ? stint.car.currentLap - stint.startLap : stint.durationLaps;
-      return Math.max(2, xScale(Math.max(0.5, laps)) - 6);
-    },
-    [xScale]
-  );
-
-  const xFunc = useCallback(
-    (stint) => xScale(stint.startLap - 1),
-    [xScale]
-  );
-
-  return (
-    <StintsLayer
-      widthFunc={widthFunc}
-      xFunc={xFunc}
-      {...props}
-    />
   );
 };

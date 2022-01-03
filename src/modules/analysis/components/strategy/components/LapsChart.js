@@ -1,8 +1,33 @@
+import { useCallback } from "react";
 import { Bar } from "@nivo/bar";
 import { observer } from "mobx-react-lite";
 import { theme } from "../../../charts";
 import { useAnalysis } from "../../context";
-import { LapStintsLayer } from "./stints";
+import { StintsLayer } from "./stints";
+
+const LapStintsLayer = ({ xScale, ...props }) => {
+
+  const widthFunc = useCallback(
+    (stint) => {
+      const laps = stint.inProgress ? stint.car.currentLap - stint.startLap : stint.durationLaps;
+      return Math.max(2, xScale(Math.max(0.5, laps)) - 6);
+    },
+    [xScale]
+  );
+
+  const xFunc = useCallback(
+    (stint) => xScale(stint.startLap - 1),
+    [xScale]
+  );
+
+  return (
+    <StintsLayer
+      widthFunc={widthFunc}
+      xFunc={xFunc}
+      {...props}
+    />
+  );
+};
 
 export const LapsChart = observer(
   ({ scale }) => {

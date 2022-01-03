@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
 import Slider from 'rc-slider';
@@ -37,11 +37,56 @@ const CarsInnerContainer = styled.div`
   overflow-y: hidden;
 `;
 
-const ChartInnerContainer = styled.div`
+const ChartInnerContainerInner = styled.div`
   grid-column: 2;
   overflow: scroll;
   height: 100%;
 `;
+
+const ChartInnerContainer = forwardRef(
+  (props, container) => {
+    const prevOffsetWasFull = useRef(false);
+
+    useEffect(
+      () => {
+        // Scroll fully right on first render.
+        if (container.current) {
+          container.current.scrollLeft = container.current.scrollWidth - container.current.clientWidth;
+        }
+      },
+      [container]
+    );
+
+    useEffect(
+      () => {
+        if (container.current) {
+          const div = container.current;
+          const fullOffset = div.scrollWidth - div.clientWidth;
+          if (prevOffsetWasFull.current && fullOffset !== div.scrollLeft) {
+            div.scrollLeft = fullOffset;
+          }
+          prevOffsetWasFull.current = fullOffset === div.scrollLeft;
+
+          const toggleFlag = () => {
+            prevOffsetWasFull.current = fullOffset === div.scrollLeft;
+          };
+          div.addEventListener('scroll', toggleFlag);
+
+          return () => {
+            div.removeEventListener('scroll', toggleFlag);
+          };
+        }
+      }
+    );
+
+    return (
+      <ChartInnerContainerInner
+        ref={container}
+        {...props}
+      />
+    );
+  }
+);
 
 const chartType = {
   [DisplayMode.LAPS]: LapsChart,

@@ -1,6 +1,8 @@
 import { darken } from 'polished';
 import styled from 'styled-components';
 import { Text } from '@visx/text';
+import { animated, useTransition } from '@react-spring/web';
+import { useMotionConfig } from '@nivo/core';
 
 import dayjs from '../../../../../datetime';
 
@@ -122,19 +124,37 @@ const Stint = ({ height, stint, xScale }) => {
   );
 };
 
-export const stintsLayer = ({ bars, xScale }) => {
+export const StintsLayer = ({ bars, xScale }) => {
+
+  const { animate, config: springConfig } = useMotionConfig();
+
+  const yPosTransition = useTransition(
+    bars,
+    {
+      keys: bar => bar.key,
+      from: bar => ({
+        transform: `translate(0, ${bar.y})`,
+      }),
+      update: bar => ({
+        transform: `translate(0, ${bar.y})`
+      }),
+      config: springConfig,
+      immediate: !animate
+    }
+  );
+
   return (
     <g
       className='stints-layer'
     >
       {
-        bars.map(
-          bar => {
+        yPosTransition(
+          (style, bar) => {
             const car = bar.data.data;
             return (
-              <g
+              <animated.g
                 key={bar.key}
-                transform={`translate(0, ${bar.y})`}
+                {...style}
               >
                 {
                   car.stints.map(
@@ -148,7 +168,7 @@ export const stintsLayer = ({ bars, xScale }) => {
                     )
                   )
                 }
-              </g>
+              </animated.g>
             );
           }
         )

@@ -2,7 +2,7 @@ import { Bar } from "@nivo/bar";
 import { observer } from "mobx-react-lite";
 import { theme } from "../../../charts";
 import { useAnalysis } from "../../context";
-import { stintsLayer } from "./stints";
+import { StintsLayer } from "./stints";
 
 export const LapsChart = observer(
   ({ scale }) => {
@@ -34,7 +34,7 @@ export const LapsChart = observer(
         height={height}
         indexBy={'raceNum'}
         keys={['currentLap']}
-        layers={['grid', 'axes', stintsLayer]}
+        layers={['grid', 'axes', StintsLayer]}
         layout='horizontal'
         margin={{ top: 20, right: 30, bottom: 30, left: 0 }}
         maxValue={Math.ceil(analysis.session.leaderLap / 10) * 10}

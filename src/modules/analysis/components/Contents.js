@@ -8,7 +8,7 @@ const Container = styled.div`
   grid-area: main;
 
   padding: 0.5em;
-  overflow: auto;
+  overflow: hidden;
   border-left: 1px solid ${ props => props.theme.site.highlightColor };
 
   .fade-enter {

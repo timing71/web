@@ -48,7 +48,8 @@ const DriverName = styled(StintText).attrs(props => ({
   dominantBaseline: 'hanging',
   style: {
     clipPath: `polygon(0 0, 0 18px, ${props.overallWidth / 2}px 18px, ${props.overallWidth / 2}px 0)`
-  }
+  },
+  overallWidth: undefined
 }))`
   font-weight: bold;
 `;

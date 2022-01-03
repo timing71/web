@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
 import Slider from 'rc-slider';
@@ -23,7 +23,7 @@ const Container = styled.div`
 `;
 
 const ChartContainer = styled.div`
-  overflow-y: auto;
+  overflow: hidden;
   grid-column: 1 / span 2;
 
   padding: 0.5em;
@@ -32,9 +32,15 @@ const ChartContainer = styled.div`
   grid-template-columns: 260px minmax(0, 1fr);
 `;
 
+const CarsInnerContainer = styled.div`
+  height: 100%;
+  overflow-y: hidden;
+`;
+
 const ChartInnerContainer = styled.div`
   grid-column: 2;
-  overflow-x: scroll;
+  overflow: scroll;
+  height: 100%;
 `;
 
 const chartType = {
@@ -95,6 +101,30 @@ export const StrategyOverview = () => {
   const [scale, setScale] = useState(32);
   const Chart = chartType[displayMode];
 
+  const carPane = useRef();
+  const stintPane = useRef();
+
+  useEffect(
+    () => {
+      if (stintPane.current) {
+        const handleScroll = (e) => {
+          if (carPane.current) {
+            carPane.current.scrollTop = e.target.scrollTop;
+          }
+        };
+
+        const pane = stintPane.current;
+
+        pane.addEventListener('scroll', handleScroll);
+
+        return () => {
+          pane.removeEventListener('scroll', handleScroll);
+        };
+      }
+    },
+    []
+  );
+
   return (
     <>
       <Helmet>
@@ -130,8 +160,10 @@ export const StrategyOverview = () => {
           </Control>
         </Controls>
         <ChartContainer>
-          <CarsList />
-          <ChartInnerContainer>
+          <CarsInnerContainer ref={carPane}>
+            <CarsList />
+          </CarsInnerContainer>
+          <ChartInnerContainer ref={stintPane}>
             <Chart scale={scale} />
           </ChartInnerContainer>
         </ChartContainer>

@@ -26,6 +26,15 @@ jobs:
       - name: Run eslint
         run: yarn run lint
 
+      - name: Force version in package.json to match Git tag
+        if: ${{ github.ref_type == 'tag' }}
+        run: |
+          sed -i -e "s/\(version\": \"\)[0-9\.]*/\1${{github.ref_name}}/" package.json
+
+      - name: Append build metadata to package.json version field
+        run: |
+          sed -i -e "s/\(version\": \"[0-9\.]*\)-dev/\1+`echo ${{github.sha}} | cut -c1-7`/" package.json
+
       - name: Build webapp
         run: yarn run build
 

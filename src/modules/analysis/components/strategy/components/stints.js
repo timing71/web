@@ -42,6 +42,7 @@ const StintText = styled(Text).attrs({
 })`
   fill: white;
   font-family: ${ props => props.theme.site.headingFont };
+  pointer-events: none;
 `;
 
 const DriverName = styled(StintText).attrs(props => ({

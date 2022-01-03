@@ -12,6 +12,7 @@ import { Timing } from './pages/Timing';
 import { SettingsProvider } from './modules/settings';
 import { ThemeSettingsProvider } from './components/ThemeSettingsProvider';
 import { Theme } from './theme';
+import { FAQ } from './pages/FAQ';
 
 function App() {
   return (
@@ -27,6 +28,10 @@ function App() {
               component={Home}
               exact
               path='/'
+            />
+            <Route
+              component={FAQ}
+              path='/faq'
             />
             <PluginDetector>
               <SettingsProvider>

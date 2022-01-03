@@ -1,15 +1,38 @@
 import styled from 'styled-components';
-import { Page } from '../components/Page';
-import logo from '../img/logo.svg';
 import InlineSVG from 'react-inlinesvg';
+import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
+
+import { Page } from '../components/Page';
+import { Section } from '../components/Section';
+import { ImageChanger } from '../components/ImageChanger';
+
+import { CHROME_STORE_URL, PAYPAL_DONATE_LINK } from '../constants';
+
+import logo from '../img/logo.svg';
+import chromeStore from '../img/chrome_store.png';
 import background from '../img/timing_screen_blurred.jpg';
+import launchT71 from '../img/launch_t71.png';
+import addToChrome from '../img/add_to_chrome.png';
+import { Paypal } from 'styled-icons/fa-brands';
 
 const HomeInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 
+  height: 100vh;
+
   background: top center / cover no-repeat fixed url(${background});
+`;
+
+const LogosBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: rgba(0, 0, 0, 0.6);
+  margin: 3em;
+  border-radius: 5px;
 `;
 
 const Logo = styled(InlineSVG).attrs(
@@ -19,103 +42,104 @@ const Logo = styled(InlineSVG).attrs(
   max-height: 180px;
 `;
 
-const Section = styled.div`
+const LaunchImage = styled.img`
+  box-shadow: 8px 8px black;
   border: 1px solid ${ props => props.theme.site.highlightColor };
-  border-radius: 0.5em;
+  border-radius: 5px;
+`;
 
-  width: 75%;
-  margin: 1em;
-  padding: 0;
+const StartNow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+`;
 
-  background-color: #202020;
+const Footer = styled.div`
 
-  & > h2 {
-    margin: 0;
-    padding: 0.5em;
-    border-bottom: 1px solid ${ props => props.theme.site.highlightColor };
-    font-family: ${ props => props.theme.site.headingFont };
-    background-color: black;
-    border-radius: 0.5em 0.5em 0 0;
-  }
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
 
-  & > p {
-    padding: 0 2em;
-  }
+  display: flex;
+  justify-content: space-around;
 
+  padding: 1em;
+
+  background-color: rgba(0, 0, 0, 0.6);
+  border-top: 1px solid ${ props => props.theme.site.highlightColor };
+
+  font-size: small;
+`;
+
+const CopyrightYear = () => (
+  <span>
+    2016–{ dayjs().format('YYYY') }
+  </span>
+);
+
+const PP = styled(Paypal)`
+  width: 1em;
 `;
 
 export const Home = () => (
   <Page>
     <HomeInner>
-      <Logo />
+      <LogosBox>
+        <Logo />
+        <a href={CHROME_STORE_URL}>
+          <img
+            alt='Available in the Chrome Web Store'
+            src={chromeStore}
+          />
+        </a>
+      </LogosBox>
+
       <Section>
-        <h2>What is Timing71 Beta?</h2>
-        <p>
-          Timing71 Beta is the next iteration of Timing71's motorsport live timing
-          and analysis system. It can provide real-time views on all sorts of
-          race data, including highlighting of significant events in the race
-          and deep-dives into race strategy and session statistics.
-        </p>
-        <p>
-          The goal of the Beta project is to fully decentralise Timing71, no
-          longer relying on a centralised network to process and redistribute
-          timing data and so avoid the associated intellectual property
-          challenges that Timing71 has.
-        </p>
-        <p>
-          Timing71 Beta is { ' ' }
-          <a href="https://github.com/timing71/beta-web">open source</a>, and
-          made available under the GNU Affero GPL v3, as is the { ' ' }
-          <a href="https://github.com/timing71/beta-chrome">browser extension</a>.
+        <h2>Get started now!</h2>
+        <StartNow>
+          <ol>
+            <li>
+              Install the <a href={CHROME_STORE_URL}>Timing71 Beta Chrome extension</a> from the <a href={CHROME_STORE_URL}>Chrome Web Store</a>.
+            </li>
+            <li>
+              Visit any supported live timing page. More will be added over time!
+            </li>
+            <li>
+              Click the "Launch Timing71" button and enjoy the racing!
+            </li>
+          </ol>
+          <ImageChanger
+            delay={5}
+            imageComponent={LaunchImage}
+            images={[
+              addToChrome,
+              launchT71,
+            ]}
+          />
+        </StartNow>
+        <p style={{ textAlign: 'center' }}>
+          Want to find out more? { ' ' }
+          <Link to='/faq'>
+            Visit our FAQ page
+          </Link>.
         </p>
       </Section>
-      <Section>
-        <h2>How does it work?</h2>
-        <p>
-          Running as a browser extension, Timing71 Beta is able to download,
-          process, analyse and display timing data directly from a number of
-          supported providers.
-        </p>
-        <p>
-          Starting on any web page with a supported live timing feed, you can
-          launch Timing71 Beta to immediately view the race state in the familiar
-          and easy-to-read timing screen from Timing71. All the "magic" happens
-          in your browser!
-        </p>
-      </Section>
-      <Section>
-        <h2>How do I get started?</h2>
-        <ul>
-          <li>Install the Timing71 Beta extension for Google Chrome.</li>
-          <li>Navigate to any supported live timing page.</li>
-          <li>Click the "Launch Timing71" button.</li>
-        </ul>
-      </Section>
-      <Section>
-        <h2>How does it compare to the &quot;old&quot; Timing71?</h2>
-        <p>
-          The primary difference is that Timing71 is (or rather, <em>I</em> am!)
-          no longer accessing data from timing providers; instead <em>you</em> { ' ' }
-          are accessing that data directly. This means that you do need to have
-          Timing71 Beta open for the entirety of a session in order to gain full
-          analysis data.
-        </p>
-        <p>
-          Because Timing71 Beta relies on a browser extension, it cannot be used
-          on mobile devices. It's only tested on Google Chrome, but in theory
-          should work on MS Edge and Mozilla Firefox too.
-        </p>
-        <p>
-          As there's no centralised data processing, we cannot offer a library
-          of replays and post-session analysis (but you can generate your own
-          replay files, and eventually, analysis files too).
-        </p>
-        <p>
-          And as the name suggests - Timing71 Beta is a work-in-progress, so is
-          currently missing many of the features Timing71 users will be
-          familiar with.
-        </p>
-      </Section>
+
+      <Footer>
+        <span>
+          Timing71 and Timing71 Beta are copyright &copy; <CopyrightYear /> James Muscat.
+        </span>
+        <a href="mailto:info@timing71.org">info@timing71.org</a>
+        <a
+          href={PAYPAL_DONATE_LINK}
+          rel='noreferrer'
+          target='_blank'
+        >
+          Donate via <PP /> PayPal
+        </a>
+      </Footer>
+
     </HomeInner>
   </Page>
 );

@@ -106,7 +106,7 @@ export const Car = types.model({
   currentLap: types.optional(types.integer, 1),
 
   stints: types.array(Stint),
-  state: types.union(types.string, types.undefined),
+  state: types.union(types.string, types.null, types.undefined),
   isInPit: types.optional(types.boolean, true),
 
   highestSeenFlagThisLap: types.optional(types.integer, 0)

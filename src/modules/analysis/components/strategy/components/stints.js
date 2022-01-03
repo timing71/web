@@ -32,6 +32,8 @@ const StintBox = styled.rect.attrs({
     };
   }
 
+  transition: fill 0.15s ease-in-out;
+
   user-select: none;
   cursor: pointer;
 `;
@@ -74,7 +76,7 @@ const Mean = styled(StintText).attrs({
 
 const sum = (acc, val) => acc + val;
 
-const Stint = ({ height, stint, width, xScale }) => {
+const Stint = ({ height, stint, width, x }) => {
 
   const laps = stint.inProgress ? stint.car.currentLap - stint.startLap : stint.durationLaps;
 
@@ -87,7 +89,7 @@ const Stint = ({ height, stint, width, xScale }) => {
   const mean = relevantLaps.length > 0 ? (relevantLaps.map(l => l.laptime).reduce(sum, 0) / relevantLaps.length).toFixed(3) : null;
 
   return (
-    <g transform={`translate(${xScale(stint.startLap - 1)}, 0)`}>
+    <g transform={`translate(${x}, 0)`}>
       <StintBox
         car={stint.car}
         height={height - 4}
@@ -124,15 +126,7 @@ const Stint = ({ height, stint, width, xScale }) => {
 
 const AnimatedStint = animated(Stint);
 
-export const CarStints = ({ height, stints, xScale }) => {
-
-  const widthFunc = useCallback(
-    (stint) => {
-      const laps = stint.inProgress ? stint.car.currentLap - stint.startLap : stint.durationLaps;
-      return Math.max(2, xScale(Math.max(0.5, laps)) - 6);
-    },
-    [xScale]
-  );
+export const CarStints = ({ height, stints, widthFunc, xFunc }) => {
 
   const { animate, config: springConfig } = useMotionConfig();
 
@@ -158,33 +152,17 @@ export const CarStints = ({ height, stints, xScale }) => {
             <AnimatedStint
               height={height}
               stint={stint}
-              xScale={xScale}
+              x={xFunc(stint)}
               {...style}
             />
           )
-        )
-      }
-      {
-        false && stints.map(
-          (stint, idx) => {
-
-            return (
-              <Stint
-                height={height}
-                key={idx}
-                stint={stint}
-                width={widthFunc(stint)}
-                xScale={xScale}
-              />
-            );
-          }
         )
       }
     </>
   );
 };
 
-export const StintsLayer = ({ bars, xScale }) => {
+export const StintsLayer = ({ bars, widthFunc, xFunc }) => {
 
   const { animate, config: springConfig } = useMotionConfig();
 
@@ -219,7 +197,8 @@ export const StintsLayer = ({ bars, xScale }) => {
                 <CarStints
                   height={bar.height}
                   stints={car.stints}
-                  xScale={xScale}
+                  widthFunc={widthFunc}
+                  xFunc={xFunc}
                 />
               </animated.g>
             );
@@ -227,5 +206,29 @@ export const StintsLayer = ({ bars, xScale }) => {
         )
       }
     </g>
+  );
+};
+
+export const LapStintsLayer = ({ xScale, ...props }) => {
+
+  const widthFunc = useCallback(
+    (stint) => {
+      const laps = stint.inProgress ? stint.car.currentLap - stint.startLap : stint.durationLaps;
+      return Math.max(2, xScale(Math.max(0.5, laps)) - 6);
+    },
+    [xScale]
+  );
+
+  const xFunc = useCallback(
+    (stint) => xScale(stint.startLap - 1),
+    [xScale]
+  );
+
+  return (
+    <StintsLayer
+      widthFunc={widthFunc}
+      xFunc={xFunc}
+      {...props}
+    />
   );
 };

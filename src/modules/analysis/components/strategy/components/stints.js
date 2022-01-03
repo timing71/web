@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { darken } from 'polished';
 import styled from 'styled-components';
 import { Text } from '@visx/text';
@@ -73,11 +74,9 @@ const Mean = styled(StintText).attrs({
 
 const sum = (acc, val) => acc + val;
 
-const Stint = ({ height, stint, xScale }) => {
+const Stint = ({ height, stint, width, xScale }) => {
 
   const laps = stint.inProgress ? stint.car.currentLap - stint.startLap : stint.durationLaps;
-
-  const width = Math.max(2, xScale(Math.max(0.5, laps)) - 6);
 
   const relevantLaps = stint.laps.slice(1, stint.inProgress ? undefined : -1); // ignore out and in laps
 
@@ -107,14 +106,12 @@ const Stint = ({ height, stint, xScale }) => {
         {`${laps} lap${laps === 1 ? '' : 's'}`}
       </LapCount>
       <Best
-        overallWidth={width}
         width={width / 2}
         y={height - 12}
       >
         {`Best ${best ? dayjs.duration(Math.round(best * 1000)).format("m:ss.SSS") : '-'}`}
       </Best>
       <Mean
-        overallWidth={width}
         width={width / 2}
         x={width - 8}
         y={height - 12}
@@ -122,6 +119,68 @@ const Stint = ({ height, stint, xScale }) => {
         {`Ave ${mean ? dayjs.duration(Math.round(mean * 1000)).format("m:ss.SSS") : '-'}`}
       </Mean>
     </g>
+  );
+};
+
+const AnimatedStint = animated(Stint);
+
+export const CarStints = ({ height, stints, xScale }) => {
+
+  const widthFunc = useCallback(
+    (stint) => {
+      const laps = stint.inProgress ? stint.car.currentLap - stint.startLap : stint.durationLaps;
+      return Math.max(2, xScale(Math.max(0.5, laps)) - 6);
+    },
+    [xScale]
+  );
+
+  const { animate, config: springConfig } = useMotionConfig();
+
+  const transition = useTransition(
+    stints,
+    {
+      from: stint => ({
+        width: widthFunc(stint),
+      }),
+      update: stint => ({
+        width: widthFunc(stint),
+      }),
+      config: springConfig,
+      immediate: !animate
+    }
+  );
+
+  return (
+    <>
+      {
+        transition(
+          (style, stint) => (
+            <AnimatedStint
+              height={height}
+              stint={stint}
+              xScale={xScale}
+              {...style}
+            />
+          )
+        )
+      }
+      {
+        false && stints.map(
+          (stint, idx) => {
+
+            return (
+              <Stint
+                height={height}
+                key={idx}
+                stint={stint}
+                width={widthFunc(stint)}
+                xScale={xScale}
+              />
+            );
+          }
+        )
+      }
+    </>
   );
 };
 
@@ -157,18 +216,11 @@ export const StintsLayer = ({ bars, xScale }) => {
                 key={bar.key}
                 {...style}
               >
-                {
-                  car.stints.map(
-                    (stint, idx) => (
-                      <Stint
-                        height={bar.height}
-                        key={idx}
-                        stint={stint}
-                        xScale={xScale}
-                      />
-                    )
-                  )
-                }
+                <CarStints
+                  height={bar.height}
+                  stints={car.stints}
+                  xScale={xScale}
+                />
               </animated.g>
             );
           }

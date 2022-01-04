@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { darken } from 'polished';
 
 import { FlagState } from '../../../../../racing';
+import { StintSparklines } from './StintSparklines';
 
 const Container = styled.div`
   height: 100%;
@@ -58,6 +59,8 @@ const Text = styled.div`
   flex: 0 1 0;
   white-space: nowrap;
 
+  z-index: 2;
+
   &:first-child {
     margin-right: 0.25em;
   }
@@ -87,6 +90,11 @@ export const StintBox = animated(
         x={x}
       >
         <Container car={stint.car}>
+          <StintSparklines
+            height={height}
+            stint={stint}
+            width={width}
+          />
           <Line>
             <Text bold>{stint.driver.name}</Text>
             <Text

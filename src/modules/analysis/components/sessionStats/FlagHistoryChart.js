@@ -70,6 +70,22 @@ const TimeContainer = styled.div`
   margin-bottom: 0.5em;
 `;
 
+const ShownHighlightLine = ({ latestTimestamp, startTime, stat }) => {
+  const start = Math.floor((stat.startTime - startTime) / 1000);
+  const width = Math.max(0, Math.floor(((stat.endTime || latestTimestamp || Date.now()) - stat.startTime) / 1000));
+  const end = start + width;
+  return (
+    <line
+      stroke='#54FFFF'
+      strokeWidth={8}
+      x1={start}
+      x2={end}
+      y1={48}
+      y2={48}
+    />
+  );
+};
+
 export const FlagHistoryChart = observer(
   () => {
     const analysis = useAnalysis();
@@ -104,6 +120,15 @@ export const FlagHistoryChart = observer(
                   y={0}
                 />
               )
+            )
+          }
+          {
+            shown && (
+              <ShownHighlightLine
+                latestTimestamp={analysis.latestTimestamp}
+                startTime={startTime}
+                stat={shown}
+              />
             )
           }
         </FlagsContainer>

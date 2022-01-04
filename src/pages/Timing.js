@@ -11,6 +11,7 @@ import { Debouncer } from "../components/Debouncer";
 import { StateRetriever } from "../components/StateRetriever";
 import { useSetting } from '../modules/settings';
 import { Analysis } from "../modules/analysis";
+import { LoadingScreen } from "../components/LoadingScreen";
 
 const DEFAULT_STATE = {
   cars: [],
@@ -142,7 +143,7 @@ const TimingInner = ({ match: { params } }) => {
   }
 
   return (
-    <p>Soon™: { serviceUUID } </p>
+    <LoadingScreen message='Loading timing data...' />
   );
 };
 

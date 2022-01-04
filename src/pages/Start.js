@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { v4 as uuid } from 'uuid';
+import { LoadingScreen } from '../components/LoadingScreen';
 
 import { PluginContext } from '../modules/pluginBridge';
 
@@ -30,6 +31,8 @@ export const Start = ({ location: { search } }) => {
     [port, source]
   );
 
-    return !!serviceUUID ? <Redirect to={`/timing/${serviceUUID}`} /> : <p>Starting service...</p>;
+    return !!serviceUUID ?
+      <Redirect to={`/timing/${serviceUUID}`} />
+    : <LoadingScreen message='Starting timing service...' />;
 
 };

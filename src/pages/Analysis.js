@@ -1,6 +1,7 @@
 import { applyPatch, applySnapshot } from 'mobx-state-tree';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useBroadcastChannel } from '../broadcastChannel';
+import { LoadingScreen } from '../components/LoadingScreen';
 import { createAnalyser } from '../modules/analysis';
 import { AnalysisScreen } from '../modules/analysis/components/AnalysisScreen';
 import { PluginContext } from '../modules/pluginBridge';
@@ -57,10 +58,17 @@ export const Analysis = ({ match: { params: { serviceUUID } } }) => {
     [channelData]
   );
 
-  return analyser.current && manifest ? (
-    <AnalysisScreen
-      analyser={analyser.current}
-      manifest={manifest}
-    />
-  ) : null;
+  if (analyser.current && manifest) {
+    return (
+      <AnalysisScreen
+        analyser={analyser.current}
+        manifest={manifest}
+      />
+    );
+  }
+  else {
+    return (
+      <LoadingScreen message='Loading data...' />
+    );
+  }
 };

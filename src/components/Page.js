@@ -2,6 +2,10 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
 
+  html, body, #root {
+    height: 100vh;
+  }
+
   body {
     background: ${ props => props.theme.site.background };
     color: ${ props => props.theme.site.textColor };

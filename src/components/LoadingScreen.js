@@ -13,7 +13,7 @@ const SpinningLogo = styled(InlineSVG).attrs({
   src: logo
 })`
 
-  width: 20vw;
+  width: 15vw;
 
   .spinner_green {
       animation: ${spin} 5s linear infinite;
@@ -27,8 +27,21 @@ const SpinningLogo = styled(InlineSVG).attrs({
 
 `;
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  color: ${ props => props.theme.site.highlightColor };
+`;
+
 export const LoadingScreen = ({ message }) => (
   <Page>
-    <SpinningLogo />
+    <Container>
+      <SpinningLogo />
+      { message }
+    </Container>
   </Page>
 );

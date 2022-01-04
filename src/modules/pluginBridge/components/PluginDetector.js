@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { LoadingScreen } from "../../../components/LoadingScreen";
 import { PluginContextProvider } from "./PluginContextProvider";
 
 const META_NAME = 'X-Timing71-Extension';
@@ -40,7 +41,7 @@ export const PluginDetector = ({ children }) => {
 
   if (!extensionID) {
     return (
-      <p>Locating plugin...</p>
+      <LoadingScreen message='Checking for Chrome extension...' />
     );
   }
 

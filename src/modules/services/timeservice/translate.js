@@ -62,7 +62,7 @@ const parseTime = (t) => {
 
 const nonnegative = (v) => {
   try {
-    return Math.max(0, parseInt(v[0], 10));
+    return Math.max(0, parseInt(v, 10));
   }
   catch {
     return v;
@@ -100,14 +100,14 @@ const first = i => i[0];
 const DEFAULT_COLUMN_SPEC = [
   [Stat.NUM, "startnumber", ident],
   [Stat.STATE, "marker", mapState],
-  [Stat.CLASS, "class", first],
+  [Stat.CLASS, "class", v => Array.isArray(v) ? v[0] : v],
   [Stat.POS_IN_CLASS, "position_in_class", first],
   [Stat.TEAM, "team name", ident],
-  [Stat.TEAM, "name", ident],
   [Stat.DRIVER, "currentdriver", ident],
   [Stat.DRIVER, "name", ident],
+  [Stat.TEAM, "name", ident],
   [Stat.CAR, "car", ident],
-  [Stat.LAPS, "laps", nonnegative],
+  [Stat.LAPS, "laps", v => nonnegative(Array.isArray(v) ? v[0] : v)],
   [Stat.LAPS, "hole", parseGap],
   [Stat.GAP, "hole", parseGap],
   [Stat.INT, "diff", parseGap],
@@ -129,11 +129,14 @@ const deriveColSpec = (columns) => {
 
   const availableCols = columns.map(c => `${c.n.toLowerCase().trim()}${c.p}`);
 
+  const usedLabels = [];
+
   DEFAULT_COLUMN_SPEC.forEach(
     ([stat, label, mappingFunc]) => {
       const tsnlIndex = availableCols.indexOf(label);
-      if (tsnlIndex >= 0 && !spec.includes(stat)) {
+      if (tsnlIndex >= 0 && !spec.includes(stat) && !usedLabels.includes(label)) {
         spec.push(stat);
+        usedLabels.push(label);
         reverseMap.push([tsnlIndex, mappingFunc]);
       }
     }

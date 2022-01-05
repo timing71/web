@@ -32,6 +32,19 @@ const Lap = types.model({
   car: types.reference(types.late(() => Car))
 });
 
+const FLAG_WEIGHTS = {
+  [FlagState.NONE]: -1,
+  [FlagState.GREEN]: 0,
+  [FlagState.YELLOW]: 1,
+  [FlagState.SLOW_ZONE]: 2,
+  [FlagState.CODE_60_ZONE]: 3,
+  [FlagState.FCY]: 4,
+  [FlagState.VSC]: 4,
+  [FlagState.CODE_60]: 5,
+  [FlagState.SC]: 6,
+  [FlagState.RED]: 99
+};
+
 export const Stint = types.model({
   startLap: types.integer,
   startTime: types.Date,
@@ -74,22 +87,27 @@ export const Stint = types.model({
     },
     get durationLaps() {
       return self.endLap ? 1 + self.endLap - self.startLap : null;
+    },
+    get relevantLaps() {
+      return self.laps.slice(1, self.inProgress ? undefined : -1); // ignore out and in laps
+    },
+    get bestLap() {
+      return self.relevantLaps.length > 0 ?
+        Math.min(
+          ...self.relevantLaps.map(l => l.laptime)
+        )
+      : null;
+    },
+    get meanLap() {
+      return self.relevantLaps.length > 0 ?
+      (self.relevantLaps.filter(l => l.flag === FlagState.GREEN).map(l => l.laptime).reduce((sum, val) => sum + val, 0) / self.relevantLaps.length).toFixed(3)
+    : null;
+    },
+    get yellowLaps() {
+      return self.relevantLaps.filter(l => FLAG_WEIGHTS[l.flag] >= FLAG_WEIGHTS[FlagState.YELLOW]).length;
     }
   })
 );
-
-const FLAG_WEIGHTS = {
-  [FlagState.NONE]: -1,
-  [FlagState.GREEN]: 0,
-  [FlagState.YELLOW]: 1,
-  [FlagState.SLOW_ZONE]: 2,
-  [FlagState.CODE_60_ZONE]: 3,
-  [FlagState.FCY]: 4,
-  [FlagState.VSC]: 4,
-  [FlagState.CODE_60]: 5,
-  [FlagState.SC]: 6,
-  [FlagState.RED]: 99
-};
 
 const FLAG_WEIGHTS_INVERSE = Object.fromEntries(Object.entries(FLAG_WEIGHTS).map(a => a.reverse()));
 

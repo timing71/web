@@ -2,13 +2,7 @@ import { Sparklines, SparklinesLine } from "react-sparklines";
 import { FlagState } from "../../../../../racing";
 
 export const StintSparklines = ({ height, stint, width }) => {
-  const applicableLaps = stint.laps.slice(1, stint.inProgress ? undefined : -1);
-
-  if (applicableLaps.length === 0) {
-    return null;
-  }
-
-  const greenLaps = applicableLaps.filter(l => l.flag === FlagState.GREEN);
+  const greenLaps = stint.relevantLaps.filter(l => l.flag === FlagState.GREEN);
   if (greenLaps.length === 0) {
     return null;
   }
@@ -19,11 +13,12 @@ export const StintSparklines = ({ height, stint, width }) => {
 
   return (
     <Sparklines
-      data={applicableLaps.map(l => l.laptime)}
+      data={stint.relevantLaps.map(l => l.laptime)}
       height={height}
       max={max}
       min={min}
       style={{
+        pointerEvents: 'none',
         position: 'absolute'
       }}
       width={width}

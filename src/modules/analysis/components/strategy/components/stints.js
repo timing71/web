@@ -3,7 +3,7 @@ import { useMotionConfig } from '@nivo/core';
 
 import { StintBox as SB } from './StintBox';
 
-export const CarStints = ({ height, stints, widthFunc, xFunc }) => {
+export const CarStints = ({ height, onClick, stints, widthFunc, xFunc }) => {
 
   const { animate, config: springConfig } = useMotionConfig();
 
@@ -28,6 +28,7 @@ export const CarStints = ({ height, stints, widthFunc, xFunc }) => {
           (style, stint) => (
             <SB
               height={height}
+              onClick={onClick}
               stint={stint}
               x={xFunc(stint)}
               {...style}
@@ -39,7 +40,7 @@ export const CarStints = ({ height, stints, widthFunc, xFunc }) => {
   );
 };
 
-export const StintsLayer = ({ bars, widthFunc, xFunc }) => {
+export const StintsLayer = ({ bars, onClick, widthFunc, xFunc }) => {
 
   const { animate, config: springConfig } = useMotionConfig();
 
@@ -73,6 +74,7 @@ export const StintsLayer = ({ bars, widthFunc, xFunc }) => {
               >
                 <CarStints
                   height={bar.height}
+                  onClick={onClick}
                   stints={car.stints}
                   widthFunc={widthFunc}
                   xFunc={xFunc}

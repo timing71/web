@@ -8,8 +8,10 @@ import { DisplayMode } from '../constants';
 import { CarsChart } from './cars';
 import { LapsChart } from './LapsChart';
 import { TimeChart } from './TimeChart';
+import { StintDetailModal } from './StintDetailModal';
 
 const Container = styled.div`
+  position: relative;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
   grid-template-columns: 260px minmax(0, 1fr);
@@ -152,6 +154,8 @@ export const StrategyOverview = () => {
   const carPane = useRef();
   const stintPane = useRef();
 
+  const [selectedStint, setSelectedStint] = useState(null);
+
   useEffect(
     () => {
       if (stintPane.current) {
@@ -212,9 +216,16 @@ export const StrategyOverview = () => {
             <CarsChart />
           </CarsInnerContainer>
           <ChartInnerContainer ref={stintPane}>
-            <Chart scale={scale} />
+            <Chart
+              scale={scale}
+              showStintDetails={setSelectedStint}
+            />
           </ChartInnerContainer>
         </ChartContainer>
+        <StintDetailModal
+          close={() => setSelectedStint(null)}
+          stint={selectedStint}
+        />
       </Container>
     </>
   );

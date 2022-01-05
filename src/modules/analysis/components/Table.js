@@ -28,11 +28,11 @@ export const Table = styled.table`
 `;
 
 export const Heading = styled.th`
-  text-align: ${ props => !!props.right ? 'right' : 'left' };
+  text-align: ${ props => !!props.right ? 'right' :  !!props.center ? 'center' : 'left' };
 `;
 
 export const Cell = styled.td`
-  text-align: ${ props => !!props.right ? 'right' : 'left' };
+  text-align: ${ props => !!props.right ? 'right' :  !!props.center ? 'center' : 'left' };
 `;
 
 export const Row = styled.tr`

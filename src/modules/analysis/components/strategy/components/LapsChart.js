@@ -30,7 +30,7 @@ const LapStintsLayer = ({ xScale, ...props }) => {
 };
 
 export const LapsChart = observer(
-  ({ scale }) => {
+  ({ scale, showStintDetails }) => {
     const analysis = useAnalysis();
 
     const cars = [...analysis.carsInRunningOrder].reverse();
@@ -64,6 +64,7 @@ export const LapsChart = observer(
         margin={{ top: 20, right: 30, bottom: 30, left: 0 }}
         maxValue={Math.ceil(analysis.session.leaderLap / 10) * 10}
         minValue={0}
+        onClick={showStintDetails}
         theme={theme}
         width={width}
       />

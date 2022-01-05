@@ -3,7 +3,6 @@ import { animated } from '@react-spring/web';
 import dayjs from 'dayjs';
 import { darken } from 'polished';
 
-import { FlagState } from '../../../../../racing';
 import { StintSparklines } from './StintSparklines';
 
 const Container = styled.div`
@@ -66,22 +65,13 @@ const Text = styled.div`
   }
 `;
 
-const sum = (acc, val) => acc + val;
-
 export const StintBox = animated(
-  ({ height, stint, width, x }) => {
+  ({ height, onClick, stint, width, x }) => {
 
     const laps = stint.inProgress ? stint.car.currentLap - stint.startLap : stint.durationLaps;
 
-    const relevantLaps = stint.laps.slice(1, stint.inProgress ? undefined : -1); // ignore out and in laps
-
-    const best = relevantLaps.length > 0 ? Math.min(
-      ...relevantLaps.map(l => l.laptime)
-    ) : null;
-
-    const mean = relevantLaps.length > 0 ?
-      (relevantLaps.filter(l => l.flag === FlagState.GREEN).map(l => l.laptime).reduce(sum, 0) / relevantLaps.length).toFixed(3)
-    : null;
+    const best = stint.bestLap;
+    const mean = stint.meanLap;
 
     return (
       <foreignObject
@@ -89,7 +79,10 @@ export const StintBox = animated(
         width={width}
         x={x}
       >
-        <Container car={stint.car}>
+        <Container
+          car={stint.car}
+          onClick={(e) => onClick(stint, e)}
+        >
           <StintSparklines
             height={height}
             stint={stint}

@@ -9,6 +9,10 @@ export const StintSparklines = ({ height, stint, width }) => {
   }
 
   const greenLaps = applicableLaps.filter(l => l.flag === FlagState.GREEN);
+  if (greenLaps.length === 0) {
+    return null;
+  }
+
   const greenLapTimes = greenLaps.map(l => l.laptime);
   const max = Math.max(...greenLapTimes);
   const min = Math.min(...greenLapTimes);

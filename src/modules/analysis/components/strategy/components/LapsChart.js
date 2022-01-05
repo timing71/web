@@ -35,7 +35,7 @@ export const LapsChart = observer(
 
     const cars = [...analysis.carsInRunningOrder].reverse();
 
-    const height = (cars.length * 74) - 12;
+    const height = (cars.length * 74);
     const width = (Math.ceil(analysis.session.leaderLap / 10) * 10 * scale) + 250;
 
     const tickValues = [...Array(Math.ceil(analysis.session.leaderLap / 10)).keys()].map(t => (t + 1) * 10);

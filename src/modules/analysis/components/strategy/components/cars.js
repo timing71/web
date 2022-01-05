@@ -2,6 +2,9 @@ import styled from "styled-components";
 import { animated, useTransition } from '@react-spring/web';
 
 import { useAnalysis } from "../../context";
+import { observer } from "mobx-react-lite";
+import { Bar } from "@nivo/bar";
+import { useMotionConfig } from "@nivo/core";
 
 const CarBox = styled.rect.attrs(
   props => ({
@@ -42,62 +45,92 @@ const Detail = styled.text.attrs(
   fill: white;
 `;
 
-export const CarsList = () => {
-  const analysis = useAnalysis();
-  const cars = analysis.carsInRunningOrder;
+export const CarsLayer = ({ bars }) => {
 
-  const overallHeight = cars.length * 72;
+  const { animate, config: springConfig } = useMotionConfig();
 
   const yPosTransition = useTransition(
-    cars,
+    bars,
     {
-      keys: car => car.raceNum,
-      from: (_, idx) => ({
-        transform: `translate(0, ${(idx * 71) + 4})`,
+      keys: bar => bar.key,
+      from: bar => ({
+        transform: `translate(0, ${bar.y})`,
       }),
-      update: (_, idx) => ({
-        transform: `translate(0, ${(idx * 71) + 4})`
+      update: bar => ({
+        transform: `translate(0, ${bar.y})`
       }),
+      config: springConfig,
+      immediate: !animate
     }
   );
 
   return (
-    <svg
-      height={overallHeight}
-      style={{ marginTop: 26, marginBottom: 30 }}
-      width={260}
+    <g
+      className='cars-layer'
     >
       {
         yPosTransition(
-          (style, car) => (
-            <animated.g
-              key={`car-${car.raceNum}`}
-              {...style}
-            >
-              <CarBox
-                car={car}
-                height={64}
-              />
-              <CarNum
-                car={car}
-                y={32}
-              />
-              <Detail
-                x={60}
-                y={20}
+          (style, bar) => {
+            const car = bar.data.data;
+            return (
+              <animated.g
+                key={`car-${car.raceNum}`}
+                {...style}
               >
-                {car.teamName}
-              </Detail>
-              <Detail
-                x={60}
-                y={44}
-              >
-                {car.make}
-              </Detail>
-            </animated.g>
-          )
+                <CarBox
+                  car={car}
+                  height={bar.height}
+                />
+                <CarNum
+                  car={car}
+                  y={Math.ceil(bar.height / 2)}
+                />
+                <Detail
+                  x={60}
+                  y={20}
+                >
+                  {car.teamName}
+                </Detail>
+                <Detail
+                  x={60}
+                  y={bar.height - 20}
+                >
+                  {car.make}
+                </Detail>
+              </animated.g>
+            );
+          }
         )
       }
-    </svg>
+    </g>
   );
 };
+
+
+export const CarsChart = observer(
+  () => {
+    const analysis = useAnalysis();
+
+    const cars = [...analysis.carsInRunningOrder].reverse();
+
+    const height = (cars.length * 74);
+
+    return (
+      <Bar
+        axisBottom={null}
+        axisLeft={null}
+        axisTop={null}
+        data={cars}
+        enableGridX={false}
+        enableGridY={false}
+        height={height}
+        indexBy={'raceNum'}
+        keys={['currentLap']}
+        layers={[CarsLayer]}
+        layout='horizontal'
+        margin={{ top: 22, right: 0, bottom: 30, left: 0 }}
+        width={260}
+      />
+    );
+  }
+);

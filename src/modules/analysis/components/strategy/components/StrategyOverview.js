@@ -5,7 +5,7 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
 import { DisplayMode } from '../constants';
-import { CarsList } from './cars';
+import { CarsChart } from './cars';
 import { LapsChart } from './LapsChart';
 import { TimeChart } from './TimeChart';
 
@@ -35,6 +35,9 @@ const ChartContainer = styled.div`
 const CarsInnerContainer = styled.div`
   height: 100%;
   overflow-y: hidden;
+  & > div {
+    margin-bottom: 16px;
+  }
 `;
 
 const ChartInnerContainerInner = styled.div`
@@ -206,7 +209,7 @@ export const StrategyOverview = () => {
         </Controls>
         <ChartContainer>
           <CarsInnerContainer ref={carPane}>
-            <CarsList />
+            <CarsChart />
           </CarsInnerContainer>
           <ChartInnerContainer ref={stintPane}>
             <Chart scale={scale} />

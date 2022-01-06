@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { useTransition, animated } from '@react-spring/web';
 import { StintDetailTable } from './StintDetailTable';
+import { StintLapChart } from './StintLapChart';
+import { useState } from 'react';
 
 const ModalBackdrop = styled(animated.div)`
 
@@ -31,12 +33,15 @@ const Modal = styled(animated.div)`
 `;
 
 const Container = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 const ModalContents = ({ close, stint }) => {
+
+  const [showAll, setShowAll] = useState(false);
 
   if (!stint) {
     return null;
@@ -48,6 +53,12 @@ const ModalContents = ({ close, stint }) => {
         Car {stint.car.raceNum} - { stint.driver.name }
       </h3>
       <StintDetailTable stint={stint} />
+      <div style={{ flexGrow: 1, overflow: 'hidden', width: '100%' }}>
+        <StintLapChart
+          showAll={showAll}
+          stint={stint}
+        />
+      </div>
       <button onClick={close}>Close</button>
     </Container>
   );

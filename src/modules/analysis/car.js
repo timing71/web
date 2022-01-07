@@ -99,8 +99,9 @@ export const Stint = types.model({
       : null;
     },
     get meanLap() {
-      return self.relevantLaps.length > 0 ?
-      (self.relevantLaps.filter(l => l.flag === FlagState.GREEN).map(l => l.laptime).reduce((sum, val) => sum + val, 0) / self.relevantLaps.length).toFixed(3)
+      const greenLaps = self.relevantLaps.filter(l => l.flag === FlagState.GREEN);
+      return greenLaps.length > 0 ?
+      (greenLaps.map(l => l.laptime).reduce((sum, val) => sum + val, 0) / greenLaps.length).toFixed(3)
     : null;
     },
     get yellowLaps() {

@@ -1,5 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 
+import { useState } from "react";
 import { createAnalyser } from "..";
 import { HelmetDecorator, ThemeDecorator } from "../../../stories/decorators";
 import { StintDetailModal as SDM } from "../components/strategy/components/StintDetailModal";
@@ -17,11 +18,18 @@ export default {
   ]
 };
 
-const Template = (args) => (
-  <SDM
-    stint={analysis.cars.get('22').stints[1]}
-    {...args}
-  />
-);
+const car = analysis.cars.get('22');
+
+const Template = () => {
+  const randomStint = () => Math.floor(Math.random() * car.stints.length);
+  const [stintNum, setStintNum] = useState(randomStint);
+
+  return (
+    <SDM
+      close={() => setStintNum(randomStint())}
+      stint={car.stints[stintNum]}
+    />
+  );
+};
 
 export const StintDetailModal = Template.bind({});

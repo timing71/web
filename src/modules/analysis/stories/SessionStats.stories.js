@@ -10,7 +10,7 @@ export default {
   decorators: [
     ThemeDecorator,
     HelmetDecorator,
-    AnalysisDataDecorator
+    AnalysisDataDecorator()
   ]
 };
 

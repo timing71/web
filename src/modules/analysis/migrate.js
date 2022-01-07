@@ -42,7 +42,7 @@ const MIGRATIONS = {
             s => !!s
           ).map(
           s => {
-            let cumulativeTime = s[1];
+            let cumulativeTime = s[1] * 1000;
             return {
               startLap: s[0],
               startTime: s[1] * 1000,

@@ -39,9 +39,20 @@ const Container = styled.div`
   align-items: center;
 `;
 
+const Controls = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-self: stretch;
+
+  & label input[type=checkbox] {
+    margin: 0 0.5em;
+  }
+`;
+
 const ModalContents = ({ close, stint }) => {
 
-  const [showAll, setShowAll] = useState(false);
+  const [showInOut, setShowInOut] = useState(false);
+  const [scaleYellow, setScaleYellow] = useState(false);
 
   if (!stint) {
     return null;
@@ -53,9 +64,28 @@ const ModalContents = ({ close, stint }) => {
         Car {stint.car.raceNum} - { stint.driver.name }
       </h3>
       <StintDetailTable stint={stint} />
-      <div style={{ flexGrow: 1, overflow: 'hidden', width: '100%' }}>
+      <Controls>
+        <label>
+          Show in/out laps
+          <input
+            checked={showInOut}
+            onChange={() => setShowInOut(s => !s)}
+            type='checkbox'
+          />
+        </label>
+        <label>
+          Include yellow laps in scale
+          <input
+            checked={scaleYellow}
+            onChange={() => setScaleYellow(s => !s)}
+            type='checkbox'
+          />
+        </label>
+      </Controls>
+      <div style={{ flexGrow: 1, marginBottom: '0.5em', marginTop: '0.5em', overflow: 'hidden', width: '100%' }}>
         <StintLapChart
-          showAll={showAll}
+          scaleYellow={scaleYellow}
+          showInOut={showInOut}
           stint={stint}
         />
       </div>

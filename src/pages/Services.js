@@ -37,7 +37,7 @@ const RouteryButton = ({ to, ...props }) => {
   );
 };
 
-const ReplayButton = ({ uuid }) => {
+const GeneratorButton = ({ children, finishMessage, startMessage, uuid }) => {
 
   const [isGenerating, setGenerating] = useState(false);
   const port = useContext(PluginContext);
@@ -45,7 +45,7 @@ const ReplayButton = ({ uuid }) => {
   useEffect(
     () => {
       const handleMessage = (message) => {
-        if (message?.uuid === uuid && message.type === 'REPLAY_GENERATION_FINISHED') {
+        if (message?.uuid === uuid && message.type === finishMessage) {
           setGenerating(false);
         }
       };
@@ -56,16 +56,16 @@ const ReplayButton = ({ uuid }) => {
         port.removeListener('message', handleMessage);
       };
     },
-    [uuid, port]
+    [finishMessage, port, uuid]
   );
 
   const startGeneration = useCallback(
     () => {
-      port.send({ type: 'GENERATE_SERVICE_REPLAY', uuid }).then(
+      port.send({ type: startMessage, uuid }).then(
         () => setGenerating(true)
       );
     },
-    [port, uuid]
+    [port, startMessage, uuid]
   );
 
 
@@ -75,11 +75,31 @@ const ReplayButton = ({ uuid }) => {
       onClick={startGeneration}
     >
       {
-        isGenerating ? 'Generating...' : 'Generate replay'
+        isGenerating ? 'Generating...' : children
       }
     </Button>
   );
 };
+
+const ReplayButton = ({ uuid }) => (
+  <GeneratorButton
+    finishMessage='REPLAY_GENERATION_FINISHED'
+    startMessage='GENERATE_SERVICE_REPLAY'
+    uuid={uuid}
+  >
+    Download replay
+  </GeneratorButton>
+);
+
+const AnalysisButton = ({ uuid }) => (
+  <GeneratorButton
+    finishMessage='ANALYSIS_GENERATION_FINISHED'
+    startMessage='GENERATE_ANALYSIS_DOWNLOAD'
+    uuid={uuid}
+  >
+    Download analysis
+  </GeneratorButton>
+);
 
 const ServiceEntry = ({ openAnalysis, service }) => (
   <tr>
@@ -95,6 +115,7 @@ const ServiceEntry = ({ openAnalysis, service }) => (
         Launch analysis
       </Button>
       <ReplayButton uuid={service.uuid} />
+      <AnalysisButton uuid={service.uuid} />
     </td>
   </tr>
 );

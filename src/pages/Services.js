@@ -81,7 +81,7 @@ const ReplayButton = ({ uuid }) => {
   );
 };
 
-const ServiceEntry = ({ service }) => (
+const ServiceEntry = ({ openAnalysis, service }) => (
   <tr>
     <td>{service.source}</td>
     <td>
@@ -91,6 +91,9 @@ const ServiceEntry = ({ service }) => (
       <RouteryButton to={`/timing/${service.uuid}`}>
         Reconnect
       </RouteryButton>
+      <Button onClick={() => openAnalysis(service.uuid)}>
+        Launch analysis
+      </Button>
       <ReplayButton uuid={service.uuid} />
     </td>
   </tr>
@@ -101,6 +104,13 @@ export const Services = () => {
 
   const port = useContext(PluginContext);
   const [services, setServices] = useState(null);
+
+  const openAnalysis = useCallback(
+    serviceUUID => {
+      port.send({ type: 'SHOW_T71_PAGE', page: `analysis/${serviceUUID}` });
+    },
+    [port]
+  );
 
   useEffect(
     () => {
@@ -116,9 +126,9 @@ export const Services = () => {
       <Wrapper>
         <h2>Recent local sessions</h2>
         <p>
-          This page lists recent timing sessions. You can reconnect to them or
-          download a replay file. Inactive sessions will automatically be deleted
-          after 24 hours.
+          This page lists recent timing sessions. You can reconnect to them,
+          launch the analysis screen, or download a replay file. Sessions will
+          automatically be deleted after 24 hours of inactivity.
         </p>
         {
           services !== null && (
@@ -142,6 +152,7 @@ export const Services = () => {
                     service => (
                       <ServiceEntry
                         key={service.uuid}
+                        openAnalysis={openAnalysis}
                         service={service}
                       />
                     )

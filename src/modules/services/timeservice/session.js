@@ -17,6 +17,7 @@ const createInitialState = () => ({
   cars: {},
   columns: [],
   messages: [],
+  meta: {},
   session: {},
   times: {},
   timeOffset: null,
@@ -169,11 +170,37 @@ const messageHandler = (state, action) => {
       // We ignore these messages.
       return state;
 
+    case '_update_meta':
+      return {
+        ...state,
+        meta: message
+      };
+
     default:
       console.warn(`No handler in place for event type ${type}`, message); // eslint-disable-line no-console
       return state;
   }
 
+};
+
+const extractMetadataFromIndex = (name, html) => {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+
+  const targetURL = `https://livetiming.getraceresults.com/${name}`;
+
+  const targetButton = doc.querySelector(`td a[href="${targetURL}"]`);
+  if (targetButton) {
+    const targetRow = targetButton.parentElement.parentElement;
+    const tds = targetRow.getElementsByTagName('td');
+    return {
+      name: tds[0].textContent.trim(),
+      circuit: tds[2].textContent.trim()
+    };
+  }
+
+
+  return {};
 };
 
 export const Session = ({ serviceData }) => {
@@ -184,6 +211,12 @@ export const Session = ({ serviceData }) => {
 
   useEffect(
     () => {
+
+      port.fetch(`https://getraceresults.com/`).then(
+        html => {
+          dispatch(['_update_meta', extractMetadataFromIndex(serviceData.n, html)]);
+        }
+      );
 
       let ws;
 

@@ -220,7 +220,7 @@ const postprocessCars = (cars, columnSpec) => {
 
 export const Translate = ({ state }) => {
 
-  const { cars, columns, messages, session, times, timeOffset } = state;
+  const { cars, columns, messages, meta, session, times, timeOffset } = state;
 
   const mappingState = useRef([[], [], false]);
 
@@ -240,13 +240,22 @@ export const Translate = ({ state }) => {
 
   useEffect(
     () => {
+
+      const descParts = [];
+      if (meta.name) {
+        descParts.push(meta.name);
+      }
+      if (session.name && session.name.lastIndexOf('-') >= 0) {
+        descParts.push(session.name.slice(session.name.lastIndexOf('-') + 1));
+      }
+
       updateManifest({
         name: (session.name && session.name.slice(0, session.name.lastIndexOf('-') - 1)) || '',
-        description: (session.name && session.name.slice(session.name.lastIndexOf('-') + 1)) || '',
+        description: descParts.join(' - '),
         colSpec
       });
     },
-    [colSpec, session, updateManifest]
+    [colSpec, meta.name, session, updateManifest]
   );
 
   const positionSort = useCallback(

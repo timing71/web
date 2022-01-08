@@ -134,7 +134,9 @@ const deriveColSpec = (columns) => {
   DEFAULT_COLUMN_SPEC.forEach(
     ([stat, label, mappingFunc]) => {
       const tsnlIndex = availableCols.indexOf(label);
-      if (tsnlIndex >= 0 && !spec.includes(stat) && !usedLabels.includes(label)) {
+      if (tsnlIndex >= 0 && !spec.includes(stat) && (!usedLabels.includes(label) || label === 'hole')) {
+        // 'hole' (gap) is special-cased as we use it twice in the DEFAULT_COLUMN_SPEC - once as gap,
+        // and once to derive laps
         spec.push(stat);
         usedLabels.push(label);
         reverseMap.push([tsnlIndex, mappingFunc]);

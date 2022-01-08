@@ -5,6 +5,7 @@ import { realToServerTime } from './utils';
 
 import CustomParseFormat from 'dayjs/plugin/customParseFormat';
 import { useServiceManifest, useServiceState } from '../../../components/ServiceContext';
+import { RaceControlMessage } from '../../messages/Message';
 dayjs.extend(CustomParseFormat);
 
 const ident = a => a;
@@ -214,7 +215,7 @@ const postprocessCars = (cars, columnSpec) => {
 
 export const Translate = ({ state }) => {
 
-  const { cars, columns, session, times, timeOffset } = state;
+  const { cars, columns, messages, session, times, timeOffset } = state;
 
   const mappingState = useRef([[], [], false]);
 
@@ -222,6 +223,8 @@ export const Translate = ({ state }) => {
 
   const { updateManifest } = useServiceManifest();
   const { updateState } = useServiceState();
+
+  const prevMessageIDs = useRef([]);
 
   useEffect(
     () => {
@@ -263,10 +266,12 @@ export const Translate = ({ state }) => {
           ),
           colSpec
         ),
-        session: mapSession(session, times, timeOffset)
+        session: mapSession(session, times, timeOffset),
+        extraMessages: messages.filter(m => !prevMessageIDs.current.includes(m.Id)).map(m => new RaceControlMessage(m.t).toCTDFormat())
       });
+      prevMessageIDs.current = messages.map(m => m.Id);
     },
-    [cars, colSpec, positionSort, reverseColumnMap, session, timeOffset, times, updateState]
+    [cars, colSpec, messages, positionSort, reverseColumnMap, session, timeOffset, times, updateState]
   );
 
   return null;

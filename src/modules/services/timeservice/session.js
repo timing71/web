@@ -16,6 +16,7 @@ const getWebsocketUrl = (tid, token) => `wss://livetiming.getraceresults.com/lt/
 const createInitialState = () => ({
   cars: {},
   columns: [],
+  messages: [],
   session: {},
   times: {},
   timeOffset: null,
@@ -134,6 +135,27 @@ const messageHandler = (state, action) => {
           ...state.weather,
           ...message
         }
+      };
+
+    case 'm_i':
+      return message.reduce(
+        (prevState, nextMessage) => messageHandler(prevState, ['m_c', nextMessage]),
+        state
+      );
+
+    case 'm_c':
+      return {
+        ...state,
+        messages: [
+          message,
+          ...state.messages
+        ]
+      };
+
+    case 'm_d':
+      return {
+        ...state,
+        messages: state.messages.filter(m => m.Id !== message)
       };
 
     case 't_p':

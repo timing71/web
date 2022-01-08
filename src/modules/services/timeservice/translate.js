@@ -153,9 +153,14 @@ const deriveColSpec = (columns) => {
   return [spec, reverseMap, inferPosition];
 };
 
-const mapSession = (session, times, timeOffset) => {
+const mapSession = (messages, session, times, timeOffset) => {
+
+  const flagFromSession = FLAG_MAP[session.flag];
+
+  const hasLocalYellows = messages.findIndex(m => m.t.toLowerCase().startsWith('yellow flag')) >= 0;
+
   const retVal = {
-    flagState: FLAG_MAP[session.flag] || FlagState.NONE
+    flagState: flagFromSession === FlagState.GREEN && hasLocalYellows ? FlagState.YELLOW : flagFromSession || FlagState.NONE
   };
 
   if (typeof(times.lt) !== 'undefined' && typeof(times.r) !== 'undefined' && typeof(times.q) !== 'undefined' && !!timeOffset) {
@@ -266,7 +271,7 @@ export const Translate = ({ state }) => {
           ),
           colSpec
         ),
-        session: mapSession(session, times, timeOffset),
+        session: mapSession(messages, session, times, timeOffset),
         extraMessages: messages.filter(m => !prevMessageIDs.current.includes(m.Id)).map(m => new RaceControlMessage(m.t).toCTDFormat())
       });
       prevMessageIDs.current = messages.map(m => m.Id);

@@ -1,32 +1,32 @@
 import { types } from 'mobx-state-tree';
 import { FlagState, Stat } from '../../racing';
 
-const Driver = types.union(
-  types.model({
-    idx: types.identifierNumber,
-    car: types.reference(types.late(() => Car)),
-    name: types.string
-  }).views(
-    self => ({
-      get stints() {
-        return self.car.stints.filter(s => s.driver === self);
-      }
-    })
-  ),
-  types.undefined
+const Driver = types.model({
+  idx: types.identifierNumber,
+  car: types.reference(types.late(() => Car)),
+  name: types.string
+}).views(
+  self => ({
+    get stints() {
+      return self.car.stints.filter(s => s.driver === self);
+    }
+  })
 );
 
 const Lap = types.model({
   lapNumber: types.integer,
   laptime: types.number,
-  driver: types.reference(Driver, {
-    get(identifier, parent) {
-      return parent.car.drivers[identifier];
-    },
-    set(value) {
-      return value.idx;
-    }
-  }),
+  driver: types.union(
+    types.reference(Driver, {
+      get(identifier, parent) {
+        return parent.car.drivers[identifier];
+      },
+      set(value) {
+        return value.idx;
+      }
+    }),
+    types.undefined
+  ),
   flag: types.optional(types.string, FlagState.NONE),
   timestamp: types.Date,
   car: types.reference(types.late(() => Car))
@@ -51,14 +51,17 @@ export const Stint = types.model({
   endLap: types.union(types.integer, types.undefined),
   endTime: types.union(types.Date, types.undefined),
   car: types.reference(types.late(() => Car)),
-  driver: types.reference(Driver, {
-    get(identifier, parent) {
-      return parent.car.drivers[identifier];
-    },
-    set(value) {
-      return value.idx;
-    }
-  }),
+  driver: types.union(
+    types.reference(Driver, {
+      get(identifier, parent) {
+        return parent.car.drivers[identifier];
+      },
+      set(value) {
+        return value.idx;
+      }
+    }),
+    types.undefined
+  ),
   laps: types.array(Lap)
 }).actions(
   self => ({
@@ -190,7 +193,7 @@ export const Car = types.model({
       const currentState = statExtractor.get(car, Stat.STATE);
       self.state = currentState;
       const currentStateIsPit = IN_PIT_STATES.includes(currentState);
-      const prevState = oldStatExtractor?.get(oldCar, Stat.STATE);
+      const prevState = oldCar && oldStatExtractor?.get(oldCar, Stat.STATE);
       const prevStateIsPit = IN_PIT_STATES.includes(prevState);
 
       if (currentStateIsPit && !prevStateIsPit && self.currentStint) {

@@ -13,11 +13,12 @@ const getToken = async (tid, port) => {
 
 const getWebsocketUrl = (tid, token) => `wss://livetiming.getraceresults.com/lt/connect?transport=webSockets&clientProtocol=1.5&_tk=${tid}&_gr=w&connectionToken=${encodeURIComponent(token)}&tid=8`;
 
-const createInitialState = () => ({
+const createInitialState = (serviceData) => () => ({
   cars: {},
   columns: [],
   messages: [],
   meta: {},
+  serviceData,
   session: {},
   times: {},
   timeOffset: null,
@@ -207,7 +208,7 @@ export const Session = ({ serviceData }) => {
 
   const port = useContext(PluginContext);
 
-  const [state, dispatch] = useReducer(messageHandler, null, createInitialState);
+  const [state, dispatch] = useReducer(messageHandler, null, createInitialState(serviceData));
 
   useEffect(
     () => {

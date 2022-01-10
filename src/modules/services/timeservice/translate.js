@@ -48,7 +48,7 @@ const MAX_INT = 2147483647;
 const MAX_INT64_STRING = "9223372036854775807";
 
 const parseTime = (t) => {
-  if (t === MAX_INT64_STRING || t === '' || t === MAX_INT) {
+  if (t === MAX_INT64_STRING || t === '' || t === MAX_INT || !t) {
     return '';
   }
   try {
@@ -76,27 +76,27 @@ const TIME_FLAG_MAP = {
 };
 
 const mapSector = (sector) => {
-  if (sector.length === 2) {
+  if (sector && sector.length === 2) {
     return [parseTime(sector[0]), TIME_FLAG_MAP[sector[1]] || ''];
   }
   return [parseTime(sector), ''];
 };
 
 const mapLaptime = (i) => {
-  if (i[0] !== MAX_INT64_STRING) {
+  if (i && i[0] !== MAX_INT64_STRING) {
     return [parseInt(i[0], 10) / 1000000, TIME_FLAG_MAP[i[1]] || ''];
   }
   return ['', ''];
 };
 
 const parseGap = (i) => {
-  if (i[0] === '-') {
+  if (i && i[0] === '-') {
     return i;
   }
   return parseTime(i);
 };
 
-const first = i => i[0];
+const first = i => i && i[0];
 
 const DEFAULT_COLUMN_SPEC = [
   [Stat.NUM, "startnumber", ident],
@@ -214,6 +214,46 @@ const postprocessCars = (cars, columnSpec) => {
       }
     );
   }
+
+  const lastIdx = columnSpec.indexOf(Stat.LAST_LAP);
+  const bestIdx = columnSpec.indexOf(Stat.BEST_LAP);
+  const classIdx = columnSpec.indexOf(Stat.CLASS);
+
+  if (lastIdx >= 0 && bestIdx >= 0) {
+    const bestLapsByClass = {};
+
+    cars.forEach(
+      (car, idx) => {
+        const bl = car[bestIdx];
+
+        const clazz = classIdx >= 0 ? car[classIdx] : null;
+
+        if (!bestLapsByClass[clazz] || (bl[0] > 0 && bestLapsByClass[clazz].time > bl[0])) {
+          bestLapsByClass[clazz] = {
+            time: bl[0],
+            index: idx
+          };
+        }
+      }
+    );
+
+    const s3Idx = columnSpec.indexOf(Stat.S3);
+
+    Object.values(bestLapsByClass).forEach(
+      ({ time, index }) => {
+        cars[index][bestIdx] = [time, 'sb'];
+        if (cars[index][lastIdx][0] === time) {
+          if (s3Idx === -1 || !!cars[index][s3Idx][0]) {
+            cars[index][lastIdx] = [time, 'sb-new'];
+          }
+          else {
+            cars[index][lastIdx] = [time, 'sb'];
+          }
+        }
+      }
+    );
+  }
+
 
   return cars;
 };

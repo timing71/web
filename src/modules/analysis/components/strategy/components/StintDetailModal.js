@@ -61,7 +61,7 @@ const ModalContents = ({ close, stint }) => {
   return (
     <Container>
       <h3>
-        Car {stint.car.raceNum} - { stint.driver.name }
+        Car {stint.car.raceNum} - { stint.driver?.name || 'Unknown driver' }
       </h3>
       <StintDetailTable stint={stint} />
       <Controls>

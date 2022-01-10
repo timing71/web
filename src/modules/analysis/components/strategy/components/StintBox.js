@@ -89,7 +89,7 @@ export const StintBox = animated(
             width={width}
           />
           <Line>
-            <Text bold>{stint.driver.name}</Text>
+            <Text bold>{stint.driver?.name || 'Unknown driver'}</Text>
             <Text
               bold
               right

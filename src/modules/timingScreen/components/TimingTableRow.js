@@ -27,6 +27,15 @@ const TimingTableRowInner = styled.tr`
   }
 
   ${
+    props => (props.theme.settings.backgrounds && props.llState && props.llState[1] === 'sb-new') && css`
+      background-color: ${ props.theme.modifiers['sb-new'] } !important;
+      & td {
+        color: black;
+      }
+    `
+  }
+
+  ${
     props => props.highlight && css`
       animation: ${blink} 0.5s alternate 2;
     `
@@ -37,6 +46,7 @@ export const TimingTableRow = ({ car, highlight, manifest, position, statExtract
   <TimingTableRowInner
     carState={statExtractor.get(car, Stat.STATE)}
     highlight={highlight}
+    llState={statExtractor.get(car, Stat.LAST_LAP)}
   >
     <Position>{position}</Position>
     {

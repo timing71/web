@@ -10,6 +10,7 @@ const TextCell = styled.td``;
 const MessageRow = styled.tr`
   & td {
     padding: 4px;
+    vertical-align: top;
   }
 
   & td:first-child {

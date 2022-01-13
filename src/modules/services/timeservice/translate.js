@@ -1,11 +1,13 @@
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useRef } from 'react';
+import { onPatch } from 'mobx-state-tree';
+
 import { FlagState, Stat } from '../../../racing';
 import { realToServerTime } from './utils';
 
 import CustomParseFormat from 'dayjs/plugin/customParseFormat';
 import { useServiceManifest, useServiceState } from '../../../components/ServiceContext';
-import { RaceControlMessage } from '../../messages/Message';
+import { Message, RaceControlMessage } from '../../messages/Message';
 dayjs.extend(CustomParseFormat);
 
 const ident = a => a;
@@ -258,7 +260,7 @@ const postprocessCars = (cars, columnSpec) => {
   return cars;
 };
 
-export const Translate = ({ state }) => {
+export const Translate = ({ creventic, state }) => {
 
   const { cars, columns, messages, meta, session, times, timeOffset } = state;
 
@@ -270,6 +272,7 @@ export const Translate = ({ state }) => {
   const { updateState } = useServiceState();
 
   const prevMessageIDs = useRef([]);
+  const penaltyUpdates = useRef([]);
 
   useEffect(
     () => {
@@ -282,10 +285,10 @@ export const Translate = ({ state }) => {
     () => {
 
       const descParts = [];
-      if (meta.name) {
+      if (meta?.name) {
         descParts.push(meta.name);
       }
-      if (session.name && session.name.lastIndexOf('-') >= 0) {
+      if (session?.name && session.name.lastIndexOf('-') >= 0) {
         descParts.push(session.name.slice(session.name.lastIndexOf('-') + 1));
       }
 
@@ -295,7 +298,21 @@ export const Translate = ({ state }) => {
         colSpec
       });
     },
-    [colSpec, meta.name, session, updateManifest]
+    [colSpec, meta?.name, session, updateManifest]
+  );
+
+  useEffect(
+    () => {
+      onPatch(
+        creventic.penalties,
+        ({ op, value }) => {
+          if (op === 'add' || op === 'replace') {
+            penaltyUpdates.current.unshift(value);
+          }
+        }
+      );
+    },
+    [creventic]
   );
 
   const positionSort = useCallback(
@@ -311,6 +328,17 @@ export const Translate = ({ state }) => {
 
   useEffect(
     () => {
+
+      const raceControlMessages = messages.filter(m => !prevMessageIDs.current.includes(m.Id)).map(m => new RaceControlMessage(m.t).toCTDFormat());
+      const penaltyUpdateMessages = penaltyUpdates.current.map(
+        p => new Message(
+          'Penalty',
+          `Car ${p.raceNum}: ${p.incident} - ${p.value}: ${p.state} (decision ${p.decisionID})`.toUpperCase(),
+          'raceControl',
+          p.raceNum
+        ).toCTDFormat()
+      );
+
       updateState({
         cars: postprocessCars(
           Object.values(cars).sort(positionSort).map(
@@ -321,9 +349,11 @@ export const Translate = ({ state }) => {
           colSpec
         ),
         session: mapSession(messages, session, times, timeOffset),
-        extraMessages: messages.filter(m => !prevMessageIDs.current.includes(m.Id)).map(m => new RaceControlMessage(m.t).toCTDFormat())
+        extraMessages: raceControlMessages.concat(penaltyUpdateMessages)
       });
+
       prevMessageIDs.current = messages.map(m => m.Id);
+      penaltyUpdates.current = [];
     },
     [cars, colSpec, messages, positionSort, reverseColumnMap, session, timeOffset, times, updateState]
   );

@@ -26,7 +26,7 @@ export const Messages = () => {
       <MessagesTable>
         <colgroup>
           <col style={{ width: '6em' }} />
-          <col />
+          <col style={{ width: '8em' }} />
           <col />
         </colgroup>
         <tbody>

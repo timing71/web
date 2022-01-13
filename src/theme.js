@@ -14,6 +14,11 @@ const redAnim = keyframes`
   100% { background-color: #990000 }
 `;
 
+const code60Anim = keyframes`
+  from { background-color: #ff53e3; }
+  to { background-color: black}
+`;
+
 export const Theme = {
   classColours: {
     'p': '#FFFFFF',
@@ -201,6 +206,11 @@ export const Theme = {
       background: '#DDDD00',
       color: 'black',
       animation: css`${yellowAnim} 0.5s alternate infinite`
+    },
+    [FlagState.CODE_60]: {
+      background: '#ff53e3',
+      color: 'white',
+      animation: css`${code60Anim} 0.5s alternate infinite`
     },
     [FlagState.CHEQUERED]: {
       background: css`left/contain repeat-x url(${chequer})`,

@@ -112,6 +112,10 @@ export const Theme = {
       color: '#DC291E',
       rowBackground: ['#550000', '#5C0000'],
     },
+    'FUEL': {
+      color: 'white',
+      rowBackground: ['#550000', '#5C0000'],
+    },
     'OUT': {
       color: '#FF6418',
       rowBackground: ['#553300', '#603F00'],

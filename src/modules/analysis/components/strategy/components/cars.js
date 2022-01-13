@@ -17,7 +17,7 @@ const CarBox = styled.rect.attrs(
 )`
   stroke: ${ props => (props.car && props.theme.classColours[(props.car.raceClass || '').toLowerCase().replace(/[-/ ]/, '')]) || '#C0C0C0' };
 
-  fill: ${ props => (props.car && props.car.state && props.theme.carStates[props.car.state].rowBackground && props.theme.carStates[props.car.state].rowBackground[0]) || 'black' };
+  fill: ${ props => (props.car && props.car.state && props.theme.carStates[props.car.state]?.rowBackground && props.theme.carStates[props.car.state].rowBackground[0]) || 'black' };
   transition: fill 0.5s ease-in-out;
 `;
 

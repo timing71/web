@@ -78,10 +78,13 @@ const TIME_FLAG_MAP = {
 };
 
 const mapSector = (sector) => {
-  if (sector && sector.length === 2) {
-    return [parseTime(sector[0]), TIME_FLAG_MAP[sector[1]] || ''];
+  if (sector === MAX_INT64_STRING) {
+    return ['', ''];
   }
-  return [parseTime(sector), ''];
+  if (sector && sector.length === 2) {
+    return [parseInt(sector[0], 10) / 1000000, TIME_FLAG_MAP[sector[1]] || ''];
+  }
+  return [parseInt(sector, 10) / 1000000, ''];
 };
 
 const mapLaptime = (i) => {

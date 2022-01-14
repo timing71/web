@@ -82,6 +82,10 @@ export const Creventic = types.model({
       );
     },
 
+    addPenalty(p) {
+      self.penalties.set(p.did, Penalty.create(p));
+    },
+
     clearPenalties() {
       self.penalties.clear();
     }

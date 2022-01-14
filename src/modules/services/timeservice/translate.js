@@ -310,9 +310,10 @@ export const Translate = ({ creventic, state }) => {
     () => {
       onPatch(
         creventic.penalties,
-        ({ op, value }) => {
-          if (op === 'add' || op === 'replace') {
-            penaltyUpdates.current.unshift(value);
+        ({ op, path }) => {
+          const decisionID = parseInt(path.substring(1), 10);
+          if ((op === 'add' || op === 'replace')) {
+            penaltyUpdates.current.unshift(creventic.penalties.get(decisionID));
           }
         }
       );
@@ -343,6 +344,8 @@ export const Translate = ({ creventic, state }) => {
           p.raceNum
         ).toCTDFormat()
       );
+      prevMessageIDs.current = messages.map(m => m.Id);
+      penaltyUpdates.current = [];
 
       updateState({
         cars: postprocessCars(
@@ -356,9 +359,6 @@ export const Translate = ({ creventic, state }) => {
         session: mapSession(messages, session, times, timeOffset),
         extraMessages: raceControlMessages.concat(penaltyUpdateMessages)
       });
-
-      prevMessageIDs.current = messages.map(m => m.Id);
-      penaltyUpdates.current = [];
     },
     [cars, colSpec, messages, positionSort, reverseColumnMap, session, timeOffset, times, updateState]
   );

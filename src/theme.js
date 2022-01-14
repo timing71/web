@@ -164,6 +164,10 @@ export const Theme = {
       rowBackground: ['#990000', '#990000'],
       rowColor: 'white'
     },
+    'code60': {
+      rowBackground: ['#ff53e3', '#ff53e3'],
+      rowColor: 'white'
+    },
     'pb': {
       rowColor: '#00FF00'
     },

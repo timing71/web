@@ -172,7 +172,13 @@ const createMessageHandler = (creventic) => {
         return state;
 
       case 'c_pu':
-        creventic.penalties.get(message.did).update(message);
+        const extant = creventic.penalties.get(message.did);
+        if (extant) {
+          extant.update(message);
+        }
+        else {
+          creventic.addPenalty(message);
+        }
         return state;
 
       case 't_p':

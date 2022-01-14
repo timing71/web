@@ -168,8 +168,10 @@ const mapSession = (messages, session, times, timeOffset) => {
   if (typeof(times.lt) !== 'undefined' && typeof(times.r) !== 'undefined' && typeof(times.q) !== 'undefined' && !!timeOffset) {
     if ((times.s || 0) === 0 && (times.e || 0) !== 0) {
       retVal['timeRemain'] = ((times.e || 0) - (times.s || 0)) / 1000000;
+      retVal['pauseClocks'] = true;
     }
     else if (!!times.h) {
+      retVal['pauseClocks'] = true;
       retVal['timeRemain'] = ((times.lt || 0) - (times.r || 0)) / 1000000;
     }
     else {

@@ -142,7 +142,10 @@ export const Analysis = ({ analysisState, live=false, serviceUUID }) => {
   const { state } = useServiceState();
   const { emit } = useBroadcastChannel(`analysis/${serviceUUID}`);
 
-  const analyser = useRef(createAnalyser(analysisState, live));
+  const analyser = useRef();
+  if (!analyser.current) {
+    analyser.current = createAnalyser(analysisState, live);
+  }
   const prevState = useRef(state);
 
   const latestSnapshot = useRef();

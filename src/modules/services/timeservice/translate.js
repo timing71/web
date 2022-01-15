@@ -162,7 +162,7 @@ const mapSession = (messages, session, times, timeOffset) => {
 
   const flagFromSession = FLAG_MAP[session.flag];
 
-  const hasLocalYellows = messages.findIndex(m => m.t.toLowerCase().startsWith('yellow flag')) >= 0;
+  const hasLocalYellows = messages.findIndex(m => (m.t || '').toLowerCase().startsWith('yellow flag')) >= 0;
 
   const retVal = {
     flagState: flagFromSession === FlagState.GREEN && hasLocalYellows ? FlagState.YELLOW : flagFromSession || FlagState.NONE
@@ -313,7 +313,10 @@ export const Translate = ({ creventic, state }) => {
         ({ op, path }) => {
           const decisionID = parseInt(path.substring(1), 10);
           if ((op === 'add' || op === 'replace')) {
-            penaltyUpdates.current.unshift(creventic.penalties.get(decisionID));
+            const penalty = creventic.penalties.get(decisionID);
+            if (!penaltyUpdates.current.includes(penalty)) {
+              penaltyUpdates.current.unshift(penalty);
+            }
           }
         }
       );

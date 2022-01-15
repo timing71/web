@@ -169,7 +169,7 @@ export const Services = () => {
               </thead>
               <tbody>
                 {
-                  services.map(
+                  services.sort((a, b) => b.startTime - a.startTime).map(
                     service => (
                       <ServiceEntry
                         key={service.uuid}

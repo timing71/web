@@ -37,16 +37,22 @@ const RouteryButton = ({ to, ...props }) => {
   );
 };
 
-const GeneratorButton = ({ children, finishMessage, startMessage, uuid }) => {
+const GeneratorButton = ({ children, finishMessage, progressMessage, startMessage, uuid }) => {
 
   const [isGenerating, setGenerating] = useState(false);
   const port = useContext(PluginContext);
+  const [progress, setProgress] = useState(null);
 
   useEffect(
     () => {
       const handleMessage = (message) => {
-        if (message?.uuid === uuid && message.type === finishMessage) {
-          setGenerating(false);
+        if (message?.uuid === uuid) {
+          if (message.type === finishMessage) {
+            setGenerating(false);
+          }
+          else if (message.type === progressMessage) {
+            setProgress(message.progress);
+          }
         }
       };
 
@@ -56,7 +62,7 @@ const GeneratorButton = ({ children, finishMessage, startMessage, uuid }) => {
         port.removeListener('message', handleMessage);
       };
     },
-    [finishMessage, port, uuid]
+    [finishMessage, port, progressMessage, uuid]
   );
 
   const startGeneration = useCallback(
@@ -77,6 +83,9 @@ const GeneratorButton = ({ children, finishMessage, startMessage, uuid }) => {
       {
         isGenerating ? 'Generating...' : children
       }
+      {
+        isGenerating && progress !== null ? ` (${progress.percent}%)`: null
+      }
     </Button>
   );
 };
@@ -84,6 +93,7 @@ const GeneratorButton = ({ children, finishMessage, startMessage, uuid }) => {
 const ReplayButton = ({ uuid }) => (
   <GeneratorButton
     finishMessage='REPLAY_GENERATION_FINISHED'
+    progressMessage='REPLAY_GENERATION_PROGRESS'
     startMessage='GENERATE_SERVICE_REPLAY'
     uuid={uuid}
   >

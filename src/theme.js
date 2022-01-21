@@ -47,6 +47,7 @@ export const Theme = {
     'gt': '#FF4F00',
     'gtc': '#A0A0A0',
     'gtd': '#00dc67',
+    'gtdpro': '#FF0000',
     'gt3': '#FFFF00',
     'gt3p': '#CCCCCC',
     'gt3g': '#dbb700',

@@ -3,7 +3,7 @@ import { types } from 'mobx-state-tree';
 import { Message as CTFMessage } from '../messages';
 
 export const Message = types.model({
-  category: types.string,
+  category: types.optional(types.string, ''),
   message: types.string,
   style: types.union(types.string, types.undefined, types.null),
   carNum: types.union(types.string, types.undefined, types.null),

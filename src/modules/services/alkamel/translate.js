@@ -264,7 +264,7 @@ export const Translator = ({
   session,
 }) => {
 
-  const raceControlLastMessage = useRef(0);
+  const raceControlLastMessage = useRef(-1);
 
   const numSectors = getSectorCount(track_info);
 
@@ -275,16 +275,24 @@ export const Translator = ({
     (messages) => {
       const result = [];
       const newMessageIndexes = Object.keys(messages).filter(k => k > raceControlLastMessage.current);
-      newMessageIndexes.reverse().forEach(
-        i => {
-          raceControlLastMessage.current = Math.max(raceControlLastMessage.current, i);
-          result.push(
-            new RaceControlMessage(
-              messages[i].message
-            ).toCTDFormat()
+
+      if (newMessageIndexes.length > 0) {
+        if (raceControlLastMessage.current === -1) {
+          raceControlLastMessage.current = Math.max(...newMessageIndexes);
+        }
+        else {
+          newMessageIndexes.reverse().forEach(
+            i => {
+              raceControlLastMessage.current = Math.max(raceControlLastMessage.current, i);
+              result.push(
+                new RaceControlMessage(
+                  messages[i].message
+                ).toCTDFormat()
+              );
+            }
           );
         }
-      );
+      }
       return result;
     },
     []

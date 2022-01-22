@@ -50,7 +50,7 @@ export const ClassLeaders = observer(
         </thead>
         <tbody>
           {
-            Object.values(leaders).map(
+            Object.values(leaders).sort((a, b) => a[0] - b[0]).map(
               ([position, car]) => (
                 <tr key={position}>
                   <Position>{position}</Position>

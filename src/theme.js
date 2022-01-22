@@ -19,6 +19,8 @@ const code60Anim = keyframes`
   to { background-color: black}
 `;
 
+const flashyYellow = css`${yellowAnim} 0.5s alternate infinite`;
+
 export const Theme = {
   classColours: {
     'p': '#FFFFFF',
@@ -200,7 +202,7 @@ export const Theme = {
     [FlagState.SC]: {
       background: '#DDDD00',
       color: 'black',
-      animation: css`${yellowAnim} 0.5s alternate infinite`,
+      animation: flashyYellow
     },
     [FlagState.SLOW_ZONE]: {
       background: 'linear-gradient(0deg, black, #DDDD00, black) top/400% 400%',
@@ -209,17 +211,17 @@ export const Theme = {
     [FlagState.CAUTION]: {
       background: '#DDDD00',
       color: 'black',
-      animation: css`${yellowAnim} 0.5s alternate infinite`
+      animation: flashyYellow
     },
     [FlagState.FCY]: {
       background: '#DDDD00',
       color: 'black',
-      animation: css`${yellowAnim} 0.5s alternate infinite`
+      animation: flashyYellow
     },
     [FlagState.VSC]: {
       background: '#DDDD00',
       color: 'black',
-      animation: css`${yellowAnim} 0.5s alternate infinite`
+      animation: flashyYellow
     },
     [FlagState.CODE_60]: {
       background: '#ff53e3',

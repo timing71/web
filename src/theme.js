@@ -216,6 +216,11 @@ export const Theme = {
       color: 'black',
       animation: css`${yellowAnim} 0.5s alternate infinite`
     },
+    [FlagState.VSC]: {
+      background: '#DDDD00',
+      color: 'black',
+      animation: css`${yellowAnim} 0.5s alternate infinite`
+    },
     [FlagState.CODE_60]: {
       background: '#ff53e3',
       color: 'white',

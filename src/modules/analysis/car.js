@@ -39,9 +39,9 @@ const FLAG_WEIGHTS = {
   [FlagState.SLOW_ZONE]: 2,
   [FlagState.CODE_60_ZONE]: 3,
   [FlagState.FCY]: 4,
-  [FlagState.VSC]: 4,
-  [FlagState.CODE_60]: 5,
-  [FlagState.SC]: 6,
+  [FlagState.VSC]: 5,
+  [FlagState.CODE_60]: 6,
+  [FlagState.SC]: 7,
   [FlagState.RED]: 99
 };
 

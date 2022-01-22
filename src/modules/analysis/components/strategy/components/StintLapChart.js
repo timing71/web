@@ -9,7 +9,7 @@ import { linearGradientDef } from '@nivo/core';
 import { FlagState } from '../../../../../racing';
 
 const getBarColor = ({ data }) => {
-  return siteTheme.flagStates[data.flag].background || '#C0C0C0';
+  return siteTheme.flagStates[data.flag]?.background || '#C0C0C0';
 };
 
 const TooltipWrapper = styled.div`

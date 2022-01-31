@@ -49,17 +49,24 @@ export const Service = ({ service }) => {
 
         onReceivedMessage(msg) {
 
-          const mungedData = msg.data.slice(2, -1);
+          if (msg.data[0] === 'a') {
+            const mungedData = msg.data.slice(2, -1);
 
-          const mungedMessage = {
-            ...msg,
-            data: mungedData.length > 0 ? JSON.parse(mungedData) : null
-          };
+            const mungedMessage = {
+              ...msg,
+              data: mungedData.length > 0 ? JSON.parse(mungedData) : null
+            };
 
-          this.emit('message', mungedMessage);
-          if (this.onmessage) {
-            this.onmessage(mungedMessage);
+            this.emit('message', mungedMessage);
+            if (this.onmessage) {
+              this.onmessage(mungedMessage);
+            }
+
           }
+          else if (msg.data[0] === 'c') {
+            console.log("Upstream timing source disconnected!"); // eslint-disable-line no-console
+          }
+
         }
 
         send(data) {

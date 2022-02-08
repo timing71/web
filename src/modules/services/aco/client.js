@@ -114,6 +114,8 @@ export class Client {
 
     this.reference = new ReferenceData(host, fetchFunc);
     this._load_ref_data();
+
+    updateManifest(this.getManifest());
   }
 
   _load_ref_data() {
@@ -181,7 +183,7 @@ export class Client {
 
     const description = (this.reference.data.race) ?
       `${this.reference.data.race.name_en} - ${ this.params.sessionName }` :
-      this.params.sessionName;
+      this.params.sessionName || 'No current session';
 
     return {
       name: this.name,

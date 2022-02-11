@@ -70,7 +70,9 @@ const postprocessCars = (cars) => {
       ([idx, blt]) => {
         const llt = cars[idx][lastLapIdx][0];
         cars[idx][bestLapIdx] = [blt, 'sb'];
-        if (llt === blt) {
+
+        const s3 = cars[idx][15];
+        if (llt === blt && !!s3[0]) {
           cars[idx][lastLapIdx] = [llt, 'sb-new'];
         }
       }
@@ -85,7 +87,10 @@ const postprocessCars = (cars) => {
               const [idx, st] = bestSectors[sector];
               cars[idx][sectorIdx] = [st, 'sb'];
 
-              if (cars[idx][sectorIdx - 1][0] === st) {
+              if (cars[idx][sectorIdx - 1][1] === 'pb') {
+                // Unfortunately current sector time is a string, so we can't
+                // compare it without parsing it. But if the time was a personal
+                // best we know we're correct in doing this:
                 cars[idx][sectorIdx - 1] = [st, 'sb'];
               }
             }
@@ -259,7 +264,6 @@ export class Client {
     const entry = (this.reference.data.entries || []).find(c => c.id === carId);
 
     const category = entry?.category_label?.replace('LM ', 'LM') || CATEGORIES[car.categoryId];
-
 
     return ([
       car.number,

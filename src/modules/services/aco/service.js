@@ -1,4 +1,4 @@
-import { useCallback, useContext, useRef } from "react";
+import { useCallback, useContext, useEffect, useRef } from "react";
 
 import { Client } from './client';
 import { useSocketIo } from "../../socketio";
@@ -19,9 +19,16 @@ export const Service = ({ host, name, service: { uuid } }) => {
 
   const client = useRef();
 
-  if (!client.current) {
-    client.current = new Client(host.replace('data.', 'live.'), name, onUpdate, updateManifest, port.fetch);
-  }
+  useEffect(
+    () => {
+      if (!client.current) {
+        client.current = new Client(host.replace('data.', 'live.'), name, onUpdate, updateManifest, port.fetch);
+      }
+    },
+    [host, name, onUpdate, updateManifest, port]
+  );
+
+
 
   useSocketIo(host, uuid, client.current?.handle);
 

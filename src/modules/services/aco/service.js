@@ -1,4 +1,5 @@
 import { useCallback, useContext, useEffect, useRef } from "react";
+import throttle from 'lodash.throttle';
 
 import { Client } from './client';
 import { useSocketIo } from "../../socketio";
@@ -11,13 +12,16 @@ export const Service = ({ host, name, service: { uuid } }) => {
   const { updateState } = useServiceState();
   const raceControlIndex = useRef(-1);
 
-  const onUpdate = useCallback(
-    (client) => {
-      const newState = client.getState(raceControlIndex.current < 0 ? 9999999999 : raceControlIndex.current);
-      raceControlIndex.current = Math.max(newState.meta.raceControlIndex || -1, raceControlIndex.current);
-      updateState(newState);
-    },
-    [updateState]
+  const onUpdate = throttle(
+    useCallback(
+      (client) => {
+        const newState = client.getState(raceControlIndex.current < 0 ? 9999999999 : raceControlIndex.current);
+        raceControlIndex.current = Math.max(newState.meta.raceControlIndex || -1, raceControlIndex.current);
+        updateState(newState);
+      },
+      [updateState]
+    ),
+    500
   );
 
   const client = useRef();

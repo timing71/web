@@ -12,6 +12,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "@visx/text": "^2.3.0",
+    "af-virtual-scroll": "^2.11.0",
     "clone-deep": "^4.0.1",
     "dayjs": "^1.10.7",
     "deep-equal": "^2.0.5",

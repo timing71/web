@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 const CategoryCell = styled.td`
   color: ${ props => (props.value && props.theme.classColours[props.value.toLowerCase().replace(/[-/ ]/, '')]) || 'white' };
+  white-space: nowrap;
 `;
 
 const TextCell = styled.td``;

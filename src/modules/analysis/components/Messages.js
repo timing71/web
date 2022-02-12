@@ -1,6 +1,11 @@
+import { useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
+import { Table, useVirtual } from  'af-virtual-scroll';
+import dayjs from '../../../datetime';
+
+
 import { Message } from '../../../components/Message';
 import { useAnalysis } from './context';
 
@@ -12,10 +17,24 @@ const Container = styled.div`
 
 const MessageTableContainer = styled.div`
   height: 100%;
-  overflow-y: auto;
+  overflow: auto;
+
+  .afvscr-table {
+    position: relative;
+
+    & > div {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1px;
+      visibility: hidden;
+    }
+  }
 
   & table {
-    width: 100%;
+    flex: 0 1 auto;
+    table-layout: fixed;
+    min-width: 100%;
   }
 `;
 
@@ -27,12 +46,52 @@ const FiltersContainer = styled.div`
   }
 `;
 
+const columns = [
+  {
+    dataKey: 'timestamp',
+    label: 'Timestamp',
+    render: (date) => {
+      return dayjs(date).format('HH:mm:ss');
+    }
+  },
+  {
+    dataKey: 'category',
+    label: 'Category'
+  },
+  {
+    dataKey: 'message',
+    label: 'Message'
+  }
+];
+
 export const Messages = observer(
   () => {
 
     const analysis = useAnalysis();
 
     const messages = analysis.messages.messages;
+
+    const tableModel = useVirtual({
+      itemCount: messages.length,
+      estimatedItemSize: 28
+    });
+
+    const renderRow = useCallback(
+      (rowIndex) => {
+        const msg = messages[rowIndex];
+        return (
+          <Message
+            message={[
+              msg.timestamp,
+              msg.category,
+              msg.message,
+              msg.style
+            ]}
+          />
+        );
+      },
+      [messages]
+    );
 
     return (
       <>
@@ -41,25 +100,13 @@ export const Messages = observer(
         </Helmet>
         <Container>
           <MessageTableContainer>
-            <table>
-              <tbody>
-                {
-                  messages.map(
-                    (msg, idx) => (
-                      <Message
-                        key={idx}
-                        message={[
-                          msg.timestamp,
-                          msg.category,
-                          msg.message,
-                          msg.style
-                        ]}
-                      />
-                    )
-                  )
-                }
-              </tbody>
-            </table>
+            <Table
+              columns={columns}
+              getRowData={i => messages[i]}
+              headless
+              model={tableModel}
+              renderRow={renderRow}
+            />
           </MessageTableContainer>
           <FiltersContainer>
             <h3>Filters</h3>

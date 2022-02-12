@@ -9,7 +9,7 @@ const CarOption = styled(Option).attrs(
     value: props.car.raceNum
   })
 )`
-  color: ${ props => (props.car && props.theme.classColours[props.car.raceClass.toLowerCase().replace(/[-/ ]/, '')]) || props.theme.site.highlightColor };
+  color: ${ props => (props.car && props.theme.classColours[props.car.classColorString]) || props.theme.site.highlightColor };
 `;
 
 export const CarSelection = observer(

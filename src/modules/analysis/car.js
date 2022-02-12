@@ -260,6 +260,10 @@ export const Car = types.model({
 
     get identifyingString() {
       return self.teamName || self.drivers[0]?.name || '';
+    },
+
+    get classColorString() {
+      return (self.raceClass || '').toLowerCase().replace(/[-/ ]/, '');
     }
   })
 );

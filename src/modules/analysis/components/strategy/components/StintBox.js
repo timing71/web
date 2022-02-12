@@ -18,7 +18,7 @@ const Container = styled.div`
     props => (
       props.car && darken(
         props.inProgress ? 0.25 : 0.35,
-        props.theme.classColours[(props.car.raceClass || '').toLowerCase().replace(/[-/ ]/, '')] || '#808080'
+        props.theme.classColours[props.car.classColorString] || '#808080'
       )
     )
   };
@@ -28,7 +28,7 @@ const Container = styled.div`
       props => (
         props.car && darken(
           props.inProgress ? 0.15 : 0.25,
-          props.theme.classColours[(props.car.raceClass || '').toLowerCase().replace(/[-/ ]/, '')] || '#808080'
+          props.theme.classColours[props.car.classColorString] || '#808080'
         )
       )
     };

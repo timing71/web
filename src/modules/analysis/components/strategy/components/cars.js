@@ -15,7 +15,7 @@ const CarBox = styled.rect.attrs(
     rx: 3
   })
 )`
-  stroke: ${ props => (props.car && props.theme.classColours[(props.car.raceClass || '').toLowerCase().replace(/[-/ ]/, '')]) || '#C0C0C0' };
+  stroke: ${ props => (props.car && props.theme.classColours[props.car.classColorString]) || '#C0C0C0' };
 
   fill: ${ props => (props.car && props.car.state && props.theme.carStates[props.car.state]?.rowBackground && props.theme.carStates[props.car.state].rowBackground[0]) || 'black' };
   transition: fill 0.5s ease-in-out;
@@ -29,7 +29,7 @@ const CarNum = styled.text.attrs(
     x: 30,
   })
 )`
-  fill: ${ props => (props.car && props.theme.classColours[(props.car.raceClass || '').toLowerCase().replace(/[-/ ]/, '')]) || '#C0C0C0' };
+  fill: ${ props => (props.car && props.theme.classColours[props.car.classColorString]) || '#C0C0C0' };
   font-size: 28px;
   font-family: ${ props => props.theme.site.headingFont };
 `;

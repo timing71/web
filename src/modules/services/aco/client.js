@@ -1,4 +1,5 @@
 import { FlagState, Stat } from "../../../racing";
+import { RaceControlMessage } from '../../messages/Message';
 import { ReferenceData } from "./reference";
 
 const CATEGORIES = {
@@ -108,6 +109,8 @@ export class Client {
   constructor(host, name, onUpdate, updateManifest, fetchFunc) {
     this.entries = {};
     this.params = {};
+    this.race_control = [];
+    this._prev_race_control_idx = 0;
     this.name = name;
     this.onUpdate = () => onUpdate(this);
     this.updateManifest = updateManifest;
@@ -162,6 +165,10 @@ export class Client {
             this.updateManifest(this.getManifest());
           }
         }
+        break;
+
+      case 'race_control':
+        this.race_control = [...data];
         break;
 
       case 'laps':
@@ -226,10 +233,27 @@ export class Client {
     };
   }
 
-  getState() {
+  /*
+    Upstream expects the state returned from this call to include only _new_ messages
+    in the `extraMessages` array. Feels wrong that two consecutive calls to `getState`
+    would return different results, so it's up to the caller to remember where in the
+    array we were last time they called.
+  */
+  getState(prevRaceControlIdx=0) {
     const sortedEntries = Object.values(this.entries).sort((a, b) => a.ranking - b.ranking);
+
+    const newRCMessages = this.race_control.slice(prevRaceControlIdx).reverse();
+
+    const extraMessages = newRCMessages.map(
+      msg => new RaceControlMessage(msg.text, msg.dayTime).toCTDFormat()
+    );
+
     return {
       cars: postprocessCars(sortedEntries.map(this.mapCar)),
+      extraMessages,
+      meta: {
+        raceControlIndex: this.race_control.length
+      },
       session: {
         timeElapsed: this.params.elapsedTime,
         timeRemain: Math.ceil(Math.max(this.params.remaining, 0)),

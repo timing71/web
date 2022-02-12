@@ -9,10 +9,13 @@ export const Service = ({ host, name, service: { uuid } }) => {
   const port = useContext(PluginContext);
   const { updateManifest } = useServiceManifest();
   const { updateState } = useServiceState();
+  const raceControlIndex = useRef(0);
 
   const onUpdate = useCallback(
     (client) => {
-      updateState(client.getState());
+      const newState = client.getState(raceControlIndex.current);
+      raceControlIndex.current = newState.meta.raceControlIndex || 0;
+      updateState(newState);
     },
     [updateState]
   );

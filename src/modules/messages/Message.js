@@ -1,10 +1,10 @@
 export class Message {
-  constructor(category, message, style, carNum=null) {
+  constructor(category, message, style, carNum=null, timestamp) {
     this.category = category;
     this.message = message;
     this.style = style;
     this.carNum = carNum;
-    this.timestamp = Date.now();
+    this.timestamp = timestamp || Date.now();
   }
 
   toCTDFormat() {
@@ -27,10 +27,10 @@ export class Message {
 const CAR_NUMBER_REGEX = /car #? ?(?<carNum>[0-9]+)/i;
 
 export class RaceControlMessage extends Message {
-  constructor(message) {
+  constructor(message, timestamp=null) {
 
     const carNumMatch = message.match(CAR_NUMBER_REGEX);
 
-    super('Race Control', message.toUpperCase(), 'raceControl', carNumMatch?.groups?.carNum);
+    super('Race Control', message.toUpperCase(), 'raceControl', carNumMatch?.groups?.carNum, timestamp);
   }
 }

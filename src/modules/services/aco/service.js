@@ -14,7 +14,7 @@ export const Service = ({ host, name, service: { uuid } }) => {
   const onUpdate = useCallback(
     (client) => {
       const newState = client.getState(raceControlIndex.current);
-      raceControlIndex.current = newState.meta.raceControlIndex || 0;
+      raceControlIndex.current = Math.max(newState.meta.raceControlIndex || 0, raceControlIndex.current);
       updateState(newState);
     },
     [updateState]

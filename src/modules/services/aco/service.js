@@ -9,12 +9,12 @@ export const Service = ({ host, name, service: { uuid } }) => {
   const port = useContext(PluginContext);
   const { updateManifest } = useServiceManifest();
   const { updateState } = useServiceState();
-  const raceControlIndex = useRef(0);
+  const raceControlIndex = useRef(-1);
 
   const onUpdate = useCallback(
     (client) => {
-      const newState = client.getState(raceControlIndex.current);
-      raceControlIndex.current = Math.max(newState.meta.raceControlIndex || 0, raceControlIndex.current);
+      const newState = client.getState(raceControlIndex.current < 0 ? 9999999999 : raceControlIndex.current);
+      raceControlIndex.current = Math.max(newState.meta.raceControlIndex || -1, raceControlIndex.current);
       updateState(newState);
     },
     [updateState]

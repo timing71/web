@@ -11,7 +11,8 @@ export const Message = types.model({
 });
 
 export const Messages = types.model({
-  messages: types.array(Message)
+  messages: types.array(Message),
+  highWaterMark: types.optional(types.Date, new Date(0))
 }).actions(
   self => ({
     update(oldState, newState) {
@@ -20,14 +21,23 @@ export const Messages = types.model({
       // timestamp as the newest message from the previous state.
       // (If that happens, we'll end up silently dropping messages.)
 
-      const oldMessageIndex = oldState.messages.length > 0 ? oldState.messages[0][0] : -1;
-      const relevantNewMessages = newState.messages.filter(
-        m => m[0] > oldMessageIndex
-      );
+      const relevantNewMessages = [];
+
+      for (let i=0; i < newState.messages.length; i++) {
+        const msg = newState.messages[i];
+        if (msg[0] <= self.highWaterMark.getTime()) {
+          break;
+        }
+        relevantNewMessages.unshift(msg);
+      }
 
       relevantNewMessages.forEach(
         rnm => self.messages.unshift({ ...CTFMessage.fromCTDFormat(rnm) })
       );
+
+      if (self.messages.length > 0) {
+        self.highWaterMark = self.messages[0].timestamp;
+      }
     },
 
     reset() {

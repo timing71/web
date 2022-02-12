@@ -28,7 +28,7 @@ describe('Messages', () => {
   });
 
   it('records new messages', () => {
-    const msgs = Messages.create();
+    const msgs = Messages.create({ highWaterMark: new Date(5) });
 
     msgs.update(
       { messages: [ [5] ] },

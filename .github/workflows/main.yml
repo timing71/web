@@ -41,14 +41,15 @@ jobs:
       - name: Run tests
         run: yarn run test
 
-      - name: Deploy to beta web server
-        uses: jamesremuscat/ssh-scp-deploy@main
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          port: ${{ secrets.SSH_PORT }}
-          user: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          local: "build/*"
-          remote: "~/webroot-beta/"
-          pre_upload: rm -r ~/webroot-beta/*
-          scp_options: "-l 2000"
+# # Disabled on migration to netlify:
+#      - name: Deploy to beta web server
+#        uses: jamesremuscat/ssh-scp-deploy@main
+#        with:
+#          host: ${{ secrets.SSH_HOST }}
+#          port: ${{ secrets.SSH_PORT }}
+#          user: ${{ secrets.SSH_USERNAME }}
+#          key: ${{ secrets.SSH_PRIVATE_KEY }}
+#          local: "build/*"
+#          remote: "~/webroot-beta/"
+#          pre_upload: rm -r ~/webroot-beta/*
+#          scp_options: "-l 2000"

@@ -16,8 +16,8 @@ const GLOBAL_GENERATORS = [
 
 const PER_CAR_GENERATORS = [  // Order can be significant (e.g. driver change before pit out!)
   FastLapMessage,
-  DriverChangeMessage,
   PitMessage,
+  DriverChangeMessage,
   StopResumeMessage
 ];
 

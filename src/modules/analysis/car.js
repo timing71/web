@@ -256,6 +256,10 @@ export const Car = types.model({
         }
       }
       return null;
+    },
+
+    get identifyingString() {
+      return self.teamName || self.drivers[0]?.name || '';
     }
   })
 );

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 
 import { Page } from '../../../components/Page';
@@ -32,6 +33,9 @@ const MenuWrapper = styled.div`
 `;
 
 export const AnalysisScreen = ({ analyser, manifest }) => {
+
+  const [selectedCar, setSelectedCar] = useState(null);
+
   return (
     <Page>
       <AnalysisProvider analysis={analyser}>
@@ -39,9 +43,12 @@ export const AnalysisScreen = ({ analyser, manifest }) => {
           <Title>{manifest.name} - {manifest.description}</Title>
           <FlagPanel />
           <MenuWrapper>
-            <Menu />
+            <Menu
+              selectedCar={selectedCar}
+              setSelectedCar={setSelectedCar}
+            />
           </MenuWrapper>
-          <Contents />
+          <Contents selectedCar={selectedCar} />
         </Container>
       </AnalysisProvider>
     </Page>

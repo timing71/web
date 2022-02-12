@@ -110,7 +110,6 @@ export class Client {
     this.entries = {};
     this.params = {};
     this.race_control = [];
-    this._prev_race_control_idx = 0;
     this.name = name;
     this.onUpdate = () => onUpdate(this);
     this.updateManifest = updateManifest;

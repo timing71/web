@@ -1,5 +1,6 @@
 import { Messages, Message } from '../messages';
 import { Message as CTFMessage } from '../../messages';
+import { onPatch } from 'mobx-state-tree';
 
 describe('Message', () => {
   it('can be instantiated with a CTF Message object', () => {
@@ -11,21 +12,6 @@ describe('Message', () => {
 });
 
 describe('Messages', () => {
-  it('records all messages from initial state', () => {
-    const msgs = Messages.create();
-
-    msgs.update(
-      { messages: [] },
-      {
-        messages: [
-          [2, 'two', 'two message', 'twoStyle', 'twoCarNum'],
-          [1, 'one', 'one message', 'oneStyle'],
-        ]
-      }
-    );
-
-    expect(msgs.messages.length).toEqual(2);
-  });
 
   it('records new messages', () => {
     const msgs = Messages.create();
@@ -33,7 +19,8 @@ describe('Messages', () => {
     msgs.update(
       { messages: [ [5] ] },
       {
-        messages: [
+        messages: [ [5] ],
+        newMessages: [
           [6, 'six', 'six message', 'sixStyle'],
           [5, 'five', 'five message', 'fiveStyle'],
           [2, 'two', 'two message', 'twoStyle'],
@@ -42,8 +29,33 @@ describe('Messages', () => {
       }
     );
 
-    expect(msgs.messages.length).toEqual(1);
+    expect(msgs.messages.length).toEqual(4);
     expect(msgs.messages[0].message).toEqual('six message');
+  });
+
+  it('causes an onPatch event', (done) => {
+    const msgs = Messages.create({
+      messages: [
+        { ...CTFMessage.fromCTDFormat([2, 'two', 'two message', 'twoStyle']) },
+        { ...CTFMessage.fromCTDFormat([1, 'one', 'one message', 'oneStyle']) }
+      ]
+    });
+
+    onPatch(msgs, (p) => {
+      expect(p.op).toEqual('add');
+      expect(p.value?.message).toEqual('five message');
+      done();
+    });
+
+    msgs.update(
+      { messages: [ [5] ] },
+      {
+        messages: [ [5] ],
+        newMessages: [
+          [5, 'five', 'five message', 'fiveStyle']
+        ]
+      }
+    );
   });
 
   it('can be reset', () => {

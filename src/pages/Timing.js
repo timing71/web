@@ -84,6 +84,8 @@ const TimingInner = ({ match: { params } }) => {
             ...oldState.messages
           ].slice(0, 100);
 
+          newState.newMessages = newMessages;
+
           newState.lastUpdated = Date.now();
 
           return newState;

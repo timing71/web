@@ -29,7 +29,7 @@ export const Messages = types.model({
       // That assumption proved to be problematic...
     */
 
-      (newState.extraMessages || []).reverse().forEach(
+      (newState.newMessages || []).reverse().forEach(
         rnm => self.messages.unshift({ ...CTFMessage.fromCTDFormat(rnm) })
       );
     },

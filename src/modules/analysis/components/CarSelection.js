@@ -21,6 +21,12 @@ export const CarSelection = observer(
         onChange={onChange}
         value={selectedCar}
       >
+        <option
+          disabled
+          value={null}
+        >
+          -- Select a car --
+        </option>
         {
           analysis.cars.map(
             c => (

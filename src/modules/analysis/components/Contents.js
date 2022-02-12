@@ -2,7 +2,7 @@ import { Redirect, Route, Switch, useLocation, useRouteMatch } from 'react-route
 import styled from 'styled-components';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
-import { routes } from './routes';
+import { perCarRoutes, routes } from './routes';
 
 const Container = styled.div`
   grid-area: main;
@@ -47,6 +47,17 @@ export const Contents = () => {
             </Route>
             {
               routes.map(
+                (route, idx) => (
+                  <Route
+                    component={route.component}
+                    key={idx}
+                    path={`${path}${route.path}`}
+                  />
+                )
+              )
+            }
+            {
+              perCarRoutes.map(
                 (route, idx) => (
                   <Route
                     component={route.component}

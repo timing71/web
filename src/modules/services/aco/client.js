@@ -72,7 +72,7 @@ const postprocessCars = (cars) => {
         const llt = cars[idx][lastLapIdx][0];
         cars[idx][bestLapIdx] = [blt, 'sb'];
 
-        const s3 = cars[idx][15];
+        const s3 = cars[idx][14];
         if (llt === blt && !!s3[0]) {
           cars[idx][lastLapIdx] = [llt, 'sb-new'];
         }

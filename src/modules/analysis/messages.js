@@ -16,6 +16,7 @@ export const Messages = types.model({
   self => ({
     update(oldState, newState) {
 
+    /*
       // Underlying assumption here: we'll never get a new message with the same
       // timestamp as the newest message from the previous state.
       // (If that happens, we'll end up silently dropping messages.)
@@ -25,7 +26,10 @@ export const Messages = types.model({
         m => m[0] > oldMessageIndex
       );
 
-      relevantNewMessages.forEach(
+      // That assumption proved to be problematic...
+    */
+
+      (newState.extraMessages || []).reverse().forEach(
         rnm => self.messages.unshift({ ...CTFMessage.fromCTDFormat(rnm) })
       );
     },

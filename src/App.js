@@ -13,6 +13,7 @@ import { SettingsProvider } from './modules/settings';
 import { ThemeSettingsProvider } from './components/ThemeSettingsProvider';
 import { Theme } from './theme';
 import { FAQ } from './pages/FAQ';
+import { FileAnalysis } from './pages/FileAnalysis';
 
 function App() {
   return (
@@ -52,6 +53,10 @@ function App() {
                     <Route
                       component={Analysis}
                       path='/analysis/:serviceUUID'
+                    />
+                    <Route
+                      component={FileAnalysis}
+                      path='/file-analysis'
                     />
                   </Switch>
                 </ThemeSettingsProvider>

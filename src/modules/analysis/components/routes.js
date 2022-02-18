@@ -1,3 +1,4 @@
+import { CarMessages } from './CarMessages';
 import { DriverStints } from './driverStints';
 import { DriveTime } from './driveTime';
 import { Messages } from './Messages';
@@ -32,5 +33,10 @@ export const perCarRoutes = [
     path: '/cars/:raceNum/driver-stints',
     name: 'Driver stints',
     component: DriverStints
-  }
+  },
+  {
+    path: '/cars/:raceNum/messages',
+    name: 'Car messages',
+    component: CarMessages
+  },
 ];

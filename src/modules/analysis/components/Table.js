@@ -37,13 +37,17 @@ export const Cell = styled.td`
 
 export const Row = styled.tr`
 
+  &:nth-child(even) {
+    background-color: #181818;
+  }
+
   ${
     props => !!props.inProgress && css`
 
     border: 2px solid ${ props => props.theme.site.highlightColor };
     border-width: 0 2px;
 
-    background-color: #202020;
+    background-color: #303030;
 
     & ${Cell} {
       color: ${ props => props.inProgress ? '#C0C0C0' : 'white' };

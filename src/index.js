@@ -1,7 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import * as Sentry from "@sentry/react";
+import { BrowserTracing } from "@sentry/tracing";
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+if (process.env.REACT_APP_SENTRY_DSN) {
+  Sentry.init({
+    dsn: process.env.REACT_APP_SENTRY_DSN,
+    environment: process.env.NODE_ENV,
+    integrations: [new BrowserTracing()],
+    // release: TODO
+    tracesSampleRate: 1.0,
+  });
+}
 
 ReactDOM.render(
   <React.StrictMode>

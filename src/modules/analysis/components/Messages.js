@@ -117,6 +117,7 @@ export const Messages = observer(
         const msg = messages[rowIndex];
         return (
           <Message
+            key={rowIndex}
             message={[
               msg.timestamp,
               msg.category,

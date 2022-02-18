@@ -12,29 +12,65 @@ import { useAnalysis } from './context';
 const Container = styled.div`
   display: grid;
   grid-template-columns: minmax(0, 4fr) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   height: 100%;
 `;
 
 const MessageTableContainer = styled.div`
   height: 100%;
-  overflow: auto;
+
+  .afvscr-list, .afvscr-table {
+    overflow: auto;
+    min-height: 0;
+    height: 100%;
+  }
 
   .afvscr-table {
     position: relative;
 
-    & > div {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 1px;
-      visibility: hidden;
+    table {
+      /* flex-grow on table makes rows to stretch on firefox */
+      flex: 0 1 auto;
+      table-layout: fixed;
+      min-width: 100%;
+    }
+
+    thead,
+    tfoot {
+        white-space: nowrap;
+    }
+
+    td,
+    th {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    thead td,
+    thead th,
+    tfoot td,
+    tfoot th {
+        position: sticky;
+        z-index: 1;
+    }
+
+    thead td,
+    thead th {
+        top: 0;
+    }
+
+    tfoot td,
+    tfoot th {
+        bottom: 0;
     }
   }
 
-  & table {
-    flex: 0 1 auto;
-    table-layout: fixed;
-    min-width: 100%;
+  .afvscr-table > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    visibility: hidden;
   }
 `;
 

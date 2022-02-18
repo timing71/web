@@ -1,6 +1,8 @@
 import { types } from 'mobx-state-tree';
 import { FlagState, Stat } from '../../racing';
 
+const sum = (total, v) => total + v;
+
 const Driver = types.model({
   idx: types.identifierNumber,
   car: types.reference(types.late(() => Car)),
@@ -9,6 +11,23 @@ const Driver = types.model({
   self => ({
     get stints() {
       return self.car.stints.filter(s => s.driver === self);
+    },
+
+    get inCar() {
+      return self.car.currentStint?.driver === self;
+    },
+
+    get totalLaps() {
+      return self.stints.map(s => s.durationLaps || s.laps.length).filter(l => !!l).reduce(sum);
+    },
+
+    driveTime(timestamp=null) {
+      return self.stints.map(s => s.durationSeconds || ((timestamp ? timestamp - s.startTime : 0) / 1000)).filter(l => !!l).reduce(sum);
+    },
+
+    get bestLap() {
+      const allBest = self.stints.map(s => s.bestLap).filter(s => !!s);
+      return allBest.length > 0 ? Math.min(...allBest) : null;
     }
   })
 );

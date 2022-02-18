@@ -5,8 +5,9 @@
   "author": "James Muscat <jamesremuscat@gmail.com>",
   "license": "AGPL-3.0-or-later",
   "dependencies": {
-    "@nivo/bar": "^0.76.0",
-    "@nivo/core": "^0.76.0",
+    "@nivo/bar": "^0.79.0",
+    "@nivo/core": "^0.79.0",
+    "@nivo/pie": "^0.79.0",
     "@react-spring/web": "^9.4.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",

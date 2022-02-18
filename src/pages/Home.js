@@ -3,6 +3,7 @@ import InlineSVG from 'react-inlinesvg';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 
+import { MainMenu } from '../components/MainMenu';
 import { Page } from '../components/Page';
 import { Section } from '../components/Section';
 import { ImageChanger } from '../components/ImageChanger';
@@ -15,6 +16,7 @@ import background from '../img/timing_screen_blurred.jpg';
 import launchT71 from '../img/launch_t71.png';
 import addToChrome from '../img/add_to_chrome.png';
 import { Paypal } from 'styled-icons/fa-brands';
+import { PluginDetector } from '../modules/pluginBridge';
 
 const HomeInner = styled.div`
   display: flex;
@@ -82,6 +84,41 @@ const PP = styled(Paypal)`
   width: 1em;
 `;
 
+const DefaultContent = () => (
+  <>
+    <Section>
+      <h2>Get started now!</h2>
+      <StartNow>
+        <ol>
+          <li>
+            Install the <a href={CHROME_STORE_URL}>Timing71 Beta Chrome extension</a> from the <a href={CHROME_STORE_URL}>Chrome Web Store</a>.
+          </li>
+          <li>
+            Visit any supported live timing page. More will be added over time!
+          </li>
+          <li>
+            Click the "Launch Timing71" button and enjoy the racing!
+          </li>
+        </ol>
+        <ImageChanger
+          delay={5}
+          imageComponent={LaunchImage}
+          images={[
+            addToChrome,
+            launchT71,
+          ]}
+        />
+      </StartNow>
+      <p style={{ textAlign: 'center' }}>
+        Want to find out more? { ' ' }
+        <Link to='/faq'>
+          Visit our FAQ page
+        </Link>.
+      </p>
+    </Section>
+  </>
+);
+
 export const Home = () => (
   <Page>
     <HomeInner>
@@ -94,38 +131,11 @@ export const Home = () => (
           />
         </a>
       </LogosBox>
-
-      <Section>
-        <h2>Get started now!</h2>
-        <StartNow>
-          <ol>
-            <li>
-              Install the <a href={CHROME_STORE_URL}>Timing71 Beta Chrome extension</a> from the <a href={CHROME_STORE_URL}>Chrome Web Store</a>.
-            </li>
-            <li>
-              Visit any supported live timing page. More will be added over time!
-            </li>
-            <li>
-              Click the "Launch Timing71" button and enjoy the racing!
-            </li>
-          </ol>
-          <ImageChanger
-            delay={5}
-            imageComponent={LaunchImage}
-            images={[
-              addToChrome,
-              launchT71,
-            ]}
-          />
-        </StartNow>
-        <p style={{ textAlign: 'center' }}>
-          Want to find out more? { ' ' }
-          <Link to='/faq'>
-            Visit our FAQ page
-          </Link>.
-        </p>
-      </Section>
-
+      <PluginDetector
+        defaultBefore={DefaultContent}
+      >
+        <MainMenu />
+      </PluginDetector>
       <Footer>
         <span>
           Timing71 and Timing71 Beta are copyright &copy; <CopyrightYear /> James Muscat.
@@ -139,7 +149,6 @@ export const Home = () => (
           Donate via <PP /> PayPal
         </a>
       </Footer>
-
     </HomeInner>
   </Page>
 );

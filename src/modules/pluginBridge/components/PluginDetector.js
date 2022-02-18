@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { LoadingScreen } from "../../../components/LoadingScreen";
 import { PluginContextProvider } from "./PluginContextProvider";
 
@@ -12,10 +12,13 @@ const getMetaValue = key => {
   return meta !== null ? meta.getAttribute('value') : null;
 };
 
+const DefaultBeforeDetection = () => <LoadingScreen message='Checking for Chrome extension...' />;
 
-export const PluginDetector = ({ children }) => {
+
+export const PluginDetector = ({ beforeDetection=DefaultBeforeDetection, children, limit=5 }) => {
 
   const [extensionID, setExtensionID] = useState(null);
+  const tries = useRef(limit);
 
   const findExtension = useCallback(
     () => {
@@ -24,7 +27,8 @@ export const PluginDetector = ({ children }) => {
         if (maybeID) {
           setExtensionID(maybeID);
         }
-        else {
+        else if (tries.current > 0) {
+          tries.current = tries.current - 1;
           window.setTimeout(findExtension, 500);
         }
       }
@@ -40,8 +44,9 @@ export const PluginDetector = ({ children }) => {
   );
 
   if (!extensionID) {
+    const Component = beforeDetection;
     return (
-      <LoadingScreen message='Checking for Chrome extension...' />
+      <Component />
     );
   }
 

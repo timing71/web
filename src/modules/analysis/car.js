@@ -18,11 +18,11 @@ const Driver = types.model({
     },
 
     get totalLaps() {
-      return self.stints.map(s => s.durationLaps || s.laps.length).filter(l => !!l).reduce(sum);
+      return self.stints.map(s => s.durationLaps || s.laps.length).filter(l => !!l).reduce(sum, 0);
     },
 
     driveTime(timestamp=null) {
-      return self.stints.map(s => s.durationSeconds || ((timestamp ? timestamp - s.startTime : 0) / 1000)).filter(l => !!l).reduce(sum);
+      return self.stints.map(s => s.durationSeconds || ((timestamp ? timestamp - s.startTime : 0) / 1000)).filter(l => !!l).reduce(sum, 0);
     },
 
     get bestLap() {
@@ -123,7 +123,7 @@ export const Stint = types.model({
     get meanLap() {
       const greenLaps = self.relevantLaps.filter(l => l.flag === FlagState.GREEN);
       return greenLaps.length > 0 ?
-      (greenLaps.map(l => l.laptime).reduce((sum, val) => sum + val, 0) / greenLaps.length).toFixed(3)
+      (greenLaps.map(l => l.laptime).reduce(sum, 0) / greenLaps.length).toFixed(3)
     : null;
     },
     get yellowLaps() {

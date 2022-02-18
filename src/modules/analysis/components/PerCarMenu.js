@@ -37,11 +37,20 @@ export const PerCarMenu = ({ selectedCar, setSelectedCar }) => {
               current={`${url}${route.path}`.replace(':raceNum', selectedCar) === location.pathname}
               key={idx}
             >
-              <Link
-                to={`${url}${route.path}`.replace(':raceNum', selectedCar)}
-              >
-                {route.name}
-              </Link>
+              {
+                !!selectedCar && (
+                <Link
+                  to={`${url}${route.path}`.replace(':raceNum', selectedCar)}
+                >
+                  {route.name}
+                </Link>
+                )
+              }
+              {
+                !selectedCar && (
+                  <span>{route.name}</span>
+                )
+              }
             </MenuItem>
           )
         )

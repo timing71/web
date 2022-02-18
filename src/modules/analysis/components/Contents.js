@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { Redirect, Route, Switch, useLocation, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
@@ -21,7 +22,7 @@ const Container = styled.div`
     transition: opacity 150ms ease-in;
   }
 
-  & > div {
+  & > div, & > div > div {
     height: 100%;
   }
 
@@ -30,44 +31,48 @@ const Container = styled.div`
 export const Contents = () => {
   const { path, url } = useRouteMatch();
   const location = useLocation();
+  const nodeRef = useRef();
   return (
     <Container>
       <TransitionGroup>
         <CSSTransition
           classNames="fade"
           key={location.pathname}
+          nodeRef={nodeRef}
           timeout={300}
         >
-          <Switch>
-            <Route
-              exact
-              path={path}
-            >
-              <Redirect to={`${url}/session`} />
-            </Route>
-            {
-              routes.map(
-                (route, idx) => (
-                  <Route
-                    component={route.component}
-                    key={idx}
-                    path={`${path}${route.path}`}
-                  />
+          <div ref={nodeRef}>
+            <Switch>
+              <Route
+                exact
+                path={path}
+              >
+                <Redirect to={`${url}/session`} />
+              </Route>
+              {
+                routes.map(
+                  (route, idx) => (
+                    <Route
+                      component={route.component}
+                      key={idx}
+                      path={`${path}${route.path}`}
+                    />
+                  )
                 )
-              )
-            }
-            {
-              perCarRoutes.map(
-                (route, idx) => (
-                  <Route
-                    component={route.component}
-                    key={idx}
-                    path={`${path}${route.path}`}
-                  />
+              }
+              {
+                perCarRoutes.map(
+                  (route, idx) => (
+                    <Route
+                      component={route.component}
+                      key={idx}
+                      path={`${path}${route.path}`}
+                    />
+                  )
                 )
-              )
-            }
-          </Switch>
+              }
+            </Switch>
+          </div>
         </CSSTransition>
       </TransitionGroup>
     </Container>

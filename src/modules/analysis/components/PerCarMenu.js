@@ -16,11 +16,17 @@ export const PerCarMenu = ({ selectedCar, setSelectedCar }) => {
       if (location.pathname.includes('/cars/')) {
         const sameRouteWithCurrentCar = location.pathname.replace(/\/cars\/[^/]+/, `/cars/${selectedCar}`);
         if (sameRouteWithCurrentCar !== location.pathname) {
-          history.push(sameRouteWithCurrentCar);
+          if (selectedCar) {
+            history.push(sameRouteWithCurrentCar);
+          }
+          else {
+            const raceNum = location.pathname.match(/(?:\/cars\/)([^/]+)/);
+            setSelectedCar(raceNum[1]);
+          }
         }
       }
     },
-    [history, location, match, selectedCar]
+    [history, location, match, selectedCar, setSelectedCar]
   );
 
   return (

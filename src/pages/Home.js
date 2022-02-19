@@ -132,7 +132,7 @@ export const Home = () => (
         </a>
       </LogosBox>
       <PluginDetector
-        defaultBefore={DefaultContent}
+        beforeDetection={DefaultContent}
       >
         <MainMenu />
       </PluginDetector>

@@ -64,6 +64,11 @@ export const translate = (rawData) => {
 
   const cars = [];
 
+  const bestLap = {
+    index: -1,
+    time: null
+  };
+
   Item.forEach(
     c => {
 
@@ -97,6 +102,11 @@ export const translate = (rawData) => {
       const lastLapTime = parseTime(c['lastLapTime']);
       const bestLapTime = parseTime(c['bestLapTime']);
 
+      if (bestLapTime && (!bestLap.time || bestLap.time > bestLapTime)) {
+        bestLap.time = bestLapTime;
+        bestLap.index = cars.length;
+      }
+
       cars.push([
         c['no'],
         mapCarState(c),
@@ -114,6 +124,20 @@ export const translate = (rawData) => {
       ]));
     }
   );
+
+  if (bestLap.index >= 0) {
+    const bestCar = cars[bestLap.index];
+
+    const bcbl = bestCar[bestCar.length - 2];
+    const bcll = bestCar[bestCar.length - 3];
+
+    if (bcbl[0] === bcll[0]) {
+      bestCar[bestCar.length - 2][1] = 'sb-new';
+    }
+    else {
+      bestCar[bestCar.length - 2][1] = 'sb';
+    }
+  }
 
   return {
     cars,

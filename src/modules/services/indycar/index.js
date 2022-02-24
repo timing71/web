@@ -40,6 +40,8 @@ export const IndyCar = () => {
     },
     [getData]
   );
+
+  return null;
 };
 
 IndyCar.regex = /racecontrol\.indycar\.com/;

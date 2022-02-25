@@ -1,4 +1,4 @@
-import { Stat } from "../../../racing";
+import { FlagState, Stat } from "../../../racing";
 import { parseTime } from "../utils";
 
 const mapCarState = (car) => {
@@ -13,6 +13,67 @@ const TYRE_MAP = {
   'A': ["O", "tyre-soft"],
   'W': ["W", "tyre-wet"],
   'WX': ["W", "tyre-wet"]
+};
+
+const FLAG_MAP = {
+  GREEN: FlagState.GREEN,
+  YELLOW: FlagState.CAUTION,
+  RED: FlagState.RED,
+  CHECKERED: FlagState.CHEQUERED,
+  WHITE: FlagState.WHITE,
+  COLD: FlagState.NONE
+};
+
+const parseEventName = (heartbeat) => {
+  const parts = [];
+
+  if (heartbeat.eventName) {
+    parts.push(heartbeat.eventName);
+  }
+
+  if (heartbeat.preamble) {
+    switch(heartbeat.preamble[0]) {
+      case 'R':
+        parts.push('Race');
+        break;
+
+      case 'P':
+        if (heartbeat.preamble[1].toUpperCase() === 'F') {
+          parts.push('Final Practice');
+        }
+        else {
+          parts.push(`Practice ${heartbeat.preamble[1]}`);
+        }
+        break;
+
+      case 'Q':
+        parts.push('Qualifying');
+
+        if (heartbeat.trackType !== 'I' && heartbeat.trackType !== 'O') {
+          if (heartbeat.preamble[1] === '3') {
+            parts.push('Round 2');
+          }
+          else if (heartbeat.preamble[1] === '4') {
+            parts.push('Firestone Fast Six');
+          }
+          else {
+            parts.push(`Group ${heartbeat.preamble[1]}`);
+          }
+        }
+      break;
+
+      case 'I':
+        parts.push('Qualifying');
+        if (heartbeat.preamble[1] === '4') {
+          parts.push('Fast 9');
+        }
+        break;
+
+      default:
+    }
+  }
+
+  return parts.join(' - ');
 };
 
 export const getManifest = ({ timing_results: { heartbeat } }) => {
@@ -37,7 +98,7 @@ export const getManifest = ({ timing_results: { heartbeat } }) => {
 
   return {
     name: 'IndyCar',
-    description: heartbeat['eventName'],
+    description: parseEventName(heartbeat),
     colSpec: [
       Stat.NUM,
       Stat.STATE,
@@ -90,11 +151,11 @@ export const translate = (rawData) => {
 
         sectorCols = [
           [s1, s1 === bs1 ? 'pb' : ''],
-          [bs1, ''],
+          [bs1, 'old'],
           [s2, s2 === bs2 ? 'pb' : ''],
-          [bs2, ''],
+          [bs2, 'old'],
           [s3, s3 === bs3 ? 'pb' : ''],
-          [bs3, ''],
+          [bs3, 'old'],
         ];
 
       }
@@ -115,8 +176,8 @@ export const translate = (rawData) => {
         c['laps'],
         TYRE_MAP[c['Tire']] || c['Tire']
       ].concat(ptpCol).concat([
-        c['diff'],
-        c['gap']
+        cars.length > 0 ? c['diff'] : '',
+        cars.length > 0 ? c['gap'] : ''
       ]).concat(sectorCols).concat([
         [lastLapTime, lastLapTime === bestLapTime ? 'pb' : ''],
         [bestLapTime, ''],
@@ -139,8 +200,21 @@ export const translate = (rawData) => {
     }
   }
 
+  const session = {
+    flagState: FLAG_MAP[heartbeat.currentFlag] || FlagState.NONE,
+    timeElapsed: parseTime(heartbeat.elapsedTime)
+  };
+
+  if (heartbeat.overallTimeToGo) {
+    session['timeRemain'] = parseTime(heartbeat.overallTimeToGo);
+  }
+
+  if (heartbeat.totalLaps && heartbeat.trackType !== 'I' && heartbeat.SessionType !== 'Q') {
+    session['lapsRemain'] = parseInt(heartbeat.totalLaps, 10) - parseInt(heartbeat.lapNumber, 10);
+  }
+
   return {
     cars,
-    session: {}
+    session
   };
 };

@@ -1,73 +1,100 @@
 import { useCallback } from "react";
-import { Bar } from "@nivo/bar";
 import { observer } from "mobx-react-lite";
-import { theme } from "../../../charts";
 import { useAnalysis } from "../../context";
-import { StintsLayer } from "./stints";
+import { StintLayer } from './StintLayer';
+import { HEADER_HEIGHT } from "../constants";
+import styled from "styled-components";
 
-const LapStintsLayer = ({ xScale, ...props }) => {
+const HeaderText = styled.text`
+  fill: ${ props => props.theme.site.highlightColor };
+  font-family: ${ props => props.theme.site.headingFont };
+  text-anchor: middle;
+  dominant-baseline: hanging;
+`;
 
-  const widthFunc = useCallback(
-    (stint) => {
-      const laps = stint.inProgress ? stint.car.currentLap - stint.startLap : stint.durationLaps;
-      return Math.max(2, xScale(Math.max(0.5, laps)) - 6);
-    },
-    [xScale]
-  );
+const Gridline = styled.line`
+  stroke: ${ props => props.theme.site.highlightColor };
+`;
 
-  const xFunc = useCallback(
-    (stint) => xScale(stint.startLap - 1),
-    [xScale]
-  );
+const LapsHeader = ({ height, maxLaps, scale }) => {
+
+  const tickValues = [...Array(Math.ceil(maxLaps / 10) - 1).keys()].map(t => (t + 1) * 10);
 
   return (
-    <StintsLayer
-      widthFunc={widthFunc}
-      xFunc={xFunc}
-      {...props}
-    />
+    <g className='stints-header'>
+      {
+        tickValues.map(
+          tick => (
+            <>
+              <Gridline
+                key={tick}
+                x1={scale * tick}
+                x2={scale * tick}
+                y1={HEADER_HEIGHT}
+                y2={height}
+              />
+              <HeaderText
+                x={scale * tick}
+                y={0}
+              >
+                Lap {tick}
+              </HeaderText>
+            </>
+          )
+        )
+      }
+    </g>
   );
 };
 
+const RIGHT_HAND_PADDING = 50;
+
 export const LapsChart = observer(
-  ({ scale, showStintDetails }) => {
+  ({ scale, showStintDetails, window }) => {
     const analysis = useAnalysis();
 
-    const cars = [...analysis.carsInRunningOrder].reverse();
+    const cars = analysis.carsInRunningOrder;
 
     const height = (cars.length * 74);
-    const width = (Math.ceil(analysis.session.leaderLap / 10) * 10 * scale) + 250;
+    const width = (Math.ceil(analysis.session.leaderLap / 10) * 10 * scale) + RIGHT_HAND_PADDING;
 
-    const tickValues = [...Array(Math.ceil(analysis.session.leaderLap / 10)).keys()].map(t => (t + 1) * 10);
 
-    const lapsAxis = {
-      tickSize: 5,
-      tickPadding: 5,
-      tickRotation: 0,
-      tickValues
-    };
+    const xScale = useCallback(
+      (lap) => lap * scale,
+      [scale]
+    );
+
+    const widthFunc = useCallback(
+      (stint) => {
+        const laps = stint.inProgress ? stint.car.currentLap - stint.startLap : stint.durationLaps;
+        return Math.max(2, xScale(Math.max(0.5, laps)) - 6);
+      },
+      [xScale]
+    );
+
+    const xFunc = useCallback(
+      (stint) => xScale(stint.startLap - 1),
+      [xScale]
+    );
 
     return (
-      <Bar
-        axisBottom={lapsAxis}
-        axisLeft={null}
-        axisTop={lapsAxis}
-        data={cars}
-        enableGridX={true}
-        enableGridY={true}
-        gridXValues={tickValues}
+      <svg
         height={height}
-        indexBy={'raceNum'}
-        keys={['currentLap']}
-        layers={['grid', 'axes', LapStintsLayer]}
-        layout='horizontal'
-        margin={{ top: 20, right: 30, bottom: 30, left: 0 }}
-        maxValue={Math.ceil(analysis.session.leaderLap / 10) * 10}
-        minValue={0}
-        onClick={showStintDetails}
-        theme={theme}
         width={width}
-      />
+      >
+        <LapsHeader
+          height={height}
+          maxLaps={analysis.session.leaderLap}
+          scale={scale}
+        />
+        <StintLayer
+          cars={cars}
+          onClick={showStintDetails}
+          widthFunc={widthFunc}
+          window={window}
+          xFunc={xFunc}
+        />
+      </svg>
     );
   }
 );

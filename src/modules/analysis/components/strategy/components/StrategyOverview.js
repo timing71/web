@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useRef, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
 import Slider from 'rc-slider';
@@ -9,6 +9,7 @@ import { CarsChart } from './cars';
 import { LapsChart } from './LapsChart';
 import { TimeChart } from './TimeChart';
 import { StintDetailModal } from './StintDetailModal';
+import throttle from 'lodash.throttle';
 
 const Container = styled.div`
   position: relative;
@@ -156,25 +157,32 @@ export const StrategyOverview = () => {
 
   const [selectedStint, setSelectedStint] = useState(null);
 
-  useEffect(
-    () => {
-      if (stintPane.current) {
-        const handleScroll = (e) => {
-          if (carPane.current) {
-            carPane.current.scrollTop = e.target.scrollTop;
-          }
-        };
+  const [window, setWindow] = useState([0, 0]);
 
-        const pane = stintPane.current;
-
-        pane.addEventListener('scroll', handleScroll);
-
-        return () => {
-          pane.removeEventListener('scroll', handleScroll);
-        };
-      }
-    },
+  const throttledSetWindow = useCallback( // eslint-disable-line react-hooks/exhaustive-deps
+    throttle(
+      (window) => {
+        setTimeout(
+          () => setWindow(window),
+          1
+        );
+      },
+      10
+    ),
     []
+  );
+
+  const handleStintPaneScroll = useCallback(
+    (e) => {
+      if (carPane.current) {
+        carPane.current.scrollTop = e.target.scrollTop;
+      }
+      throttledSetWindow([
+        e.target.scrollLeft,
+        e.target.scrollLeft + e.target.clientWidth
+      ]);
+    },
+    [throttledSetWindow]
   );
 
   return (
@@ -215,10 +223,15 @@ export const StrategyOverview = () => {
           <CarsInnerContainer ref={carPane}>
             <CarsChart />
           </CarsInnerContainer>
-          <ChartInnerContainer ref={stintPane}>
+          <ChartInnerContainer
+            onScroll={handleStintPaneScroll}
+            ref={stintPane}
+          >
             <Chart
+              containerRef={stintPane}
               scale={scale}
               showStintDetails={setSelectedStint}
+              window={window}
             />
           </ChartInnerContainer>
         </ChartContainer>

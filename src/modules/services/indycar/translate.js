@@ -2,7 +2,7 @@ import { Stat } from "../../../racing";
 import { parseTime } from "../utils";
 
 const mapCarState = (car) => {
-  if (car.status.toLowerCase() === 'in pit' || !car.on_track) {
+  if (car.status.toLowerCase() === 'in pit' || !car.onTrack) {
     return 'PIT';
   }
   return 'RUN';

@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import { animated, useTransition } from '@react-spring/web';
+import { animated } from '@react-spring/web';
 
 import { useAnalysis } from "../../context";
 import { observer } from "mobx-react-lite";
-import { Bar } from "@nivo/bar";
-import { useMotionConfig } from "@nivo/core";
+import { useYPosTransition } from "./hooks";
+import { CAR_LIST_WIDTH, ROW_HEIGHT, ROW_PADDING } from "../constants";
 
 const CarBox = styled.rect.attrs(
   props => ({
@@ -45,24 +45,10 @@ const Detail = styled.text.attrs(
   fill: white;
 `;
 
-export const CarsLayer = ({ bars }) => {
+const CarsLayer = ({ cars }) => {
+  const yPosTransition = useYPosTransition(cars);
 
-  const { animate, config: springConfig } = useMotionConfig();
-
-  const yPosTransition = useTransition(
-    bars,
-    {
-      keys: bar => bar.key,
-      from: bar => ({
-        transform: `translate(0, ${bar.y})`,
-      }),
-      update: bar => ({
-        transform: `translate(0, ${bar.y})`
-      }),
-      config: springConfig,
-      immediate: !animate
-    }
-  );
+  const height = ROW_HEIGHT - (2 * ROW_PADDING);
 
   return (
     <g
@@ -70,8 +56,7 @@ export const CarsLayer = ({ bars }) => {
     >
       {
         yPosTransition(
-          (style, bar) => {
-            const car = bar.data.data;
+          (style, car) => {
             return (
               <animated.g
                 key={`car-${car.raceNum}`}
@@ -79,11 +64,11 @@ export const CarsLayer = ({ bars }) => {
               >
                 <CarBox
                   car={car}
-                  height={bar.height}
+                  height={height}
                 />
                 <CarNum
                   car={car}
-                  y={Math.ceil(bar.height / 2)}
+                  y={Math.ceil(height / 2)}
                 />
                 <Detail
                   x={60}
@@ -93,7 +78,7 @@ export const CarsLayer = ({ bars }) => {
                 </Detail>
                 <Detail
                   x={60}
-                  y={bar.height - 20}
+                  y={height - 20}
                 >
                   {car.make}
                 </Detail>
@@ -107,30 +92,21 @@ export const CarsLayer = ({ bars }) => {
 };
 
 
-export const CarsChart = observer(
+export const CarsList = observer(
   () => {
     const analysis = useAnalysis();
 
-    const cars = [...analysis.carsInRunningOrder].reverse();
+    const cars = analysis.carsInRunningOrder;
 
     const height = (cars.length * 74);
 
     return (
-      <Bar
-        axisBottom={null}
-        axisLeft={null}
-        axisTop={null}
-        data={cars}
-        enableGridX={false}
-        enableGridY={false}
+      <svg
         height={height}
-        indexBy={'raceNum'}
-        keys={['currentLap']}
-        layers={[CarsLayer]}
-        layout='horizontal'
-        margin={{ top: 22, right: 0, bottom: 30, left: 0 }}
-        width={260}
-      />
+        width={CAR_LIST_WIDTH}
+      >
+        <CarsLayer cars={cars} />
+      </svg>
     );
   }
 );

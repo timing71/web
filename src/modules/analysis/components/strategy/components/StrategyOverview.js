@@ -5,7 +5,7 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
 import { DisplayMode } from '../constants';
-import { CarsChart } from './cars';
+import { CarsList } from './CarsList';
 import { LapsChart } from './LapsChart';
 import { TimeChart } from './TimeChart';
 import { StintDetailModal } from './StintDetailModal';
@@ -221,7 +221,7 @@ export const StrategyOverview = () => {
         </Controls>
         <ChartContainer>
           <CarsInnerContainer ref={carPane}>
-            <CarsChart />
+            <CarsList />
           </CarsInnerContainer>
           <ChartInnerContainer
             onScroll={handleStintPaneScroll}

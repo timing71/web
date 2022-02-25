@@ -1,22 +1,12 @@
-import { animated, useTransition } from "@react-spring/web";
+import { animated } from "@react-spring/web";
 import { useCallback } from "react";
-import { HEADER_HEIGHT, OVERSCAN_PERCENT, ROW_HEIGHT, ROW_PADDING } from "../constants";
+import { OVERSCAN_PERCENT, ROW_HEIGHT, ROW_PADDING } from "../constants";
 import { CarStints } from "./CarStints";
+import { useYPosTransition } from "./hooks";
 
 export const StintLayer = ({ cars, onClick, widthFunc, window, xFunc }) => {
 
-  const yPosTransition = useTransition(
-    cars,
-    {
-      keys: car => car.raceNum,
-      from: (car, index) => ({
-        transform: `translate(0, ${(index * ROW_HEIGHT) + ROW_PADDING + HEADER_HEIGHT})`
-      }),
-      update: (car, index) => ({
-        transform: `translate(0, ${(index * ROW_HEIGHT) + ROW_PADDING + HEADER_HEIGHT})`
-      })
-    }
-  );
+  const yPosTransition = useYPosTransition(cars);
 
   const cull = useCallback(
     (stints) => {

@@ -1,3 +1,7 @@
+import { useContext, useEffect, useState } from "react";
+import { useServiceManifest, useServiceState } from "../../components/ServiceContext";
+import { PluginContext } from "../pluginBridge";
+
 import { ALMS, ELMS, LeMansCup, WEC } from "./aco";
 import { AlKamel } from "./alkamel";
 import { IndyCar } from "./indycar";
@@ -21,5 +25,47 @@ export const mapServiceProvider = (source) => {
     if (source.search(SERVICE_PROVIDERS[i].regex) >= 0) {
       return SERVICE_PROVIDERS[i];
     }
+  }
+};
+
+
+export const ServiceProvider = ({ children, service }) => {
+  const port = useContext(PluginContext);
+
+  const { updateManifest } = useServiceManifest();
+  const { updateState } = useServiceState();
+
+  const [hasService, setHasService] = useState(false);
+
+  useEffect(
+    () => {
+      const serviceClass = mapServiceProvider(service.source);
+      if (serviceClass) {
+        const serviceInstance = new serviceClass(updateState, updateManifest, service);
+        serviceInstance.start(port);
+        setHasService(true);
+
+        return () => {
+          serviceInstance.stop();
+        };
+      }
+      else {
+        setHasService(false);
+      }
+    },
+    [port, service, updateManifest, updateState]
+  );
+
+  if (hasService) {
+    return (
+      <>
+        { children }
+      </>
+    );
+  }
+  else {
+    return (
+      <p>No service provider found for <cite>{service.source}</cite>!</p>
+    );
   }
 };

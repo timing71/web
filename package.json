@@ -98,9 +98,11 @@
     "babel-plugin-inline-svg": "^1.2.0",
     "babel-plugin-styled-components": "^1.13.2",
     "customize-cra": "^1.0.0",
+    "node-fetch": "^3.2.0",
     "react-app-rewired": "^2.1.8",
     "react-error-overlay": "6.0.9",
-    "storybook-react-router": "^1.0.8"
+    "storybook-react-router": "^1.0.8",
+    "yargs": "^17.3.1"
   },
   "resolutions": {
     "//": "See https://github.com/facebook/create-react-app/issues/11773",

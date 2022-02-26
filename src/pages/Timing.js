@@ -4,7 +4,6 @@ import withGracefulUnmount from "../components/withGracefulUnmount";
 import { generateMessages } from "../modules/messages";
 import { PluginContext } from "../modules/pluginBridge";
 import { TimingScreen } from "../modules/timingScreen";
-import { mapServiceProvider } from "../modules/services";
 import { ServiceManifestContext, ServiceStateContext } from "../components/ServiceContext";
 import { StateStorer } from "../components/StateStorer";
 import { Debouncer } from "../components/Debouncer";
@@ -12,6 +11,7 @@ import { StateRetriever } from "../components/StateRetriever";
 import { useSetting } from '../modules/settings';
 import { Analysis } from "../modules/analysis";
 import { LoadingScreen } from "../components/LoadingScreen";
+import { ServiceProvider } from "../modules/services";
 
 const DEFAULT_STATE = {
   cars: [],
@@ -113,30 +113,28 @@ const TimingInner = ({ match: { params } }) => {
   const [ delay ] = useSetting('delay');
 
   if (service && state && initialAnalysisState) {
-    const ServiceProvider = mapServiceProvider(service.source);
-
-    if (!ServiceProvider) {
-      return <p>No service provider found for <cite>{service.source}</cite>!</p>;
-    }
 
     return (
       <ServiceManifestContext.Provider value={{ manifest: state.manifest, updateManifest }}>
         <ServiceStateContext.Provider value={{ state, updateState }}>
-          <ServiceProvider service={service} />
-          <Debouncer>
-            <Analysis
-              analysisState={initialAnalysisState}
-              live
-              serviceUUID={serviceUUID}
-            />
-            <StateStorer serviceUUID={serviceUUID} />
-            <StateRetriever
-              delay={delay * 1000}
-              serviceUUID={serviceUUID}
-            >
-              <TimingScreen />
-            </StateRetriever>
-          </Debouncer>
+          <ServiceProvider
+            service={service}
+          >
+            <Debouncer>
+              <Analysis
+                analysisState={initialAnalysisState}
+                live
+                serviceUUID={serviceUUID}
+              />
+              <StateStorer serviceUUID={serviceUUID} />
+              <StateRetriever
+                delay={delay * 1000}
+                serviceUUID={serviceUUID}
+              >
+                <TimingScreen />
+              </StateRetriever>
+            </Debouncer>
+          </ServiceProvider>
         </ServiceStateContext.Provider>
       </ServiceManifestContext.Provider>
     );

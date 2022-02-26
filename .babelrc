@@ -2,5 +2,9 @@
   "plugins": [
     "babel-plugin-styled-components",
     "inline-svg"
+  ],
+  "presets": [
+    "@babel/env",
+    "@babel/preset-react"
   ]
 }

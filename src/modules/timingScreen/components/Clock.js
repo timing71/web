@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { timeWithHours } from "../../../formats";
 
-const Inner = styled.div`
+export const ClockInner = styled.div`
   justify-self: center;
   align-self: center;
 
@@ -50,8 +50,8 @@ export const Clock = ({ caption, className, countdown, pause, seconds }) => {
   );
 
   return (
-    <Inner className={className}>
+    <ClockInner className={className}>
       { timeWithHours(actualSeconds) } { caption }
-    </Inner>
+    </ClockInner>
   );
 };

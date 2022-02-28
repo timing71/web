@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
-import { Clock } from "./Clock";
+import { Clock, ClockInner } from "./Clock";
 
 const FlagPanel = styled.div`
   grid-area: flag;
@@ -23,6 +23,8 @@ export const TimingScreenHeader = () => {
   const { manifest } = useServiceManifest();
   const { state: { session } } = useServiceState();
 
+  const useLaps = session && session.lapsRemain !== undefined;
+
   return (
     <>
       {
@@ -37,7 +39,14 @@ export const TimingScreenHeader = () => {
       }
       <FlagPanel flag={session.flagState}>{manifest.name} - {manifest.description}</FlagPanel>
       {
-        session && session.timeRemain >= 0 && (
+        useLaps && (
+          <ClockInner>
+            {session.lapsRemain} lap{session.lapsRemain === 1 ? '' : 's'} remaining
+          </ClockInner>
+        )
+      }
+      {
+        !useLaps && session && session.timeRemain >= 0 && (
           <Clock
             caption='remaining'
             className='right'

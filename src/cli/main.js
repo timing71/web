@@ -1,16 +1,17 @@
-import fetch from "cross-fetch";
-import { IndyCar } from "../modules/services/indycar";
+import { Argument, Command } from 'commander';
 
-console.log('Starting service...');
+import { serviceCommand } from './service';
+import { Services } from './services';
 
-const connectionService = {
-  fetch: async (url) => {
-    const response = await fetch(url);
-    const text = await response.text();
-    return text;
-  }
-};
+const t71 = new Command();
 
+t71.name('timing71')
+   .description('Timing71 command-line client');
 
-const service = new IndyCar(console.log, console.log);
-service.start(connectionService);
+t71.command('start')
+   .description('Start a timing service')
+   .addArgument(
+     new Argument('<service>', 'Name of timing service to run').choices(Object.keys(Services))
+   ).action(serviceCommand);
+
+t71.parse();

@@ -1,7 +1,5 @@
-import deepEqual from "deep-equal";
 import { useCallback, useContext, useEffect, useState } from "react";
 import withGracefulUnmount from "../components/withGracefulUnmount";
-import { generateMessages } from "../modules/messages";
 import { PluginContext } from "../modules/pluginBridge";
 import { TimingScreen } from "../modules/timingScreen";
 import { ServiceManifestContext, ServiceStateContext } from "../components/ServiceContext";
@@ -12,13 +10,7 @@ import { useSetting } from '../modules/settings';
 import { Analysis } from "../modules/analysis";
 import { LoadingScreen } from "../components/LoadingScreen";
 import { ServiceProvider } from "../modules/services";
-
-const DEFAULT_STATE = {
-  cars: [],
-  session: {},
-  messages: [],
-  manifest: {}
-};
+import { DEFAULT_STATE, processManifestUpdate, processStateUpdate } from "../modules/serviceHost";
 
 const TimingInner = ({ match: { params } }) => {
 
@@ -62,51 +54,20 @@ const TimingInner = ({ match: { params } }) => {
   const updateState = useCallback(
     (updatedState) => {
       setState(
-        oldState => {
-          const newState = { ...oldState, ...updatedState };
-
-          const newMessages = generateMessages(newState.manifest, oldState, newState).concat(
-            updatedState.extraMessages || [],
-          );
-
-          const highlight = [];
-          newMessages.forEach(
-            nm => {
-              if (nm.length >= 5) {
-                highlight.push(nm[4]);
-              }
-            }
-          );
-          newState.highlight = highlight;
-
-          newState.messages = [
-            ...newMessages,
-            ...oldState.messages
-          ].slice(0, 100);
-
-          newState.lastUpdated = Date.now();
-          delete newState.extraMessages;
-
-          return newState;
-        }
+        oldState => processStateUpdate(oldState, updatedState)
       );
     },
     []
   );
 
   const updateManifest = useCallback(
-    (newManifest) => {
-
-      const newManifestWithStartTime = {
-        ...newManifest,
-        startTime: service.startTime,
-        uuid: serviceUUID
-      };
-
-      if (!deepEqual(newManifestWithStartTime, state.manifest)) {
-        updateState({ manifest: newManifestWithStartTime });
-      }
-    },
+    (newManifest) => processManifestUpdate(
+      state.manifest,
+      newManifest,
+      service.startTime,
+      serviceUUID,
+      (m) => updateState({ manifest: m })
+    ),
     [service?.startTime, serviceUUID, state.manifest, updateState]
   );
 

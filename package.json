@@ -51,7 +51,7 @@
     "lint": "eslint src/",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "generateConfig": "NODE_ENV=production babel-node --presets @babel/env,@babel/preset-react scripts/generateConfigFile.js",
+    "generateConfig": "NODE_ENV=production babel-node --presets @babel/env,@babel/preset-react bin/generateConfigFile.js",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
   },

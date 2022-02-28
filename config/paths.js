@@ -1,4 +1,4 @@
-'use strict';
+'use strict';  // eslint-disable-line strict
 
 const path = require('path');
 const fs = require('fs');
@@ -62,6 +62,8 @@ module.exports = {
   appSrc: resolveApp('src'),
   appTsConfig: resolveApp('tsconfig.json'),
   appJsConfig: resolveApp('jsconfig.json'),
+  cliBuild: resolveApp('cli'),
+  cliEntryPoint: resolveModule(resolveApp, 'src/cli/main'),
   yarnLockFile: resolveApp('yarn.lock'),
   testsSetup: resolveModule(resolveApp, 'src/setupTests'),
   proxySetup: resolveApp('src/setupProxy.js'),

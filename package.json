@@ -104,6 +104,8 @@
     "prestart": "OUTPUT_FILE=public/pluginConfig.json yarn run generateConfig",
     "start": "node ./scripts/start.js",
     "build": "node ./scripts/build.js",
+    "clean": "rm -rf ./build && rm -rf ./cli",
+    "cli:build": "webpack --config config/webpack.config.cli.js",
     "postbuild": "yarn run generateConfig",
     "lint": "eslint src/",
     "test": "node ./scripts/test.js",
@@ -157,6 +159,7 @@
     "node-fetch": "^3.2.0",
     "react-error-overlay": "6.0.9",
     "storybook-react-router": "^1.0.8",
+    "webpack-cli": "^4.9.2",
     "yargs": "^17.3.1"
   },
   "resolutions": {

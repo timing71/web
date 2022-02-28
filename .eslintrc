@@ -1,5 +1,6 @@
 {
   "extends": "react-app",
+  "root": true,
   "rules": {
     "no-console": "warn",
     "no-unused-expressions": "warn",

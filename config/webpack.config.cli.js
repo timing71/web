@@ -7,5 +7,5 @@ module.exports = {
   output: {
     filename: 'timing71.js',
     path: paths.cliBuild,
-  },
+  }
 };

@@ -12,6 +12,8 @@ t71.command('start')
    .description('Start a timing service')
    .addArgument(
      new Argument('<service>', 'Name of timing service to run').choices(Object.keys(Services))
-   ).action(serviceCommand);
+   )
+   .argument('[source]', 'Source URL (if needed by timing service)')
+   .action(serviceCommand);
 
 t71.parse();

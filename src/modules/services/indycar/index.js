@@ -6,12 +6,13 @@ const POLL_RATE = 10000;
 
 export class IndyCar extends HTTPPollingService {
 
-  constructor(onStateChange, onManifestChange) {
+  constructor(onStateChange, onManifestChange, service) {
     super(
       DATA_URL,
       POLL_RATE,
       onStateChange,
-      onManifestChange
+      onManifestChange,
+      service
     );
   }
 

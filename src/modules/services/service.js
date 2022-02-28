@@ -1,13 +1,14 @@
 export class Service {
-  constructor(onStateChange, onManifestChange) {
+  constructor(onStateChange, onManifestChange, service) {
     this.onManifestChange = onManifestChange;
     this.onStateChange = onStateChange;
+    this.service = service;
   }
 }
 
 export class HTTPPollingService extends Service {
-  constructor(url, pollInterval, onStateChange, onManifestChange) {
-    super(onStateChange, onManifestChange);
+  constructor(url, pollInterval, onStateChange, onManifestChange, service) {
+    super(onStateChange, onManifestChange, service);
     this.url = url;
     this.pollInterval = pollInterval;
     this.start = this.start.bind(this);

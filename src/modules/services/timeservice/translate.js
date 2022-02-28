@@ -1,12 +1,9 @@
 import dayjs from 'dayjs';
-import { useCallback, useEffect, useRef } from 'react';
-import { onPatch } from 'mobx-state-tree';
 
 import { FlagState, Stat } from '../../../racing';
 import { realToServerTime } from './utils';
 
 import CustomParseFormat from 'dayjs/plugin/customParseFormat';
-import { useServiceManifest, useServiceState } from '../../../components/ServiceContext';
 import { Message, RaceControlMessage } from '../../messages/Message';
 dayjs.extend(CustomParseFormat);
 
@@ -265,106 +262,66 @@ const postprocessCars = (cars, columnSpec) => {
   return cars;
 };
 
-export const Translate = ({ creventic, state }) => {
+const getManifest = (state) => {
+  const { columns, meta, session } = state;
 
-  const { cars, columns, messages, meta, session, times, timeOffset } = state;
+  const [colSpec] = deriveColSpec(columns);
 
-  const mappingState = useRef([[], [], false]);
+  const descParts = [];
+  if (meta?.name) {
+    descParts.push(meta.name);
+  }
+  if (session?.name && session.name.lastIndexOf('-') >= 0) {
+    descParts.push(session.name.slice(session.name.lastIndexOf('-') + 1));
+  }
 
-  const [colSpec, reverseColumnMap, inferPosition] = mappingState.current;
+  return {
+    name: (session.name && session.name.slice(0, session.name.lastIndexOf('-') - 1)) || '',
+    description: descParts.join(' - '),
+    colSpec
+  };
+};
 
-  const { updateManifest } = useServiceManifest();
-  const { updateState } = useServiceState();
+const translateState = (state) => {
+  const { cars, columns, messages, prevMessageIDs, penaltyUpdates, session, times, timeOffset } = state;
+  const [colSpec, reverseColumnMap, inferPosition] = deriveColSpec(columns);
 
-  const prevMessageIDs = useRef([]);
-  const penaltyUpdates = useRef([]);
+  const positionSort = (a, b) => {
+    if (inferPosition) {
+      return 0;
+    }
+    const [[tsnlIndex, mappingFunc]] = reverseColumnMap.slice(-1);
+    return mappingFunc(a[tsnlIndex]) - mappingFunc(b[tsnlIndex]);
+  };
 
-  useEffect(
-    () => {
-      mappingState.current = deriveColSpec(columns);
-    },
-    [columns]
+  const raceControlMessages = messages.filter(m => !prevMessageIDs.includes(m.Id)).map(m => new RaceControlMessage(m.t).toCTDFormat());
+  const penaltyUpdateMessages = penaltyUpdates.map(
+    p => new Message(
+      'Penalty',
+      `Car ${p.raceNum}: ${p.incident} - ${p.value}: ${p.state} (decision ${p.decisionID})`.toUpperCase(),
+      'raceControl',
+      p.raceNum
+    ).toCTDFormat()
   );
 
-  useEffect(
-    () => {
+  return {
+    cars: postprocessCars(
+      Object.values(cars).sort(positionSort).map(
+        car => reverseColumnMap.map(
+          ([tsnlIndex, mappingFunc]) => mappingFunc(car[tsnlIndex])
+        )
+      ),
+      colSpec
+    ),
+    session: mapSession(messages, session, times, timeOffset),
+    extraMessages: raceControlMessages.concat(penaltyUpdateMessages)
+  };
 
-      const descParts = [];
-      if (meta?.name) {
-        descParts.push(meta.name);
-      }
-      if (session?.name && session.name.lastIndexOf('-') >= 0) {
-        descParts.push(session.name.slice(session.name.lastIndexOf('-') + 1));
-      }
+};
 
-      updateManifest({
-        name: (session.name && session.name.slice(0, session.name.lastIndexOf('-') - 1)) || '',
-        description: descParts.join(' - '),
-        colSpec
-      });
-    },
-    [colSpec, meta?.name, session, updateManifest]
-  );
-
-  useEffect(
-    () => {
-      onPatch(
-        creventic.penalties,
-        ({ op, path }) => {
-          const decisionID = parseInt(path.substring(1), 10);
-          if ((op === 'add' || op === 'replace')) {
-            const penalty = creventic.penalties.get(decisionID);
-            if (!penaltyUpdates.current.includes(penalty)) {
-              penaltyUpdates.current.unshift(penalty);
-            }
-          }
-        }
-      );
-    },
-    [creventic]
-  );
-
-  const positionSort = useCallback(
-    (a, b) => {
-      if (inferPosition) {
-        return 0;
-      }
-      const [[tsnlIndex, mappingFunc]] = reverseColumnMap.slice(-1);
-      return mappingFunc(a[tsnlIndex]) - mappingFunc(b[tsnlIndex]);
-    },
-    [inferPosition, reverseColumnMap]
-  );
-
-  useEffect(
-    () => {
-
-      const raceControlMessages = messages.filter(m => !prevMessageIDs.current.includes(m.Id)).map(m => new RaceControlMessage(m.t).toCTDFormat());
-      const penaltyUpdateMessages = penaltyUpdates.current.map(
-        p => new Message(
-          'Penalty',
-          `Car ${p.raceNum}: ${p.incident} - ${p.value}: ${p.state} (decision ${p.decisionID})`.toUpperCase(),
-          'raceControl',
-          p.raceNum
-        ).toCTDFormat()
-      );
-      prevMessageIDs.current = messages.map(m => m.Id);
-      penaltyUpdates.current = [];
-
-      updateState({
-        cars: postprocessCars(
-          Object.values(cars).sort(positionSort).map(
-            car => reverseColumnMap.map(
-              ([tsnlIndex, mappingFunc]) => mappingFunc(car[tsnlIndex])
-            )
-          ),
-          colSpec
-        ),
-        session: mapSession(messages, session, times, timeOffset),
-        extraMessages: raceControlMessages.concat(penaltyUpdateMessages)
-      });
-    },
-    [cars, colSpec, messages, positionSort, reverseColumnMap, session, timeOffset, times, updateState]
-  );
-
-  return null;
+export const translate = (state) => {
+  return {
+    manifest: getManifest(state),
+    state: translateState(state)
+  };
 };

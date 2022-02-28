@@ -1,10 +1,12 @@
 import { IndyCar } from '../modules/services/indycar';
+import { TimeService } from '../modules/services/timeservice';
 
 // TODO once all service providers have been migrated this can be an import
 // from ../modules/services - there should be NO JSX in this import tree
 // so we'll also need to move the ServiceProvider component.
 const SERVICE_PROVIDERS = [
-  IndyCar
+  IndyCar,
+  TimeService
 ];
 
 const mapProviderToName = (provider) => {

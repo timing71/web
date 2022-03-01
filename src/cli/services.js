@@ -1,3 +1,4 @@
+import { ALMS, ELMS, LeMansCup, WEC } from '../modules/services/aco';
 import { IndyCar } from '../modules/services/indycar';
 import { TimeService } from '../modules/services/timeservice';
 
@@ -5,8 +6,12 @@ import { TimeService } from '../modules/services/timeservice';
 // from ../modules/services - there should be NO JSX in this import tree
 // so we'll also need to move the ServiceProvider component.
 const SERVICE_PROVIDERS = [
+  ALMS,
+  ELMS,
   IndyCar,
-  TimeService
+  LeMansCup,
+  TimeService,
+  WEC
 ];
 
 const mapProviderToName = (provider) => {

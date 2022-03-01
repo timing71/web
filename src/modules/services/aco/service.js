@@ -1,43 +1,50 @@
-import { useCallback, useContext, useEffect, useRef } from "react";
 import throttle from 'lodash.throttle';
 
 import { Client } from './client';
-import { useSocketIo } from "../../socketio";
-import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
-import { PluginContext } from "../../pluginBridge";
+import { createSocketIo } from "../../socketio";
+import { Service } from '../service';
 
-export const Service = ({ host, name, service: { uuid } }) => {
-  const port = useContext(PluginContext);
-  const { updateManifest } = useServiceManifest();
-  const { updateState } = useServiceState();
-  const raceControlIndex = useRef(-1);
+export class ACO extends Service {
+  constructor(host, name, onStateChange, onManifestChange, service) {
+    super(onStateChange, onManifestChange, service);
+    this._host = host;
+    this._name = name;
 
-  const onUpdate = throttle(
-    useCallback(
-      (client) => {
-        const newState = client.getState(raceControlIndex.current < 0 ? 9999999999 : raceControlIndex.current);
-        raceControlIndex.current = Math.max(newState.meta.raceControlIndex || -1, raceControlIndex.current);
-        updateState(newState);
-      },
-      [updateState]
-    ),
-    500
-  );
+    this._onUpdate = throttle(
+      this._onUpdate.bind(this),
+      500
+    );
 
-  const client = useRef();
+    this._raceControlIndex = -1;
 
-  useEffect(
-    () => {
-      if (!client.current) {
-        client.current = new Client(host.replace('data.', 'live.'), name, onUpdate, updateManifest, port.fetch);
-      }
-    },
-    [host, name, onUpdate, updateManifest, port]
-  );
+    this._socketIO = null;
+  }
 
+  _onUpdate(client) {
+    const newState = client.getState(this._raceControlIndex < 0 ? 9999999999 : this._raceControlIndex);
+    this._raceControlIndex = Math.max(newState.meta.raceControlIndex || -1, this._raceControlIndex);
+    this.onStateChange(newState);
+  }
 
+  start(connectionService) {
+    const client = new Client(
+      this._host.replace('data.', 'live.'),
+      this._name,
+      this._onUpdate,
+      this.onManifestChange,
+      connectionService.fetch
+    );
 
-  useSocketIo(host, uuid, client.current?.handle);
+    this._socketIO = createSocketIo(
+      this._host,
+      this.service.uuid,
+      connectionService,
+      client.handle
+    );
 
-  return null;
-};
+  }
+
+  stop() {
+    this._socketIO.stop();
+  }
+}

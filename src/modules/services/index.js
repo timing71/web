@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { useServiceManifest, useServiceState } from "../../components/ServiceContext";
 import { PluginContext } from "../pluginBridge";
 
@@ -37,19 +37,22 @@ export const ServiceProvider = ({ children, service }) => {
 
   const [hasService, setHasService] = useState(false);
 
+  const serviceInstance = useRef();
+
   useEffect(
     () => {
       const serviceClass = mapServiceProvider(service.source);
-      if (serviceClass) {
-        const serviceInstance = new serviceClass(updateState, updateManifest, service);
-        serviceInstance.start(port);
+      if (serviceClass && !serviceInstance.current) {
+        serviceInstance.current = new serviceClass(updateState, updateManifest, service);
+        serviceInstance.current.start(port);
         setHasService(true);
 
         return () => {
-          serviceInstance.stop();
+          serviceInstance.current?.stop();
+          serviceInstance.current = null;
         };
       }
-      else {
+      else if (!serviceClass) {
         setHasService(false);
       }
     },

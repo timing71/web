@@ -29,7 +29,7 @@ export const mapServiceProvider = (source) => {
 };
 
 
-export const ServiceProvider = ({ children, service }) => {
+export const ServiceProvider = ({ onReady, service }) => {
   const port = useContext(PluginContext);
 
   const { updateManifest } = useServiceManifest();
@@ -46,29 +46,24 @@ export const ServiceProvider = ({ children, service }) => {
         serviceInstance.current = new serviceClass(updateState, updateManifest, service);
         serviceInstance.current.start(port);
         setHasService(true);
+        onReady();
 
         return () => {
           serviceInstance.current?.stop();
-          serviceInstance.current = null;
         };
       }
       else if (!serviceClass) {
         setHasService(false);
       }
     },
-    [port, service, updateManifest, updateState]
+    [onReady, port, service, updateManifest, updateState]
   );
 
-  if (hasService) {
-    return (
-      <>
-        { children }
-      </>
-    );
-  }
-  else {
+  if (!hasService) {
     return (
       <p>No service provider found for <cite>{service.source}</cite>!</p>
     );
   }
+
+  return null;
 };

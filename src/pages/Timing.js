@@ -73,29 +73,40 @@ const TimingInner = ({ match: { params } }) => {
 
   const [ delay ] = useSetting('delay');
 
+  const [serviceProviderReady, setSPReady] = useState(false);
+
+  const setReady = useCallback(
+    () => setSPReady(true),
+    []
+  );
+
   if (service && state && initialAnalysisState) {
 
     return (
       <ServiceManifestContext.Provider value={{ manifest: state.manifest, updateManifest }}>
         <ServiceStateContext.Provider value={{ state, updateState }}>
           <ServiceProvider
+            onReady={setReady}
             service={service}
-          >
-            <Debouncer>
-              <Analysis
-                analysisState={initialAnalysisState}
-                live
-                serviceUUID={serviceUUID}
-              />
-              <StateStorer serviceUUID={serviceUUID} />
-              <StateRetriever
-                delay={delay * 1000}
-                serviceUUID={serviceUUID}
-              >
-                <TimingScreen />
-              </StateRetriever>
-            </Debouncer>
-          </ServiceProvider>
+          />
+          {
+            serviceProviderReady && (
+              <Debouncer>
+                <Analysis
+                  analysisState={initialAnalysisState}
+                  live
+                  serviceUUID={serviceUUID}
+                />
+                <StateStorer serviceUUID={serviceUUID} />
+                <StateRetriever
+                  delay={delay * 1000}
+                  serviceUUID={serviceUUID}
+                >
+                  <TimingScreen />
+                </StateRetriever>
+              </Debouncer>
+            )
+          }
         </ServiceStateContext.Provider>
       </ServiceManifestContext.Provider>
     );

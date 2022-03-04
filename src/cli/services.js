@@ -1,20 +1,4 @@
-import { ALMS, ELMS, LeMansCup, WEC } from '../modules/services/aco';
-import { AlKamel } from '../modules/services/alkamel';
-import { IndyCar } from '../modules/services/indycar';
-import { TimeService } from '../modules/services/timeservice';
-
-// TODO once all service providers have been migrated this can be an import
-// from ../modules/services - there should be NO JSX in this import tree
-// so we'll also need to move the ServiceProvider component.
-const SERVICE_PROVIDERS = [
-  ALMS,
-  AlKamel,
-  ELMS,
-  IndyCar,
-  LeMansCup,
-  TimeService,
-  WEC
-];
+import { SERVICE_PROVIDERS } from "../modules/services";
 
 const mapProviderToName = (provider) => {
   // Webpack mangles the class names to include their parent package e.g.

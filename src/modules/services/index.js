@@ -47,16 +47,19 @@ export const ServiceProvider = ({ onReady, service }) => {
         serviceInstance.current.start(port);
         setHasService(true);
         onReady();
-
-        return () => {
-          serviceInstance.current?.stop();
-        };
       }
       else if (!serviceClass) {
         setHasService(false);
       }
     },
     [onReady, port, service, updateManifest, updateState]
+  );
+
+  useEffect(
+    () => () => {
+      serviceInstance.current?.stop();
+    },
+    []
   );
 
   if (!hasService) {

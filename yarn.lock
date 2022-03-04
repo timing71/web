@@ -7255,6 +7255,14 @@ dayjs@^1.10.7:
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.7.tgz#2cf5f91add28116748440866a0a1d26f3a6ce468"
   integrity sha512-P6twpd70BcPK34K26uJ1KT3wlhpuOAPoMwJzpsIWUxHZ7wpmbdZL/hQqBDfz7hGurYSa5PhzdhDHtt319hL3ig==
 
+"ddp-client@https://github.com/hharnisc/node-ddp-client.git#master":
+  version "0.1.1"
+  resolved "https://github.com/hharnisc/node-ddp-client.git#93be152461b3ef19d32f06a4f6f5fddd0cbf5743"
+  dependencies:
+    ejson "2.0.1"
+    events "1.0.2"
+    underscore "1.8.3"
+
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.8, debug@^2.6.9:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
@@ -7686,7 +7694,7 @@ ejs@^2.6.1:
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.7.4.tgz#48661287573dcc53e366c7a1ae52c3a120eec9ba"
   integrity sha512-7vmuyh5+kuUyJKePhQfRQBhXV5Ce+RnaeeQArKu1EAMpL3WbgMt5WG6uQZpEVvYSSsxMXRKOewtDk9RaTKXRlA==
 
-ejson@^2.1.2, ejson@^2.2.0, ejson@^2.2.2:
+ejson@2.0.1, ejson@2.2.2, ejson@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/ejson/-/ejson-2.2.2.tgz#095bf356a57295784cada6ff19b2b2abc70e4f9d"
   integrity sha512-Wc/PZH7WMxuM6eBpAuD9+IX98q27hlBTD8nvhh7UyGy22eB9qTRG0oAzlviicADh9VVxYp+/onTyfYZC3DhI5w==
@@ -8227,6 +8235,11 @@ eventemitter3@^4.0.0:
   version "4.0.7"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
   integrity sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
+
+events@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/events/-/events-1.0.2.tgz#75849dcfe93d10fb057c30055afdbd51d06a8e24"
+  integrity sha1-dYSdz+k9EPsFfDAFWv29UdBqjiQ=
 
 events@^3.0.0:
   version "3.3.0"
@@ -14982,23 +14995,6 @@ simple-swizzle@^0.2.2:
   dependencies:
     is-arrayish "^0.3.1"
 
-simpleddp-core@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/simpleddp-core/-/simpleddp-core-1.0.6.tgz#ec3c5aca25edff6854cd900e39c742dbaa10491e"
-  integrity sha512-ImVD26ufpGN8n4awbvgTGlcRuJOn3q+eMdaSZWqnwQGcECLsthmizjVprfBSvRixl/cXWaQn5CoBXn9KNInjEQ==
-  dependencies:
-    ejson "^2.1.2"
-    wolfy87-eventemitter "^5.2.5"
-
-simpleddp@^2.2.4:
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/simpleddp/-/simpleddp-2.2.4.tgz#036f8fd54d09974d9b91304a0981e80b799ac592"
-  integrity sha512-VnsORlr1TPOqHyHjJXPoh5UYM6A30WAZVzxvxzCa3ShlxDjQfIO0dtmHKnr6eE5UnMffzcYnLaLXmp352zBsEg==
-  dependencies:
-    clone-deep "^4.0.1"
-    ejson "^2.2.0"
-    simpleddp-core "^1.0.6"
-
 sisteransi@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/sisteransi/-/sisteransi-1.0.5.tgz#134d681297756437cc05ca01370d3a7a571075ed"
@@ -16069,6 +16065,11 @@ unbox-primitive@^1.0.1:
     has-symbols "^1.0.2"
     which-boxed-primitive "^1.0.2"
 
+underscore@1.8.3:
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.8.3.tgz#4f3fb53b106e6097fcf9cb4109f2a5e9bdfa5022"
+  integrity sha1-Tz+1OxBuYJf8+ctBCfKl6b36UCI=
+
 unfetch@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/unfetch/-/unfetch-4.2.0.tgz#7e21b0ef7d363d8d9af0fb929a5555f6ef97a3be"
@@ -16852,11 +16853,6 @@ wildcard@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/wildcard/-/wildcard-2.0.0.tgz#a77d20e5200c6faaac979e4b3aadc7b3dd7f8fec"
   integrity sha512-JcKqAHLPxcdb9KM49dufGXn2x3ssnfjbcaQdLlfZsL9rH9wgDQjUtDxbo8NE0F6SFvydeu1VhZe7hZuHsB2/pw==
-
-wolfy87-eventemitter@^5.2.5:
-  version "5.2.9"
-  resolved "https://registry.yarnpkg.com/wolfy87-eventemitter/-/wolfy87-eventemitter-5.2.9.tgz#e879f770b30fbb6512a8afbb330c388591099c2a"
-  integrity sha512-P+6vtWyuDw+MB01X7UeF8TaHBvbCovf4HPEMF/SV7BdDc1SMTiBy13SRD71lQh4ExFTG1d/WNzDGDCyOKSMblw==
 
 word-wrap@^1.2.3, word-wrap@~1.2.3:
   version "1.2.3"

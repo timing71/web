@@ -43,7 +43,7 @@ export class AlKamel extends Service {
       // maybe already added (HMR can cause this)
     }
 
-    window._ddp = this.server;
+    // window._ddp = this.server;
 
     this.server.observe(
       'session_info',

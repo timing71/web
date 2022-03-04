@@ -1,4 +1,5 @@
 import { ALMS, ELMS, LeMansCup, WEC } from '../modules/services/aco';
+import { AlKamel } from '../modules/services/alkamel';
 import { IndyCar } from '../modules/services/indycar';
 import { TimeService } from '../modules/services/timeservice';
 
@@ -7,6 +8,7 @@ import { TimeService } from '../modules/services/timeservice';
 // so we'll also need to move the ServiceProvider component.
 const SERVICE_PROVIDERS = [
   ALMS,
+  AlKamel,
   ELMS,
   IndyCar,
   LeMansCup,

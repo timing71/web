@@ -23,11 +23,18 @@ export class AlkamelSocket extends EventEmitter {
   }
 
   onReceivedMessage(msg) {
-    if (msg.data[0] === 'a') {
-      const mungedData = msg.data.slice(2, -1);
+
+    let myMsg = msg;
+
+    if (typeof(msg.toString) === 'function') {
+      myMsg = { data: msg.toString() };
+    }
+
+    if (myMsg.data[0] === 'a') {
+      const mungedData = myMsg.data.slice(2, -1);
 
       const mungedMessage = {
-        ...msg,
+        ...myMsg,
         data: mungedData.length > 0 ? JSON.parse(mungedData) : null
       };
 
@@ -37,7 +44,7 @@ export class AlkamelSocket extends EventEmitter {
       }
 
     }
-    else if (msg.data[0] === 'c') {
+    else if (myMsg.data[0] === 'c') {
       console.log("Upstream timing source disconnected!"); // eslint-disable-line no-console
     }
   }

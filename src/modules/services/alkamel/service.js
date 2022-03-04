@@ -1,18 +1,9 @@
-import { useContext, useEffect, useReducer, useRef } from "react";
 import simpleDDP from "simpleddp";
 
-import { PluginContext, WrappedWebsocket } from "../../pluginBridge";
+import { Service } from '../service';
 import { dispatchAdded, dispatchChanged, dispatchRemoved } from "./ddp";
-import { Session } from "./session";
+import { AlkamelSocket } from "./socket";
 
-const stateReducer = (state, action) => {
-  const [name, collection] = action;
-  return {
-    ...state,
-    [name]: [...collection],
-    lastUpdate: [Date.now()]
-  };
-};
 
 const MONITORED_COLLECTIONS = [
   'best_results',
@@ -30,95 +21,51 @@ const MONITORED_COLLECTIONS = [
 const randomString = (length) => ([...Array(length)].map(() =>(~~(Math.random()*36)).toString(36)).join(''));
 const randomNum = (length) => ([...Array(length)].map(() =>(~~(Math.random()*10)).toString(10)).join(''));
 
-export const Service = ({ service }) => {
-  const port = useContext(PluginContext);
-  const [collections, dispatch] = useReducer(stateReducer, {});
+export class AlKamel extends Service {
+  constructor(...args) {
+    super(...args);
 
-  const feed = service.source.slice(service.source.lastIndexOf('/') + 1);
+    this.feed = this.service.source.slice(this.service.source.lastIndexOf('/') + 1);
+    this.server = null;
+  }
 
-  const ddp = useRef();
+  start(connectionService) {
 
-  useEffect(
-    () => {
+    const uuid = this.service.uuid;
 
-      class AlkamelSocket extends WrappedWebsocket {
-
-        constructor(url) {
-          super(url, port, service.uuid);
-        }
-
-        onReceivedMessage(msg) {
-
-          if (msg.data[0] === 'a') {
-            const mungedData = msg.data.slice(2, -1);
-
-            const mungedMessage = {
-              ...msg,
-              data: mungedData.length > 0 ? JSON.parse(mungedData) : null
-            };
-
-            this.emit('message', mungedMessage);
-            if (this.onmessage) {
-              this.onmessage(mungedMessage);
-            }
-
-          }
-          else if (msg.data[0] === 'c') {
-            console.log("Upstream timing source disconnected!"); // eslint-disable-line no-console
-          }
-
-        }
-
-        send(data) {
-          super.send(JSON.stringify([data]));
-        }
+    class SpecificAKSSocket extends AlkamelSocket {
+      constructor(url) {
+        super(connectionService, url, uuid);
       }
+    };
 
-      const server = new simpleDDP({
-        endpoint: `wss://livetiming.alkamelsystems.com/sockjs/${randomNum(3)}/${randomString(8)}/websocket`,
-        SocketConstructor: AlkamelSocket
-      });
-      // Evil monkeypatch:
-      server.dispatchAdded = dispatchAdded;
-      server.dispatchChanged = dispatchChanged;
-      server.dispatchRemoved = dispatchRemoved;
+    this.server = new simpleDDP({
+      autoConnect: false,
+      endpoint: `wss://livetiming.alkamelsystems.com/sockjs/${randomNum(3)}/${randomString(8)}/websocket`,
+      SocketConstructor: SpecificAKSSocket
+    });
+    // Evil monkeypatch:
+    this.server.dispatchAdded = dispatchAdded;
+    this.server.dispatchChanged = dispatchChanged;
+    this.server.dispatchRemoved = dispatchRemoved;
 
-      ddp.current = server;
-
-      MONITORED_COLLECTIONS.forEach(
-        c => server.collection(c).reactive().onChange(
-          s => dispatch([c, s])
-        )
-      );
-
-      server.on('added', ({ collection, fields }) => {
-        // We make the assumption here that we'll only ever get the single "feed"
-        // we're after!
-        if (collection === 'feeds') {
-          server.sub('sessions', [fields.sessions || []]);
-          server.sub('sessionInfo', [fields.sessions || []]);
+    this.server.on('added', () => console.log("Something added"))
+    this.server.on('connected', () => {
+      this.server.sub('livetimingFeed', [this.feed]).ready().then(
+        () => {
+          console.log("They say the sub is ready")
+          console.log(this.server)
         }
-      });
+      );
+    });
 
-      // server.on('changed', ({ collection }) => console.log(`Changed collection ${collection}`));
+    this.server.connect()
 
-      server.sub('livetimingFeed', [feed]);
+  }
 
-      return () => {
-        console.log("Disconnecting"); // eslint-disable-line no-console
-        server.disconnect();
-      };
-    },
-    [dispatch, feed, port, service]
-  );
+  stop() {
+    this.server && this.server.disconnect();
+  }
+}
 
-  return (
-    <Session
-      collections={collections}
-      server={ddp.current}
-    />
-  );
-};
-
-
-Service.regex = /livetiming\.alkamelsystems\.com\/[0-9a-zA-Z]+/;
+AlKamel.regex = /livetiming\.alkamelsystems\.com\/[0-9a-zA-Z]+/;

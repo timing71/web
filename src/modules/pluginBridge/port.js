@@ -1,4 +1,4 @@
-import { EventEmitter } from "./eventEmitter";
+import { EventEmitter } from "../../eventEmitter";
 import { WrappedWebsocket } from './websocket';
 
 export class Port extends EventEmitter {

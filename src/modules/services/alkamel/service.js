@@ -45,12 +45,13 @@ export class AlKamel extends Service {
 
     // window._ddp = this.server;
 
-    this.server.observe(
+    const sessionObserver = this.server.observe(
       'session_info',
       this.updateSession,
       this.updateSession,
       this.updateSession
     );
+    sessionObserver.changed = this.updateSession;
 
     this.server.connect(
       (error, wasReconnect) => {
@@ -142,7 +143,9 @@ class SessionMonitor {
   start() {
     SESSION_COLLECTIONS.forEach(
       collection => {
-        this._obs.push(this.ddp.observe(collection, this._onDataChange, this._onDataChange, this._onDataChange));
+        const observer = this.ddp.observe(collection, this._onDataChange, this._onDataChange, this._onDataChange);
+        observer.changed = this._onDataChange; // Another inconsistency in ddp-client
+        this._obs.push(observer);
       }
     );
     SESSION_SUBSCRIPTIONS.forEach(

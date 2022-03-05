@@ -26,7 +26,7 @@ export class AlkamelSocket extends EventEmitter {
 
     let myMsg = msg;
 
-    if (typeof(msg.toString) === 'function') {
+    if (typeof(msg.buffer) !== 'undefined') {
       myMsg = { data: msg.toString() };
     }
 

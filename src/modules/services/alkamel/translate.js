@@ -298,7 +298,7 @@ export const translate = (
     session: mapSession(session_status, weather, session_info?.unitOfMeasure),
     extraMessages: messages,
     meta: {
-      raceControlLastMessage: index
+      raceControlLastMessage: index || -1
     }
   };
 };

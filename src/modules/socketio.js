@@ -117,7 +117,7 @@ export const createSocketIo = (host, uuid, port, callback) => {
           if (data.data) {
             decoder.add(data.data);
           }
-          else if (typeof(data.toString === 'function')) {
+          else if (typeof(data.buffer !== 'undefined')) {
             decoder.add(data.toString());
           }
         });

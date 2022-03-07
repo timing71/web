@@ -9,8 +9,11 @@ const colSpec = [
   Stat.GAP,
   Stat.INT,
   Stat.S1,
+  Stat.BS1,
   Stat.S2,
+  Stat.BS2,
   Stat.S3,
+  Stat.BS3,
   Stat.LAST_LAP,
   Stat.BEST_LAP,
   Stat.PITS
@@ -103,7 +106,7 @@ const parseTimeWithFlag = (time) => {
   return [timeVal, flag];
 };
 
-const mapCar = (car) => {
+const mapCar = (car, stat) => {
   const gap = car.gapP?.Value || car.gap?.Value;
   const interval = car.intervalP?.Value || car.interval?.Value;
 
@@ -115,19 +118,27 @@ const mapCar = (car) => {
     gap,
     interval,
     parseTimeWithFlag(car.sectors[0]),
+    [parseTime(stat.BestSectors[0]?.Value), 'old'],
     parseTimeWithFlag(car.sectors[1]),
+    [parseTime(stat.BestSectors[1]?.Value), 'old'],
     parseTimeWithFlag(car.sectors[2]),
+    [parseTime(stat.BestSectors[2]?.Value), 'old'],
     parseTimeWithFlag(car.last),
     parseTimeWithFlag(car.best),
     parseInt(car.pits?.Value || 0)
   ];
 };
 
-const mapCars = (cars) => {
+const mapCars = (cars, stats) => {
 
   const sortedCars = Object.values(cars).sort(sortCars);
 
-  return sortedCars.map(mapCar);
+  return sortedCars.map(
+    car => {
+      const stat = stats[car.driver.RacingNumber];
+      return mapCar(car, stat);
+    }
+  );
 };
 
 const mapFlag = (flag) => {
@@ -184,7 +195,7 @@ const mapSession = (state, timestamps) => {
 
 export const translate = (state, timestamps) => {
   return {
-    cars: mapCars(state.data || {}),
+    cars: mapCars(state.data || {}, state.statsfeed || {}),
     session: mapSession(state, timestamps)
   };
 };

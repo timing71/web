@@ -1,10 +1,7 @@
-import deepEqual from "deep-equal";
 import { useCallback, useContext, useEffect, useState } from "react";
 import withGracefulUnmount from "../components/withGracefulUnmount";
-import { generateMessages } from "../modules/messages";
 import { PluginContext } from "../modules/pluginBridge";
 import { TimingScreen } from "../modules/timingScreen";
-import { mapServiceProvider } from "../modules/services";
 import { ServiceManifestContext, ServiceStateContext } from "../components/ServiceContext";
 import { StateStorer } from "../components/StateStorer";
 import { Debouncer } from "../components/Debouncer";
@@ -12,13 +9,8 @@ import { StateRetriever } from "../components/StateRetriever";
 import { useSetting } from '../modules/settings';
 import { Analysis } from "../modules/analysis";
 import { LoadingScreen } from "../components/LoadingScreen";
-
-const DEFAULT_STATE = {
-  cars: [],
-  session: {},
-  messages: [],
-  manifest: {}
-};
+import { ServiceProvider } from "../modules/services";
+import { DEFAULT_STATE, processManifestUpdate, processStateUpdate } from "../modules/serviceHost";
 
 const TimingInner = ({ match: { params } }) => {
 
@@ -62,81 +54,59 @@ const TimingInner = ({ match: { params } }) => {
   const updateState = useCallback(
     (updatedState) => {
       setState(
-        oldState => {
-          const newState = { ...oldState, ...updatedState };
-
-          const newMessages = generateMessages(newState.manifest, oldState, newState).concat(
-            updatedState.extraMessages || [],
-          );
-
-          const highlight = [];
-          newMessages.forEach(
-            nm => {
-              if (nm.length >= 5) {
-                highlight.push(nm[4]);
-              }
-            }
-          );
-          newState.highlight = highlight;
-
-          newState.messages = [
-            ...newMessages,
-            ...oldState.messages
-          ].slice(0, 100);
-
-          newState.lastUpdated = Date.now();
-          delete newState.extraMessages;
-
-          return newState;
-        }
+        oldState => processStateUpdate(oldState, updatedState)
       );
     },
     []
   );
 
   const updateManifest = useCallback(
-    (newManifest) => {
-
-      const newManifestWithStartTime = {
-        ...newManifest,
-        startTime: service.startTime,
-        uuid: serviceUUID
-      };
-
-      if (!deepEqual(newManifestWithStartTime, state.manifest)) {
-        updateState({ manifest: newManifestWithStartTime });
-      }
-    },
+    (newManifest) => processManifestUpdate(
+      state.manifest,
+      newManifest,
+      service.startTime,
+      serviceUUID,
+      (m) => updateState({ manifest: m })
+    ),
     [service?.startTime, serviceUUID, state.manifest, updateState]
   );
 
   const [ delay ] = useSetting('delay');
 
-  if (service && state && initialAnalysisState) {
-    const ServiceProvider = mapServiceProvider(service.source);
+  const [serviceProviderReady, setSPReady] = useState(false);
 
-    if (!ServiceProvider) {
-      return <p>No service provider found for <cite>{service.source}</cite>!</p>;
-    }
+  const setReady = useCallback(
+    () => setSPReady(true),
+    []
+  );
+
+  if (service && state && initialAnalysisState) {
 
     return (
       <ServiceManifestContext.Provider value={{ manifest: state.manifest, updateManifest }}>
         <ServiceStateContext.Provider value={{ state, updateState }}>
-          <ServiceProvider service={service} />
-          <Debouncer>
-            <Analysis
-              analysisState={initialAnalysisState}
-              live
-              serviceUUID={serviceUUID}
-            />
-            <StateStorer serviceUUID={serviceUUID} />
-            <StateRetriever
-              delay={delay * 1000}
-              serviceUUID={serviceUUID}
-            >
-              <TimingScreen />
-            </StateRetriever>
-          </Debouncer>
+          <ServiceProvider
+            onReady={setReady}
+            service={service}
+          />
+          {
+            serviceProviderReady && (
+              <Debouncer>
+                <Analysis
+                  analysisState={initialAnalysisState}
+                  live
+                  serviceUUID={serviceUUID}
+                />
+                <StateStorer serviceUUID={serviceUUID} />
+                <StateRetriever
+                  delay={delay * 1000}
+                  serviceUUID={serviceUUID}
+                >
+                  <TimingScreen />
+                </StateRetriever>
+              </Debouncer>
+            )
+          }
         </ServiceStateContext.Provider>
       </ServiceManifestContext.Provider>
     );

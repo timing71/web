@@ -1,47 +1,28 @@
-import { useCallback, useContext, useEffect } from "react";
-import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
-
-import { PluginContext } from "../../pluginBridge";
+import { HTTPPollingService } from "../service";
 import { getManifest, translate } from "./translate";
 
 const DATA_URL = 'https://indycarsso.blob.core.windows.net/racecontrol/timingscoring.json';
+const POLL_RATE = 10000;
 
-export const IndyCar = () => {
+export class IndyCar extends HTTPPollingService {
 
-  const port = useContext(PluginContext);
+  constructor(onStateChange, onManifestChange, service) {
+    super(
+      DATA_URL,
+      POLL_RATE,
+      onStateChange,
+      onManifestChange,
+      service
+    );
+  }
 
-  const { updateManifest } = useServiceManifest();
-  const { updateState } = useServiceState();
+  async handleResponse(response) {
+    const data = response.replace(/^jsonCallback\(/, '').replace(/\);\r\n$/, '');
+    const jsonData = JSON.parse(data);
 
-  const getData = useCallback(
-    () => {
-      port.fetch(DATA_URL).then(
-        message => {
-          const data = message.replace(/^jsonCallback\(/, '').replace(/\);\r\n$/, '');
-          const jsonData = JSON.parse(data);
-
-          const newManifest = getManifest(jsonData);
-          updateManifest(newManifest);
-          updateState(translate(jsonData));
-        }
-      );
-    },
-    [port, updateManifest, updateState]
-  );
-
-  useEffect(
-    () => {
-      getData();
-      const interval = window.setInterval(getData, 10000);
-
-      return () => {
-        window.clearInterval(interval);
-      };
-    },
-    [getData]
-  );
-
-  return null;
-};
+    this.onManifestChange(getManifest(jsonData));
+    this.onStateChange(translate(jsonData));
+  }
+}
 
 IndyCar.regex = /racecontrol\.indycar\.com/;

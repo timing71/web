@@ -1,6 +1,3 @@
-import { useContext, useEffect } from 'react';
-import { PluginContext, WrappedWebsocket } from './pluginBridge';
-
 const { Decoder } = require('socket.io-parser');
 
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_'.split('');
@@ -64,18 +61,16 @@ const splitPayload = (data) => {
   return messages;
 };
 
-export const useSocketIo = (host, uuid, callback) => {
-  const port = useContext(PluginContext);
+
+export const createSocketIo = (host, uuid, port, callback) => {
+  // In which we badly reimplement some of socket.io's transport handling
+  // Ideally we could implement a socket.io client in the plugin and use
+  // message passing to send data to the web client.
   const socketURL = `${host}/socket.io/?EIO=4`;
   const pollingUrl = `https://${socketURL}&transport=polling`;
   const wsUrl = `wss://${socketURL}&transport=websocket`;
-  useEffect(
-    // In which we badly reimplement some of socket.io's transport handling
-    // Ideally we could implement a socket.io client in the plugin and use
-    // message passing to send data to the web client.
-    () => {
 
-      let sid = null;
+  let sid = null;
 
       let ws = null;
       let pingInterval = null;
@@ -108,9 +103,9 @@ export const useSocketIo = (host, uuid, callback) => {
       const doWebsocket = () => {
         // Technically we should include the sid in the websocket URL;
         // but I don't want to reimplement socket.io's session handling...
-        ws = new WrappedWebsocket(wsUrl, port, uuid);
+        ws = port.createWebsocket(wsUrl, uuid);
         ws.on('open', () => {
-          ws.send('2probe');
+          ws.readyState === 1 && ws.send('2probe');
         });
         ws.on('close', () => {
           pingInterval && window.clearInterval(pingInterval);
@@ -118,9 +113,16 @@ export const useSocketIo = (host, uuid, callback) => {
           sid = null;
           doPoll();
         });
-        ws.on('message', data => decoder.add(data));
+        ws.on('message', (data) => {
+          if (data.data) {
+            decoder.add(data.data);
+          }
+          else if (typeof(data.buffer !== 'undefined')) {
+            decoder.add(data.toString());
+          }
+        });
         pingInterval = window.setInterval(
-          () => ws.send('2'),
+          () => ws.readyState === 1 && ws.send('2'),
           20000
         );
       };
@@ -146,12 +148,10 @@ export const useSocketIo = (host, uuid, callback) => {
 
       doPoll();
 
-      return () => {
-        pingInterval && window.clearInterval(pingInterval);
-        ws && ws.close();
+      return {
+        stop: () => {
+          pingInterval && window.clearInterval(pingInterval);
+          ws && ws.close();
+        }
       };
-
-    },
-    [callback, pollingUrl, port, uuid, wsUrl]
-  );
 };

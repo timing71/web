@@ -1,1 +1,1 @@
-export { Service as TimeService } from './service';
+export { TimeService } from './service';

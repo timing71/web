@@ -1,4 +1,5 @@
-import { EventEmitter } from "./eventEmitter";
+import { EventEmitter } from "../../eventEmitter";
+import { WrappedWebsocket } from './websocket';
 
 export class Port extends EventEmitter {
   constructor(extensionID, targetWindow) {
@@ -52,6 +53,10 @@ export class Port extends EventEmitter {
   async fetch(url, options={}) {
     const response = await this.send({ type: 'FETCH', options, url });
     return response.data;
+  }
+
+  createWebsocket(url, tag=undefined, autoReconnect=true) {
+    return new WrappedWebsocket(url, this, tag, autoReconnect);
   }
 
   disconnect() {

@@ -1,5 +1,3 @@
-import { useCallback, useEffect, useRef } from 'react';
-import { useServiceManifest, useServiceState } from '../../../components/ServiceContext';
 import { FlagState, Stat } from '../../../racing';
 import { RaceControlMessage } from '../../messages/Message';
 import { getGapFunction } from './gap';
@@ -259,94 +257,76 @@ const mapSession = (status={}, weather={}, unitOfMeasure) => {
   return session;
 };
 
-export const Translator = ({
-  collections: { best_results, race_control, sessionBestResultsByClass, session_entry, session_info, session_status, track_info, standings, weather },
-  session,
-}) => {
+export const getSectorCount = (trackInfo) => Object.keys((trackInfo?.sectors || {})).length;
 
-  const raceControlLastMessage = useRef(-1);
-
+export const getManifest = ({ session_info, standings, session, track_info }) => {
   const numSectors = getSectorCount(track_info);
-
-  const { updateManifest } = useServiceManifest();
-  const { updateState } = useServiceState();
-
-  const extractRaceControlMessages = useCallback(
-    (messages) => {
-      const result = [];
-      const newMessageIndexes = Object.keys(messages).filter(k => k > raceControlLastMessage.current);
-
-      if (newMessageIndexes.length > 0) {
-        if (raceControlLastMessage.current === -1) {
-          raceControlLastMessage.current = Math.max(...newMessageIndexes);
-        }
-        else {
-          newMessageIndexes.reverse().forEach(
-            i => {
-              raceControlLastMessage.current = Math.max(raceControlLastMessage.current, i);
-              result.push(
-                new RaceControlMessage(
-                  messages[i].message
-                ).toCTDFormat()
-              );
-            }
-          );
-        }
-      }
-      return result;
-    },
-    []
-  );
-
-  useEffect(
-    () => {
-      updateManifest({
-        name: session_info?.champName || '',
-        description: `${session_info?.eventName} - ${session?.name}`,
-        colSpec: createColspec(numSectors, standings?.hasClasses),
-        trackDataSpec: [
-          'Air temp',
-          'Track temp',
-          'Humidity',
-          'Wind speed'
-        ]
-      });
-    },
-    [
-      session_info,
-      standings?.hasClasses,
-      numSectors,
-      session,
-      updateManifest
+  return {
+    name: session_info?.champName || '',
+    description: `${session_info?.eventName} - ${session?.name}`,
+    colSpec: createColspec(numSectors, standings?.hasClasses),
+    trackDataSpec: [
+      'Air temp',
+      'Track temp',
+      'Humidity',
+      'Wind speed'
     ]
-  );
-
-  useEffect(
-    () => {
-      const gapFunc = getGapFunction(session_info?.type);
-      updateState({
-        cars: mapCars(standings, session_entry, numSectors, gapFunc, best_results, sessionBestResultsByClass),
-        session: mapSession(session_status, weather, session_info?.unitOfMeasure),
-        extraMessages: extractRaceControlMessages(race_control?.log || {})
-      });
-    },
-    [
-      best_results,
-      extractRaceControlMessages,
-      numSectors,
-      race_control,
-      sessionBestResultsByClass,
-      session_entry,
-      session_info,
-      session_status,
-      standings,
-      weather,
-      updateState
-    ]
-  );
-
-
-  return null;
+  };
 };
 
-export const getSectorCount = (trackInfo) => Object.keys((trackInfo?.sectors || {})).length;
+export const translate = (
+  {
+    best_results,
+    race_control,
+    sessionBestResultsByClass,
+    session_entry,
+    session_info,
+    session_status,
+    track_info,
+    standings,
+    weather
+  },
+  raceControlLastMessage
+) => {
+  const numSectors = getSectorCount(track_info);
+  const gapFunc = getGapFunction(session_info?.type);
+
+  const { messages, index } = extractRaceControlMessages(race_control?.log || {}, raceControlLastMessage);
+
+  return {
+    cars: mapCars(standings, session_entry, numSectors, gapFunc, best_results, sessionBestResultsByClass),
+    session: mapSession(session_status, weather, session_info?.unitOfMeasure),
+    extraMessages: messages,
+    meta: {
+      raceControlLastMessage: index || -1
+    }
+  };
+};
+
+const extractRaceControlMessages = (messages, lastIndex) => {
+  const result = [];
+  const newMessageIndexes = Object.keys(messages).filter(k => k > lastIndex);
+  let newIndex = lastIndex;
+
+  if (newMessageIndexes.length > 0) {
+    if (lastIndex === -1) {
+      newIndex = Math.max(...newMessageIndexes);
+    }
+    else {
+      newMessageIndexes.reverse().forEach(
+        i => {
+          newIndex = Math.max(lastIndex, i);
+          result.push(
+            new RaceControlMessage(
+              messages[i].message
+            ).toCTDFormat()
+          );
+        }
+      );
+    }
+  }
+  return {
+    messages: result,
+    index: newIndex
+  };
+};

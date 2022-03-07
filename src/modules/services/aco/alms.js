@@ -1,11 +1,13 @@
-import { Service } from "./service";
+import { ACO } from "./service";
 
-export const ALMS = (props) => (
-  <Service
-    host='data.asianlemansseries.com'
-    name='Asian Le Mans Series'
-    {...props}
-  />
-);
+export class ALMS extends ACO {
+  constructor(...args) {
+    super(
+      'data.asianlemansseries.com',
+      'Asian Le Mans Series',
+      ...args
+    );
+  }
+};
 
 ALMS.regex = /live\.asianlemansseries\.com/;

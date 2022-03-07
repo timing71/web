@@ -1,1 +1,1 @@
-export { Service as AlKamel } from './service';
+export { AlKamel } from './service';

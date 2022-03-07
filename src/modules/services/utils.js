@@ -1,4 +1,7 @@
 export const parseTime = (raw) => {
+  if (!raw) {
+    return null;
+  }
   if (raw.match(/^[0-9]+(\.[0-9]+)?$/)) {
     return parseFloat(raw);
   }

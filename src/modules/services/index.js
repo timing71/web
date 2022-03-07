@@ -4,6 +4,7 @@ import { PluginContext } from "../pluginBridge";
 
 import { ALMS, ELMS, LeMansCup, WEC } from "./aco";
 import { AlKamel } from "./alkamel";
+import { F2, F3 } from "./feederSeries";
 import { IndyCar } from "./indycar";
 import { Nascar } from "./nascar";
 import { TimeService } from "./timeservice";
@@ -12,6 +13,8 @@ export const SERVICE_PROVIDERS = [
   AlKamel,
   ALMS,
   ELMS,
+  F2,
+  F3,
   IndyCar,
   LeMansCup,
   Nascar,

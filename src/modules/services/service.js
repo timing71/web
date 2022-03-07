@@ -3,7 +3,13 @@ export class Service {
     this.onManifestChange = onManifestChange;
     this.onStateChange = onStateChange;
     this.service = service;
+
+    this.start = this.start.bind(this);
+    this.stop = this.stop.bind(this);
   }
+
+  start() {}
+  stop() {}
 }
 
 export class HTTPPollingService extends Service {
@@ -11,7 +17,6 @@ export class HTTPPollingService extends Service {
     super(onStateChange, onManifestChange, service);
     this.url = url;
     this.pollInterval = pollInterval;
-    this.start = this.start.bind(this);
     this.handleResponse = this.handleResponse.bind(this);
     this._fetch = this._fetch.bind(this);
 

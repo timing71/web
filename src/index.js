@@ -12,7 +12,7 @@ if (process.env.REACT_APP_SENTRY_DSN) {
     dsn: process.env.REACT_APP_SENTRY_DSN,
     environment: process.env.NODE_ENV,
     integrations: [new BrowserTracing()],
-    // release: TODO
+    release: process.env.REACT_APP_COMMIT_REF || 'dev',
     tracesSampleRate: 1.0,
   });
 }

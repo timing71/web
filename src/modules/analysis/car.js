@@ -245,14 +245,14 @@ export const Car = types.model({
       if (oldStatExtractor && oldCar) {
         const oldLastLap = oldStatExtractor.get(oldCar, Stat.LAST_LAP, []);
 
-        if (newLastLap[0] && (!oldLastLap || oldLastLap[0] !== newLastLap[0]) ) {
+        if (newLastLap && newLastLap[0] && (!oldLastLap || oldLastLap[0] !== newLastLap[0]) ) {
           self.recordNewLap(newLastLap[0], currentDriver, self.highestSeenFlagThisLap, timestamp);
           if (fudgeLapCount) {
             self.currentLap++;
           }
         }
       }
-      else if (newLastLap[0]) {
+      else if (newLastLap && newLastLap[0]) {
         // We didn't appear in the previous state; if we have a last laptime
         // we should record it.
         self.recordNewLap(newLastLap[0], currentDriver, self.highestSeenFlagThisLap, timestamp);

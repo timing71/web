@@ -7,6 +7,7 @@ import { AlKamel } from "./alkamel";
 import { F2, F3 } from "./feederSeries";
 import { IndyCar } from "./indycar";
 import { Nascar } from "./nascar";
+import { SoftPauer } from "./softpauer";
 import { TimeService } from "./timeservice";
 
 export const SERVICE_PROVIDERS = [
@@ -18,6 +19,7 @@ export const SERVICE_PROVIDERS = [
   IndyCar,
   LeMansCup,
   Nascar,
+  SoftPauer,
   TimeService,
   WEC
 ];

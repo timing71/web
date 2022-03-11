@@ -63,7 +63,7 @@ const parseFlagState = (f) => {
     case 'R':
       return FlagState.RED;
     default:
-      return FlagState.NONE;
+      return FlagState.GREEN;
   }
 };
 
@@ -74,10 +74,10 @@ const getTimeRemaining = (clock) => {
     if (clock.Extrapolating) {
       const timestamp = new Date(clock.Utc).getTime();
       const delta = Date.now() - timestamp;
-      return remTime - delta;
+      return (remTime - delta) / 1000;
     }
 
-    return remTime;
+    return remTime / 1000;
   }
   return null;
 };
@@ -94,7 +94,7 @@ const getTrackData = (w) => {
       w[2] === 1 ? 'Wet' : 'Dry'
     ];
   }
-  return [];
+  return Array(7).fill('-');
 };
 
 const denormaliseDrivers = (state) => {
@@ -126,6 +126,22 @@ const mapCarState = (s) => {
   }
 };
 
+const TYRE_MAP = {
+  'H': ['H', 'tyre-hard'],
+  'M': ['M', 'tyre-med'],
+  'S': ['S', 'tyre-soft'],
+  'I': ['I', 'tyre-inter'],
+  'W': ['W', 'tyre-wet'],
+  'U': ['U', 'tyre-development'],
+  'p': ['P', 'tyre-development']
+};
+
+const TIME_FLAGS = {
+  'P': 'sb',
+  'G': 'pb',
+  'Y': 'old'
+};
+
 const renderGapOrLaps = (raw) => {
   if (raw !== '' && raw[0] === '-') {
     return `${-1 * raw} lap${raw === -1 ? '' : 's'}`;
@@ -139,24 +155,46 @@ const mapCars = (cars) => {
   ).map(
     (car) => {
 
-      const { driver, latestTimeLine, sq } = car;
+      const { driver, extra, latestTimeLine, sq, timeLine } = car;
+
+      const colourFlags = latestTimeLine[2] || [];
+
+      let currentTyre = '';
+      let currentTyreStats = ['', ''];
+
+      if (extra.X && extra.X[9] !== '') {
+        currentTyre = TYRE_MAP[extra.X[9][0]] || extra.X[9][0];
+        currentTyreStats = (extra.TI || []).slice(-2);
+      }
+
+      const lastLap = parseTime(latestTimeLine[1]);
+      const bestLap = parseTime(timeLine[1]);
 
       return [
         driver['Num'],
         mapCarState(latestTimeLine[3][2]),
         `${driver.LastName.toUpperCase()}, ${driver.FirstName}`,
         Math.floor(sq[0]),
-        '',
-        '',
-        '',
+        currentTyre,
+        currentTyreStats[0],
+        currentTyreStats[1],
         renderGapOrLaps(latestTimeLine[9]),
         renderGapOrLaps(latestTimeLine[14]),
+        [latestTimeLine[5], TIME_FLAGS[colourFlags[1]]],
+        [timeLine[4], 'old'],
+        [latestTimeLine[6], TIME_FLAGS[colourFlags[2]]],
+        [timeLine[7], 'old'],
+        [latestTimeLine[7], TIME_FLAGS[colourFlags[3]]],
+        [timeLine[10], 'old'],
+        [lastLap > 0 ? lastLap : '', TIME_FLAGS[colourFlags[0]]],
+        [bestLap, 'old'],
+        latestTimeLine[3][0],
       ];
     }
   );
 };
 
-export const translate = (state, clock, messages) => {
+export const translate = (state, clock) => {
 
   const { free, sq } = state;
 

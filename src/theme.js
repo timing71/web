@@ -181,6 +181,9 @@ export const Theme = {
   modifiers: {
     'old': 'yellow',
     'tyre-med': 'yellow',
+    'tyre-soft': 'red',
+    'tyre-inter': '#3ac82c',
+    'tyre-wet': '#4491d2',
     'pb': '#00FF00',
     'sb': '#FF53E3',
     'sb-new': '#FF53E3',

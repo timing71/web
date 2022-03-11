@@ -120,6 +120,7 @@ export class SoftPauer extends Service {
         socket.on(
           'open',
           () => {
+            console.log("Connected to upstream"); // eslint-disable-line no-console
             socket.send('{"H":"streaming","M":"Subscribe","A":[["SPFeed","ExtrapolatedClock","RaceControlMessages"]],"I":0}');
           }
         );

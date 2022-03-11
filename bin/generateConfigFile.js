@@ -12,7 +12,9 @@ const pluginConfig = {
 
 SERVICE_PROVIDERS.forEach(
   provider => {
-    pluginConfig.supportedURLs.push(provider.regex.source.replaceAll('\\', ''));
+    if (!provider.private) {
+      pluginConfig.supportedURLs.push(provider.regex.source.replaceAll('\\', ''));
+    }
   }
 );
 

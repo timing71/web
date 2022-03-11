@@ -151,3 +151,4 @@ export class SoftPauer extends Service {
 }
 
 SoftPauer.regex = new RegExp(HOST.replace('livetiming', '[^.]*'));
+SoftPauer.private = true;

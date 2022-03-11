@@ -13,7 +13,10 @@ module.exports = {
           options: {
             targets: {
               node: 'current'
-            }
+            },
+            plugins: [
+              "@babel/plugin-proposal-class-properties",
+            ]
           }
         }
       }

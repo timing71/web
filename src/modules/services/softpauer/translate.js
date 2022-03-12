@@ -194,12 +194,59 @@ const mapCars = (cars) => {
   );
 };
 
+const blIdx = colSpec.indexOf(Stat.BEST_LAP);
+const bs1Idx = colSpec.indexOf(Stat.BS1);
+
+const postprocessCars = (cars) => {
+
+  const bestLap = { };
+  const bestSectors = { 0: {}, 1: {}, 2: {} };
+
+  cars.forEach(
+    (car, idx) => {
+      const bl = car[blIdx][0];
+      if (bl && (!bestLap.time || bestLap.time > bl)) {
+        bestLap.time = bl;
+        bestLap.index = idx;
+      }
+
+      [0, 1, 2].forEach(
+        sector => {
+          const time = car[bs1Idx + (2 * sector)][0];
+          if (time && (!bestSectors[sector].time || bestSectors[sector].time > time)) {
+            bestSectors[sector].time = time;
+            bestSectors[sector].index = idx;
+          }
+        }
+      );
+    }
+  );
+
+  if (bestLap.index >= 0) {
+    cars[bestLap.index][blIdx] = [bestLap.time, 'sb'];
+    if (cars[bestLap.index][blIdx - 1][0] === bestLap.time) {
+      cars[bestLap.index][blIdx - 1][1] = cars[bestLap.index][bs1Idx + 3][0] !== '' ? 'sb-new' : 'sb';
+    }
+  }
+
+  [0, 1, 2].forEach(
+    sector => {
+      const { index } = bestSectors[sector];
+      if (index >= 0) {
+        cars[index][bs1Idx + (2 * sector)][1] = 'sb';
+      }
+    }
+  );
+
+  return cars;
+};
+
 export const translate = (state, clock) => {
 
   const { free, sq } = state;
 
   const cars = denormaliseDrivers(state);
-  const mapped = mapCars(cars);
+  const mapped = postprocessCars(mapCars(cars));
 
   return {
     cars: mapped,

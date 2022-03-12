@@ -1,6 +1,7 @@
 import { Service } from '../service';
 import { createSignalRConnection } from '../signalr';
 import { getManifest, translate } from './translate';
+import { RaceControlMessage } from '../../messages/Message';
 
 const HOST = `livetiming.formula${ (6 / 2) - 2 }.com`;
 
@@ -61,13 +62,14 @@ export class SoftPauer extends Service {
     this._clock = {};
     this._messages = {};
     this._handlePacket = this._handlePacket.bind(this);
+    this._raceControlTimestamp = Date.now();
   }
 
   _handlePacket(pkt) {
 
     if (pkt.M) {
       pkt.M.forEach(
-        m => this._handleMessage(m.M, m.A)
+        m => this._handleMessage(...m.A)
       );
     }
 
@@ -102,7 +104,27 @@ export class SoftPauer extends Service {
     }
 
     this.onManifestChange(getManifest(this._state));
-    this.onStateChange(translate(this._state, this._clock, this._messages));
+
+    const newState = translate(this._state, this._clock);
+
+    const oldTimestamp = this._raceControlTimestamp;
+
+    const newMessages = (this._messages.Messages || []).filter(
+      m => new Date(m.Utc).getTime() > oldTimestamp
+    ).reverse();
+
+    if (newMessages.length > 0) {
+      this._raceControlTimestamp = Math.max(
+        ...newMessages.map(
+          m => new Date(m.Utc).getTime()
+        )
+      );
+    }
+
+    this.onStateChange({
+      ...newState,
+      extraMessages: newMessages.map(m => new RaceControlMessage(m.Message, new Date(m.Utc).getTime()).toCTDFormat())
+    });
   }
 
   start(connectionService) {

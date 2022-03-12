@@ -74,10 +74,10 @@ const getTimeRemaining = (clock) => {
     if (clock.Extrapolating) {
       const timestamp = new Date(clock.Utc).getTime();
       const delta = Date.now() - timestamp;
-      return (remTime - delta) / 1000;
+      return remTime - (delta / 1000);
     }
 
-    return remTime / 1000;
+    return remTime;
   }
   return null;
 };
@@ -174,7 +174,7 @@ const mapCars = (cars) => {
         driver['Num'],
         mapCarState(latestTimeLine[3][2]),
         `${driver.LastName.toUpperCase()}, ${driver.FirstName}`,
-        Math.floor(sq[0]),
+        Math.floor(sq[0] || 0),
         currentTyre,
         currentTyreStats[0],
         currentTyreStats[1],

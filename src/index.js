@@ -14,6 +14,7 @@ if (process.env.REACT_APP_SENTRY_DSN) {
     integrations: [new BrowserTracing()],
     release: process.env.REACT_APP_COMMIT_REF || 'dev',
     tracesSampleRate: 1.0,
+    ignoreErrors: ['ResizeObserver loop limit exceeded'],
   });
 }
 

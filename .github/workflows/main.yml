@@ -51,20 +51,10 @@ jobs:
           path: 'cli/timing71.js'
 
       - name: Publish to Netlify
-        uses: netlify/actions/build@master
+        uses: netlify/actions/cli@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-
-# # Disabled on migration to netlify:
-#      - name: Deploy to beta web server
-#        uses: jamesremuscat/ssh-scp-deploy@main
-#        with:
-#          host: ${{ secrets.SSH_HOST }}
-#          port: ${{ secrets.SSH_PORT }}
-#          user: ${{ secrets.SSH_USERNAME }}
-#          key: ${{ secrets.SSH_PRIVATE_KEY }}
-#          local: "build/*"
-#          remote: "~/webroot-beta/"
-#          pre_upload: rm -r ~/webroot-beta/*
-#          scp_options: "-l 2000"
+        with:
+          args: deploy --dir=build --prod
+          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]'

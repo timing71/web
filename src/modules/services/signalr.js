@@ -10,11 +10,9 @@ export const createSignalRConnection = async (connectionService, host, prefix = 
   const negotiateURL = `https://${host}/${prefix}/negotiate?${negotiateQuery}`;
 
   const [negotiate, negHeaders] = await connectionService.fetch(negotiateURL, { returnHeaders: true });
-  console.log(negHeaders)
 
   let GCLB = null;
   if (negHeaders['set-cookie']) {
-    console.log("Om nom nom cookies")
     const cookies = cookie.parse(negHeaders['set-cookie']);
     if (cookies.GCLB) {
       GCLB = cookies.GCLB;
@@ -26,7 +24,6 @@ export const createSignalRConnection = async (connectionService, host, prefix = 
   if (GCLB) {
     headers['cookie'] = `GCLB=${GCLB}`;
   }
-  console.log(headers)
 
   const data = JSON.parse(negotiate);
   const token = data['ConnectionToken'];

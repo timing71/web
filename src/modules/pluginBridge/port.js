@@ -50,12 +50,12 @@ export class Port extends EventEmitter {
     );
   }
 
-  async fetch(url, options={}) {
+  async fetch(url, { returnHeaders=false, ...options }={}) {
     const response = await this.send({ type: 'FETCH', options, url });
-    return response.data;
+    return returnHeaders ? [response.data, response.headers] : response.data;
   }
 
-  createWebsocket(url, tag=undefined, autoReconnect=true) {
+  createWebsocket(url, { tag=undefined, autoReconnect=true }) {
     return new WrappedWebsocket(url, this, tag, autoReconnect);
   }
 

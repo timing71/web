@@ -30,7 +30,7 @@ export class FeederSeries extends Service {
 
         this._socket = connectionService.createWebsocket(
           this._connectURL(encodeURIComponent(data['ConnectionToken'])),
-          this.service.uuid
+          { tag: this.service.uuid }
         );
 
         this._socket.on(

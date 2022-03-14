@@ -1,3 +1,4 @@
+import cookie from 'cookie';
 import queryString from 'query-string';
 
 export const createSignalRConnection = async (connectionService, host, prefix = 'signalr', hubName = 'streaming', clientProtocol = 2.1, tag) => {
@@ -8,7 +9,24 @@ export const createSignalRConnection = async (connectionService, host, prefix = 
   });
   const negotiateURL = `https://${host}/${prefix}/negotiate?${negotiateQuery}`;
 
-  const negotiate = await connectionService.fetch(negotiateURL);
+  const [negotiate, negHeaders] = await connectionService.fetch(negotiateURL, { returnHeaders: true });
+  console.log(negHeaders)
+
+  let GCLB = null;
+  if (negHeaders['set-cookie']) {
+    console.log("Om nom nom cookies")
+    const cookies = cookie.parse(negHeaders['set-cookie']);
+    if (cookies.GCLB) {
+      GCLB = cookies.GCLB;
+    }
+  }
+
+  const headers = {};
+
+  if (GCLB) {
+    headers['cookie'] = `GCLB=${GCLB}`;
+  }
+  console.log(headers)
 
   const data = JSON.parse(negotiate);
   const token = data['ConnectionToken'];
@@ -31,11 +49,14 @@ export const createSignalRConnection = async (connectionService, host, prefix = 
   });
   const startURL = `https://${host}/${prefix}/start?${startQuery}`;
 
-  await connectionService.fetch(startURL);
+  await connectionService.fetch(startURL, { headers });
 
   const socket = connectionService.createWebsocket(
     connectURL,
-    tag
+    {
+      tag,
+      headers
+    }
   );
 
   return socket;

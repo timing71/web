@@ -305,7 +305,7 @@ export class TimeService extends Service {
           token => {
             const wsUrl = getWebsocketUrl(serviceData.tid, token);
 
-            this._ws = port.createWebsocket(wsUrl);
+            this._ws = port.createWebsocket(wsUrl, { tag: this.service.uuid });
 
             this._ws.onmessage = (msg) => {
               try {

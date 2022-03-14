@@ -6,7 +6,7 @@ export class AlkamelSocket extends EventEmitter {
     super();
     this.onReceivedMessage = this.onReceivedMessage.bind(this);
 
-    this._socket = port.createWebsocket(url, tag);
+    this._socket = port.createWebsocket(url, { tag });
 
     this._socket.on(
       'message',

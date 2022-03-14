@@ -41,6 +41,21 @@ jobs:
       - name: Run tests
         run: yarn run test
 
+      - name: Build CLI app
+        run: yarn run cli:build
+
+      - name: Publish CLI app
+        uses: actions/upload-artifact@v3
+        with:
+          name: 'timing71.js'
+          path: 'cli/timing71.js'
+
+      - name: Publish to Netlify
+        uses: netlify/actions/build@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
 # # Disabled on migration to netlify:
 #      - name: Deploy to beta web server
 #        uses: jamesremuscat/ssh-scp-deploy@main

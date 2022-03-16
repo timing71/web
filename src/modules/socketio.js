@@ -129,6 +129,7 @@ export const createSocketIo = (host, uuid, port, callback) => {
 
       decoder.on('decoded', (packet) => {
         if (packet.type === 4 && packet.data) {
+          polling = false;  // ACO server not bothering to respond to probe, but sending us data anyway
           const [event, data] = packet.data;
           callback && callback(event, data);
         }

@@ -286,19 +286,19 @@ export const translate = (
     standings,
     weather
   },
-  raceControlLastMessage
+  raceControlLastIndex
 ) => {
   const numSectors = getSectorCount(track_info);
   const gapFunc = getGapFunction(session_info?.type);
 
-  const { messages, index } = extractRaceControlMessages(race_control?.log || {}, raceControlLastMessage);
+  const { messages, index } = extractRaceControlMessages(race_control?.log || {}, raceControlLastIndex);
 
   return {
     cars: mapCars(standings, session_entry, numSectors, gapFunc, best_results, sessionBestResultsByClass),
     session: mapSession(session_status, weather, session_info?.unitOfMeasure),
     extraMessages: messages,
     meta: {
-      raceControlLastMessage: index || -1
+      raceControlLastIndex: index || -1
     }
   };
 };

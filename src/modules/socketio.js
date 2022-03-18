@@ -77,7 +77,8 @@ export const createSocketIo = (host, uuid, port, callback) => {
       let polling = true;
       let usingWebsocket = false;
 
-      const decoder = new Decoder();
+      const pollDecoder = new Decoder();
+      const wsDecoder = new Decoder();
 
       const doPoll = () => {
         if (polling) {
@@ -88,7 +89,7 @@ export const createSocketIo = (host, uuid, port, callback) => {
           port.fetch(myUrl).then(
             pollData => {
               splitPayload(pollData).forEach(
-                msg => decoder.add(msg)
+                msg => pollDecoder.add(msg)
               );
               setTimeout(doPoll, 1000);
             }
@@ -117,10 +118,10 @@ export const createSocketIo = (host, uuid, port, callback) => {
         });
         ws.on('message', (data) => {
           if (data.data) {
-            decoder.add(data.data);
+            wsDecoder.add(data.data);
           }
           else if (typeof(data.buffer !== 'undefined')) {
-            decoder.add(data.toString());
+            wsDecoder.add(data.toString());
           }
         });
         pingInterval = window.setInterval(
@@ -129,9 +130,11 @@ export const createSocketIo = (host, uuid, port, callback) => {
         );
       };
 
-      decoder.on('decoded', (packet) => {
+      const handlePacket = isWebsocket => (packet) => {
         if (packet.type === 4 && packet.data) {
-          // polling = false;  // ACO server not bothering to respond to probe, but sending us data anyway
+          if (isWebsocket && polling) {
+            polling = false;  // ACO server not responding to probe but sending us useful data
+          }
           const [event, data] = packet.data;
           callback && callback(event, data);
         }
@@ -148,7 +151,10 @@ export const createSocketIo = (host, uuid, port, callback) => {
             doWebsocket();
           }
         }
-      });
+      };
+
+      wsDecoder.on('decoded', handlePacket(true));
+      pollDecoder.on('decoded', handlePacket(false));
 
       doPoll();
 

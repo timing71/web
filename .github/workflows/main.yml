@@ -38,6 +38,7 @@ jobs:
       - name: Build webapp
         run: yarn run build
         env:
+          COMMIT_REF: ${{ github.sha }}
           REACT_APP_SENTRY_DSN: ${{ secrets.REACT_APP_SENTRY_DSN }}
 
       - name: Run tests
@@ -59,7 +60,6 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         with:
           args: deploy --dir=build --prod
-          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]'
 
       - name: Create Sentry release
         uses: getsentry/action-release@v1

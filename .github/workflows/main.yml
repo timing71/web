@@ -37,6 +37,8 @@ jobs:
 
       - name: Build webapp
         run: yarn run build
+        env:
+          REACT_APP_SENTRY_DSN: ${{ secrets.REACT_APP_SENTRY_DSN }}
 
       - name: Run tests
         run: yarn run test

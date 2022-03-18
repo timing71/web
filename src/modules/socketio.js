@@ -75,6 +75,7 @@ export const createSocketIo = (host, uuid, port, callback) => {
       let ws = null;
       let pingInterval = null;
       let polling = true;
+      let usingWebsocket = false;
 
       const decoder = new Decoder();
 
@@ -109,6 +110,7 @@ export const createSocketIo = (host, uuid, port, callback) => {
         });
         ws.on('close', () => {
           pingInterval && window.clearInterval(pingInterval);
+          usingWebsocket = false;
           polling = true;
           sid = null;
           doPoll();
@@ -129,7 +131,7 @@ export const createSocketIo = (host, uuid, port, callback) => {
 
       decoder.on('decoded', (packet) => {
         if (packet.type === 4 && packet.data) {
-          polling = false;  // ACO server not bothering to respond to probe, but sending us data anyway
+          // polling = false;  // ACO server not bothering to respond to probe, but sending us data anyway
           const [event, data] = packet.data;
           callback && callback(event, data);
         }
@@ -141,7 +143,8 @@ export const createSocketIo = (host, uuid, port, callback) => {
           if (packet.data.sid) {
             sid = encodeURIComponent(packet.data.sid);
           }
-          if (packet.data.upgrades.includes('websocket')) {
+          if (packet.data.upgrades.includes('websocket') && !usingWebsocket) {
+            usingWebsocket = true;
             doWebsocket();
           }
         }

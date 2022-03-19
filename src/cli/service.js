@@ -2,11 +2,14 @@ import { v4 as uuid } from 'uuid';
 import { DEFAULT_STATE, processManifestUpdate, processStateUpdate } from '../modules/serviceHost';
 
 import { connectionService } from "./connectionService";
+import { Recorder } from './record';
 import { Services } from "./services";
 
-export const serviceCommand = (serviceName, source) => {
+export const serviceCommand = (serviceName, source, options) => {
   const myUUID = uuid();
   console.log(`Starting service ${serviceName} (${myUUID})`);
+
+  let recorder = options.record ? new Recorder(myUUID) : null;
 
   const serviceClass = Services[serviceName];
 
@@ -21,7 +24,13 @@ export const serviceCommand = (serviceName, source) => {
 
     const onStateChange = (newState) => {
       state = processStateUpdate(state, newState);
-      console.log(state);
+
+      if (recorder) {
+        recorder.addFrame(state);
+      }
+      else {
+        console.log(state);
+      }
     };
 
     const onManifestChange = (newManifest) => {
@@ -30,7 +39,10 @@ export const serviceCommand = (serviceName, source) => {
         newManifest,
         serviceDef.startTime,
         serviceDef.uuid,
-        (m) => onStateChange({ manifest: m })
+        (m) => {
+          onStateChange({ manifest: m });
+          recorder && recorder.writeManifest(m);
+        }
       );
     };
 

@@ -14,6 +14,7 @@ t71.command('start')
      new Argument('<service>', 'Name of timing service to run').choices(Object.keys(Services))
    )
    .argument('[source]', 'Source URL (if needed by timing service)')
+   .option('-r, --record', 'record service states to directory')
    .action(serviceCommand);
 
 t71.parse();

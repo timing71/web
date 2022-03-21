@@ -133,7 +133,7 @@ export const createSocketIo = (host, uuid, port, callback) => {
       const handlePacket = isWebsocket => (packet) => {
         if (packet.type === 4 && packet.data) {
           if (isWebsocket && polling) {
-            polling = false;  // ACO server not responding to probe but sending us useful data
+            // polling = false;  // ACO server not responding to probe but sending us useful data
           }
           const [event, data] = packet.data;
           callback && callback(event, data);

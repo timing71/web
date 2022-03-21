@@ -17,7 +17,8 @@ const CAR_STATES = {
   'Run': 'RUN',
   'In': 'PIT',
   'Out': 'OUT',
-  'Stop': 'STOP'
+  'Stop': 'STOP',
+  'Ret': 'RET'
 };
 
 const FLAGS = {

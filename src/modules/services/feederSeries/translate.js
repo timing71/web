@@ -161,9 +161,9 @@ const mapFlag = (flag) => {
 
 const mapSession = (state, timestamps) => {
 
-  const timeDelta = Date.now() - (timestamps.timefeed || 0);
+  const timeDelta = Math.max(0, Date.now() - (timestamps.timefeed || 0)) / 1000;
   const timeRemain = parseTime(state.timefeed?.timeRemaining);
-  const clockRunning = !state.timefeed?.clockRunning;
+  const clockRunning = !!state.timefeed?.clockRunning;
 
   let flag = FlagState.NONE;
 

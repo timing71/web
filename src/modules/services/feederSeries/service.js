@@ -36,7 +36,7 @@ export class FeederSeries extends Service {
         this._socket.on(
           'open',
           () => {
-            this._socket.send(`{H: "streaming", M: "JoinFeeds", A: ["${this.series}", ["data", "weather", "status", "time", "racedetails"]], I: 0}`);
+            this._socket.send(`{H: "streaming", M: "JoinFeeds", A: ["${this.series}", ["data", "stats", "weather", "status", "time", "racedetails"]], I: 0}`);
             this._socket.send(`{H: "streaming", M: "GetData2", A:["${this.series}",["data","statsfeed","weatherfeed","sessionfeed","trackfeed","timefeed","racedetailsfeed"]],I:1}`);
           }
         );
@@ -134,10 +134,18 @@ export class FeederSeries extends Service {
           (stats.lines || []).forEach(
             line => {
               const { driver, ...rest } = line;
-              this._state.statsfeed[driver.RacingNumber] = {
-                ...this._state.statsfeed[driver.RacingNumber],
-                ...rest
+
+              const newStats = {
+                ...this._state.statsfeed[driver.RacingNumber]
               };
+
+              Object.entries(rest).forEach(
+                ([key, value]) => {
+                  if (value) {
+                    newStats[key] = value;
+                  }
+                }
+              );
 
             }
           );

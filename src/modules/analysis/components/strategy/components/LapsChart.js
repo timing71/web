@@ -18,7 +18,10 @@ const Gridline = styled.line`
 
 const LapsHeader = ({ height, maxLaps, scale }) => {
 
-  const tickValues = [...Array(Math.ceil(maxLaps / 10) - 1).keys()].map(t => (t + 1) * 10);
+  const tickValues = [
+    ...Array(
+      Math.max(0, Math.ceil(maxLaps / 10) - 1)).keys()
+  ].map(t => (t + 1) * 10);
 
   return (
     <g className='stints-header'>

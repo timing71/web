@@ -114,6 +114,9 @@ const Analyser = types.model({
           const se = new StatExtractor(self.manifest.colSpec);
           return self.state.cars.map(
             c => self.cars.get(se.get(c, Stat.NUM))
+          ).filter(
+            c => !!c  // Not sure why this sometimes happens - perhaps a race
+                      // condition where we haven't fully loaded data yet?
           );
         }
       }

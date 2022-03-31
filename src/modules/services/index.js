@@ -1,4 +1,6 @@
 import { useContext, useEffect, useState, useRef } from "react";
+import * as Sentry from "@sentry/react";
+
 import { useServiceManifest, useServiceState } from "../../components/ServiceContext";
 import { PluginContext } from "../pluginBridge";
 
@@ -48,6 +50,12 @@ export const ServiceProvider = ({ onReady, service }) => {
     () => {
       const serviceClass = mapServiceProvider(service.source);
       if (serviceClass && !serviceInstance.current) {
+
+        Sentry.setTags({
+          serviceClass: serviceClass.name,
+          source: service.source
+        });
+
         serviceInstance.current = new serviceClass(updateState, updateManifest, service);
         serviceInstance.current.start(port);
         setHasService(true);

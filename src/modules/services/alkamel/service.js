@@ -57,7 +57,7 @@ export class AlKamel extends Service {
       (error, wasReconnect) => {
         this.server.subscribe('livetimingFeed', [this.feed], () => {
           // Assumption: there will only ever be one feed (I've never seen more than one)
-          const feed = Object.values(this.server.collections.feeds)[0];
+          const feed = Object.values(this.server.collections.feeds || {})[0];
           if (feed) {
             this.server.subscribe('sessions', [feed.sessions || []]);
             this.server.subscribe('sessionInfo', [feed.sessions || []]);

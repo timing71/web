@@ -9,6 +9,7 @@ import { AlKamel } from "./alkamel";
 import { F2, F3 } from "./feederSeries";
 import { IndyCar } from "./indycar";
 import { Nascar } from "./nascar";
+import { Natsoft } from "./natsoft/service";
 import { SoftPauer } from "./softpauer";
 import { TimeService } from "./timeservice";
 
@@ -21,14 +22,23 @@ export const SERVICE_PROVIDERS = [
   IndyCar,
   LeMansCup,
   Nascar,
+  Natsoft,
   SoftPauer,
   TimeService,
   WEC
 ];
 
 export const mapServiceProvider = (source) => {
+  if (source.slice(0, 4) === 't71 ') {
+    const providerClass = source.slice(4, source.indexOf(':'));
+    for (let i = 0; i < SERVICE_PROVIDERS.length; i++) {
+      if (SERVICE_PROVIDERS[i].name === providerClass) {
+        return SERVICE_PROVIDERS[i];
+      }
+    }
+  }
 
-  for (var i=0; i < SERVICE_PROVIDERS.length; i++) {
+  for (let i = 0; i < SERVICE_PROVIDERS.length; i++) {
     if (source.search(SERVICE_PROVIDERS[i].regex) >= 0) {
       return SERVICE_PROVIDERS[i];
     }

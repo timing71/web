@@ -59,6 +59,10 @@ export class Port extends EventEmitter {
     return new WrappedWebsocket(url, this, tag, autoReconnect);
   }
 
+  createDOMParser() {
+    return new DOMParser();
+  }
+
   disconnect() {
     window.removeEventListener('message', this.receive);
   }

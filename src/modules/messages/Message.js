@@ -1,5 +1,5 @@
 export class Message {
-  constructor(category, message, style, carNum=null, timestamp) {
+  constructor(category, message, style, carNum=null, timestamp=null) {
     this.category = category;
     this.message = message;
     this.style = style;

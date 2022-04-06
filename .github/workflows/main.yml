@@ -54,6 +54,7 @@ jobs:
           path: 'cli/timing71.js'
 
       - name: Publish to Netlify
+        if: github.ref == 'refs/heads/master'
         uses: netlify/actions/cli@master
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
@@ -62,6 +63,7 @@ jobs:
           args: deploy --dir=build --prod
 
       - name: Create Sentry release
+        if: github.ref == 'refs/heads/master'
         uses: getsentry/action-release@v1
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}

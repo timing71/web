@@ -176,6 +176,9 @@ export const Theme = {
     },
     'sb': {
       rowColor: '#FF53E3'
+    },
+    'system': {
+      rowColor: '#54FFFF'
     }
   },
   modifiers: {

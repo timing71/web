@@ -49,7 +49,7 @@ export const Spinner = ({ min, max, onChange, step = 1, value }) => {
 
   const spinUp = useCallback(
     () => {
-      const nextValue = max !== undefined ? Math.max(max, value + step) : value + step;
+      const nextValue = max !== undefined ? Math.min(max, value + step) : value + step;
       onChange(nextValue);
     },
     [max, onChange, step, value]
@@ -57,7 +57,7 @@ export const Spinner = ({ min, max, onChange, step = 1, value }) => {
 
   const spinDown = useCallback(
     () => {
-      const nextValue = min !== undefined ? Math.min(min, value - step) : value - step;
+      const nextValue = min !== undefined ? Math.max(min, value - step) : value - step;
       onChange(nextValue);
     },
     [min, onChange, step, value]

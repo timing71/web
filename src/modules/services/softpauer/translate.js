@@ -253,6 +253,7 @@ export const translate = (state, clock) => {
     session: {
       flagState: parseFlagState(free.data?.FL),
       timeRemain: getTimeRemaining(clock),
+      pauseClocks: !clock.Extrapolating,
       trackData: getTrackData(sq?.data?.W)
     }
   };

@@ -110,13 +110,13 @@ export class SoftPauer extends Service {
     const oldTimestamp = this._raceControlTimestamp;
 
     const newMessages = (this._messages.Messages || []).filter(
-      m => new Date(m.Utc).getTime() > oldTimestamp
+      m => new Date(`${m.Utc}Z`).getTime() > oldTimestamp
     ).reverse();
 
     if (newMessages.length > 0) {
       this._raceControlTimestamp = Math.max(
         ...newMessages.map(
-          m => new Date(m.Utc).getTime()
+          m => new Date(`${m.Utc}Z`).getTime()
         )
       );
     }

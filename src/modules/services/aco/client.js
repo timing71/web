@@ -156,14 +156,11 @@ export class Client {
 
       case 'params':
         if (!!data.sessionId) {
-          const newManifest = data.sessionId !== this.params.sessionId || data.sessionName !== this.params.sessionName;
           this.params = {
             ...this.params,
             ...data
           };
-          if (newManifest) {
-            this.updateManifest(this.getManifest());
-          }
+          this.updateManifest(this.getManifest());
         }
         break;
 

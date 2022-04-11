@@ -248,13 +248,21 @@ export const translate = (state, clock) => {
   const cars = denormaliseDrivers(state);
   const mapped = postprocessCars(mapCars(cars));
 
+  const session = {
+    flagState: parseFlagState(free.data?.FL),
+    timeRemain: getTimeRemaining(clock),
+    pauseClocks: !clock.Extrapolating,
+    trackData: getTrackData(sq?.data?.W)
+  };
+
+  if (free.data?.S === 'Sprint Qualifying' || free.data?.S === 'Race') {
+    const currentLap = free.data.L;
+    const totalLaps = free.data.TL;
+    session['lapsRemain'] = Math.floor(Math.max(0, totalLaps - currentLap + 1));
+  }
+
   return {
     cars: mapped,
-    session: {
-      flagState: parseFlagState(free.data?.FL),
-      timeRemain: getTimeRemaining(clock),
-      pauseClocks: !clock.Extrapolating,
-      trackData: getTrackData(sq?.data?.W)
-    }
+    session
   };
 };

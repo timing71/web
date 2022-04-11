@@ -40,7 +40,7 @@ export const TimingScreenHeader = () => {
       <FlagPanel flag={session.flagState}>{manifest.name} - {manifest.description}</FlagPanel>
       {
         useLaps && (
-          <ClockInner>
+          <ClockInner className='right'>
             {session.lapsRemain} lap{session.lapsRemain === 1 ? '' : 's'} remaining
           </ClockInner>
         )

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const MenuItem = styled.li`
-  & > a, & > span {
+  & > a, & > span, & > button {
 
     display: block;
 
@@ -16,7 +16,7 @@ export const MenuItem = styled.li`
 
   }
 
-  & > a {
+  & > a, & > button {
     background: linear-gradient(90deg, black 0 50%, ${ props => props.theme.site.highlightColor} 50% 100%) repeat-y;
     background-size: 200%;
     background-position: ${ props => props.current ? '100%' : '0'};

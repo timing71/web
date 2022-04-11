@@ -2,8 +2,10 @@ import dayjs from 'dayjs';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button } from '../components/Button';
 
+import { Delete, OpenInBrowser, StackedBarChart } from '@styled-icons/material';
+
+import { Button } from '../components/Button';
 import { Page } from '../components/Page';
 import { PluginContext } from '../modules/pluginBridge';
 
@@ -111,21 +113,59 @@ const AnalysisButton = ({ uuid }) => (
   </GeneratorButton>
 );
 
-const ServiceEntry = ({ openAnalysis, service }) => (
+const DeleteButton = ({ reload, uuid }) => {
+  const [ isDeleting, setDeleting ] = useState(false);
+
+  const port = useContext(PluginContext);
+
+  const doDelete = useCallback(
+    () => {
+      setDeleting(true);
+      port.send({ type: 'DELETE_SERVICE', uuid }).then(
+        () => {
+          setDeleting(false);
+          reload();
+        }
+      );
+    },
+    [port, reload, uuid]
+  );
+
+  return (
+    <Button
+      danger
+      disabled={isDeleting}
+      onClick={doDelete}
+      title='Delete'
+    >
+      <Delete size={24} />
+    </Button>
+  );
+
+};
+
+const ServiceEntry = ({ openAnalysis, reload, service }) => (
   <tr>
     <td>{service.source}</td>
     <td>
       { dayjs(service.startTime).format("YYYY-MM-DD HH:mm:ss") }
     </td>
     <td>
-      <RouteryButton to={`/timing/${service.uuid}`}>
-        Reconnect
+      <RouteryButton
+        title='Open'
+        to={`/timing/${service.uuid}`}
+      >
+        <OpenInBrowser size={24} />
       </RouteryButton>
-      <Button onClick={() => openAnalysis(service.uuid)}>
-        Launch analysis
+      <Button
+        onClick={() => openAnalysis(service.uuid)}
+        title='Launch analysis'
+      >
+        <StackedBarChart size={24} />
       </Button>
       <ReplayButton uuid={service.uuid} />
       <AnalysisButton uuid={service.uuid} />
+      <DeleteButton uuid={service.uuid} />
     </td>
   </tr>
 );
@@ -143,7 +183,7 @@ export const Services = () => {
     [port]
   );
 
-  useEffect(
+  const reload = useCallback(
     () => {
       port.send({ type: 'RETRIEVE_SERVICES_LIST' }).then(
         msg => setServices(msg.services || [])
@@ -151,6 +191,8 @@ export const Services = () => {
     },
     [port]
   );
+
+  useEffect(reload, [reload]);
 
   return (
     <Page>
@@ -184,6 +226,7 @@ export const Services = () => {
                       <ServiceEntry
                         key={service.uuid}
                         openAnalysis={openAnalysis}
+                        reload={reload}
                         service={service}
                       />
                     )

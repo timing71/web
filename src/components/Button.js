@@ -1,9 +1,9 @@
 import styled, { css } from "styled-components";
 
 export const Button = styled.button`
-  color: ${ props => props.disabled ? 'grey' : props.theme.site.highlightColor };
+  color: ${ props => props.disabled ? 'grey' : props.danger ? 'red' : props.theme.site.highlightColor };
   background-color: transparent;
-  border: 1px solid ${ props => props.disabled ? 'grey' : props.theme.site.highlightColor };
+  border: 1px solid ${ props => props.disabled ? 'grey' : props.danger ? 'red' : props.theme.site.highlightColor };
   font-size: large;
 
   border-radius: 0.25em;
@@ -17,8 +17,8 @@ export const Button = styled.button`
   ${
     props => !props.disabled && css`
     &:hover {
-      background-color: ${ props => props.theme.site.highlightColor };
-      color: black;
+      background-color: ${ props => props.danger ? 'red' : props.theme.site.highlightColor };
+      color: ${ props => props.danger ? 'white' : 'black' };
       cursor: pointer;
     }`
   }

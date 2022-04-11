@@ -8,7 +8,7 @@ import {
 
 import { Check, Download, FormatColorFill, Fullscreen, Highlight, Settings, StackedBarChart } from '@styled-icons/material';
 
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { lighten } from "polished";
 
 import { useSetting } from '../../settings';
@@ -17,7 +17,7 @@ import { useCallback, useContext, useEffect } from "react";
 import { useServiceManifest } from "../../../components/ServiceContext";
 import { PluginContext } from "../../pluginBridge";
 import { SystemMessageContext } from "./SystemMessage";
-import logoNoText from '../../../img/logo_no_text.svg';
+import { Logo } from "../../../components/Logo";
 
 const SettingsIcon = styled(Settings)`
   fill: ${ props => props.theme.site.highlightColor };
@@ -141,20 +141,12 @@ const ToggleSetting = ({ icon, label, name }) => {
 
 };
 
-const spin = keyframes`
-  100% {
-      transform: rotate(360deg);
-    }
-`;
-
-const SpinnyLogo = styled.img.attrs({ alt: '', src: logoNoText })`
-    animation: ${spin} 2s linear infinite;
-    margin-right: 0.25em;
-`;
-
 const ReplayGenerationMessage = () => (
   <>
-    <SpinnyLogo />
+    <Logo
+      size='2em'
+      spin
+    />
     Creating replay file...
   </>
 );

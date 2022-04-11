@@ -7,6 +7,7 @@ export class WrappedWebsocket extends EventEmitter {
     super();
     this.tag = tag;
     this._port = port;
+    this.readyState = 0;
 
     port.on('message', (msg) => {
       if (msg.tag === this.tag) {
@@ -14,12 +15,14 @@ export class WrappedWebsocket extends EventEmitter {
           this.onReceivedMessage(msg);
         }
         else if (msg.type === 'WEBSOCKET_OPEN') {
+          this.readyState = 1;
           this.emit('open');
           if (this.onopen) {
             this.onopen();
           }
         }
         else if (msg.type === 'WEBSOCKET_CLOSE') {
+          this.readyState = 3;
           this.emit('close');
           if (this.onclose) {
             this.onclose();

@@ -1,21 +1,18 @@
 import { Service } from '../service';
-import { Message } from '../../messages';
+import { Client } from './client';
 
 export class Natsoft extends Service {
 
   constructor(...args) {
     super(...args);
-
     this._socket = null;
-
-    this._handlePacket = this._handlePacket.bind(this);
   }
 
   start(connectionService) {
 
-    const wsURL = this.service.source.replace(/^t71 Natsoft:\/\//, '').replace(/^https?:/, 'ws:');
+    const wsURL = this.service.source.replace(/^t71 Natsoft:\/\//i, '').replace(/^https?:/, 'ws:');
 
-    this._parser = connectionService.createDOMParser();
+    this._client = new Client(connectionService.createDOMParser(), this.onStateChange, this.onManifestChange);
 
     this._socket = connectionService.createWebsocket(
       wsURL,
@@ -26,41 +23,13 @@ export class Natsoft extends Service {
     );
     this._socket.onmessage = (m) => {
       if (m.data) {
-        this._handlePacket(m.data);
+        this._client.handlePacket(m.data);
       }
       else if (typeof(m.toString) === 'function') {
-        this._handlePacket(m.toString());
+        this._client.handlePacket(m.toString());
       }
     };
 
-  }
-
-  _handlePacket(p) {
-    if (p.slice(0, 12) === '<NotFound />') {
-      this.onStateChange({
-        extraMessages: [
-          new Message(
-            'System',
-            'No timing available. Please try again later.',
-            'system'
-          ).toCTDFormat()
-        ]
-      });
-    }
-
-    const xmlPart = p.slice(p.indexOf('<'));
-
-    const data = this._parser.parseFromString(xmlPart, 'application/xml');
-
-    const tagName = data.documentElement.nodeName.toLowerCase();
-
-    const funcName = `_handle_${tagName}`;
-    if (typeof(this[funcName]) === 'function') {
-      this[funcName](data.documentElement);
-    }
-    else {
-      console.warn('Unhandled packet: ', p); // eslint-disable-line no-console
-    }
   }
 
   stop() {

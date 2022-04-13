@@ -1,0 +1,1 @@
+export { Natsoft } from './service';

@@ -12,6 +12,7 @@ import { Nascar } from "./nascar";
 import { Natsoft } from "./natsoft/service";
 import { SoftPauer } from "./softpauer";
 import { TimeService } from "./timeservice";
+import { TSL } from "./tsl";
 
 export const SERVICE_PROVIDERS = [
   AlKamel,
@@ -25,6 +26,7 @@ export const SERVICE_PROVIDERS = [
   Natsoft,
   SoftPauer,
   TimeService,
+  TSL,
   WEC
 ];
 

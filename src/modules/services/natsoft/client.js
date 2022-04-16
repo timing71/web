@@ -38,6 +38,32 @@ const CAR_STATE_MAP = {
   '': 'RUN'
 };
 
+const TYRE_MAP = {
+  'H': ['H', 'tyre-hard'],
+  'M': ['M', 'tyre-med'],
+  'S': ['S', 'tyre-soft'],
+  'SS': ['SS', 'tyre-ssoft'],
+  'I': ['I', 'tyre-inter'],
+  'W': ['W', 'tyre-wet']
+};
+
+const formatGap = (laps, time) => {
+  const maybeLaps = parseFloat(laps);
+  if (isNaN(maybeLaps)) {
+    return time;
+  }
+  if (maybeLaps === 1) {
+    return '1 lap';
+  }
+  else if (maybeLaps > 1) {
+    return `${Math.floor(maybeLaps)} laps`;
+  }
+  else if (parseFloat(time) > 0) {
+    return time;
+  }
+  return '';
+};
+
 export class Client {
 
   constructor(parser, onStateChange, onManifestChange) {
@@ -325,9 +351,9 @@ export class Client {
       c.competitor?.name,
       c.competitor?.vehicle,
       c.data?.laps,
-      '',
-      '', // gap
-      '', // int
+      TYRE_MAP[c.data?.tyre] || '',
+      formatGap(c.data?.gapLaps || 0, c.data?.gapTime || 0),
+      formatGap(c.data?.intLaps || 0, c.data?.intTime || 0),
       s1 > 0 ? [s1, s1Flag] : ['', ''],
       bs1 > 0 ? [bs1, 'old'] : ['', ''],
       s2 > 0 ? [s2, s2Flag] : ['', ''],

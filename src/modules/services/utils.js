@@ -14,3 +14,17 @@ export const parseTime = (raw) => {
     return (3600 * parseInt(hours, 10)) + (60 * parseInt(mins, 10)) + parseFloat(secs);
   }
 };
+
+export const dasherizeParts = (...args) => {
+  const result = [];
+
+  args.forEach(
+    a => {
+      if (a) {
+        result.push(a);
+      }
+    }
+  );
+
+  return result.join(' - ');
+};

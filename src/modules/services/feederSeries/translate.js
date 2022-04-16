@@ -1,5 +1,5 @@
 import { FlagState, Stat } from "../../../racing";
-import { parseTime } from '../utils';
+import { dasherizeParts, parseTime } from '../utils';
 
 const colSpec = [
   Stat.NUM,
@@ -28,20 +28,6 @@ const trackDataSpec = [
   "Pressure",
   "Track"
 ];
-
-const dasherizeParts = (...args) => {
-  const result = [];
-
-  args.forEach(
-    a => {
-      if (a) {
-        result.push(a);
-      }
-    }
-  );
-
-  return result.join(' - ');
-};
 
 export const getManifest = (state) => {
 

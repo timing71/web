@@ -1,5 +1,6 @@
 import { Service } from '../service';
 import { createSignalRConnection } from '../signalr';
+import { Client } from './client';
 
 export class TSL extends Service {
 
@@ -19,15 +20,15 @@ export class TSL extends Service {
       2.1,
       this.service.uuid
     ).then(
-      socket => {
-        this.socket = socket;
+      ({ hub }) => {
+        this.client = new Client(hub, this.sessionID, this.onStateChange, this.onManifestChange);
       }
     );
 
   }
 
   stop() {
-    this.socket && this.socket.close();
+    this.client && this.client.close();
   }
 
 }

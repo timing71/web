@@ -136,7 +136,7 @@ export class SoftPauer extends Service {
       '1.5',
       this.service.uuid
     ).then(
-      socket => {
+      ({ socket }) => {
         this._socket = socket;
 
         socket.on(

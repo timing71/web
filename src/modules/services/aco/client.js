@@ -168,6 +168,14 @@ export class Client {
         this.race_control = [...data];
         break;
 
+      case 'clear_entries':
+        this.entries = {};
+        break;
+
+      case 'refresh':
+        this._load_ref_data();
+        break;
+
       case 'laps':
       case 'stints':
       case 'flags':

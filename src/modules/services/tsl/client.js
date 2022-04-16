@@ -1,5 +1,5 @@
-import { Stat } from "../../../racing";
-import { dasherizeParts } from "../utils";
+import { FlagState, Stat } from "../../../racing";
+import { dasherizeParts, parseTime } from "../utils";
 
 const SECTOR_STATS = [
   Stat.S1,
@@ -14,6 +14,23 @@ const SECTOR_STATS = [
   Stat.BS5,
 ];
 
+const FLAG_MAP = {
+  'Green': FlagState.GREEN,
+  'Red': FlagState.RED,
+  'Yellow': FlagState.SC,
+  'FCY': FlagState.FCY,
+  'Finished': FlagState.CHEQUERED,
+  'Complete': FlagState.CHEQUERED,
+  'Pending': FlagState.NONE,
+  'Active': FlagState.NONE
+};
+
+const CAR_STATE_MAP = {
+  'Running': 'RUN',
+  'Missing': 'STOP',
+  'Finished': 'FIN',
+  'NotStarted': 'N/S'
+};
 
 export class Client {
   constructor(hub, sessionID, onStateChange, onManifestChange) {
@@ -21,9 +38,15 @@ export class Client {
     this.onStateChange = onStateChange;
     this.onManifestChange = onManifestChange;
 
+    this.onClassification = this.onClassification.bind(this);
     this.onSession = this.onSession.bind(this);
 
     this.getManifest = this.getManifest.bind(this);
+    this.getState = this.getState.bind(this);
+    this.mapCar = this.mapCar.bind(this);
+    this.mapSession = this.mapSession.bind(this);
+
+    this.reset();
 
     hub.on(
       'connected',
@@ -32,6 +55,10 @@ export class Client {
 
         hub.on('session', this.onSession);
         hub.call('GetSessionData', sessionID).then(this.onSession);
+
+        hub.on('classification', this.onClassification);
+        hub.on('updateresult', this.onClassification);
+        hub.call('GetClassification', sessionID).then(this.onClassification);
       }
     );
   }
@@ -41,9 +68,24 @@ export class Client {
     this.classification = {};
   }
 
+  onClassification(classification) {
+    classification.forEach(
+      car => {
+        this.classification[car.ID] = car;
+      }
+    );
+
+    this.onStateChange(this.getState());
+  }
+
   onSession(session) {
-    this.session = session;
+    this.session = {
+      ...this.session,
+      ...session,
+      refTime: Date.now()
+    };
     this.onManifestChange(this.getManifest());
+    this.onStateChange(this.getState());
   }
 
   get sectorCount() {
@@ -51,7 +93,6 @@ export class Client {
   }
 
   getManifest() {
-    console.log(this.session)
     const colSpec = [
       Stat.NUM,
       Stat.STATE,
@@ -78,6 +119,54 @@ export class Client {
       ),
       colSpec
     };
+  }
+
+  getState() {
+    return {
+      cars: this.orderedCars.map(this.mapCar),
+      session: this.mapSession()
+    };
+  }
+
+  mapCar(c) {
+
+    const sectorCols = [];
+
+    for (let s = 0; s < this.sectorCount; s++) {
+      sectorCols.push(['', '']);
+      sectorCols.push(['', '']);
+    }
+
+    const lastLap = parseTime(c.LastLapTime);
+    const bestLap = parseTime(c.CurrentSessionBest);
+
+    return [
+      c.StartNumber,
+      c.InPits ? 'PIT' : CAR_STATE_MAP[c.Status] || c.Status,
+      c.SubClass || c.PrimaryClass || '',
+      c.PIC,
+      c.Name,
+      c.Vehicle,
+      c.Laps,
+      c.Gap,
+      c.Diff
+    ].concat(sectorCols).concat([
+      [lastLap, ''],
+      [bestLap, ''],
+      c.PitStops
+    ]);
+  }
+
+  mapSession() {
+    return {
+      flagState: FLAG_MAP[this.session.State] || FlagState.NONE
+    };
+  }
+
+  get orderedCars() {
+    return Object.values(this.classification).sort(
+      (a, b) => (a.Pos || 0) - (b.Pos || 0)
+    );
   }
 
   close() {

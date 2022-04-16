@@ -28,10 +28,16 @@ describe('Messages', () => {
   });
 
   it('records new messages', () => {
-    const msgs = Messages.create({ highWaterMark: new Date(5) });
+    const msgs = Messages.create();
 
     msgs.update(
-      { messages: [ [5] ] },
+      {
+        messages: [
+          [5, 'five', 'five message', 'fiveStyle'],
+          [2, 'two', 'two message', 'twoStyle'],
+          [1, 'one', 'one message', 'oneStyle']
+        ]
+      },
       {
         messages: [
           [6, 'six', 'six message', 'sixStyle'],
@@ -44,6 +50,32 @@ describe('Messages', () => {
 
     expect(msgs.messages.length).toEqual(1);
     expect(msgs.messages[0].message).toEqual('six message');
+  });
+
+  it('records new messages that arrive in non-chronological order', () => {
+    const msgs = Messages.create();
+
+    msgs.update(
+      {
+        messages: [
+          [5, 'five', 'five message', 'fiveStyle'],
+          [2, 'two', 'two message', 'twoStyle'],
+          [1, 'one', 'one message', 'oneStyle']
+        ]
+      },
+      {
+        messages: [
+          [4, 'four', 'this message was late', 'fourStyle'],
+          [6, 'six', 'six message', 'sixStyle'],
+          [5, 'five', 'five message', 'fiveStyle'],
+          [2, 'two', 'two message', 'twoStyle'],
+          [1, 'one', 'one message', 'oneStyle'],
+        ]
+      }
+    );
+
+    expect(msgs.messages.length).toEqual(2);
+    expect(msgs.messages[0].message).toEqual('this message was late');
   });
 
   it('can be reset', () => {

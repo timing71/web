@@ -39,7 +39,9 @@ export class Client {
     this.onManifestChange = onManifestChange;
 
     this.onClassification = this.onClassification.bind(this);
+    this.onSectorTimes = this.onSectorTimes.bind(this);
     this.onSession = this.onSession.bind(this);
+    this.onSetTimeRemaining = this.onSetTimeRemaining.bind(this);
 
     this.getManifest = this.getManifest.bind(this);
     this.getState = this.getState.bind(this);
@@ -53,12 +55,18 @@ export class Client {
       () => {
         hub.call('RegisterConnectionId', sessionID, true, true, true);
 
-        hub.on('session', this.onSession);
+        hub.on('updatesession', this.onSession);
         hub.call('GetSessionData', sessionID).then(this.onSession);
 
         hub.on('classification', this.onClassification);
         hub.on('updateresult', this.onClassification);
         hub.call('GetClassification', sessionID).then(this.onClassification);
+
+        hub.on('addintermediate', this.onSectorTimes);
+        hub.call('GetIntermediatesTimes', sessionID).then(this.onSectorTimes);
+
+        hub.on('settimeremaining', this.onSetTimeRemaining);
+
       }
     );
   }
@@ -66,6 +74,10 @@ export class Client {
   reset() {
     this.session = {};
     this.classification = {};
+    this.times = {};
+    this.sectorTimes = {};
+    this.lastSeenSectors = {};
+    this.bestSectorTimes = {};
   }
 
   onClassification(classification) {
@@ -78,6 +90,19 @@ export class Client {
     this.onStateChange(this.getState());
   }
 
+  onSectorTimes(data) {
+    data.forEach(
+      d => {
+        const cid = d.CompetitorID;
+        if (!this.sectorTimes[cid]) {
+          this.sectorTimes[cid] = {};
+        }
+        this.sectorTimes[cid][d.Id] = d;
+        this.lastSeenSectors[cid] = d.Id;
+      }
+    );
+  }
+
   onSession(session) {
     this.session = {
       ...this.session,
@@ -86,6 +111,13 @@ export class Client {
     };
     this.onManifestChange(this.getManifest());
     this.onStateChange(this.getState());
+  }
+
+  onSetTimeRemaining(data) {
+    this.times = {
+      ...data[0],
+      reference: Date.now()
+    };
   }
 
   get sectorCount() {
@@ -132,10 +164,28 @@ export class Client {
 
     const sectorCols = [];
 
-    for (let s = 0; s < this.sectorCount; s++) {
-      sectorCols.push(['', '']);
-      sectorCols.push(['', '']);
-    }
+    const lastSeenSector = this.lastSeenSectors[c.ID] || 99;
+    const hasFastestLap = this.session.FastLapCompetitorID === c.ID;
+
+    (this.session.TrackSectors || []).filter(s => !s.IsSpeedTrap).forEach(
+      sector => {
+        if (this.sectorTimes[c.ID] && this.sectorTimes[c.ID][sector.ID]) {
+          const st = this.sectorTimes[c.ID][sector.ID];
+          sectorCols.push([
+            st.Time > 0 ? st.Time / 1e6 : '',
+            st.Time > 0 && st.Time === st.BestTime ? st.BestTime === sector.BestTime ? 'sb' : 'pb' : lastSeenSector < sector.ID ? 'old' : ''
+          ]);
+          sectorCols.push([
+            st.BestTime > 0 ? st.BestTime / 1e6 : '',
+            st.BestTime === sector.BestTime ? 'sb' : 'old'
+          ]);
+        }
+        else {
+          sectorCols.push(['', '']);
+          sectorCols.push(['', '']);
+        }
+      }
+    );
 
     const lastLap = parseTime(c.LastLapTime);
     const bestLap = parseTime(c.CurrentSessionBest);
@@ -151,16 +201,32 @@ export class Client {
       c.Gap,
       c.Diff
     ].concat(sectorCols).concat([
-      [lastLap, ''],
-      [bestLap, ''],
+      [lastLap, lastLap === bestLap ? hasFastestLap ? 'sb-new' : 'sb' : ''],
+      [bestLap, hasFastestLap ? 'sb' : ''],
       c.PitStops
     ]);
   }
 
   mapSession() {
-    return {
-      flagState: FLAG_MAP[this.session.State] || FlagState.NONE
+    const state = {
+      flagState: FLAG_MAP[this.session.State] || FlagState.NONE,
     };
+
+    if (this.times.d) {
+      const timeRemain = parseInt(this.times.d[2], 10) +
+      (60 * parseInt(this.times.d[1], 10)) +
+      ( 3600 * parseInt(this.times.d[0], 10));
+
+      if (this.times.r) {
+        const delta = Date.now() - this.times.reference;
+        state.timeRemain = Math.max(0, timeRemain - (delta / 1000));
+      }
+      else {
+        state.timeRemain = timeRemain;
+      }
+    }
+
+    return state;
   }
 
   get orderedCars() {

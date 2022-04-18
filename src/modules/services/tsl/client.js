@@ -1,4 +1,5 @@
 import { FlagState, Stat } from "../../../racing";
+import { RaceControlMessage } from "../../messages";
 import { dasherizeParts, parseTime } from "../utils";
 
 const SECTOR_STATS = [
@@ -39,6 +40,7 @@ export class Client {
     this.onManifestChange = onManifestChange;
 
     this.onClassification = this.onClassification.bind(this);
+    this.onControlBroadcast = this.onControlBroadcast.bind(this);
     this.onSectorTimes = this.onSectorTimes.bind(this);
     this.onSession = this.onSession.bind(this);
     this.onSetTimeRemaining = this.onSetTimeRemaining.bind(this);
@@ -65,6 +67,7 @@ export class Client {
         hub.on('addintermediate', this.onSectorTimes);
         hub.call('GetIntermediatesTimes', sessionID).then(this.onSectorTimes);
 
+        hub.on('controlbroadcast', this.onControlBroadcast);
         hub.on('settimeremaining', this.onSetTimeRemaining);
 
       }
@@ -90,6 +93,19 @@ export class Client {
     this.onStateChange(this.getState());
   }
 
+  onControlBroadcast(messages) {
+    const rcMessages = messages.filter(
+      m => m.Message !== ''
+    ).map(
+      m => new RaceControlMessage(
+        m.Message.slice(9)
+      )
+    );
+    this.onStateChange({
+      extraMessages: rcMessages.map(m => m.toCTDFormat())
+    });
+  }
+
   onSectorTimes(data) {
     data.forEach(
       d => {
@@ -101,6 +117,7 @@ export class Client {
         this.lastSeenSectors[cid] = d.Id;
       }
     );
+    this.onStateChange(this.getState());
   }
 
   onSession(session) {
@@ -118,6 +135,7 @@ export class Client {
       ...data[0],
       reference: Date.now()
     };
+    this.onStateChange(this.getState());
   }
 
   get sectorCount() {
@@ -201,7 +219,7 @@ export class Client {
       c.Gap,
       c.Diff
     ].concat(sectorCols).concat([
-      [lastLap, lastLap === bestLap ? hasFastestLap ? 'sb-new' : 'sb' : ''],
+      [lastLap, lastLap === bestLap ? hasFastestLap ? 'sb-new' : 'pb' : ''],
       [bestLap, hasFastestLap ? 'sb' : ''],
       c.PitStops
     ]);
@@ -210,6 +228,7 @@ export class Client {
   mapSession() {
     const state = {
       flagState: FLAG_MAP[this.session.State] || FlagState.NONE,
+      pauseClocks: !this.times.r
     };
 
     if (this.times.d) {

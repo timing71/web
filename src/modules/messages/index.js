@@ -7,7 +7,7 @@ import { FlagMessage } from './FlagMessage';
 import { PitMessage } from './PitMessage';
 import { StopResumeMessage } from './StopResumeMessage';
 
-export { Message } from './Message';
+export { Message, RaceControlMessage } from './Message';
 
 
 const GLOBAL_GENERATORS = [

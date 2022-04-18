@@ -236,10 +236,24 @@ export const Theme = {
       color: 'white',
       animation: flashyAnim
     },
+    [FlagState.CODE_60_ZONE]: {
+      background: 'linear-gradient(0deg, black, #ff53e3, black) top/400% 400%',
+      color: 'white',
+      altColor: 'white',
+      fill: 'url(#code_60_zone)'
+    },
     [FlagState.CHEQUERED]: {
       background: css`left/contain repeat-x url(${chequer})`,
       fill: 'url(#chequer)',
       color: 'transparent'
+    },
+    [FlagState.WHITE]: {
+      background: 'white',
+      color: 'black'
+    },
+    [FlagState.NONE]: {
+      background: 'black',
+      color: 'white'
     }
   },
   site: {

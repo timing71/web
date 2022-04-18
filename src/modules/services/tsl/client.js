@@ -278,6 +278,10 @@ export class Client {
       state.timeRemain = (this.session.TimeRemaining || 0) / 1e6;
     }
 
+    if (this.session.LengthLaps > 0) {
+      state.lapsRemain = this.session.LapsRemaining;
+    }
+
     return state;
   }
 

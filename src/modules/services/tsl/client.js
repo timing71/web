@@ -60,6 +60,7 @@ export class Client {
     this.getState = this.getState.bind(this);
     this.mapCar = this.mapCar.bind(this);
     this.mapSession = this.mapSession.bind(this);
+    this.mapTrackData = this.mapTrackData.bind(this);
 
     this.reset();
 
@@ -79,7 +80,7 @@ export class Client {
         hub.call('GetIntermediatesTimes', sessionID).then(this.onSectorTimes);
 
         hub.on('updateweather', this.onUpdateWeather);
-        hub.call('GetWeatherData', this.onUpdateWeather);
+        hub.call('GetWeatherData', sessionID).then(w => this.onUpdateWeather(w.slice(-1)));
 
         hub.on('controlbroadcast', this.onControlBroadcast);
         hub.on('settimeremaining', this.onSetTimeRemaining);
@@ -137,7 +138,7 @@ export class Client {
 
   onSession([ session ]) {
 
-    if (session.ID !== this.session.ID) {
+    if (session.ID !== this.session.ID && this.session.ID) {
       this.reset();
     }
 
@@ -300,7 +301,63 @@ export class Client {
   }
 
   get orderedCars() {
-    return Object.values(this.classification).sort(
+    if (false && this.session?.SortMethod === 'FastestThenTimeOfDay') {
+      /*
+        Custom sort method: TSL's `Pos` property only gets updated as cars cross
+        the start/finish line. But _in theory_ we have enough information to
+        update the race order as cars cross each timing (sector/speed trap) line:
+
+        - Greatest number of completed laps first
+        - Then furthest timing sector on that lap, greatest first
+        - Then time at which that timing line was crossed, earliest (smallest) first
+
+        If we don't have sufficient information to determine that order, fall
+        back on the TSL-calculated position.
+
+        Disabled since needs more thinking about (need to differentiate current
+        lap's sectors and previous lap's sectors) - consider e.g. when leader
+        has reached first sector on his current lap, previous car has not...
+
+        LEADER 5 laps S1
+        SECOND 5 laps S1   S2   S3
+      */
+
+      const lastSectorID = (this.session?.TrackSectors || [])[0]?.ID;
+      return Object.values(this.classification || {}).sort(
+        (a, b) => {
+          const laps = b.Laps - a.Laps;
+          if (laps) {
+            return laps;
+          }
+
+          const lastSeenA = this.lastSeenSectors[a.ID] === lastSectorID ? -1 : this.lastSeenSectors[a.ID];
+          const lastSeenB = this.lastSeenSectors[b.ID] === lastSectorID ? -1 : this.lastSeenSectors[b.ID];
+
+          const sectors = lastSeenB - lastSeenA;
+          if (sectors) {
+            return sectors;
+          }
+
+          const sectorsA = this.sectorTimes[a.ID];
+          const sectorsB = this.sectorTimes[b.ID];
+
+          if (sectorsA && sectorsB) {
+            const passingA = sectorsA[this.lastSeenSectors[b.ID]];
+            const passingB = sectorsB[this.lastSeenSectors[b.ID]]; // Note: we do mean "b" - need to compare passing time of same sector!
+
+            if (passingA && passingB) {
+              return (passingA?.PassingTime || 0) - (passingB?.PassingTime || 0);
+            }
+
+          }
+
+          return a.Pos - b.Pos;
+
+        }
+      );
+    }
+
+    return Object.values(this.classification || {}).sort(
       (a, b) => (a.Pos || 0) - (b.Pos || 0)
     );
   }

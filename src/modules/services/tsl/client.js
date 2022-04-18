@@ -15,6 +15,16 @@ const SECTOR_STATS = [
   Stat.BS5,
 ];
 
+const TRACK_DATA = [
+  'Track temp',
+  'Air temp',
+  'Wind speed',
+  'Wind direction',
+  'Humidity',
+  'Track',
+  'Weather'
+];
+
 const FLAG_MAP = {
   'Green': FlagState.GREEN,
   'Red': FlagState.RED,
@@ -44,6 +54,7 @@ export class Client {
     this.onSectorTimes = this.onSectorTimes.bind(this);
     this.onSession = this.onSession.bind(this);
     this.onSetTimeRemaining = this.onSetTimeRemaining.bind(this);
+    this.onUpdateWeather = this.onUpdateWeather.bind(this);
 
     this.getManifest = this.getManifest.bind(this);
     this.getState = this.getState.bind(this);
@@ -67,6 +78,9 @@ export class Client {
         hub.on('addintermediate', this.onSectorTimes);
         hub.call('GetIntermediatesTimes', sessionID).then(this.onSectorTimes);
 
+        hub.on('updateweather', this.onUpdateWeather);
+        hub.call('GetWeatherData', this.onUpdateWeather);
+
         hub.on('controlbroadcast', this.onControlBroadcast);
         hub.on('settimeremaining', this.onSetTimeRemaining);
 
@@ -81,6 +95,7 @@ export class Client {
     this.sectorTimes = {};
     this.lastSeenSectors = {};
     this.bestSectorTimes = {};
+    this.weather = {};
   }
 
   onClassification(classification) {
@@ -138,6 +153,14 @@ export class Client {
     this.onStateChange(this.getState());
   }
 
+  onUpdateWeather([ weather ]) {
+    this.weather = {
+      ...this.weather,
+      ...weather
+    };
+    this.onStateChange(this.getState());
+  }
+
   get sectorCount() {
     return (this.session?.TrackSectors || []).filter(s => !s.IsSpeedTrap).length;
   }
@@ -167,7 +190,8 @@ export class Client {
         this.session?.TrackDisplayName || this.session?.TrackName,
         this.session?.Name
       ),
-      colSpec
+      colSpec,
+      trackDataSpec: TRACK_DATA
     };
   }
 
@@ -228,7 +252,8 @@ export class Client {
   mapSession() {
     const state = {
       flagState: FLAG_MAP[this.session.State] || FlagState.NONE,
-      pauseClocks: !this.times.r
+      pauseClocks: !this.times.r,
+      trackData: this.mapTrackData()
     };
 
     if (this.times.d) {
@@ -244,8 +269,23 @@ export class Client {
         state.timeRemain = timeRemain;
       }
     }
+    else {
+      state.timeRemain = (this.session.TimeRemaining || 0) / 1e6;
+    }
 
     return state;
+  }
+
+  mapTrackData() {
+    return [
+      `${this.weather.TrackTemp || '-'}°C`,
+      `${this.weather.AirTemp || '-'}°C`,
+      `${this.weather.WindSpeed || '-'} mph`,
+      `${this.weather.WindDirection || '-'}°`,
+      `${this.weather.Humidity || '-'}%`,
+      this.session.TrackConditions,
+      this.session.WeatherConditions
+    ];
   }
 
   get orderedCars() {

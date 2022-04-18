@@ -1,6 +1,6 @@
 import { FlagState, Stat } from "../../../racing";
 import { RaceControlMessage } from "../../messages";
-import { dasherizeParts, parseTime } from "../utils";
+import { dasherizeParts, parseTime, titleCase } from "../utils";
 
 const SECTOR_STATS = [
   Stat.S1,
@@ -191,9 +191,11 @@ export class Client {
 
     return {
       name: this.session?.Series || '',
-      description: dasherizeParts(
-        this.session?.TrackDisplayName || this.session?.TrackName,
-        this.session?.Name
+      description: titleCase(
+        dasherizeParts(
+          this.session?.TrackDisplayName || this.session?.TrackName,
+          this.session?.Name
+        )
       ),
       colSpec,
       trackDataSpec: TRACK_DATA

@@ -28,3 +28,7 @@ export const dasherizeParts = (...args) => {
 
   return result.join(' - ');
 };
+
+export const titleCase = (str) => str.split(' ')
+   .map(w => w[0].toUpperCase() + w.substring(1).toLowerCase())
+   .join(' ');

@@ -136,6 +136,11 @@ export class Client {
   }
 
   onSession([ session ]) {
+
+    if (session.ID !== this.session.ID) {
+      this.reset();
+    }
+
     this.session = {
       ...this.session,
       ...session,

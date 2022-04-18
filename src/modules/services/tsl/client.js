@@ -58,7 +58,7 @@ export class Client {
         hub.call('RegisterConnectionId', sessionID, true, true, true);
 
         hub.on('updatesession', this.onSession);
-        hub.call('GetSessionData', sessionID).then(this.onSession);
+        hub.call('GetSessionData', sessionID).then((s) => this.onSession([s]));
 
         hub.on('classification', this.onClassification);
         hub.on('updateresult', this.onClassification);
@@ -120,7 +120,7 @@ export class Client {
     this.onStateChange(this.getState());
   }
 
-  onSession(session) {
+  onSession([ session ]) {
     this.session = {
       ...this.session,
       ...session,

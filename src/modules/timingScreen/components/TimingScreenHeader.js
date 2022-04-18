@@ -16,6 +16,9 @@ const FlagPanel = styled.div`
   color: ${ props => props.theme.flagStates[props.flag]?.color || 'white' };
   animation: ${ props => props.theme.flagStates[props.flag]?.animation || 'none' };
 
+  transform: rotateZ(360deg);
+  will-change: color, background-color;
+
 `;
 
 export const TimingScreenHeader = () => {

@@ -3,9 +3,9 @@ import { css, keyframes } from "styled-components";
 import { FlagState } from "./racing";
 import chequer from './img/chequer.png';
 
-const yellowAnim = keyframes`
-  from { background-color: '#DDDD00'; color: black; }
-  to { background-color: black; color: white; }
+const flashyKeyframes = keyframes`
+  from { opacity: 1; }
+  to { opacity: 0; }
 `;
 
 const redAnim = keyframes`
@@ -14,12 +14,7 @@ const redAnim = keyframes`
   100% { background-color: #990000 }
 `;
 
-const code60Anim = keyframes`
-  from { background-color: #ff53e3; }
-  to { background-color: black}
-`;
-
-const flashyYellow = css`${yellowAnim} 0.5s alternate infinite`;
+const flashyAnim = css`${flashyKeyframes} 0.5s alternate infinite`;
 
 export const Theme = {
   classColours: {
@@ -207,36 +202,39 @@ export const Theme = {
     [FlagState.RED]: {
       background: '#990000',
       color: 'white',
+      altColor: 'white',
       animation: css`${redAnim} 1s step-end alternate infinite`
     },
     [FlagState.SC]: {
       background: '#DDDD00',
-      color: 'black',
-      animation: flashyYellow
+      color: 'white',
+      animation: flashyAnim
     },
     [FlagState.SLOW_ZONE]: {
       background: 'linear-gradient(0deg, black, #DDDD00, black) top/400% 400%',
+      color: 'white',
+      altColor: 'white',
       fill: 'url(#slow_zone)'
     },
     [FlagState.CAUTION]: {
       background: '#DDDD00',
-      color: 'black',
-      animation: flashyYellow
+      color: 'white',
+      animation: flashyAnim
     },
     [FlagState.FCY]: {
       background: '#DDDD00',
-      color: 'black',
-      animation: flashyYellow
+      color: 'white',
+      animation: flashyAnim
     },
     [FlagState.VSC]: {
       background: '#DDDD00',
-      color: 'black',
-      animation: flashyYellow
+      color: 'white',
+      animation: flashyAnim
     },
     [FlagState.CODE_60]: {
       background: '#ff53e3',
       color: 'white',
-      animation: css`${code60Anim} 0.5s alternate infinite`
+      animation: flashyAnim
     },
     [FlagState.CHEQUERED]: {
       background: css`left/contain repeat-x url(${chequer})`,

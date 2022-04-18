@@ -9,7 +9,7 @@ export default {
   component: FlagPanelComponent,
   argTypes: {
     flag: {
-      options: Object.values(FlagState),
+      options: Object.values(FlagState).sort(),
       control: 'select'
     }
   },
@@ -18,9 +18,10 @@ export default {
   ]
 };
 
-const Template = (args) => (<FlagPanelComponent {...args}>Flag panel</FlagPanelComponent>);
+const Template = (args) => (<FlagPanelComponent {...args} />);
 
 export const FlagPanel = Template.bind({});
 FlagPanel.args = {
-  flag: FlagState.GREEN
+  flag: FlagState.GREEN,
+  text: 'Flag panel'
 };

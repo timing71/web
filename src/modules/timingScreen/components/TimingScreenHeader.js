@@ -21,7 +21,10 @@ export const TimingScreenHeader = () => {
           />
         )
       }
-      <FlagPanel flag={session.flagState}>{manifest.name} - {manifest.description}</FlagPanel>
+      <FlagPanel
+        flag={session.flagState}
+        text={`${manifest.name} - ${manifest.description}`}
+      />
       {
         useLaps && (
           <ClockInner className='right'>

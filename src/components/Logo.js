@@ -9,7 +9,8 @@ const spin = keyframes`
 `;
 
 export const Logo = styled(InlineSVG).attrs({
-  src: logo
+  src: logo,
+  spin: undefined // Don't pass through to DOM
 })`
 
   width: ${ props => props.size || '15vw' };

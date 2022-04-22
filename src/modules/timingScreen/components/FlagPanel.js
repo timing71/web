@@ -32,7 +32,7 @@ export const FlagPanel = styled.div.attrs(
     animation: ${ props => props.theme.flagStates[props.flag]?.animation || 'none' };
     color: ${ props => (!!props.theme.flagStates[props.flag]?.animation ? props.theme.flagStates[props.flag]?.altColor : props.theme.flagStates[props.flag]?.color) || 'black' };
 
-    content: '${ props => props.text }';
+    content: "${ props => props.text.replaceAll('"', '\\"')}";
   }
 
   color: ${ props => props.theme.flagStates[props.flag]?.color || 'white' };

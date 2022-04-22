@@ -90,8 +90,8 @@ const DelaySetting = () => {
       Delay (seconds):
       <Spinner
         min={0}
-        onChange={e => setDelay(e)}
-        value={delay}
+        onChange={e => setDelay(e || 0)}
+        value={delay || 0}
       />
     </MyMenuItem>
   );

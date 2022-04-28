@@ -1,4 +1,4 @@
-const { Decoder } = require('socket.io-parser');
+const { Decoder, Encoder } = require('socket.io-parser');
 
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_'.split('');
 const length = 64;
@@ -80,6 +80,8 @@ export const createSocketIo = (host, uuid, port, callback) => {
       const pollDecoder = new Decoder();
       const wsDecoder = new Decoder();
 
+      const encoder = new Encoder();
+
       const doPoll = () => {
         if (polling) {
           let myUrl = `${pollingUrl}&t=${yeast()}`;
@@ -159,6 +161,22 @@ export const createSocketIo = (host, uuid, port, callback) => {
       doPoll();
 
       return {
+
+        emit(data, namespace='/') {
+          const encoded = encoder.encode({
+            type: 2,
+            nsp: namespace,
+            data
+          });
+
+          if (usingWebsocket) {
+            ws.send(encoded);
+          }
+          else {
+            console.error('Non-WS sending not yet supported'); //eslint-disable-line no-console
+          }
+        },
+
         stop: () => {
           pingInterval && window.clearInterval(pingInterval);
           ws && ws.close();

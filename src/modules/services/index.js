@@ -11,6 +11,7 @@ import { IndyCar } from "./indycar";
 import { Nascar } from "./nascar";
 import { Natsoft } from "./natsoft/service";
 import { SoftPauer } from "./softpauer";
+import { SwissTiming } from "./swissTiming";
 import { TimeService } from "./timeservice";
 import { TSL } from "./tsl";
 
@@ -25,6 +26,7 @@ export const SERVICE_PROVIDERS = [
   Nascar,
   Natsoft,
   SoftPauer,
+  SwissTiming,
   TimeService,
   TSL,
   WEC

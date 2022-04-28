@@ -5,15 +5,16 @@ import { ThemeProvider } from 'styled-components';
 import { PluginDetector } from './modules/pluginBridge';
 
 import { Analysis } from './pages/Analysis';
-import { Home } from './pages/Home';
-import { Services } from './pages/Services';
-import { Start } from './pages/Start';
-import { Timing } from './pages/Timing';
-import { SettingsProvider } from './modules/settings';
-import { ThemeSettingsProvider } from './components/ThemeSettingsProvider';
-import { Theme } from './theme';
 import { FAQ } from './pages/FAQ';
 import { FileAnalysis } from './pages/FileAnalysis';
+import { Home } from './pages/Home';
+import { Replay } from './pages/Replay';
+import { Services } from './pages/Services';
+import { SettingsProvider } from './modules/settings';
+import { Start } from './pages/Start';
+import { Timing } from './pages/Timing';
+import { ThemeSettingsProvider } from './components/ThemeSettingsProvider';
+import { Theme } from './theme';
 
 function App() {
   return (
@@ -57,6 +58,10 @@ function App() {
                     <Route
                       component={FileAnalysis}
                       path='/file-analysis'
+                    />
+                    <Route
+                      component={Replay}
+                      path='/replay'
                     />
                   </Switch>
                 </ThemeSettingsProvider>

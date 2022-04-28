@@ -1,10 +1,9 @@
 import { useCallback, useRef, useState } from 'react';
-import styled from 'styled-components';
 
-import { Page } from "../components/Page";
 import { LoadingScreen } from '../components/LoadingScreen';
 import { createAnalyser } from '../modules/analysis';
 import { AnalysisScreen } from '../modules/analysis/components/AnalysisScreen';
+import { FileLoader } from '../components/FileLoader';
 
 const LoadState = {
   UNLOADED: 1,
@@ -12,20 +11,6 @@ const LoadState = {
   LOADED: 3,
   ERROR: 4
 };
-
-const FileChooser = styled.input.attrs({
-  accept: '.json,application/json',
-  type: 'file'
-})``;
-
-const LoadFilePage = ({ loadFile }) => (
-  <Page>
-    <h2>Select file</h2>
-    <FileChooser
-      onChange={(e) => loadFile(e.target.files[0])}
-    />
-  </Page>
-);
 
 export const FileAnalysis = () => {
 
@@ -71,7 +56,8 @@ export const FileAnalysis = () => {
   }
   else {
     return (
-      <LoadFilePage
+      <FileLoader
+        accept='.json,application/json'
         loadFile={startLoading}
       />
     );

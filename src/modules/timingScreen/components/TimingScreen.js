@@ -4,12 +4,13 @@ import styled from "styled-components";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 
 import { Page } from "../../../components/Page";
-import { useServiceManifest } from "../../../components/ServiceContext";
+import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
 import { DataPanel } from "./DataPanel";
 import { MenuBar } from "./MenuBar";
 import { Messages } from "./Messages";
 import { TimingScreenHeader } from "./TimingScreenHeader";
 import { TimingTable } from "./TimingTable";
+import { LoadingScreen } from "../../../components/LoadingScreen";
 
 const TimingScreenInner = styled.div`
   min-width: 0;
@@ -25,6 +26,7 @@ const TimingScreenInner = styled.div`
 export const TimingScreen = () => {
 
   const { manifest } = useServiceManifest();
+  const { state } = useServiceState();
   const fsHandle = useFullScreenHandle();
 
   const toggleFS = useCallback(
@@ -45,16 +47,25 @@ export const TimingScreen = () => {
         <Helmet>
           <title>{ manifest?.name }</title>
         </Helmet>
-        <TimingScreenInner onDoubleClick={toggleFS}>
-          <TimingScreenHeader />
-          <TimingTable />
-          <Messages />
-          <DataPanel />
-          <MenuBar
-            fsHandle={fsHandle}
-            serviceUUID={manifest.uuid}
-          />
-        </TimingScreenInner>
+        {
+          state && (
+            <TimingScreenInner onDoubleClick={toggleFS}>
+              <TimingScreenHeader />
+              <TimingTable />
+              <Messages />
+              <DataPanel />
+              <MenuBar
+                fsHandle={fsHandle}
+                serviceUUID={manifest.uuid}
+              />
+            </TimingScreenInner>
+          )
+        }
+        {
+          !state && (
+            <LoadingScreen message='Waiting for data...' />
+          )
+        }
       </Page>
     </FullScreen>
   );

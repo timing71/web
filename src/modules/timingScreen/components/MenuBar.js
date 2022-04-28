@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import { StyledIconBase } from '@styled-icons/styled-icon';
 
-import { Menu } from "./Menu";
+import { Menu, SystemMessage, SystemMessageProvider } from "../../menu";
 import { WallClock } from "./WallClock";
 import { UpdateTime } from "./UpdateTime";
 import { DelayIndicator } from './DelayIndicator';
-import { SystemMessage, SystemMessageProvider } from "./SystemMessage";
 
 const Spacer = styled.div`
   flex-grow: 1;

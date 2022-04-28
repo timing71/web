@@ -9,6 +9,7 @@ export class FeederSeries extends Service {
 
     this._handlePayload = this._handlePayload.bind(this);
     this._handleMessage = this._handleMessage.bind(this);
+    this._afterUpdate = this._afterUpdate.bind(this);
 
     this._state = {};
 
@@ -116,7 +117,7 @@ export class FeederSeries extends Service {
               if (sectors) {
                 sectors.forEach(
                   sector => {
-                    car.sectors[parseInt(sector.id, 10) - 1] = sector;
+                    car.sectors[parseInt(sector.Id, 10) - 1] = sector;
                   }
                 );
               }
@@ -133,11 +134,19 @@ export class FeederSeries extends Service {
           const stats = msg.A[1];
           (stats.lines || []).forEach(
             line => {
-              const { driver, ...rest } = line;
+              const { driver, BestSectors, ...rest } = line;
 
               const newStats = {
-                ...this._state.statsfeed[driver.RacingNumber]
+                ...(this._state.statsfeed[driver.RacingNumber] || {})
               };
+
+              if (BestSectors) {
+                BestSectors.forEach(
+                  sector => {
+                    newStats.BestSectors[parseInt(sector.Id, 10) - 1] = sector;
+                  }
+                );
+              }
 
               Object.entries(rest).forEach(
                 ([key, value]) => {
@@ -146,6 +155,8 @@ export class FeederSeries extends Service {
                   }
                 }
               );
+
+              this._state.statsfeed[driver.RacingNumber] = newStats;
 
             }
           );

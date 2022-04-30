@@ -66,3 +66,26 @@ const patchArray = (source, diff) => {
   return next;
 
 };
+
+
+const DICTIONARY_SIZE = 256;
+const DICTIONARY = {};
+
+for (let i = 0; i < DICTIONARY_SIZE; i++) {
+  DICTIONARY[i] = String.fromCharCode(i);
+}
+
+export const lzwDecode = (e) => {
+  const n = [...e].map(c => c.charCodeAt(0));
+
+  let r, result, s = [], l = "", u = 256;
+  result = r = String.fromCharCode(n[0]);
+
+  for (let i = 1; i < n.length; i++) {
+    // eslint-disable-next-line
+    result += l = DICTIONARY[s = n[i]] ? DICTIONARY[s] : s === u ? r + r.charAt(0) : String.fromCharCode(s),
+      DICTIONARY[u++] = r + l.charAt(0),
+      r = l;
+  }
+  return result;
+};

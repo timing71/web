@@ -1,5 +1,6 @@
 import { Service } from "../service";
 import { Client } from "./client";
+import { generateManifest, translateState } from "./translate";
 
 export class SwissTiming extends Service {
 
@@ -11,6 +12,7 @@ export class SwissTiming extends Service {
 
     this._currentSeason = null;
     this._currentMeeting = null;
+    this._currentSchedule = null;
     this._currentSession = null;
 
     this.start = this.start.bind(this);
@@ -52,6 +54,7 @@ export class SwissTiming extends Service {
   }
 
   onSchedule(_, data) {
+    this._currentSchedule = data;
     const currentSession = data.Units[data.PresentationRoundId];
     if (currentSession) {
       const isNewSession = this._currentSession?.Id !== currentSession.Id;
@@ -65,6 +68,7 @@ export class SwissTiming extends Service {
   newSession(id) {
     this._timingData = {};
     this._sessionData = {};
+    this._prevLastLaps = {};
 
     this._client.subscribe(
       `${this._currentSeason}_TIMING_${id.toUpperCase()}`,
@@ -77,18 +81,34 @@ export class SwissTiming extends Service {
       'session',
       this.handleSession
     );
+
+    this.onManifestChange(
+      generateManifest(
+        this._currentMeeting, this._currentSchedule, this._currentSession
+      )
+    );
   }
 
   handleTiming(_, data) {
-
-    console.log("Timing", data);
-
+    this._timingData = data;
+    this.updateTiming();
   }
 
   handleSession(_, data) {
+    this._sessionData = data;
+    this.updateTiming();
+  }
 
-    console.log("Session", data);
-
+  updateTiming() {
+    if (this._timingData?.UnitId && this._sessionData?.UnitId) {
+      this.onStateChange(
+        translateState(
+          this._timingData,
+          this._sessionData,
+          this._prevLastLaps
+        )
+      );
+    }
   }
 
   stop() {

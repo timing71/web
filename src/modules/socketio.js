@@ -62,7 +62,7 @@ const splitPayload = (data) => {
 };
 
 
-export const createSocketIo = (host, uuid, port, callback) => {
+export const createSocketIo = (host, uuid, port, callback, forceWebsocket=false) => {
   // In which we badly reimplement some of socket.io's transport handling
   // Ideally we could implement a socket.io client in the plugin and use
   // message passing to send data to the web client.
@@ -72,114 +72,133 @@ export const createSocketIo = (host, uuid, port, callback) => {
 
   let sid = null;
 
-      let ws = null;
-      let pingInterval = null;
-      let polling = true;
-      let usingWebsocket = false;
+  let ws = null;
+  let pingInterval = null;
+  let polling = true;
+  let usingWebsocket = false;
 
-      const pollDecoder = new Decoder();
-      const wsDecoder = new Decoder();
+  const pollDecoder = new Decoder();
+  const wsDecoder = new Decoder();
 
-      const encoder = new Encoder();
+  const encoder = new Encoder();
 
-      const doPoll = () => {
-        if (polling) {
-          let myUrl = `${pollingUrl}&t=${yeast()}`;
-          if (sid) {
-            myUrl += `&sid=${sid}`;
-          }
-          port.fetch(myUrl).then(
-            pollData => {
-              splitPayload(pollData).forEach(
-                msg => pollDecoder.add(msg)
-              );
-              setTimeout(doPoll, 1000);
-            }
-          ).catch(
-            () => {
-              sid = null;
-              doPoll();
-            }
+  const _rooms = {};
+  let _roomsIndex = 0;
+
+  const doPoll = () => {
+    if (polling) {
+      let myUrl = `${pollingUrl}&t=${yeast()}`;
+      if (sid) {
+        myUrl += `&sid=${sid}`;
+      }
+      port.fetch(myUrl).then(
+        pollData => {
+          splitPayload(pollData).forEach(
+            msg => pollDecoder.add(msg)
           );
+          setTimeout(doPoll, 1000);
         }
-      };
-
-      const doWebsocket = () => {
-        // Technically we should include the sid in the websocket URL;
-        // but I don't want to reimplement socket.io's session handling...
-        ws = port.createWebsocket(wsUrl, uuid);
-        ws.on('open', () => {
-          ws.readyState === 1 && ws.send('2probe');
-        });
-        ws.on('close', () => {
-          pingInterval && window.clearInterval(pingInterval);
-          usingWebsocket = false;
-          polling = true;
+      ).catch(
+        () => {
           sid = null;
           doPoll();
-        });
-        ws.on('message', (data) => {
-          if (data.data) {
-            wsDecoder.add(data.data);
-          }
-          else if (typeof(data.buffer !== 'undefined')) {
-            wsDecoder.add(data.toString());
-          }
-        });
-        pingInterval = window.setInterval(
-          () => ws.readyState === 1 && ws.send('2'),
-          20000
-        );
-      };
-
-      const handlePacket = isWebsocket => (packet) => {
-        if (packet.type === 4 && packet.data) {
-          if (isWebsocket && polling) {
-            // polling = false;  // ACO server not responding to probe but sending us useful data
-          }
-          const [event, data] = packet.data;
-          callback && callback(event, data);
         }
-        else if (packet.type === 3) {
-          // Successful response from websocket
-          polling = false;
-        }
-        else if (packet.type === 0) {
-          if (packet.data.sid) {
-            sid = encodeURIComponent(packet.data.sid);
-          }
-          if (packet.data.upgrades.includes('websocket') && !usingWebsocket) {
-            usingWebsocket = true;
-            doWebsocket();
-          }
-        }
-      };
+      );
+    }
+  };
 
-      wsDecoder.on('decoded', handlePacket(true));
-      pollDecoder.on('decoded', handlePacket(false));
-
+  const doWebsocket = () => {
+    // Technically we should include the sid in the websocket URL;
+    // but I don't want to reimplement socket.io's session handling...
+    ws = port.createWebsocket(wsUrl, uuid);
+    ws.on('open', () => {
+      ws.readyState === 1 && ws.send('2probe');
+    });
+    ws.on('close', () => {
+      pingInterval && window.clearInterval(pingInterval);
+      usingWebsocket = false;
+      polling = true;
+      sid = null;
       doPoll();
+    });
+    ws.on('message', (data) => {
+      if (data.data) {
+        wsDecoder.add(data.data);
+      }
+      else if (typeof(data.buffer !== 'undefined')) {
+        wsDecoder.add(data.toString());
+      }
+    });
+    pingInterval = window.setInterval(
+      () => ws.readyState === 1 && ws.send('2'),
+      20000
+    );
+  };
 
-      return {
+  const handlePacket = isWebsocket => (packet) => {
+    if (packet.type === 4 && packet.data) {
+      if (isWebsocket && polling) {
+        // polling = false;  // ACO server not responding to probe but sending us useful data
+      }
+      const [event, data] = packet.data;
 
-        emit(data, namespace='/') {
-          const encoded = encoder.encode({
-            type: 2,
-            nsp: namespace,
-            data
-          });
+      if (_rooms[packet.id]) {
+        _rooms[packet.id](data, event);
+      }
+      else {
+        callback && callback(event, data);
+      }
 
-          if (usingWebsocket) {
-            ws.send(encoded);
-          }
-          else {
-            console.error('Non-WS sending not yet supported'); //eslint-disable-line no-console
-          }
-        },
+    }
+    else if (packet.type === 3) {
+      // Successful response from websocket
+      polling = false;
+    }
+    else if (packet.type === 0) {
+      if (packet.data.sid) {
+        sid = encodeURIComponent(packet.data.sid);
+      }
+      if (packet.data.upgrades.includes('websocket') && !usingWebsocket) {
+        usingWebsocket = true;
+        doWebsocket();
+      }
+    }
+  };
 
-        stop: () => {
-          pingInterval && window.clearInterval(pingInterval);
-          ws && ws.close();
-        }
-      };
+  wsDecoder.on('decoded', handlePacket(true));
+  pollDecoder.on('decoded', handlePacket(false));
+
+  if (forceWebsocket) {
+    usingWebsocket = true;
+    doWebsocket();
+  }
+  else {
+    doPoll();
+  }
+
+  return {
+
+    join(room, callback) {
+      const myIndex = _roomsIndex++;
+      const encoded = encoder.encode({
+        type: `42${myIndex}`,
+        nsp: '/',
+        data: ['join', room]
+      });
+
+      _rooms[`3${myIndex}`] = callback;
+
+      if (usingWebsocket) {
+        ws.send(encoded);
+      }
+      else {
+        console.error('Non-WS sending not yet supported'); //eslint-disable-line no-console
+      }
+    },
+
+    stop: () => {
+      pingInterval && window.clearInterval(pingInterval);
+      ws && ws.close();
+    }
+  };
 };

@@ -4,13 +4,16 @@ import { Service } from "../service";
 import { Client } from "./client";
 import { generateManifest, translateState } from "./translate";
 
+const PROFILE_REGEX = /\/([a-zA-Z]+)\/index.html$/;
+
 export class SwissTiming extends Service {
 
   constructor(...args) {
     super(...args);
 
     this.namespace = 'RAC_PROD';
-    this.profile = 'SRO';
+    const profileMatch = this.service.source.match(PROFILE_REGEX);
+    this.profile = profileMatch ? profileMatch[1].toUpperCase() : 'SRO';
 
     this._currentSeason = null;
     this._currentMeeting = null;

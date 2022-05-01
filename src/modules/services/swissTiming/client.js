@@ -45,9 +45,14 @@ export class Client extends EventEmitter {
       const body = msg.slice(PREHEADER_LENGTH + headerLength);
 
       if (header.compressor === 'lzw') {
-        const original = lzwDecode(body);
-        const data = JSON.parse(decodeURIComponent(original));
-        this.handle_async_data(data);
+        try {
+          const original = lzwDecode(body);
+          const data = JSON.parse(decodeURIComponent(original));
+          this.handle_async_data(data);
+        }
+        catch (e) {
+          console.warn('Failed async data fetch', body); // eslint-disable-line no-console
+        }
       }
     }
   }

@@ -3,11 +3,13 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Delete, OpenInBrowser, StackedBarChart } from '@styled-icons/material';
+import { Delete, Download, OpenInBrowser, StackedBarChart } from '@styled-icons/material';
 
 import { Button } from '../components/Button';
 import { Page } from '../components/Page';
 import { PluginContext } from '../modules/pluginBridge';
+import { Helmet } from 'react-helmet-async';
+import { Logo } from '../components/Logo';
 
 const Wrapper = styled.div`
   padding: 1em;
@@ -99,7 +101,7 @@ const ReplayButton = ({ uuid }) => (
     startMessage='GENERATE_SERVICE_REPLAY'
     uuid={uuid}
   >
-    Download replay
+    <Download size={24} /> Replay
   </GeneratorButton>
 );
 
@@ -109,7 +111,7 @@ const AnalysisButton = ({ uuid }) => (
     startMessage='GENERATE_ANALYSIS_DOWNLOAD'
     uuid={uuid}
   >
-    Download analysis
+    <Download size={24} /> Analysis
   </GeneratorButton>
 );
 
@@ -144,13 +146,22 @@ const DeleteButton = ({ reload, uuid }) => {
 
 };
 
+const UnwrappingCell = styled.td`
+  white-space: nowrap;
+`;
+
+const WrappingCell = styled.td`
+  word-wrap: break-word;
+  word-break: break-all;
+`;
+
 const ServiceEntry = ({ openAnalysis, reload, service }) => (
   <tr>
-    <td>{service.source}</td>
-    <td>
+    <WrappingCell>{service.source}</WrappingCell>
+    <UnwrappingCell>
       { dayjs(service.startTime).format("YYYY-MM-DD HH:mm:ss") }
-    </td>
-    <td>
+    </UnwrappingCell>
+    <UnwrappingCell>
       <RouteryButton
         title='Open'
         to={`/timing/${service.uuid}`}
@@ -169,10 +180,19 @@ const ServiceEntry = ({ openAnalysis, reload, service }) => (
         reload={reload}
         uuid={service.uuid}
       />
-    </td>
+    </UnwrappingCell>
   </tr>
 );
 
+const PageTitle = styled.h2`
+  display: flex;
+  align-items: center;
+  margin-top: 0;
+
+  & svg {
+    margin-right: 0.5em;
+  }
+`;
 
 export const Services = () => {
 
@@ -199,12 +219,22 @@ export const Services = () => {
 
   return (
     <Page>
+      <Helmet>
+        <title>Recent sessions</title>
+      </Helmet>
       <Wrapper>
-        <h2>Recent local sessions</h2>
+        <PageTitle>
+          <Logo
+            $spin
+            size='2em'
+          />
+          Recent sessions
+        </PageTitle>
         <p>
           This page lists recent timing sessions. You can reconnect to them,
           launch the analysis screen, or download a replay file. Sessions will
-          automatically be deleted after 24 hours of inactivity.
+          automatically be deleted after 24 hours of inactivity, or you can
+          delete them manually.
         </p>
         {
           services !== null && (

@@ -10,13 +10,12 @@ const spin = keyframes`
 
 export const Logo = styled(InlineSVG).attrs({
   src: logo,
-  spin: undefined // Don't pass through to DOM
 })`
 
   width: ${ props => props.size || '15vw' };
 
   ${
-    props => !!props.spin && css`
+    props => !!props.$spin && css`
       .spinner_green {
         animation: ${spin} 5s linear infinite;
       }

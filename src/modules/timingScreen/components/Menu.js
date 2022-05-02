@@ -144,8 +144,8 @@ const ToggleSetting = ({ icon, label, name }) => {
 const ReplayGenerationMessage = () => (
   <>
     <Logo
+      $spin
       size='2em'
-      spin
     />
     Creating replay file...
   </>

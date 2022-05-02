@@ -17,8 +17,8 @@ export const LoadingScreen = ({ message }) => (
   <Page>
     <Container>
       <Logo
+        $spin
         size='15vw'
-        spin
       />
       { message }
     </Container>

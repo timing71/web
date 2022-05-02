@@ -165,7 +165,10 @@ const ServiceEntry = ({ openAnalysis, reload, service }) => (
       </Button>
       <ReplayButton uuid={service.uuid} />
       <AnalysisButton uuid={service.uuid} />
-      <DeleteButton uuid={service.uuid} />
+      <DeleteButton
+        reload={reload}
+        uuid={service.uuid}
+      />
     </td>
   </tr>
 );

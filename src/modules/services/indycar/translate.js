@@ -176,11 +176,11 @@ export const translate = (rawData) => {
         c['laps'],
         TYRE_MAP[c['Tire']] || c['Tire']
       ].concat(ptpCol).concat([
-        cars.length > 0 ? c['diff'] : '',
-        cars.length > 0 ? c['gap'] : ''
+        cars.length > 0 && (c.diff || '').slice(0, 5) !== '0.000' ? c['diff'] : '',
+        cars.length > 0 && (c.gap || '').slice(0, 5) !== '0.000'? c['gap'] : ''
       ]).concat(sectorCols).concat([
-        [lastLapTime, lastLapTime === bestLapTime ? 'pb' : ''],
-        [bestLapTime, ''],
+        lastLapTime > 0 ? [lastLapTime, lastLapTime === bestLapTime ? 'pb' : ''] : ['', ''],
+        [bestLapTime > 0 ? bestLapTime : '', ''],
         c['pitStops']
       ]));
     }

@@ -7,6 +7,8 @@ import dayjs from '../../../../datetime';
 import { Heading, Table } from "../Table";
 import { FlagCell } from '../FlagCell';
 
+import { LapHistoryChart } from './LapHistoryChart';
+
 const Container = styled.div`
   height: 100vh;
   overflow-y: hidden;
@@ -133,6 +135,8 @@ export const LapHistory = observer(
               </tbody>
             </StintTable>
           </TableWrapper>
+
+          <LapHistoryChart car={car} />
 
         </Container>
       </>

@@ -1,4 +1,4 @@
-import { parseTime } from "../utils";
+import { parseTime, titleCase } from "../utils";
 
 describe('parseTime', () => {
 
@@ -25,5 +25,26 @@ describe('parseTime', () => {
   it('parses hours:mins:secs.msecs', () => {
     expect(parseTime('5:03:14.123')).toEqual(14.123 + (60 * 3) + (3600 * 5));
     expect(parseTime('5:3:14.123')).toEqual(14.123 + (60 * 3) + (3600 * 5));
+  });
+});
+
+describe('titleCase', () => {
+
+  it('title-cases a sentence', () => {
+    expect(titleCase('the quick brown fox jumps over the lazy dog')).toEqual('The Quick Brown Fox Jumps Over The Lazy Dog');
+    expect(titleCase('THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG')).toEqual('The Quick Brown Fox Jumps Over The Lazy Dog');
+    expect(titleCase('THe QuiCK BRoWn fOX JumPS ovER ThE LazY DoG')).toEqual('The Quick Brown Fox Jumps Over The Lazy Dog');
+  });
+
+  it('title-cases a single word', () => {
+    expect(titleCase('badgers')).toEqual('Badgers');
+  });
+
+  it('handles the empty string', () => {
+    expect(titleCase('')).toEqual('');
+  });
+
+  it('handles null', () => {
+    expect(titleCase(null)).toEqual(undefined);
   });
 });

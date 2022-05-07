@@ -1,24 +1,26 @@
+import { observer } from 'mobx-react-lite';
 import { FlagState } from '../../../../racing';
 import { LaptimeChart } from '../LaptimeChart';
 
-export const LapHistoryChart = ({ car }) => {
+export const LapHistoryChart = observer(
+  ({ car }) => {
+    const data = car.stints.flatMap(s => s.laps);
 
-  const data = car.stints.flatMap(s => s.laps);
+    const maxLaptime = Math.max(
+      ...car.stints.flatMap(s => s.relevantLaps)
+      .filter(l => l.flag === FlagState.GREEN)
+      .map(l => l.laptime)
+    );
 
-  const maxLaptime = Math.max(
-    ...car.stints.flatMap(s => s.relevantLaps)
-    .filter(l => l.flag === FlagState.GREEN)
-    .map(l => l.laptime)
-  );
-
-  return (
-    <div style={{ overflow: 'hidden' }}>
-      <LaptimeChart
-        axisTop={false}
-        canvas
-        laps={data}
-        maxValue={maxLaptime}
-      />
-    </div>
-  );
-};
+    return (
+      <div style={{ overflow: 'hidden' }}>
+        <LaptimeChart
+          axisTop={false}
+          canvas
+          laps={data}
+          maxValue={maxLaptime}
+        />
+      </div>
+    );
+  }
+);

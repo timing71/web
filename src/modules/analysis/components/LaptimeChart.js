@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { ResponsiveBar, ResponsiveBarCanvas } from "@nivo/bar";
 import { linearGradientDef } from '@nivo/core';
 import styled from "styled-components";
@@ -69,6 +70,24 @@ export const LaptimeChart = ({ canvas, scaleYellow, laps, ...otherProps }) => {
     maxValue = Math.max(...laps.filter(l => l.flag === FlagState.GREEN).map(l => l.laptime)) + 1;
   }
 
+  const dedupedLaps = useMemo(
+    () => {
+      const ddl = [];
+      const seen = {};
+
+      laps.forEach(
+        l => {
+          if (!seen[l.lapNumber]) {
+            ddl.push(l);
+            seen[l.lapNumber] = true;
+          }
+        }
+      );
+      return ddl;
+    },
+    [laps]
+  );
+
   return (
     <Bar
       axisBottom={false}
@@ -78,7 +97,7 @@ export const LaptimeChart = ({ canvas, scaleYellow, laps, ...otherProps }) => {
       }}
       axisTop={true}
       colors={getBarColor}
-      data={laps}
+      data={dedupedLaps}
       defs={[
         linearGradientDef('slow_zone', [
             { offset: 0, color: '#DDDD00' },
@@ -97,7 +116,7 @@ export const LaptimeChart = ({ canvas, scaleYellow, laps, ...otherProps }) => {
       minValue={minValue}
       theme={chartTheme}
       tooltip={Tooltip}
-      valueFormat={(v) => dayjs.duration(v * 1000).format('m:ss.SSS')}
+      valueFormat={(v) => dayjs.duration(Math.floor(v * 1000)).format('m:ss.SSS')}
       {...otherProps}
     />
   );

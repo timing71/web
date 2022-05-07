@@ -14,7 +14,7 @@ const StintRow = ({ stint, timestamp }) => (
     <Cell right>{stint.endTime ? dayjs(stint.endTime).format('HH:mm:ss') : 'In progress'}</Cell>
     <Cell right>{stint.durationLaps || stint.laps.length}</Cell>
     <Cell right>{dayjs.duration(stint.durationSeconds * 1000 || timestamp - stint.startTime).format('HH:mm:ss')}</Cell>
-    <Cell right>{stint.bestLap ? dayjs.duration(stint.bestLap * 1000).format('m:ss.SSS') : '-'}</Cell>
+    <Cell right>{stint.bestLap ? dayjs.duration(Math.floor(stint.bestLap * 1000)).format('m:ss.SSS') : '-'}</Cell>
   </Row>
 );
 

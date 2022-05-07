@@ -9,8 +9,8 @@ const DriverRow = ({ driver, timestamp }) => (
     <Cell>{driver.name}</Cell>
     <Cell right>{driver.stints.length}</Cell>
     <Cell right>{driver.totalLaps}</Cell>
-    <Cell right>{dayjs.duration(driver.driveTime(timestamp) * 1000).format('HH:mm:ss')}</Cell>
-    <Cell right>{dayjs(driver.bestLap * 1000).format('m:ss.SSS')}</Cell>
+    <Cell right>{dayjs.duration(Math.floor(driver.driveTime(timestamp) * 1000)).format('HH:mm:ss')}</Cell>
+    <Cell right>{dayjs(Math.floor(driver.bestLap * 1000)).format('m:ss.SSS')}</Cell>
   </Row>
 );
 

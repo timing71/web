@@ -1,6 +1,7 @@
 import { FlagState, Stat } from "../../../racing";
 import { RaceControlMessage } from '../../messages/Message';
 import { ReferenceData } from "./reference";
+import { dasherizeParts } from '../utils';
 
 const CATEGORIES = {
   2: 'LMGTEPro',
@@ -197,10 +198,10 @@ export class Client {
   }
 
   getManifest() {
-
-    const description = (this.reference.data.race) ?
-      `${this.reference.data.race.name_en} - ${ this.params.sessionName }` :
-      this.params.sessionName || 'No current session';
+    const description = dasherizeParts(
+      this.reference.data.race?.name_en,
+      this.params.sessionName || 'No current session'
+    );
 
     return {
       name: this.name,

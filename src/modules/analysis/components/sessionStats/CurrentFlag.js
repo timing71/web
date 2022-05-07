@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 
 import { useAnalysis } from "../context";
 import { Cell, Heading } from "../Table";
-import { FlagCell } from "./FlagCell";
+import { FlagCell } from "../FlagCell";
 
 dayjs.extend(duration);
 

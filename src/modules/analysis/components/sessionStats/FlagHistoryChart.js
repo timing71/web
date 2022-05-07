@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { useAnalysis } from "../context";
 import { GradientDefs } from "../GradientDefs";
 import { Cell, Table } from "../Table";
-import { FlagCell } from "./FlagCell";
+import { FlagCell } from "../FlagCell";
 
 dayjs.extend(duration);
 

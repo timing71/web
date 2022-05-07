@@ -1,6 +1,7 @@
 import { CarMessages } from './CarMessages';
 import { DriverStints } from './driverStints';
 import { DriveTime } from './driveTime';
+import { LapHistory } from './lapHistory';
 import { Messages } from './Messages';
 import { SessionStats } from './sessionStats';
 import { StrategyOverview } from './strategy';
@@ -30,13 +31,18 @@ export const routes = [
 
 export const perCarRoutes = [
   {
+    path: '/cars/:raceNum/messages',
+    name: 'Car messages',
+    component: CarMessages
+  },
+  {
     path: '/cars/:raceNum/driver-stints',
     name: 'Driver stints',
     component: DriverStints
   },
   {
-    path: '/cars/:raceNum/messages',
-    name: 'Car messages',
-    component: CarMessages
+    path: '/cars/:raceNum/lap-history',
+    name: 'Lap history',
+    component: LapHistory
   },
 ];

@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useAnalysis } from "../context";
 import { Cell, Heading, Row } from "../Table";
-import { FlagCell } from "./FlagCell";
+import { FlagCell } from "../FlagCell";
 
 dayjs.extend(duration);
 

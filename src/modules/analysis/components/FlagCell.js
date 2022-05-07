@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Cell } from "../Table";
+import { Cell } from "./Table";
 
 export const FlagCell = styled(Cell).attrs(
   props => ({

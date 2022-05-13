@@ -124,10 +124,11 @@ export class Client {
       extraMessages: [
         new Message(
           'System',
-          'No timing available. Please try again later.',
+          'No timing available. Refresh the page to try again later.',
           'system'
         ).toCTDFormat()
-      ]
+      ],
+      manifest: this.getManifest()
     });
   }
 
@@ -285,8 +286,8 @@ export class Client {
 
   getManifest() {
     return {
-      name: this._name,
-      description: this._description,
+      name: this._name || 'Natsoft',
+      description: this._description || 'No timing available',
       colSpec: COLUMN_SPEC
     };
   }

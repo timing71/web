@@ -1,6 +1,14 @@
 import { FlagState, Stat } from '../../../racing';
 import { Message } from '../../messages';
 
+export class RedirectError extends Error {
+  constructor(url) {
+    super('You have been redirected');
+    this.name = 'RedirectError';
+    this.url = url;
+  }
+}
+
 const COLUMN_SPEC = [
   Stat.NUM,
   Stat.STATE,
@@ -130,6 +138,11 @@ export class Client {
       ],
       manifest: this.getManifest()
     });
+  }
+
+  _handle_redirect(redir) {
+    const newSource = redir.getAttribute('URL');
+    throw new RedirectError(newSource);
   }
 
   _handle_new(data) {

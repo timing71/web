@@ -56,6 +56,15 @@ export class Port extends EventEmitter {
   }
 
   createWebsocket(url, { tag=undefined, autoReconnect=true }) {
+
+    if (url.slice(0, 5) === 'ws://') {
+      console.warn(`Attempting to connect to an insecure WebSocket: ${url}. In order to connect, the connection will be proxied via Timing71 servers.`); // eslint-disable-line no-console
+
+      const hasQueryString = url.indexOf('?') > -1;
+
+      return new WrappedWebsocket(`wss://wsp.beta.timing71.org/?insecureWebsocket=${url.slice(5, hasQueryString ? url.indexOf('?') : undefined)}`, this, tag, autoReconnect);
+    }
+
     return new WrappedWebsocket(url, this, tag, autoReconnect);
   }
 

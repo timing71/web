@@ -252,7 +252,7 @@ export class Client {
       intTime: detail.getAttribute('LGNI') || prevData.intTime || 0,
 
       pits: parseInt(detail.getAttribute('PS') || 0, 10) || prevData.pits,
-      state: detail.getAttribute('PF') || prevData.state || ''
+      state: detail.getAttribute('PF') || ''
     };
 
     this._positions[lineNum] = {

@@ -350,13 +350,16 @@ export class Client {
 
     const s1 = c.data?.s1 || 0;
     const bs1 = c.data?.bs1 || 0;
-    const s1Flag = s1 === sessionBestSectors[1] ? 'sb' : s1 === bs1 ? 'pb' : '';
+    const s1Flag = s1 === `${sessionBestSectors[1]}` ? 'sb' : s1 === bs1 ? 'pb' : '';
+    const bs1Flag = bs1 === `${sessionBestSectors[1]}` ? 'sb' : 'old';
     const s2 = c.data?.s2 || 0;
     const bs2 = c.data?.bs2 || 0;
-    const s2Flag = s2 === sessionBestSectors[2] ? 'sb' : s2 === bs2 ? 'pb' : '';
+    const s2Flag = s2 === `${sessionBestSectors[2]}` ? 'sb' : s2 === bs2 ? 'pb' : '';
+    const bs2Flag = bs2 === `${sessionBestSectors[2]}` ? 'sb' : 'old';
     const s3 = c.data?.s3 || 0;
     const bs3 = c.data?.bs3 || 0;
-    const s3Flag = s3 === sessionBestSectors[3] ? 'sb' : s3 === bs3 ? 'pb' : '';
+    const s3Flag = s3 === `${sessionBestSectors[3]}` ? 'sb' : s3 === bs3 ? 'pb' : '';
+    const bs3Flag = bs3 === `${sessionBestSectors[3]}` ? 'sb' : 'old';
 
     const last = parseFloat(c.data?.last) || 0;
     const best = parseFloat(c.data?.best) || 0;
@@ -376,11 +379,11 @@ export class Client {
       formatGap(c.data?.gapLaps || 0, c.data?.gapTime || 0),
       formatGap(c.data?.intLaps || 0, c.data?.intTime || 0),
       s1 > 0 ? [s1, s1Flag] : ['', ''],
-      bs1 > 0 ? [bs1, 'old'] : ['', ''],
+      bs1 > 0 ? [bs1, bs1Flag] : ['', ''],
       s2 > 0 ? [s2, s2Flag] : ['', ''],
-      bs2 > 0 ? [bs2, 'old'] : ['', ''],
+      bs2 > 0 ? [bs2, bs2Flag] : ['', ''],
       s3 > 0 ? [s3, s3Flag] : ['', ''],
-      bs3 > 0 ? [bs3, 'old'] : ['', ''],
+      bs3 > 0 ? [bs3, bs3Flag] : ['', ''],
       last > 0 ? [last, lastFlag] : ['', ''],
       best > 0 ? [best, bestFlag] : ['', ''],
       c.data?.pits || ''

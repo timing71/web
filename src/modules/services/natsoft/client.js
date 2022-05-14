@@ -233,13 +233,12 @@ export class Client {
   _handle_ol() { /* Ignore */ }
 
   _handle_p(position) {
-    const competitor = this._competitors[position.getAttribute('C')];
-
-    const lineNum = parseInt(position.getAttribute('L'), 10);
+    const compID = position.getAttribute('C');
+    const competitor = this._competitors[compID];
 
     const detail = position.querySelector('D');
 
-    const prevData = this._positions[lineNum]?.data || {};
+    const prevData = this._positions[compID]?.data || {};
 
     const newState = detail.getAttribute('PF');
 
@@ -264,10 +263,11 @@ export class Client {
       state: newState === '' || !!newState ? newState : prevData.state
     };
 
-    this._positions[lineNum] = {
+    this._positions[compID] = {
       competitor,
       driver: competitor.drivers[position.getAttribute('D')],
-      data
+      data,
+      position: parseInt(position.getAttribute('LP'))
     };
 
   }
@@ -343,7 +343,7 @@ export class Client {
   }
 
   getCars() {
-    return Object.values(this._positions).map(this.mapCar);
+    return Object.values(this._positions).sort((a, b) => a.position - b.position).map(this.mapCar);
   }
 
   mapCar(c) {

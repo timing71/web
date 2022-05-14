@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
@@ -26,13 +27,25 @@ export const TimingScreen = () => {
   const { manifest } = useServiceManifest();
   const fsHandle = useFullScreenHandle();
 
+  const toggleFS = useCallback(
+    () => {
+      if (fsHandle.active) {
+        fsHandle.exit();
+      }
+      else {
+        fsHandle.enter();
+      }
+    },
+    [fsHandle]
+  );
+
   return (
     <FullScreen handle={fsHandle}>
       <Page>
         <Helmet>
           <title>{ manifest?.name }</title>
         </Helmet>
-        <TimingScreenInner>
+        <TimingScreenInner onDoubleClick={toggleFS}>
           <TimingScreenHeader />
           <TimingTable />
           <Messages />

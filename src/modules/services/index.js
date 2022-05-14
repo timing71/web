@@ -9,13 +9,14 @@ import { AlKamel } from "./alkamel";
 import { Cronococa } from './cronococa';
 import { F2, F3 } from "./feederSeries";
 import { IndyCar } from "./indycar";
+import { LM24 } from "./aco/lm24";
 import { Nascar } from "./nascar";
 import { Natsoft } from "./natsoft/service";
 import { SoftPauer } from "./softpauer";
 import { SwissTiming } from "./swissTiming";
 import { TimeService } from "./timeservice";
 import { TSL } from "./tsl";
-import { LM24 } from "./aco/lm24";
+import { WSeries } from "./wseries";
 
 export const SERVICE_PROVIDERS = [
   AlKamel,
@@ -33,7 +34,8 @@ export const SERVICE_PROVIDERS = [
   SwissTiming,
   TimeService,
   TSL,
-  WEC
+  WEC,
+  WSeries
 ];
 
 export const mapServiceProvider = (source) => {

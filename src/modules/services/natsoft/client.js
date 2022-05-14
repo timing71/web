@@ -1,5 +1,5 @@
 import { FlagState, Stat } from '../../../racing';
-import { Message } from '../../messages';
+import { Message, RaceControlMessage } from '../../messages';
 
 export class RedirectError extends Error {
   constructor(url) {
@@ -99,7 +99,6 @@ export class Client {
     this._competitors = {};
     this._name = '';
     this._description = '';
-    this.messages = [];
   }
 
   handlePacket(p) {
@@ -190,14 +189,22 @@ export class Client {
   }
 
   _handle_g(messages) {
+    const msgs = [];
+
     const r = messages.getAttribute('R');
     if (r) {
-      this.messages.push(r);
+      msgs.push(new RaceControlMessage(r));
     }
 
     const c = messages.getAttribute('C');
     if (c) {
-      this.messages.push(c);
+      msgs.push(new RaceControlMessage(c));
+    }
+
+    if (msgs.length > 0) {
+      this.onStateChange({
+        extraMessages: msgs.map(m => m.toCTDFormat())
+      });
     }
   }
 

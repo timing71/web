@@ -241,6 +241,8 @@ export class Client {
 
     const prevData = this._positions[lineNum]?.data || {};
 
+    const newState = detail.getAttribute('PF');
+
     const data = {
       tyre: detail.getAttribute('TY') || prevData.tyre,
       laps: detail.getAttribute('L') || prevData.laps,
@@ -259,7 +261,7 @@ export class Client {
       intTime: detail.getAttribute('LGNI') || prevData.intTime || 0,
 
       pits: parseInt(detail.getAttribute('PS') || 0, 10) || prevData.pits,
-      state: detail.getAttribute('PF') || ''
+      state: newState === '' || !!newState ? newState : prevData.state
     };
 
     this._positions[lineNum] = {

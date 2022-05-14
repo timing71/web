@@ -8,6 +8,8 @@ export class Natsoft extends Service {
     this._socket = null;
 
     this.wsURL = this.service.source.replace(/^t71 Natsoft:\/\//i, '').replace(/^https?:/, 'ws:');
+    this._tag = this.service.uuid;
+    this._reconnect_count = 0;
   }
 
   start(connectionService) {
@@ -18,7 +20,7 @@ export class Natsoft extends Service {
       this.wsURL,
       {
         autoReconnect: false,
-        tag: this.service.uuid
+        tag: this._tag
       }
     );
     this._socket.onmessage = (m) => {
@@ -34,12 +36,15 @@ export class Natsoft extends Service {
         if (err instanceof RedirectError) {
           this.wsURL = err.url.replace(/^https?:/, 'ws:');
           this._socket.close();
+          this._tag = `${this.service.uuid}:${++this._reconnect_count}`;
           this.start(connectionService);
         }
       }
     };
 
   }
+
+
 
   stop() {
     this._socket && this._socket.close();

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FileLoader } from "../components/FileLoader";
-import { Menu, MenuBar, Spacer, ViewSettings } from "../modules/menu";
+import { Menu, MenuBar, ViewSettings } from "../modules/menu";
 import { PlaybackControls, ReplayProvider } from "../modules/replay";
 import { useReplayState } from "../modules/replay/state";
 import { TimingScreen } from "../modules/timingScreen";
@@ -37,7 +37,6 @@ export const Replay = () => {
         <TimingScreen>
           <MenuBar>
             <PlaybackControls replayState={replayState} />
-            <Spacer />
             <Menu>
               <ViewSettings />
             </Menu>

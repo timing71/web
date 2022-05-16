@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { FileLoader } from "../components/FileLoader";
-import { Menu, MenuBar, Spacer, SystemMessage, UpdateTime, ViewSettings } from "../modules/menu";
-import { ReplayProvider } from "../modules/replay";
+import { Menu, MenuBar, Spacer, ViewSettings } from "../modules/menu";
+import { PlaybackControls, ReplayProvider } from "../modules/replay";
+import { useReplayState } from "../modules/replay/state";
 import { TimingScreen } from "../modules/timingScreen";
 
 
 export const Replay = () => {
   const [replayFile, setReplayFile] = useState(null);
+
+  const replayState = useReplayState();
 
   useEffect(
     () => () => {
@@ -29,12 +32,12 @@ export const Replay = () => {
     return (
       <ReplayProvider
         replayFile={replayFile}
+        replayState={replayState}
       >
         <TimingScreen>
           <MenuBar>
-            <UpdateTime />
+            <PlaybackControls replayState={replayState} />
             <Spacer />
-            <SystemMessage />
             <Menu>
               <ViewSettings />
             </Menu>

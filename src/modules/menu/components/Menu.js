@@ -1,22 +1,13 @@
-import { useCallback, useContext } from "react";
 import {
   useMenuState,
   Menu as RkMenu,
   MenuButton,
-  MenuSeparator
 } from "reakit/Menu";
 
-import { Settings, StackedBarChart } from '@styled-icons/material';
+import { Settings } from '@styled-icons/material';
 
 import styled from "styled-components";
 import { lighten } from "polished";
-
-import { PluginContext } from "../../pluginBridge";
-
-import { ToggleMenuItem } from "./MenuItem";
-import { DelaySetting } from "./DelaySetting";
-import { DownloadReplay } from "./DownloadReplay";
-import { ViewSettings } from "./ViewSettings";
 
 
 const SettingsIcon = styled(Settings)`
@@ -73,19 +64,9 @@ const MyMenuButton = styled(MenuButton)`
   }
 `;
 
-export const Menu = ({ serviceUUID }) => {
+export const Menu = ({ children, serviceUUID }) => {
   const menuState = useMenuState({ animated: 100, gutter: 6 });
-  const port = useContext(PluginContext);
 
-
-
-  const openAnalysis = useCallback(
-    () => {
-      port.send({ type: 'SHOW_T71_PAGE', page: `analysis/${serviceUUID}` });
-      menuState.hide();
-    },
-    [menuState, port, serviceUUID]
-  );
 
   return (
     <>
@@ -98,18 +79,9 @@ export const Menu = ({ serviceUUID }) => {
         {...menuState}
       >
         <MenuInner>
-          <DelaySetting />
-          <MenuSeparator />
-          <ToggleMenuItem onClick={openAnalysis}>
-            <span>
-              <StackedBarChart size={24} />
-            </span>
-            <label>Launch analysis</label>
-          </ToggleMenuItem>
-          <MenuSeparator />
-          <ViewSettings />
-          <MenuSeparator />
-          <DownloadReplay hide={menuState.hide} />
+          {
+            children
+          }
         </MenuInner>
       </RkMenu>
     </>

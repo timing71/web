@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { StyledIconBase } from '@styled-icons/styled-icon';
 
-import { SystemMessageProvider } from "..";
+import { SystemMessageProvider } from './SystemMessage';
 
 const Inner = styled.div`
 

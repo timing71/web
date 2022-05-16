@@ -4,4 +4,5 @@ export { MenuBar } from './components/MenuBar';
 export { Spacer } from './components/Spacer';
 export { SystemMessage, SystemMessageProvider } from './components/SystemMessage';
 export { UpdateTime } from './components/UpdateTime';
+export { ViewSettings } from './components/ViewSettings';
 export { WallClock } from './components/WallClock';

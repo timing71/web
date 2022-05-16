@@ -6,18 +6,17 @@ import {
   MenuSeparator
 } from "reakit/Menu";
 
-import { Check, FormatColorFill, Fullscreen, Highlight, Settings, StackedBarChart } from '@styled-icons/material';
+import { Settings, StackedBarChart } from '@styled-icons/material';
 
 import styled from "styled-components";
 import { lighten } from "polished";
 
-import { useSetting } from '../../settings';
 import { PluginContext } from "../../pluginBridge";
-import { useFullscreenContext } from "../../../components/FullscreenContext";
 
 import { ToggleMenuItem } from "./MenuItem";
 import { DelaySetting } from "./DelaySetting";
 import { DownloadReplay } from "./DownloadReplay";
+import { ViewSettings } from "./ViewSettings";
 
 
 const SettingsIcon = styled(Settings)`
@@ -74,36 +73,11 @@ const MyMenuButton = styled(MenuButton)`
   }
 `;
 
-const ToggleSetting = ({ icon, label, name }) => {
-  const [setting, setSetting] = useSetting(name);
-  const toggle = useCallback(
-    () => {
-      setSetting(!setting);
-    },
-    [setSetting, setting]
-  );
-
-  return (
-    <ToggleMenuItem
-      onClick={toggle}
-    >
-      <span>
-        { icon }
-      </span>
-      <label>{label}</label>
-      <span>
-        { !!setting && <Check size={24} /> }
-      </span>
-    </ToggleMenuItem>
-  );
-
-};
-
 export const Menu = ({ serviceUUID }) => {
   const menuState = useMenuState({ animated: 100, gutter: 6 });
   const port = useContext(PluginContext);
 
-  const fsHandle = useFullscreenContext();
+
 
   const openAnalysis = useCallback(
     () => {
@@ -133,25 +107,7 @@ export const Menu = ({ serviceUUID }) => {
             <label>Launch analysis</label>
           </ToggleMenuItem>
           <MenuSeparator />
-          <ToggleMenuItem onClick={fsHandle.toggle}>
-            <span>
-              <Fullscreen size={24} />
-            </span>
-            <label>View full screen</label>
-            <span>
-              { !!fsHandle.active && <Check size={24} /> }
-            </span>
-          </ToggleMenuItem>
-          <ToggleSetting
-            icon={<FormatColorFill size={24} />}
-            label='Use row background colours'
-            name='backgrounds'
-          />
-          <ToggleSetting
-            icon={<Highlight size={24} />}
-            label='Use row flashing animations'
-            name='animation'
-          />
+          <ViewSettings />
           <MenuSeparator />
           <DownloadReplay hide={menuState.hide} />
         </MenuInner>

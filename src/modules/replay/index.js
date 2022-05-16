@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 
 import { LoadingScreen } from '../../components/LoadingScreen';
 import { ServiceManifestContext, ServiceStateContext } from "../../components/ServiceContext";
-import { TimingScreen } from "../timingScreen";
 import { createReplay } from './replay';
 
-export const ReplayProvider = ({ replayFile }) => {
+export const ReplayProvider = ({ children, replayFile }) => {
 
   const [replay, setReplay] = useState(null);
 
@@ -41,7 +40,7 @@ export const ReplayProvider = ({ replayFile }) => {
   return (
     <ServiceManifestContext.Provider value={{ manifest: replay.manifest }}>
       <ServiceStateContext.Provider value={{ state: currentFrame }}>
-        <TimingScreen />
+        { children }
       </ServiceStateContext.Provider>
     </ServiceManifestContext.Provider>
   );

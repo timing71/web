@@ -41,7 +41,7 @@ const Inner = styled.div`
   }
 `;
 
-export const MenuBar = ({ fsHandle, serviceUUID }) => {
+export const MenuBar = ({ serviceUUID }) => {
   return (
     <Inner>
       <SystemMessageProvider>
@@ -50,10 +50,7 @@ export const MenuBar = ({ fsHandle, serviceUUID }) => {
         <Spacer />
         <SystemMessage />
         <DelayIndicator />
-        <Menu
-          fsHandle={fsHandle}
-          serviceUUID={serviceUUID}
-        />
+        <Menu serviceUUID={serviceUUID} />
       </SystemMessageProvider>
     </Inner>
   );

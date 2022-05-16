@@ -1,3 +1,4 @@
+import { useCallback, useContext } from "react";
 import {
   useMenuState,
   Menu as RkMenu,
@@ -11,12 +12,13 @@ import styled from "styled-components";
 import { lighten } from "polished";
 
 import { useSetting } from '../../settings';
-import { useCallback, useContext } from "react";
 import { PluginContext } from "../../pluginBridge";
+import { useFullscreenContext } from "../../../components/FullscreenContext";
 
 import { ToggleMenuItem } from "./MenuItem";
 import { DelaySetting } from "./DelaySetting";
 import { DownloadReplay } from "./DownloadReplay";
+
 
 const SettingsIcon = styled(Settings)`
   fill: ${ props => props.theme.site.highlightColor };
@@ -72,8 +74,6 @@ const MyMenuButton = styled(MenuButton)`
   }
 `;
 
-
-
 const ToggleSetting = ({ icon, label, name }) => {
   const [setting, setSetting] = useSetting(name);
   const toggle = useCallback(
@@ -99,21 +99,11 @@ const ToggleSetting = ({ icon, label, name }) => {
 
 };
 
-export const Menu = ({ fsHandle, serviceUUID }) => {
+export const Menu = ({ serviceUUID }) => {
   const menuState = useMenuState({ animated: 100, gutter: 6 });
   const port = useContext(PluginContext);
 
-  const toggleFS = useCallback(
-    () => {
-      if (fsHandle.active) {
-        fsHandle.exit();
-      }
-      else {
-        fsHandle.enter();
-      }
-    },
-    [fsHandle]
-  );
+  const fsHandle = useFullscreenContext();
 
   const openAnalysis = useCallback(
     () => {
@@ -143,7 +133,7 @@ export const Menu = ({ fsHandle, serviceUUID }) => {
             <label>Launch analysis</label>
           </ToggleMenuItem>
           <MenuSeparator />
-          <ToggleMenuItem onClick={toggleFS}>
+          <ToggleMenuItem onClick={fsHandle.toggle}>
             <span>
               <Fullscreen size={24} />
             </span>

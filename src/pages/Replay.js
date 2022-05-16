@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FileLoader } from "../components/FileLoader";
 import { ReplayProvider } from "../modules/replay";
+import { TimingScreen } from "../modules/timingScreen";
 
 
 export const Replay = () => {
@@ -27,7 +28,9 @@ export const Replay = () => {
     return (
       <ReplayProvider
         replayFile={replayFile}
-      />
+      >
+        <TimingScreen />
+      </ReplayProvider>
     );
   }
 

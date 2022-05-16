@@ -1,7 +1,5 @@
-import { useCallback } from "react";
 import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
 
 import { Page } from "../../../components/Page";
 import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
@@ -11,8 +9,9 @@ import { Messages } from "./Messages";
 import { TimingScreenHeader } from "./TimingScreenHeader";
 import { TimingTable } from "./TimingTable";
 import { LoadingScreen } from "../../../components/LoadingScreen";
+import { FullscreenContext, useFullscreenContext } from "../../../components/FullscreenContext";
 
-const TimingScreenInner = styled.div`
+const Inner = styled.div`
   min-width: 0;
   height: 100vh;
   display: grid;
@@ -23,41 +22,34 @@ const TimingScreenInner = styled.div`
 
 `;
 
+const TimingScreenInner = ({ children }) => {
+  const { toggle } = useFullscreenContext();
+  return (
+    <Inner onDoubleClick={toggle}>
+      {children}
+    </Inner>
+  );
+};
+
 export const TimingScreen = () => {
 
   const { manifest } = useServiceManifest();
   const { state } = useServiceState();
-  const fsHandle = useFullScreenHandle();
-
-  const toggleFS = useCallback(
-    () => {
-      if (fsHandle.active) {
-        fsHandle.exit();
-      }
-      else {
-        fsHandle.enter();
-      }
-    },
-    [fsHandle]
-  );
 
   return (
-    <FullScreen handle={fsHandle}>
+    <FullscreenContext>
       <Page>
         <Helmet>
           <title>{ manifest?.name }</title>
         </Helmet>
         {
           state && (
-            <TimingScreenInner onDoubleClick={toggleFS}>
+            <TimingScreenInner>
               <TimingScreenHeader />
               <TimingTable />
               <Messages />
               <DataPanel />
-              <MenuBar
-                fsHandle={fsHandle}
-                serviceUUID={manifest.uuid}
-              />
+              <MenuBar serviceUUID={manifest.uuid} />
             </TimingScreenInner>
           )
         }
@@ -67,6 +59,6 @@ export const TimingScreen = () => {
           )
         }
       </Page>
-    </FullScreen>
+    </FullscreenContext>
   );
 };

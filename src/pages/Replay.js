@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FileLoader } from "../components/FileLoader";
+import { Menu, MenuBar, Spacer, SystemMessage, UpdateTime } from "../modules/menu";
 import { ReplayProvider } from "../modules/replay";
 import { TimingScreen } from "../modules/timingScreen";
 
@@ -29,7 +30,14 @@ export const Replay = () => {
       <ReplayProvider
         replayFile={replayFile}
       >
-        <TimingScreen />
+        <TimingScreen>
+          <MenuBar>
+            <UpdateTime />
+            <Spacer />
+            <SystemMessage />
+            <Menu />
+          </MenuBar>
+        </TimingScreen>
       </ReplayProvider>
     );
   }

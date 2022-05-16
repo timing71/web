@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { Page } from "../../../components/Page";
 import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
 import { DataPanel } from "./DataPanel";
-import { MenuBar } from "./MenuBar";
 import { Messages } from "./Messages";
 import { TimingScreenHeader } from "./TimingScreenHeader";
 import { TimingTable } from "./TimingTable";
@@ -31,7 +30,7 @@ const TimingScreenInner = ({ children }) => {
   );
 };
 
-export const TimingScreen = () => {
+export const TimingScreen = ({ children }) => {
 
   const { manifest } = useServiceManifest();
   const { state } = useServiceState();
@@ -49,7 +48,9 @@ export const TimingScreen = () => {
               <TimingTable />
               <Messages />
               <DataPanel />
-              <MenuBar serviceUUID={manifest.uuid} />
+              {
+                children
+              }
             </TimingScreenInner>
           )
         }

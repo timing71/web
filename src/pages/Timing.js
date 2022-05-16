@@ -11,6 +11,7 @@ import { Analysis } from "../modules/analysis";
 import { LoadingScreen } from "../components/LoadingScreen";
 import { ServiceProvider } from "../modules/services";
 import { DEFAULT_STATE, processManifestUpdate, processStateUpdate } from "../modules/serviceHost";
+import { DelayIndicator, MenuBar, Menu, WallClock, UpdateTime, Spacer, SystemMessage } from "../modules/menu";
 
 const TimingInner = ({ match: { params } }) => {
 
@@ -102,7 +103,16 @@ const TimingInner = ({ match: { params } }) => {
                   delay={delay * 1000}
                   serviceUUID={serviceUUID}
                 >
-                  <TimingScreen />
+                  <TimingScreen>
+                    <MenuBar>
+                      <WallClock />
+                      <UpdateTime />
+                      <Spacer />
+                      <SystemMessage />
+                      <DelayIndicator />
+                      <Menu serviceUUID={serviceUUID} />
+                    </MenuBar>
+                  </TimingScreen>
                 </StateRetriever>
               </Debouncer>
             )

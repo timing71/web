@@ -1,14 +1,7 @@
 import styled from "styled-components";
 import { StyledIconBase } from '@styled-icons/styled-icon';
 
-import { Menu, SystemMessage, SystemMessageProvider } from "../../menu";
-import { WallClock } from "./WallClock";
-import { UpdateTime } from "./UpdateTime";
-import { DelayIndicator } from './DelayIndicator';
-
-const Spacer = styled.div`
-  flex-grow: 1;
-`;
+import { SystemMessageProvider } from "..";
 
 const Inner = styled.div`
 
@@ -41,16 +34,11 @@ const Inner = styled.div`
   }
 `;
 
-export const MenuBar = ({ serviceUUID }) => {
+export const MenuBar = ({ children }) => {
   return (
     <Inner>
       <SystemMessageProvider>
-        <WallClock />
-        <UpdateTime />
-        <Spacer />
-        <SystemMessage />
-        <DelayIndicator />
-        <Menu serviceUUID={serviceUUID} />
+        { children }
       </SystemMessageProvider>
     </Inner>
   );

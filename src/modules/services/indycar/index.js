@@ -4,11 +4,13 @@ import { getManifest, translate } from "./translate";
 const DATA_URL = 'https://indycarsso.blob.core.windows.net/racecontrol/timingscoring.json';
 const POLL_RATE = 10000;
 
+const cacheBustedURL = () => `${DATA_URL}?_=${Date.now()}`;
+
 export class IndyCar extends HTTPPollingService {
 
   constructor(onStateChange, onManifestChange, service) {
     super(
-      DATA_URL,
+      cacheBustedURL,
       POLL_RATE,
       onStateChange,
       onManifestChange,

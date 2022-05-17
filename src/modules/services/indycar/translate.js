@@ -111,6 +111,11 @@ export const getManifest = ({ timing_results: { heartbeat } }) => {
       'Current rank'
   ] : [];
 
+  const bestCols = isIndyQualifying(heartbeat) ? [
+    Stat.AGGREGATE_BEST_LAP,
+    Stat.BEST_LAP
+  ] : [Stat.BEST_LAP];
+
   return {
     name: 'IndyCar',
     description: parseEventName(heartbeat),
@@ -120,16 +125,17 @@ export const getManifest = ({ timing_results: { heartbeat } }) => {
       Stat.DRIVER,
       Stat.TEAM,
       Stat.LAPS,
-      Stat.TYRE
-    ].concat(ptpCol).concat([
+      Stat.TYRE,
+    ...ptpCol,
       Stat.GAP,
       Stat.INT,
-    ]).concat(sectorCols).concat([
+    ...sectorCols,
       Stat.LAST_LAP,
-      Stat.BEST_LAP,
       Stat.SPEED,
+      ...bestCols,
+      Stat.BEST_SPEED,
       Stat.PITS
-    ]),
+    ],
     trackDataSpec
   };
 };
@@ -151,7 +157,8 @@ export const translate = (rawData) => {
 
   const { timing_results: { heartbeat, Item } } = rawData;
 
-  const isOval = heartbeat.trackType === 'O' || heartbeat.trackType === 'I';
+  const oval = isOval(heartbeat);
+  const indyQualifying = isIndyQualifying(heartbeat);
 
   const cars = [];
 
@@ -165,13 +172,13 @@ export const translate = (rawData) => {
 
       let ptpCol = [];
 
-      if (!isOval) {
+      if (!oval) {
         ptpCol = [[c["OverTake_Remain"], c["OverTake_Active"] === 1 ? "ptp-active" : ""]];
       }
 
       let sectorCols = [];
 
-      if (isOval) {
+      if (oval) {
 
         const t1 = parseSpeed(c['T1_SPD']);
         const bt1 = parseSpeed(c['Best_T1_SPD']);
@@ -212,22 +219,35 @@ export const translate = (rawData) => {
         bestLap.index = cars.length;
       }
 
+      const bestCols = [
+        [bestLapTime > 0 ? bestLapTime : '', 'old']
+      ];
+
+      if (indyQualifying) {
+        bestCols.unshift(
+          [parseSpeed(c['AverageSpeed']), '']
+        );
+      }
+
+      const llFlag = lastLapTime === bestLapTime ? 'pb' : '';
+
       cars.push([
         c['no'],
         mapCarState(c),
         `${c['firstName']} ${c['lastName']}`,
         c['team'],
         c['laps'],
-        TYRE_MAP[c['Tire']] || c['Tire']
-      ].concat(ptpCol).concat([
+        TYRE_MAP[c['Tire']] || c['Tire'],
+        ...ptpCol,
         cars.length > 0 && (c.diff || '').slice(0, 5) !== '0.000' && c.diff[0] !== '-' ? c['diff'] : '',
-        cars.length > 0 && (c.gap || '').slice(0, 5) !== '0.000' && c.gap[0] !== '-' ? c['gap'] : ''
-      ]).concat(sectorCols).concat([
-        lastLapTime > 0 ? [lastLapTime, lastLapTime === bestLapTime ? 'pb' : ''] : ['', ''],
-        [bestLapTime > 0 ? bestLapTime : '', 'old'],
+        cars.length > 0 && (c.gap || '').slice(0, 5) !== '0.000' && c.gap[0] !== '-' ? c['gap'] : '',
+       ...sectorCols,
+        lastLapTime > 0 ? [lastLapTime, llFlag] : ['', ''],
+        [parseSpeed(c['LastSpeed']), llFlag],
+        ...bestCols,
         [parseSpeed(c['BestSpeed']), 'old'],
         c['pitStops']
-      ]));
+      ]);
     }
   );
 
@@ -235,11 +255,13 @@ export const translate = (rawData) => {
     const bestCar = cars[bestLap.index];
 
     const bcbl = bestCar[bestCar.length - 2];
-    const bcll = bestCar[bestCar.length - 3];
+    const bcll = bestCar[bestCar.length - 4];
 
     if (bcbl[0] === bcll[0]) {
-      bestCar[bestCar.length - 2][1] = 'sb';
-      bestCar[bestCar.length - 3][1] = 'sb-new';
+      bestCar[bestCar.length - 2][1] = 'sb'; // B.SPD
+      bestCar[bestCar.length - 3][1] = 'sb'; // BEST
+      bestCar[bestCar.length - 4][1] = 'sb'; // SPEED
+      bestCar[bestCar.length - 5][1] = 'sb-new'; // LAST
     }
     else {
       bestCar[bestCar.length - 2][1] = 'sb';
@@ -248,7 +270,7 @@ export const translate = (rawData) => {
   }
 
   const session = {
-    flagState: FLAG_MAP[heartbeat.currentFlag] || FlagState.NONE,
+    flagState: heartbeat.currentFlag === 'YELLOW' && (heartbeat.SessionType || '')[0] !== 'R' ? FlagState.YELLOW : FLAG_MAP[heartbeat.currentFlag] || FlagState.NONE,
     timeElapsed: parseTime(heartbeat.elapsedTime)
   };
 
@@ -260,7 +282,7 @@ export const translate = (rawData) => {
     session['lapsRemain'] = parseInt(heartbeat.totalLaps, 10) - parseInt(heartbeat.lapNumber, 10);
   }
 
-  if (isIndyQualifying(heartbeat)) {
+  if (indyQualifying) {
     const currentQualifier = Item.find(c => c['QStatus'] === 'Qualifying');
     if (currentQualifier) {
 

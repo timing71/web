@@ -153,7 +153,7 @@ const parseSpeed = (spd) => {
   }
 };
 
-export const translate = (rawData) => {
+export const translate = (rawData, debouncer) => {
 
   const { timing_results: { heartbeat, Item } } = rawData;
 
@@ -231,9 +231,11 @@ export const translate = (rawData) => {
 
       const llFlag = lastLapTime === bestLapTime ? 'pb' : '';
 
+      const newState = debouncer.debounce(c['no'], mapCarState(c));
+
       cars.push([
         c['no'],
-        mapCarState(c),
+        newState,
         `${c['firstName']} ${c['lastName']}`,
         c['team'],
         c['laps'],

@@ -1,4 +1,5 @@
 import { HTTPPollingService } from "../service";
+import { Debouncer } from "./debounce";
 import { getManifest, translate } from "./translate";
 
 const DATA_URL = 'https://indycarsso.blob.core.windows.net/racecontrol/timingscoring.json';
@@ -16,6 +17,8 @@ export class IndyCar extends HTTPPollingService {
       onManifestChange,
       service
     );
+
+    this._debouncer = new Debouncer();
   }
 
   async handleResponse(response) {
@@ -23,7 +26,7 @@ export class IndyCar extends HTTPPollingService {
     const jsonData = JSON.parse(data);
 
     this.onManifestChange(getManifest(jsonData));
-    this.onStateChange(translate(jsonData));
+    this.onStateChange(translate(jsonData, this._debouncer));
   }
 }
 

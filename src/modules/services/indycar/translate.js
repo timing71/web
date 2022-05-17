@@ -24,6 +24,10 @@ const FLAG_MAP = {
   COLD: FlagState.NONE
 };
 
+const isOval = (heartbeat) => heartbeat.trackType === 'O' || heartbeat.trackType === 'I';
+
+const isIndyQualifying = (heartbeat) => heartbeat.trackType === 'I' && (heartbeat.sessionType || '')[0] === 'Q';
+
 const parseEventName = (heartbeat) => {
   const parts = [];
 
@@ -77,10 +81,10 @@ const parseEventName = (heartbeat) => {
 };
 
 export const getManifest = ({ timing_results: { heartbeat } }) => {
-  const isOval = heartbeat.trackType === 'O' || heartbeat.trackType === 'I';
+  const oval = isOval(heartbeat);
 
-  const ptpCol = isOval ? [] : [Stat.PUSH_TO_PASS];
-  const sectorCols = isOval ?
+  const ptpCol = oval ? [] : [Stat.PUSH_TO_PASS];
+  const sectorCols = oval ?
     [
       Stat.T1_SPEED,
       Stat.BEST_T1_SPEED,
@@ -95,6 +99,17 @@ export const getManifest = ({ timing_results: { heartbeat } }) => {
       Stat.S3,
       Stat.BS3
     ];
+
+  const trackDataSpec = isIndyQualifying(heartbeat) ? [
+      'Current qualifier',
+      'Laps',
+      'Lap 1 speed',
+      'Lap 2 speed',
+      'Lap 3 speed',
+      'Lap 4 speed',
+      'Average speed',
+      'Current rank'
+  ] : [];
 
   return {
     name: 'IndyCar',
@@ -112,9 +127,24 @@ export const getManifest = ({ timing_results: { heartbeat } }) => {
     ]).concat(sectorCols).concat([
       Stat.LAST_LAP,
       Stat.BEST_LAP,
+      Stat.SPEED,
       Stat.PITS
-    ])
+    ]),
+    trackDataSpec
   };
+};
+
+const parseSpeed = (spd) => {
+  try {
+    const maybeSpeed = parseFloat(spd);
+    if (isNaN(maybeSpeed)) {
+      return '';
+    }
+    return maybeSpeed;
+  }
+  catch {
+    return '';
+  }
 };
 
 export const translate = (rawData) => {
@@ -141,7 +171,21 @@ export const translate = (rawData) => {
 
       let sectorCols = [];
 
-      if (!isOval) {
+      if (isOval) {
+
+        const t1 = parseSpeed(c['T1_SPD']);
+        const bt1 = parseSpeed(c['Best_T1_SPD']);
+        const t3 = parseSpeed(c['T3_SPD']);
+        const bt3 = parseSpeed(c['Best_T3_SPD']);
+
+        sectorCols = [
+          [t1, ''],
+          [bt1, 'old'],
+          [t3, ''],
+          [bt3, 'old'],
+        ];
+      }
+      else {
         const s1 = c['I1'];
         const bs1 = c['Best_I1'];
         const s2 = c['I2'];
@@ -176,11 +220,12 @@ export const translate = (rawData) => {
         c['laps'],
         TYRE_MAP[c['Tire']] || c['Tire']
       ].concat(ptpCol).concat([
-        cars.length > 0 && (c.diff || '').slice(0, 5) !== '0.000' ? c['diff'] : '',
-        cars.length > 0 && (c.gap || '').slice(0, 5) !== '0.000'? c['gap'] : ''
+        cars.length > 0 && (c.diff || '').slice(0, 5) !== '0.000' && c.diff[0] !== '-' ? c['diff'] : '',
+        cars.length > 0 && (c.gap || '').slice(0, 5) !== '0.000' && c.gap[0] !== '-' ? c['gap'] : ''
       ]).concat(sectorCols).concat([
         lastLapTime > 0 ? [lastLapTime, lastLapTime === bestLapTime ? 'pb' : ''] : ['', ''],
-        [bestLapTime > 0 ? bestLapTime : '', ''],
+        [bestLapTime > 0 ? bestLapTime : '', 'old'],
+        [parseSpeed(c['BestSpeed']), 'old'],
         c['pitStops']
       ]));
     }
@@ -193,10 +238,12 @@ export const translate = (rawData) => {
     const bcll = bestCar[bestCar.length - 3];
 
     if (bcbl[0] === bcll[0]) {
-      bestCar[bestCar.length - 2][1] = 'sb-new';
+      bestCar[bestCar.length - 2][1] = 'sb';
+      bestCar[bestCar.length - 3][1] = 'sb-new';
     }
     else {
       bestCar[bestCar.length - 2][1] = 'sb';
+      bestCar[bestCar.length - 3][1] = 'sb';
     }
   }
 
@@ -211,6 +258,23 @@ export const translate = (rawData) => {
 
   if (heartbeat.totalLaps && heartbeat.trackType !== 'I' && heartbeat.SessionType !== 'Q') {
     session['lapsRemain'] = parseInt(heartbeat.totalLaps, 10) - parseInt(heartbeat.lapNumber, 10);
+  }
+
+  if (isIndyQualifying(heartbeat)) {
+    const currentQualifier = Item.find(c => c['QStatus'] === 'Qualifying');
+    if (currentQualifier) {
+
+      session['trackData'] = [
+        `#${currentQualifier['no']} ${currentQualifier['firstName']} ${currentQualifier['lastName']}`,
+        currentQualifier['laps'],
+        parseSpeed(currentQualifier['lap1QualSpeed']),
+        parseSpeed(currentQualifier['lap2QualSpeed']),
+        parseSpeed(currentQualifier['lap3QualSpeed']),
+        parseSpeed(currentQualifier['lap4QualSpeed']),
+        parseSpeed(currentQualifier['AverageSpeed']),
+        currentQualifier['rank'],
+      ];
+    }
   }
 
   return {

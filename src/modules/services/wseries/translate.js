@@ -34,8 +34,8 @@ export const getState = (data) => {
 
 const mapCar = session => (car) => {
 
-  const gapKey = session === 'Practice' ? 'TimeDiffToFastest' : 'GapToLeader';
-  const intKey = session === 'Practice' ? 'TimeDiffToPositionAhead' : 'IntervalToPositionAhead';
+  const gapKey = session !== 'Race' ? 'TimeDiffToFastest' : 'GapToLeader';
+  const intKey = session !== 'Race' ? 'TimeDiffToPositionAhead' : 'IntervalToPositionAhead';
 
   const sectors = car.Sectors?.Sector || [{}, {}, {}];
 
@@ -56,16 +56,16 @@ const mapCar = session => (car) => {
 };
 
 const mapCarState = (state) => {
-  if (state.Retired) {
+  if (state.Retired === 'True') {
     return 'RET';
   }
-  if (state.InPit) {
+  if (state.InPit === 'True') {
     return 'PIT';
   }
-  if (state.PitOut) {
+  if (state.PitOut === 'True') {
     return 'OUT';
   }
-  if (state.Stopped) {
+  if (state.Stopped === 'True') {
     return 'STOP';
   }
   return 'RUN';
@@ -80,10 +80,10 @@ const mapLaptime = (time) => {
 };
 
 const mapTimeFlag = (flag) => {
-  if (flag.OverallFastest) {
+  if (flag.OverallFastest === 'True') {
     return 'sb';
   }
-  if (flag.PersonalFastest) {
+  if (flag.PersonalFastest === 'True') {
     return 'pb';
   }
   return '';

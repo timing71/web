@@ -40,4 +40,4 @@ export class WSeries extends HTTPPollingService {
   }
 }
 
-WSeries.regex = /wseries.com\/static\/timings\/\?date=.+&session=[a-zA-Z]+&race=.+/;
+WSeries.regex = /wseries.com\/static\/timings\/.date=.+&session=[a-zA-Z]+&race=.+/;

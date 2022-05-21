@@ -68,9 +68,6 @@ const parseEventName = (heartbeat) => {
 
       case 'I':
         parts.push('Qualifying');
-        if (heartbeat.preamble[1] === '4') {
-          parts.push('Fast 12');
-        }
         break;
 
       default:

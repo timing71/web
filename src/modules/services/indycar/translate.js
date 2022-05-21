@@ -2,7 +2,7 @@ import { FlagState, Stat } from "../../../racing";
 import { parseTime } from "../utils";
 
 const mapCarState = (car) => {
-  if (car.status.toLowerCase() === 'in pit' || !car.onTrack) {
+  if (car.status.toLowerCase() === 'in pit' || car.onTrack === 'False') {
     return 'PIT';
   }
   return 'RUN';
@@ -26,7 +26,7 @@ const FLAG_MAP = {
 
 const isOval = (heartbeat) => heartbeat.trackType === 'O' || heartbeat.trackType === 'I';
 
-const isIndyQualifying = (heartbeat) => heartbeat.trackType === 'I' && (heartbeat.sessionType || '')[0] === 'Q';
+const isIndyQualifying = (heartbeat) => heartbeat.trackType === 'I' && (heartbeat.SessionType || '')[0] === 'Q';
 
 const parseEventName = (heartbeat) => {
   const parts = [];
@@ -69,7 +69,7 @@ const parseEventName = (heartbeat) => {
       case 'I':
         parts.push('Qualifying');
         if (heartbeat.preamble[1] === '4') {
-          parts.push('Fast 9');
+          parts.push('Fast 12');
         }
         break;
 
@@ -112,7 +112,7 @@ export const getManifest = ({ timing_results: { heartbeat } }) => {
   ] : [];
 
   const bestCols = isIndyQualifying(heartbeat) ? [
-    Stat.AGGREGATE_BEST_LAP,
+    Stat.AV_SPEED,
     Stat.BEST_LAP
   ] : [Stat.BEST_LAP];
 

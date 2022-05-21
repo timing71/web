@@ -26,6 +26,7 @@ export const Stat = {
   BS4: ["BS4", "time", "Best sector 4 time"],
   BS5: ["BS5", "time", "Best sector 5 time"],
   SPEED: ["Spd", "numeric", "Last lap speed"],
+  AV_SPEED: ["Av.Spd", "numeric", "Average speed"],
   BEST_SPEED: ["B.Spd", "numeric", "Best lap speed"],
   PITS: ["Pits", "numeric"],
   PUSH_TO_PASS: ["PTP", "numeric", "Push-to-Pass remaining"],

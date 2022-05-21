@@ -186,7 +186,7 @@ const mapCars = (cars) => {
         [timeLine[7], 'old'],
         [latestTimeLine[7], TIME_FLAGS[colourFlags[3]]],
         [timeLine[10], 'old'],
-        [lastLap > 0 ? lastLap : '', TIME_FLAGS[colourFlags[0]]],
+        lastLap > 0 ? [lastLap, TIME_FLAGS[colourFlags[0]]]  : ['', ''],
         [bestLap, 'old'],
         latestTimeLine[3][0],
       ];

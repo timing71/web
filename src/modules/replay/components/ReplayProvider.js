@@ -1,8 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { LoadingScreen } from '../../../components/LoadingScreen';
 import { ServiceManifestContext, ServiceStateContext } from "../../../components/ServiceContext";
 import { createReplay } from '../replay';
+
+const cancellable = promise => {
+  let rejectFn;
+
+  const wrappedPromise = new Promise((resolve, reject) => {
+    rejectFn = reject;
+
+    Promise.resolve(promise)
+      .then(resolve)
+      .catch(reject);
+  });
+
+  wrappedPromise.cancel = () => {
+    rejectFn({ cancelled: true });
+  };
+
+  return wrappedPromise;
+};
 
 export const ReplayProvider = ({ children, replayFile, replayState: { setDuration, tick, state } }) => {
 
@@ -24,11 +42,23 @@ export const ReplayProvider = ({ children, replayFile, replayState: { setDuratio
 
   const position = state.position;
 
+  const prevSeek = useRef();
+
   useEffect(
     () => {
       if (replay) {
-        replay.getStateAtRelative(position).then(
-          setCurrentFrame
+        if (prevSeek.current) {
+          prevSeek.current.cancel();
+        }
+
+        const seek = cancellable(replay.getStateAtRelative(position));
+        prevSeek.current = seek;
+        seek.then(setCurrentFrame).catch(
+          e => {
+            if (!e.cancelled) {
+              throw e;
+            }
+          }
         );
       }
     },

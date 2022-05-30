@@ -1,17 +1,16 @@
-import { useCallback } from "react";
 import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
 
 import { Page } from "../../../components/Page";
-import { useServiceManifest } from "../../../components/ServiceContext";
+import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
 import { DataPanel } from "./DataPanel";
-import { MenuBar } from "./MenuBar";
 import { Messages } from "./Messages";
 import { TimingScreenHeader } from "./TimingScreenHeader";
 import { TimingTable } from "./TimingTable";
+import { LoadingScreen } from "../../../components/LoadingScreen";
+import { FullscreenContext, useFullscreenContext } from "../../../components/FullscreenContext";
 
-const TimingScreenInner = styled.div`
+const Inner = styled.div`
   min-width: 0;
   height: 100vh;
   display: grid;
@@ -22,40 +21,45 @@ const TimingScreenInner = styled.div`
 
 `;
 
-export const TimingScreen = () => {
+const TimingScreenInner = ({ children }) => {
+  const { toggle } = useFullscreenContext();
+  return (
+    <Inner onDoubleClick={toggle}>
+      {children}
+    </Inner>
+  );
+};
+
+export const TimingScreen = ({ children }) => {
 
   const { manifest } = useServiceManifest();
-  const fsHandle = useFullScreenHandle();
-
-  const toggleFS = useCallback(
-    () => {
-      if (fsHandle.active) {
-        fsHandle.exit();
-      }
-      else {
-        fsHandle.enter();
-      }
-    },
-    [fsHandle]
-  );
+  const { state } = useServiceState();
 
   return (
-    <FullScreen handle={fsHandle}>
+    <FullscreenContext>
       <Page>
         <Helmet>
           <title>{ manifest?.name }</title>
         </Helmet>
-        <TimingScreenInner onDoubleClick={toggleFS}>
-          <TimingScreenHeader />
-          <TimingTable />
-          <Messages />
-          <DataPanel />
-          <MenuBar
-            fsHandle={fsHandle}
-            serviceUUID={manifest.uuid}
-          />
-        </TimingScreenInner>
+        {
+          state && (
+            <TimingScreenInner>
+              <TimingScreenHeader />
+              <TimingTable />
+              <Messages />
+              <DataPanel />
+              {
+                children
+              }
+            </TimingScreenInner>
+          )
+        }
+        {
+          !state && (
+            <LoadingScreen message='Waiting for data...' />
+          )
+        }
       </Page>
-    </FullScreen>
+    </FullscreenContext>
   );
 };

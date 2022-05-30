@@ -420,6 +420,7 @@ module.exports = function (webpackEnv) {
                       },
                     },
                   ],
+                  "babel-plugin-transform-import-meta",
                   isEnvDevelopment &&
                     shouldUseReactRefresh &&
                     require.resolve('react-refresh/babel'),
@@ -433,11 +434,21 @@ module.exports = function (webpackEnv) {
                 compact: isEnvProduction,
               },
             },
+            // Process zip.js specially because it's special
+            {
+              test: /\.js$/,
+              include: /node_modules\/@zip\.js\/.*/,
+              loader: require.resolve('babel-loader'),
+              options: {
+                presets: ['@babel/env'],
+                plugins: ['babel-plugin-transform-import-meta']
+              }
+            },
             // Process any JS outside of the app with Babel.
             // Unlike the application JS, we only compile the standard ES features.
             {
               test: /\.(js|mjs)$/,
-              exclude: /@babel(?:\/|\\{1,2})runtime/,
+              exclude: /node_modules\/.*/,
               loader: require.resolve('babel-loader'),
               options: {
                 babelrc: false,
@@ -448,6 +459,9 @@ module.exports = function (webpackEnv) {
                     require.resolve('babel-preset-react-app/dependencies'),
                     { helpers: true },
                   ],
+                ],
+                plugins: [
+                  "babel-plugin-transform-import-meta"
                 ],
                 cacheDirectory: true,
                 // See #6846 for context on why cacheCompression is disabled

@@ -1,4 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from "react";
+import { StackedBarChart } from '@styled-icons/material';
+
+
 import withGracefulUnmount from "../components/withGracefulUnmount";
 import { PluginContext } from "../modules/pluginBridge";
 import { TimingScreen } from "../modules/timingScreen";
@@ -11,6 +14,20 @@ import { Analysis } from "../modules/analysis";
 import { LoadingScreen } from "../components/LoadingScreen";
 import { ServiceProvider } from "../modules/services";
 import { DEFAULT_STATE, processManifestUpdate, processStateUpdate } from "../modules/serviceHost";
+import {
+  DelayIndicator,
+  DelaySetting,
+  DownloadReplay,
+  Menu,
+  MenuBar,
+  MenuSeparator,
+  Spacer,
+  SystemMessage,
+  ToggleMenuItem,
+  UpdateTime,
+  ViewSettings,
+  WallClock,
+} from "../modules/menu";
 
 const TimingInner = ({ match: { params } }) => {
 
@@ -80,6 +97,13 @@ const TimingInner = ({ match: { params } }) => {
     []
   );
 
+  const openAnalysis = useCallback(
+    () => {
+      port.send({ type: 'SHOW_T71_PAGE', page: `analysis/${serviceUUID}` });
+    },
+    [port, serviceUUID]
+  );
+
   if (service && state && initialAnalysisState) {
 
     return (
@@ -102,7 +126,29 @@ const TimingInner = ({ match: { params } }) => {
                   delay={delay * 1000}
                   serviceUUID={serviceUUID}
                 >
-                  <TimingScreen />
+                  <TimingScreen>
+                    <MenuBar>
+                      <WallClock />
+                      <UpdateTime />
+                      <Spacer />
+                      <SystemMessage />
+                      <DelayIndicator />
+                      <Menu>
+                        <DelaySetting />
+                        <MenuSeparator />
+                        <ToggleMenuItem onClick={openAnalysis}>
+                          <span>
+                            <StackedBarChart size={24} />
+                          </span>
+                          <label>Launch analysis</label>
+                        </ToggleMenuItem>
+                        <MenuSeparator />
+                        <ViewSettings />
+                        <MenuSeparator />
+                        <DownloadReplay />
+                      </Menu>
+                    </MenuBar>
+                  </TimingScreen>
                 </StateRetriever>
               </Debouncer>
             )

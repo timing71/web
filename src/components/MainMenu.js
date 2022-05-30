@@ -44,7 +44,9 @@ export const MainMenu = () => {
         <History />
         Recent sessions
       </MenuButton>
-      <MenuButton disabled>
+      <MenuButton
+        onClick={() => showPage('replay')}
+      >
         <OndemandVideo />
         Load replay
       </MenuButton>

@@ -1,7 +1,8 @@
 {
   "plugins": [
     "babel-plugin-styled-components",
-    "inline-svg"
+    "inline-svg",
+    "babel-plugin-transform-import-meta"
   ],
   "presets": [
     "@babel/env",

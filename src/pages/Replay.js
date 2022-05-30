@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { FileLoader } from "../components/FileLoader";
-import { Menu, MenuBar, ViewSettings } from "../modules/menu";
+import { Menu, MenuBar, MenuSeparator, ViewSettings } from "../modules/menu";
 import { PlaybackControls, ReplayProvider } from "../modules/replay";
+import { RateControls } from "../modules/replay/components/RateControls";
 import { useReplayState } from "../modules/replay/state";
 import { TimingScreen } from "../modules/timingScreen";
 
@@ -38,6 +39,8 @@ export const Replay = () => {
           <MenuBar>
             <PlaybackControls replayState={replayState} />
             <Menu>
+              <RateControls replayState={replayState} />
+              <MenuSeparator />
               <ViewSettings />
             </Menu>
           </MenuBar>

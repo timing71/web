@@ -4,7 +4,8 @@ const INITIAL_STATE = {
   duration: 0,
   playing: false,
   position: 0,
-  prevTick: 0
+  prevTick: 0,
+  rate: 1
 };
 
 const actionTypes = {
@@ -12,6 +13,7 @@ const actionTypes = {
   PLAY: 'play',
   SET_DURATION: 'setDuration',
   SET_POSITION: 'setPosition',
+  SET_RATE: 'setRate',
   TICK: 'tick'
 };
 
@@ -20,6 +22,7 @@ const createActions = (dispatch) => ({
   play: () => dispatch({ type: actionTypes.PLAY }),
   setDuration: (duration) => dispatch({ type: actionTypes.SET_DURATION, duration }),
   setPosition: (position) => dispatch({ type: actionTypes.SET_POSITION, position }),
+  setRate: (rate) => dispatch({ type: actionTypes.SET_RATE, rate }),
   tick: () => dispatch({ type: actionTypes.TICK })
 });
 
@@ -60,12 +63,18 @@ export const useReplayState = () => {
             position: Math.min(action.position, prevState.duration)
           };
 
+        case actionTypes.SET_RATE:
+          return {
+            ...prevState,
+            rate: action.rate
+          };
+
         case actionTypes.TICK:
           const delta = Date.now() - prevState.prevTick;
 
           return {
             ...prevState,
-            position: prevState.position + (delta / 1000),
+            position: prevState.position + (prevState.rate * delta / 1000),
             prevTick: Date.now()
           };
 

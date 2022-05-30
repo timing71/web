@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { FileLoader } from "../components/FileLoader";
 import { Menu, MenuBar, MenuSeparator, ViewSettings } from "../modules/menu";
 import { PlaybackControls, ReplayProvider } from "../modules/replay";
@@ -23,10 +24,15 @@ export const Replay = () => {
 
   if (!replayFile) {
     return (
-      <FileLoader
-        accept='.zip,application/zip'
-        loadFile={setReplayFile}
-      />
+      <>
+        <Helmet>
+          <title>Load replay</title>
+        </Helmet>
+        <FileLoader
+          accept='.zip,application/zip'
+          loadFile={setReplayFile}
+        />
+      </>
     );
   }
   else {

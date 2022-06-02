@@ -157,7 +157,7 @@ export const StrategyOverview = () => {
 
   const [selectedStint, setSelectedStint] = useState(null);
 
-  const [window, setWindow] = useState([0, 0]);
+  const [window, setWindow] = useState({ left: 0, right: 0, top: 0, bottom: 0 });
 
   const throttledSetWindow = useCallback( // eslint-disable-line react-hooks/exhaustive-deps
     throttle(
@@ -177,10 +177,12 @@ export const StrategyOverview = () => {
       if (carPane.current) {
         carPane.current.scrollTop = e.target.scrollTop;
       }
-      throttledSetWindow([
-        e.target.scrollLeft,
-        e.target.scrollLeft + e.target.clientWidth
-      ]);
+      throttledSetWindow({
+        left: e.target.scrollLeft,
+        right: e.target.scrollLeft + e.target.clientWidth,
+        top: e.target.scrollTop,
+        bottom: e.target.scrollTop + e.target.clientHeight
+    });
     },
     [throttledSetWindow]
   );

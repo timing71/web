@@ -11,7 +11,7 @@ const Container = styled.div.attrs(
       height: props._height,
       width: props._width,
       position: 'absolute',
-      left: props.x
+      transform: `translateX(${props._x}px)`
     }
   })
 )`
@@ -84,9 +84,9 @@ export const StintBox = animated(
       <Container
         _height={height}
         _width={width}
+        _x={x}
         car={stint.car}
         onClick={(e) => onClick(stint, e)}
-        x={x}
       >
         <StintSparklines
           height={height}

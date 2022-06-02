@@ -1,6 +1,8 @@
+import { useCallback, useMemo } from "react";
 import { animated } from "@react-spring/web";
-import { useCallback } from "react";
+import { observer } from "mobx-react-lite";
 import styled from "styled-components";
+
 import { HEADER_HEIGHT, OVERSCAN_PERCENT, ROW_HEIGHT, ROW_PADDING } from "../constants";
 import { CarStints } from "./CarStints";
 import { useYPosTransition } from "./hooks";
@@ -32,54 +34,69 @@ const CarStintsContainer = styled(animated.div)`
 `;
 
 
-export const StintLayer = ({ cars, children, height, onClick, width, widthFunc, window, xFunc }) => {
+export const StintLayer = observer(
+  ({ cars, children, height, onClick, width, widthFunc, window, xFunc }) => {
 
-  const yPosTransition = useYPosTransition(cars);
+    const yPosTransition = useYPosTransition(cars);
 
-  const cull = useCallback(
-    (stints) => {
-      const min = window[0] * (1 - (OVERSCAN_PERCENT / 100));
-      const max = window[1] * (1 + (OVERSCAN_PERCENT / 100));
-      return stints.filter(
-        (s) => {
-          const width = widthFunc(s);
-          const x = xFunc(s);
+    const cull = useCallback(
+      (stints) => {
+        const min = window.left * (1 - (OVERSCAN_PERCENT / 100));
+        const max = window.right * (1 + (OVERSCAN_PERCENT / 100));
+        return stints.filter(
+          (s) => {
+            const width = widthFunc(s);
+            const x = xFunc(s);
 
-          return (x + width) >= min && x < max;
-        }
-      );
-    },
-    [widthFunc, window, xFunc]
-  );
-
-  return (
-    <StintLayerInner
-      _height={height}
-      _width={width}
-    >
-      {
-        children
-      }
-      {
-        yPosTransition(
-          (style, car) => {
-            return (
-              <CarStintsContainer
-                key={car.raceNum}
-                style={style}
-              >
-                <CarStints
-                  height={ROW_HEIGHT - (2 * ROW_PADDING)}
-                  onClick={onClick}
-                  stints={cull(car.stints)}
-                  widthFunc={widthFunc}
-                  xFunc={xFunc}
-                />
-              </CarStintsContainer>
-            );
+            return (x + width) >= min && x < max;
           }
-        )
-      }
-    </StintLayerInner>
-  );
-};
+        );
+      },
+      [widthFunc, window, xFunc]
+    );
+
+    const visibleRows = useMemo(
+      () => ({
+        start: Math.floor(window.top / ROW_HEIGHT) - 1,
+        end: Math.ceil(window.bottom / ROW_HEIGHT) + 1
+      }),
+      [window]
+    );
+
+    return (
+      <StintLayerInner
+        _height={height}
+        _width={width}
+      >
+        {
+          children
+        }
+        {
+          yPosTransition(
+            (style, car, _, index) => {
+              if (visibleRows.start <= index && visibleRows.end >= index) {
+                return (
+                  <CarStintsContainer
+                    key={car.raceNum}
+                    style={style}
+                  >
+                    <CarStints
+                      height={ROW_HEIGHT - (2 * ROW_PADDING)}
+                      onClick={onClick}
+                      stints={cull(car.stints)}
+                      widthFunc={widthFunc}
+                      xFunc={xFunc}
+                    />
+                  </CarStintsContainer>
+                );
+              }
+
+              return null;
+
+            }
+          )
+        }
+      </StintLayerInner>
+    );
+  }
+);

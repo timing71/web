@@ -7,14 +7,14 @@ import styled from "styled-components";
 import dayjs from "dayjs";
 
 const HeaderText = styled.text`
-  fill: ${ props => props.theme.site.highlightColor };
+  fill: ${ props => props.current ? 'red' : props.theme.site.highlightColor };
   font-family: ${ props => props.theme.site.headingFont };
   text-anchor: middle;
   dominant-baseline: hanging;
 `;
 
 const Gridline = styled.line`
-  stroke: ${ props => props.theme.site.highlightColor };
+  stroke: ${ props => props.current ? 'red' : props.theme.site.highlightColor };
 `;
 
 const TimeHeader = ({ height, maxTime, scale, startTime }) => {
@@ -30,7 +30,7 @@ const TimeHeader = ({ height, maxTime, scale, startTime }) => {
 
       let next = start.startOf('hour');
 
-      while (next < end) {
+      while (next <= end) {
         result.push(next.valueOf() - startVal);
         next = next.add(15, 'minute');
       }
@@ -42,7 +42,6 @@ const TimeHeader = ({ height, maxTime, scale, startTime }) => {
     [maxTime, startTime]
   );
 
-
   return (
     <g className='stints-header'>
       {
@@ -53,7 +52,7 @@ const TimeHeader = ({ height, maxTime, scale, startTime }) => {
                 x={scale(m)}
                 y={0}
               >
-                { dayjs(m + startTime).format('HH:mm') }
+                { dayjs(m + dayjs(startTime).valueOf()).format('HH:mm') }
               </HeaderText>
               <Gridline
                 x1={scale(m)}
@@ -65,11 +64,27 @@ const TimeHeader = ({ height, maxTime, scale, startTime }) => {
           )
         )
       }
+      <HeaderText
+        current
+        x={scale(maxTime - startTime)}
+        y={0}
+      >
+        { dayjs(maxTime).format('HH:mm') }
+      </HeaderText>
+      <Gridline
+        current
+        x1={scale(maxTime - startTime)}
+        x2={scale(maxTime - startTime)}
+        y1={HEADER_HEIGHT}
+        y2={height}
+      />
     </g>
   );
 };
 
 const RIGHT_HAND_PADDING = 50;
+
+const ROUND_TO_15_MINS = 900000;
 
 export const TimeChart = observer(
   ({ scale, showStintDetails, window }) => {
@@ -78,7 +93,7 @@ export const TimeChart = observer(
     const cars = analysis.carsInRunningOrder;
 
     const height = (cars.length * ROW_HEIGHT - 50);
-    const startTime = analysis.manifest.startTime * 1000;
+    const startTime = analysis.manifest.startTime;
 
     const duration = analysis.referenceTimestamp() - startTime;
 
@@ -86,7 +101,7 @@ export const TimeChart = observer(
       (time) => time / 360000 * scale * 5,
       [scale]
     );
-    const width = Math.ceil(xScale(duration)) + RIGHT_HAND_PADDING;
+    const width = Math.ceil(xScale(Math.ceil((duration / ROUND_TO_15_MINS) + 1) * ROUND_TO_15_MINS)) + RIGHT_HAND_PADDING;
 
     const widthFunc = useCallback(
       (stint) => {

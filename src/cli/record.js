@@ -21,7 +21,13 @@ export class Recorder {
   }
 
   writeManifest(manifest) {
-    this._writeFile('manifest.json', manifest);
+    this._writeFile(
+      'manifest.json',
+      {
+        ...manifest,
+        version: 1
+      }
+    );
   }
 
   _writeFile(filename, data) {

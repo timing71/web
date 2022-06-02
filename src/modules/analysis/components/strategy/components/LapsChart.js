@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { Fragment, useCallback } from "react";
 import { observer } from "mobx-react-lite";
 import { useAnalysis } from "../../context";
 import { StintLayer } from './StintLayer';
@@ -29,22 +29,20 @@ const LapsHeader = ({ height, maxLaps, scale }) => {
       {
         tickValues.map(
           tick => (
-            <>
+            <Fragment key={tick}>
               <Gridline
-                key={tick}
                 x1={scale * tick}
                 x2={scale * tick}
                 y1={HEADER_HEIGHT}
                 y2={height}
               />
               <HeaderText
-                key={`${tick}_text`}
                 x={scale * tick}
                 y={0}
               >
                 Lap {tick}
               </HeaderText>
-            </>
+            </Fragment>
           )
         )
       }

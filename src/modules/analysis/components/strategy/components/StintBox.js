@@ -5,11 +5,18 @@ import { darken } from 'polished';
 
 import { StintSparklines } from './StintSparklines';
 
-const Container = styled.div`
-  height: 100%;
-  width: 100%;
+const Container = styled.div.attrs(
+  props => ({
+    style: {
+      height: props._height,
+      width: props._width,
+      position: 'absolute',
+      left: props.x
+    }
+  })
+)`
 
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
 
   border-radius: 0.25em;
@@ -74,35 +81,32 @@ export const StintBox = animated(
     const mean = stint.meanLap;
 
     return (
-      <foreignObject
-        height={height}
-        width={width}
+      <Container
+        _height={height}
+        _width={width}
+        car={stint.car}
+        onClick={(e) => onClick(stint, e)}
         x={x}
       >
-        <Container
-          car={stint.car}
-          onClick={(e) => onClick(stint, e)}
-        >
-          <StintSparklines
-            height={height}
-            stint={stint}
-            width={width}
-          />
-          <Line>
-            <Text bold>{stint.driver?.name || 'Unknown driver'}</Text>
-            <Text
-              bold
-              right
-            >
-              {laps} lap{laps === 1 ? '' : 's'}
-            </Text>
-          </Line>
-          <Line>
-            <Text>Best {best ? dayjs.duration(Math.round(best * 1000)).format("m:ss.SSS") : '-'}</Text>
-            <Text right>Ave {mean ? dayjs.duration(Math.round(mean * 1000)).format("m:ss.SSS") : '-'}</Text>
-          </Line>
-        </Container>
-      </foreignObject>
+        <StintSparklines
+          height={height}
+          stint={stint}
+          width={width}
+        />
+        <Line>
+          <Text bold>{stint.driver?.name || 'Unknown driver'}</Text>
+          <Text
+            bold
+            right
+          >
+            {laps} lap{laps === 1 ? '' : 's'}
+          </Text>
+        </Line>
+        <Line>
+          <Text>Best {best ? dayjs.duration(Math.round(best * 1000)).format("m:ss.SSS") : '-'}</Text>
+          <Text right>Ave {mean ? dayjs.duration(Math.round(mean * 1000)).format("m:ss.SSS") : '-'}</Text>
+        </Line>
+      </Container>
     );
   }
 );

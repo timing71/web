@@ -1,10 +1,38 @@
 import { animated } from "@react-spring/web";
 import { useCallback } from "react";
-import { OVERSCAN_PERCENT, ROW_HEIGHT, ROW_PADDING } from "../constants";
+import styled from "styled-components";
+import { HEADER_HEIGHT, OVERSCAN_PERCENT, ROW_HEIGHT, ROW_PADDING } from "../constants";
 import { CarStints } from "./CarStints";
 import { useYPosTransition } from "./hooks";
 
-export const StintLayer = ({ cars, onClick, widthFunc, window, xFunc }) => {
+const StintLayerInner = styled.div.attrs(
+  props => ({
+    style: {
+      height: props._height,
+      width: props._width
+    }
+  })
+)`
+  position: relative;
+  margin-top: ${ HEADER_HEIGHT }px;
+
+  transform: translateY(${ ROW_PADDING }px);
+
+  z-index: 1;
+`;
+
+const CarStintsContainer = styled(animated.div)`
+
+  position: absolute;
+
+  height: ${ROW_HEIGHT - (2 * ROW_PADDING)}px;
+  width: 100%;
+
+  border: 1px solid transparent;
+`;
+
+
+export const StintLayer = ({ cars, children, height, onClick, width, widthFunc, window, xFunc }) => {
 
   const yPosTransition = useYPosTransition(cars);
 
@@ -25,16 +53,20 @@ export const StintLayer = ({ cars, onClick, widthFunc, window, xFunc }) => {
   );
 
   return (
-    <g
-      className='stints-layer'
+    <StintLayerInner
+      _height={height}
+      _width={width}
     >
+      {
+        children
+      }
       {
         yPosTransition(
           (style, car) => {
             return (
-              <animated.g
+              <CarStintsContainer
                 key={car.raceNum}
-                {...style}
+                style={style}
               >
                 <CarStints
                   height={ROW_HEIGHT - (2 * ROW_PADDING)}
@@ -43,11 +75,11 @@ export const StintLayer = ({ cars, onClick, widthFunc, window, xFunc }) => {
                   widthFunc={widthFunc}
                   xFunc={xFunc}
                 />
-              </animated.g>
+              </CarStintsContainer>
             );
           }
         )
       }
-    </g>
+    </StintLayerInner>
   );
 };

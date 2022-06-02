@@ -4,109 +4,81 @@ import { animated } from '@react-spring/web';
 import { useAnalysis } from "../../context";
 import { observer } from "mobx-react-lite";
 import { useYPosTransition } from "./hooks";
-import { CAR_LIST_WIDTH, ROW_HEIGHT, ROW_PADDING } from "../constants";
+import { CAR_LIST_WIDTH, HEADER_HEIGHT, ROW_HEIGHT, ROW_PADDING } from "../constants";
 
-const CarBox = styled.rect.attrs(
+const CarNum = styled.span.attrs(
   props => ({
-    ...props,
-    width: 250,
-    x: 0,
-    y: 0,
-    rx: 3
+    children: props.car.raceNum
   })
 )`
-  stroke: ${ props => (props.car && props.theme.classColours[props.car.classColorString]) || '#C0C0C0' };
-
-  fill: ${ props => (props.car && props.car.state && props.theme.carStates[props.car.state]?.rowBackground && props.theme.carStates[props.car.state].rowBackground[0]) || 'black' };
-  transition: fill 0.5s ease-in-out;
-`;
-
-const CarNum = styled.text.attrs(
-  props => ({
-    children: props.car.raceNum,
-    dominantBaseline: 'middle',
-    textAnchor: 'middle',
-    x: 30,
-  })
-)`
-  fill: ${ props => (props.car && props.theme.classColours[props.car.classColorString]) || '#C0C0C0' };
+  color: ${ props => (props.car && props.theme.classColours[props.car.classColorString]) || '#C0C0C0' };
   font-size: 28px;
-  font-family: ${ props => props.theme.site.headingFont };
+
+  grid-row: 1 / span 2;
+  align-self: center;
+  justify-self: center;
 `;
 
-const Detail = styled.text.attrs(
-  {
-    dominantBaseline: 'middle'
-  }
-)`
-  clip-path: polygon(0 0, 0 18px, 180px 18px, 180px 0);
-  font-family: ${ props => props.theme.site.headingFont };
-  font-size: 16px;
-  fill: white;
+const Detail = styled.span`
+  color: white;
+
+  font-weight: ${ props => !!props.bold ? 'bold' : 'normal' };
 `;
 
-const CarsLayer = ({ cars }) => {
-  const yPosTransition = useYPosTransition(cars);
+const CarBox = styled(animated.div)`
 
-  const height = ROW_HEIGHT - (2 * ROW_PADDING);
+  position: absolute;
 
-  return (
-    <g
-      className='cars-layer'
-    >
-      {
-        yPosTransition(
-          (style, car) => {
-            return (
-              <animated.g
-                key={`car-${car.raceNum}`}
-                {...style}
-              >
-                <CarBox
-                  car={car}
-                  height={height}
-                />
-                <CarNum
-                  car={car}
-                  y={Math.ceil(height / 2)}
-                />
-                <Detail
-                  x={60}
-                  y={20}
-                >
-                  {car.teamName}
-                </Detail>
-                <Detail
-                  x={60}
-                  y={height - 20}
-                >
-                  {car.make}
-                </Detail>
-              </animated.g>
-            );
-          }
-        )
-      }
-    </g>
-  );
-};
+  width: ${CAR_LIST_WIDTH}px;
+  height: ${ ROW_HEIGHT - (2 * ROW_PADDING) }px;
 
+  margin: ${ ROW_PADDING }px 0;
+
+  background-color: ${ props => (props.car && props.car.state && props.theme.carStates[props.car.state]?.rowBackground && props.theme.carStates[props.car.state].rowBackground[0]) || 'black' };
+  border: 1px solid ${ props => (props.car && props.theme.classColours[props.car.classColorString]) || '#C0C0C0' };
+  border-radius: 0.25em;
+
+  display: grid;
+  grid-template-columns: 4em minmax(0, 1fr);
+  justify-content: center;
+  align-items: center;
+
+  font-family: ${ props => props.theme.site.headingFont };
+
+`;
+
+const CarsListInner = styled.div`
+  height: ${ props => props._height }px;
+  padding-top: ${ HEADER_HEIGHT }px;
+  position: relative;
+`;
 
 export const CarsList = observer(
   () => {
     const analysis = useAnalysis();
-
     const cars = analysis.carsInRunningOrder;
-
-    const height = (cars.length * 74);
+    const yPosTransition = useYPosTransition(cars);
 
     return (
-      <svg
-        height={height}
-        width={CAR_LIST_WIDTH}
-      >
-        <CarsLayer cars={cars} />
-      </svg>
+      <CarsListInner _height={ cars.length * 74 }>
+        {
+          yPosTransition(
+            (style, car) => {
+              return (
+                <CarBox
+                  car={car}
+                  key={`car-${car.raceNum}`}
+                  style={style}
+                >
+                  <CarNum car={car} />
+                  <Detail bold>{ car.teamName || car.drivers[0]?.name }</Detail>
+                  <Detail>{ car.make }</Detail>
+                </CarBox>
+              );
+            }
+          )
+        }
+      </CarsListInner>
     );
   }
 );

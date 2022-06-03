@@ -1,4 +1,5 @@
 import { createAnalyser } from "..";
+import { CURRENT_VERSION } from "../migrate";
 
 import LM24 from './2021_lm24.json';
 
@@ -8,7 +9,7 @@ describe('Analyser', () => {
 
     expect(a.cars.count).toEqual(0);
     expect(a.session).toBeDefined();
-    expect(a.version).toEqual(2);
+    expect(a.version).toEqual(CURRENT_VERSION);
   });
 
   it('can be constructed using a v1 analysis state file', () => {

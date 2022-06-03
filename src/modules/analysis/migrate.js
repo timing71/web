@@ -131,8 +131,11 @@ const MIGRATIONS = {
       version: 3
     };
 
-    const earliestTimestamp = Math.min(...Object.values(migrated.cars.cars).map(c => Math.min(...c.stints.map( s => s.startTime ))));
-    migrated.manifest.startTime = earliestTimestamp;
+    if (migrated.cars) {
+      const earliestTimestamp = Math.min(...Object.values(migrated.cars.cars).map(c => Math.min(...c.stints.map( s => s.startTime ))));
+      migrated.manifest.startTime = earliestTimestamp;
+    }
+
 
     return migrated;
   }

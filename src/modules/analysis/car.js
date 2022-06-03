@@ -65,9 +65,10 @@ const FLAG_WEIGHTS = {
 };
 
 class PitStop {
-  constructor(startTime, endTime) {
+  constructor(startTime, endTime, prevStint) {
     this.startTime = startTime;
     this.endTime = endTime;
+    this.prevStint = prevStint;
   }
 
   get durationSeconds() {
@@ -300,7 +301,8 @@ export const Car = types.model({
         return self.stints.filter(s => !s.inProgress).map(
           (stint, stintIdx) => new PitStop(
             stint.endTime,
-            stintIdx < self.stints.length - 1 ? self.stints[stintIdx + 1].startTime : null
+            stintIdx < self.stints.length - 1 ? self.stints[stintIdx + 1].startTime : null,
+            stint
           )
         );
       }

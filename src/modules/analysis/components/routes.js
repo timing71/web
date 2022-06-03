@@ -3,6 +3,7 @@ import { DriverStints } from './driverStints';
 import { DriveTime } from './driveTime';
 import { LapHistory } from './lapHistory';
 import { Messages } from './Messages';
+import { PitStops } from './pitStops';
 import { SessionStats } from './sessionStats';
 import { StrategyOverview } from './strategy';
 
@@ -39,6 +40,11 @@ export const perCarRoutes = [
     path: '/cars/:raceNum/driver-stints',
     name: 'Driver stints',
     component: DriverStints
+  },
+  {
+    path: '/cars/:raceNum/pit-stops',
+    name: 'Pit stops',
+    component: PitStops
   },
   {
     path: '/cars/:raceNum/lap-history',

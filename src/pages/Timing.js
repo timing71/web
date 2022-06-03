@@ -133,6 +133,9 @@ const TimingInner = ({ match: { params } }) => {
                       <Spacer />
                       <SystemMessage />
                       <DelayIndicator />
+                      {
+                        process.env.NODE_ENV === 'development' && <span>[DEV]</span>
+                      }
                       <Menu>
                         <DelaySetting />
                         <MenuSeparator />

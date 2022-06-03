@@ -71,7 +71,11 @@ class PitStop {
   }
 
   get durationSeconds() {
-    return this.endTime ? (this.endTime - this.startTime) / 1000 : null;
+    return this.endTime ? Math.max(0, (this.endTime - this.startTime) / 1000) : null;
+  }
+
+  get inProgress() {
+    return !this.endTime;
   }
 }
 

@@ -112,6 +112,8 @@ export const TimeChart = observer(
         cars={cars}
         height={height}
         onClick={showStintDetails}
+        referenceTimestamp={analysis.referenceTimestamp()}
+        showPitStops
         width={width}
         widthFunc={widthFunc}
         window={window}

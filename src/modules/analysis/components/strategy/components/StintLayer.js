@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { HEADER_HEIGHT, OVERSCAN_PERCENT, ROW_HEIGHT, ROW_PADDING } from "../constants";
 import { CarStints } from "./CarStints";
 import { useYPosTransition } from "./hooks";
+import { PitStops } from "./PitStops";
 
 const StintLayerInner = styled.div.attrs(
   props => ({
@@ -35,7 +36,7 @@ const CarStintsContainer = styled(animated.div)`
 
 
 export const StintLayer = observer(
-  ({ cars, children, height, onClick, width, widthFunc, window, xFunc }) => {
+  ({ cars, children, height, onClick, referenceTimestamp, showPitStops, width, widthFunc, window, xFunc }) => {
 
     const yPosTransition = useYPosTransition(cars);
 
@@ -87,6 +88,16 @@ export const StintLayer = observer(
                       widthFunc={widthFunc}
                       xFunc={xFunc}
                     />
+                    {
+                      showPitStops && (
+                        <PitStops
+                          referenceTimestamp={referenceTimestamp}
+                          stops={cull(car.pitStops)}
+                          widthFunc={widthFunc}
+                          xFunc={xFunc}
+                        />
+                      )
+                    }
                   </CarStintsContainer>
                 );
               }

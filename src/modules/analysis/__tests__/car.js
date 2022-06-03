@@ -171,5 +171,42 @@ describe(
       expect(stint.endLap).toEqual(3);
 
     });
+
+    it('derives pit stops from stints', () => {
+
+      const car = Car.create({
+        raceNum: "42",
+        stints: [
+          {
+            car: "42",
+            startLap: 1,
+            endLap: 14,
+            startTime: 0,
+            endTime: 45
+          },
+          {
+            car: "42",
+            startLap: 15,
+            endLap: 32,
+            startTime: 60,
+            endTime: 125
+          },
+          {
+            car: "42",
+            startLap: 33,
+            startTime: 140
+          }
+        ]
+      });
+
+      expect(car.stints.length).toEqual(3);
+      expect(car.pitStops.length).toEqual(2);
+
+      const ps1 = car.pitStops[0];
+      expect(ps1.startTime).toEqual(new Date(45));
+      expect(ps1.endTime).toEqual(new Date(60));
+      expect(ps1.durationSeconds).toEqual(0.015); // Not very realistic but Date() takes timestamp with ms!
+
+    });
   }
 );

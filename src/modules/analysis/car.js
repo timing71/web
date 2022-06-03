@@ -64,6 +64,17 @@ const FLAG_WEIGHTS = {
   [FlagState.RED]: 99
 };
 
+class PitStop {
+  constructor(startTime, endTime) {
+    this.startTime = startTime;
+    this.endTime = endTime;
+  }
+
+  get durationSeconds() {
+    return this.endTime ? (this.endTime - this.startTime) / 1000 : null;
+  }
+}
+
 export const Stint = types.model({
   startLap: types.integer,
   startTime: types.Date,
@@ -275,6 +286,20 @@ export const Car = types.model({
         }
       }
       return null;
+    },
+
+    get pitStops() {
+      if (self.stints.length === 0) {
+        return [];
+      }
+      else {
+        return self.stints.filter(s => !s.inProgress).map(
+          (stint, stintIdx) => new PitStop(
+            stint.endTime,
+            stintIdx < self.stints.length - 1 ? self.stints[stintIdx + 1].startTime : null
+          )
+        );
+      }
     },
 
     get identifyingString() {

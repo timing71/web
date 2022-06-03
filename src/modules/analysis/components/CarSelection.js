@@ -23,8 +23,7 @@ export const CarSelection = observer(
       >
         <option
           disabled
-          selected={!selectedCar}
-          value={null}
+          value=''
         >
           -- Select a car --
         </option>

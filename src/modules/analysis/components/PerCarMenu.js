@@ -34,7 +34,7 @@ export const PerCarMenu = ({ selectedCar, setSelectedCar }) => {
       <h4>Select a car</h4>
       <CarSelection
         onChange={e => setSelectedCar(e.target.value)}
-        selectedCar={selectedCar}
+        selectedCar={selectedCar || ''}
       />
       {
         perCarRoutes.map(

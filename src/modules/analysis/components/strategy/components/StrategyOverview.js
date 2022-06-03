@@ -187,6 +187,15 @@ export const StrategyOverview = () => {
     [throttledSetWindow]
   );
 
+  useEffect(
+    () => {
+      if (stintPane.current) {
+        handleStintPaneScroll({ target: stintPane.current });
+      }
+    },
+    [handleStintPaneScroll]
+  );
+
   return (
     <>
       <Helmet>

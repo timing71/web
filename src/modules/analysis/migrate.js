@@ -1,6 +1,8 @@
 import { FlagState, Stat } from "../../racing";
 import { StatExtractor } from '../../statExtractor';
 
+export const CURRENT_VERSION = 3;
+
 const MIGRATIONS = {
   1: (oldState) => {
 
@@ -8,7 +10,8 @@ const MIGRATIONS = {
       cars: { cars: {} },
       session: {},
       messages: {},
-      manifest: oldState.service
+      manifest: oldState.service,
+      version: 2
     };
 
     const INVERSE_FLAG_MAP = {
@@ -121,17 +124,35 @@ const MIGRATIONS = {
 
     return migrated;
 
+  },
+  2: (oldState) => {
+    const migrated = {
+      ...oldState,
+      version: 3
+    };
+
+    const earliestTimestamp = Math.min(...Object.values(migrated.cars.cars).map(c => Math.min(...c.stints.map( s => s.startTime ))));
+    migrated.manifest.startTime = earliestTimestamp;
+
+    return migrated;
   }
 };
 
 export const migrateAnalysisState = (oldState) => {
 
-  const priorVersion = oldState.version || 1;
+  let migrated = oldState;
 
-  if (MIGRATIONS[priorVersion]) {
-    return MIGRATIONS[priorVersion](oldState);
+  while(
+    (migrated.version || 1) < CURRENT_VERSION &&
+    MIGRATIONS[migrated.version || 1]
+  ) {
+    migrated = MIGRATIONS[migrated.version || 1](migrated);
+  }
+
+  if (migrated.version === CURRENT_VERSION) {
+    return migrated;
   }
   else {
-    throw new Error(`Unable to migrate from analysis version ${priorVersion}`);
+    throw new Error(`Unable to migrate from analysis version ${migrated.version}`);
   }
 };

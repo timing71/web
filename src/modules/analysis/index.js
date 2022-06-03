@@ -5,7 +5,7 @@ import { Cars } from './cars';
 import { Messages } from './messages';
 import { Session } from './session';
 
-import { migrateAnalysisState } from './migrate';
+import { CURRENT_VERSION, migrateAnalysisState } from './migrate';
 import { PluginContext } from '../pluginBridge';
 import { useServiceState } from '../../components/ServiceContext';
 import { useBroadcastChannel } from '../../broadcastChannel';
@@ -13,8 +13,6 @@ import { State } from './state';
 import { Manifest } from './manifest';
 import { StatExtractor } from '../../statExtractor';
 import { Stat } from '../../racing';
-
-const CURRENT_VERSION = 2;
 
 const MIN_LAPS_REQUIRED_FOR_PREDICTION = 10;
 

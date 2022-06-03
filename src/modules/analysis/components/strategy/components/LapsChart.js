@@ -3,18 +3,8 @@ import { observer } from "mobx-react-lite";
 import { useAnalysis } from "../../context";
 import { StintLayer } from './StintLayer';
 import { HEADER_HEIGHT, ROW_HEIGHT } from "../constants";
-import styled from "styled-components";
-
-const HeaderText = styled.text`
-  fill: ${ props => props.theme.site.highlightColor };
-  font-family: ${ props => props.theme.site.headingFont };
-  text-anchor: middle;
-  dominant-baseline: hanging;
-`;
-
-const Gridline = styled.line`
-  stroke: ${ props => props.theme.site.highlightColor };
-`;
+import { HeaderText } from "./HeaderText";
+import { Gridline } from "./Gridline";
 
 const LapsHeader = ({ height, maxLaps, scale }) => {
 

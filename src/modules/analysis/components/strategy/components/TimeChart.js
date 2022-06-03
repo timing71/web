@@ -3,19 +3,10 @@ import { observer } from "mobx-react-lite";
 import { useAnalysis } from "../../context";
 import { StintLayer } from './StintLayer';
 import { HEADER_HEIGHT, ROW_HEIGHT } from "../constants";
-import styled from "styled-components";
 import dayjs from "dayjs";
+import { HeaderText } from "./HeaderText";
+import { Gridline } from "./Gridline";
 
-const HeaderText = styled.text`
-  fill: ${ props => props.current ? 'red' : props.theme.site.highlightColor };
-  font-family: ${ props => props.theme.site.headingFont };
-  text-anchor: middle;
-  dominant-baseline: hanging;
-`;
-
-const Gridline = styled.line`
-  stroke: ${ props => props.current ? 'red' : props.theme.site.highlightColor };
-`;
 
 const TimeHeader = ({ height, maxTime, scale, startTime }) => {
 

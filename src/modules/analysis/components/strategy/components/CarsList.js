@@ -31,6 +31,7 @@ const CarBox = styled(animated.div)`
 
   width: ${CAR_LIST_WIDTH}px;
   height: ${ ROW_HEIGHT - (2 * ROW_PADDING) }px;
+  overflow: hidden;
 
   margin: ${ ROW_PADDING }px 0;
 

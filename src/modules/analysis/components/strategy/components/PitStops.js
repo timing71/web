@@ -16,6 +16,8 @@ const PitStopInner = styled(animated.div).attrs(
   position: absolute;
   margin-top: 16px;
 
+  background-color: rgba(0, 0, 0, 0.75);
+
   padding: 0.25em 0;
   text-align: center;
   overflow-x: hidden;

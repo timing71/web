@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { useTransition, animated } from '@react-spring/web';
 import { StintDetailTable } from './StintDetailTable';
 import { StintLapChart } from './StintLapChart';
-import { useState } from 'react';
+import { Button } from '../../../../../components/Button';
 
 const ModalBackdrop = styled(animated.div)`
 
@@ -37,6 +38,15 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  & > button {
+    margin: 0.5em;
+  }
+
+`;
+
+const Heading = styled.h2`
+  margin-top: 1em;
 `;
 
 const Controls = styled.div`
@@ -47,6 +57,14 @@ const Controls = styled.div`
   & label input[type=checkbox] {
     margin: 0 0.5em;
   }
+`;
+
+const ChartContainer = styled.div`
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow: hidden;
+  width: 100%;
+  margin: 0.5em;
 `;
 
 const ModalContents = ({ close, stint }) => {
@@ -60,9 +78,9 @@ const ModalContents = ({ close, stint }) => {
 
   return (
     <Container>
-      <h3>
+      <Heading>
         Car {stint.car?.raceNum} - { stint.driver?.name || 'Unknown driver' }
-      </h3>
+      </Heading>
       <StintDetailTable stint={stint} />
       <Controls>
         <label>
@@ -82,14 +100,14 @@ const ModalContents = ({ close, stint }) => {
           />
         </label>
       </Controls>
-      <div style={{ flexGrow: 1, marginBottom: '0.5em', marginTop: '0.5em', overflow: 'hidden', width: '100%' }}>
+      <ChartContainer>
         <StintLapChart
           scaleYellow={scaleYellow}
           showInOut={showInOut}
           stint={stint}
         />
-      </div>
-      <button onClick={close}>Close</button>
+      </ChartContainer>
+      <Button onClick={close}>Close</Button>
     </Container>
   );
 };
@@ -99,9 +117,9 @@ export const StintDetailModal = ({ close, stint }) => {
   const transition = useTransition(
     stint,
     {
-      from: { opacity: 0 },
-      enter: { opacity: 1 },
-      leave: { opacity: 0 },
+      from: { opacity: 0, display: 'none' },
+      enter: { opacity: 1, display: 'block' },
+      leave: { opacity: 0, display: 'none' },
       config: {
         tension: 300
       }

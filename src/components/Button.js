@@ -4,6 +4,7 @@ export const Button = styled.button`
   color: ${ props => props.disabled ? 'grey' : props.danger ? 'red' : props.theme.site.highlightColor };
   background-color: transparent;
   border: 1px solid ${ props => props.disabled ? 'grey' : props.danger ? 'red' : props.theme.site.highlightColor };
+  font-family: ${ props => props.theme.site.headingFont };
   font-size: large;
 
   border-radius: 0.25em;

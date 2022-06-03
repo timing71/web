@@ -36,6 +36,20 @@ const LapsHeader = ({ height, maxLaps, scale }) => {
           )
         )
       }
+      <Gridline
+        current
+        x1={scale * maxLaps}
+        x2={scale * maxLaps}
+        y1={HEADER_HEIGHT}
+        y2={height}
+      />
+      <HeaderText
+        current
+        x={scale * maxLaps}
+        y={0}
+      >
+        Lap {maxLaps}
+      </HeaderText>
     </g>
   );
 };

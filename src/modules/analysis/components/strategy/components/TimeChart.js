@@ -97,7 +97,7 @@ export const TimeChart = observer(
     const widthFunc = useCallback(
       (stint) => {
         const duration = stint.inProgress ? (analysis.referenceTimestamp() - stint.startTime) / 1000 : stint.durationSeconds;
-        return xScale(duration * 1000);
+        return Math.max(10, xScale(duration * 1000));
       },
       [analysis, xScale]
     );

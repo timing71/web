@@ -14,6 +14,7 @@ import { SoftPauer } from "./softpauer";
 import { SwissTiming } from "./swissTiming";
 import { TimeService } from "./timeservice";
 import { TSL } from "./tsl";
+import { LM24 } from "./aco/lm24";
 
 export const SERVICE_PROVIDERS = [
   AlKamel,
@@ -23,6 +24,7 @@ export const SERVICE_PROVIDERS = [
   F3,
   IndyCar,
   LeMansCup,
+  LM24,
   Nascar,
   Natsoft,
   SoftPauer,

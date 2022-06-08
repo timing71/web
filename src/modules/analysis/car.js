@@ -277,6 +277,13 @@ export const Car = types.model({
         }
       }
 
+      if (self.stints.length > 1 && self.stints[0].inProgress && self.stints[0].laps.length === 0) {
+        // Something has happened to confuse us, because only the most recent stint
+        // should ever be marked as in progress - possibly junk data from the start
+        // of a session?
+        self.stints.shift();
+      }
+
     },
 
     // NB We don't need a reset method here; resetting the parent `Cars` collection

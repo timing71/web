@@ -198,8 +198,11 @@ export class Client {
   }
 
   getManifest() {
+    // Avoid repetition of LM24 branding in name and description
+    const raceName = this.name === 'Le Mans 24 Hours' ? null : this.reference.data.race?.name_en;
+
     const description = dasherizeParts(
-      this.reference.data.race?.name_en,
+      raceName,
       this.params.sessionName || 'No current session'
     );
 

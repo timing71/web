@@ -9,6 +9,8 @@ import { Settings } from '@styled-icons/material';
 import styled from "styled-components";
 import { lighten } from "polished";
 
+import { stopEventBubble } from '../../../utils';
+
 
 const SettingsIcon = styled(Settings)`
   fill: ${ props => props.theme.site.highlightColor };
@@ -78,7 +80,9 @@ export const Menu = ({ children, serviceUUID }) => {
         tabIndex={0}
         {...menuState}
       >
-        <MenuInner>
+        <MenuInner
+          onDoubleClick={stopEventBubble()}
+        >
           {
             children
           }

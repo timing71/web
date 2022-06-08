@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useServiceState } from "../../../components/ServiceContext";
 import { Message } from "../../../components/Message";
+import { stopEventBubble } from "../../../utils";
 
 const Wrapper = styled.div`
   grid-area: messages;
@@ -22,7 +23,9 @@ export const Messages = () => {
   const { state: { messages } } = useServiceState();
 
   return (
-    <Wrapper>
+    <Wrapper
+      onDoubleClick={stopEventBubble()}
+    >
       <MessagesTable>
         <colgroup>
           <col style={{ width: '6em' }} />

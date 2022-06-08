@@ -1,4 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
+
+import { getProperty, setProperty } from 'dot-prop';
+
 import { PluginContext } from "../pluginBridge";
 
 const DEFAULT_SETTINGS = {
@@ -28,7 +31,14 @@ export const SettingsProvider = ({ children }) => {
     (newSettings) => {
       setSettings(
         oldSettings => {
-          const saveableSettings = { ...oldSettings, ...newSettings };
+          const saveableSettings = { ...oldSettings };
+
+          Object.entries(newSettings).forEach(
+            ([key, val]) => {
+              setProperty(saveableSettings, key, val);
+            }
+          );
+
           port.send({ type: 'STORE_SETTINGS', settings: saveableSettings });
           return saveableSettings;
         }
@@ -50,7 +60,7 @@ export const useSetting = (key, defaultValue) => {
   const { settings, updateSettings } = useSettings();
 
   return [
-    settings[key] || defaultValue,
+    getProperty(settings, key, defaultValue),
     value => updateSettings({ [key]: value })
   ];
 };

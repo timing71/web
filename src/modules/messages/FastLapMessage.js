@@ -6,7 +6,7 @@ export const FastLapMessage = (se, oldCar, newCar) => {
   const oldLastLap = se.get(oldCar, Stat.LAST_LAP);
   const newLastLap = se.get(newCar, Stat.LAST_LAP);
   const carNum = se.get(newCar, Stat.NUM);
-  const clazz = se.get(newCar, Stat.CLASS, 'Pits');
+  const clazz = se.get(newCar, Stat.CLASS, 'Timing');
 
   if (oldLastLap !== newLastLap) {
     const driver = se.get(newCar, Stat.DRIVER);

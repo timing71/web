@@ -14,8 +14,8 @@ export class StatExtractor {
   }
 
   get(car, stat, defaultValue=null) {
-    if (!!this._reverseMap[stat]) {
-      return car[this._reverseMap[stat]];
+    if (this._reverseMap[stat] !== undefined) {
+      return car[this._reverseMap[stat]] || defaultValue;
     }
     return defaultValue;
   }

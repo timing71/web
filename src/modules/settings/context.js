@@ -46,11 +46,11 @@ export const SettingsProvider = ({ children }) => {
 
 export const useSettings = () => useContext(SettingsContext);
 
-export const useSetting = (key) => {
+export const useSetting = (key, defaultValue) => {
   const { settings, updateSettings } = useSettings();
 
   return [
-    settings[key],
+    settings[key] || defaultValue,
     value => updateSettings({ [key]: value })
   ];
 };

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
+import { useSetting } from '../../../../settings';
 import { DisplayMode } from '../constants';
 import { CarsList } from './CarsList';
 import { LapsChart } from './LapsChart';
@@ -148,7 +149,7 @@ const Control = styled.div`
 
 export const StrategyOverview = () => {
 
-  const [displayMode, setDisplayMode] = useState(DisplayMode.LAPS);
+  const [displayMode, setDisplayMode] = useSetting('analysis.strategy.displayMode', DisplayMode.LAPS);
   const [scale, setScale] = useState(32);
   const Chart = chartType[displayMode];
 

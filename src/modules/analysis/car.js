@@ -268,9 +268,14 @@ export const Car = types.model({
           }
         }
       }
-      else if (newLastLap && newLastLap[0]) {
-        // We didn't appear in the previous state; if we have a last laptime
-        // we should record it.
+      else if (newLastLap && newLastLap[0] && (self.currentStint || self.stints.length === 0)) {
+        // We've appeared for the first time in this state, or we've reappeared
+        // due to a timing screen "flicker".
+        // If we were on a stint already we don't know if this laptime is
+        // actually new or not - better to record it just in case, than have laps
+        // missing.
+        // If we were not on a stint (but have some previous stint - we've not
+        // just appeared for the first time)
         self.recordNewLap(newLastLap[0], currentDriver, self.highestSeenFlagThisLap, timestamp);
         if (fudgeLapCount) {
           self.currentLap++;

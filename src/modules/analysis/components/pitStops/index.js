@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
 import { useAnalysis } from "../context";
 import { PitStopsTable } from "./PitStopsTable";
+import { StopStats } from "./StopStats";
 
 const Column = styled.div`
 
@@ -54,6 +55,8 @@ export const PitStops = observer(
             <PitStopsTable raceNum={raceNum} />
           </Column>
           <Column flexBasis='40%'>
+            <h3>Pit stops</h3>
+            <StopStats raceNum={raceNum} />
           </Column>
         </Container>
       </>

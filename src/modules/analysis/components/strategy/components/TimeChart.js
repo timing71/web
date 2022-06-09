@@ -73,8 +73,6 @@ const TimeHeader = ({ height, maxTime, scale, startTime }) => {
   );
 };
 
-const RIGHT_HAND_PADDING = 50;
-
 const ROUND_TO_15_MINS = 900000;
 
 export const TimeChart = observer(
@@ -92,7 +90,7 @@ export const TimeChart = observer(
       (time) => time / 360000 * scale * 5,
       [scale]
     );
-    const width = Math.ceil(xScale(Math.ceil((duration / ROUND_TO_15_MINS) + 1) * ROUND_TO_15_MINS)) + RIGHT_HAND_PADDING;
+    const width = Math.ceil(xScale(Math.ceil((duration / ROUND_TO_15_MINS) + 1) * ROUND_TO_15_MINS));
 
     const widthFunc = useCallback(
       (stint) => {

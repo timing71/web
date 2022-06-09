@@ -6,7 +6,7 @@ const PitStopInner = styled(animated.div).attrs(
   props => ({
     style: {
       ...props.style,
-      transform: `translateX(${props._x}px)`
+      transform: `translateX(${props.$x}px)`
     }
   })
 )`
@@ -22,18 +22,21 @@ const PitStopInner = styled(animated.div).attrs(
   text-align: center;
   overflow-x: hidden;
   white-space: nowrap;
+  cursor: default;
 `;
 
 const PitStop = ({ referenceTimestamp, stop, x, style }) => {
 
   const duration = stop.durationSeconds ? stop.durationSeconds : (referenceTimestamp - stop.startTime) / 1000;
+  const formattedDuration = dayjs.duration(Math.round(duration * 1000)).format("m:ss");
 
   return (
     <PitStopInner
-      _x={x}
+      $x={x}
       style={style}
+      title={`Pit stop: ${formattedDuration}`}
     >
-      { dayjs.duration(Math.round(duration * 1000)).format("m:ss") }
+      { formattedDuration }
     </PitStopInner>
   );
 };

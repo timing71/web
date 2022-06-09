@@ -77,10 +77,10 @@ const TimeHeader = ({ height, maxTime, scale, startTime }) => {
 const ROUND_TO_15_MINS = 900000;
 
 export const TimeChart = observer(
-  ({ scale, showStintDetails, window }) => {
+  ({ classFilter, scale, showStintDetails, window }) => {
     const analysis = useAnalysis();
 
-    const cars = analysis.carsInRunningOrder;
+    const cars = analysis.carsInRunningOrder.filter(c => !classFilter || c.classColorString === classFilter);;
 
     const height = cars.length * ROW_HEIGHT;
     const startTime = analysis.manifest.startTime;

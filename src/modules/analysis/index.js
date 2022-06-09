@@ -116,6 +116,17 @@ const Analyser = types.model({
             c => !!c  // Not sure why this sometimes happens - perhaps a race
                       // condition where we haven't fully loaded data yet?
           );
+        },
+
+        get knownCarClasses() {
+          const se = new StatExtractor(self.manifest.colSpec);
+          return [
+            ...new Set(
+              self.state.cars.map(
+                c => se.get(c, Stat.CLASS)
+              ).filter( c => !!c )
+            )
+          ];
         }
       }
     };

@@ -11,6 +11,9 @@ import { LapsChart } from './LapsChart';
 import { TimeChart } from './TimeChart';
 import { StintDetailModal } from './StintDetailModal';
 import throttle from 'lodash.throttle';
+import { CarOption } from '../../CarOption';
+import { useAnalysis } from '../../context';
+import { observer } from 'mobx-react-lite';
 
 const Container = styled.div`
   position: relative;
@@ -147,111 +150,147 @@ const Control = styled.div`
   }
 `;
 
-export const StrategyOverview = () => {
+export const StrategyOverview = observer(
+  () => {
 
-  const [displayMode, setDisplayMode] = useSetting('analysis.strategy.displayMode', DisplayMode.LAPS);
-  const [scale, setScale] = useState(32);
-  const Chart = chartType[displayMode];
+    const analysis = useAnalysis();
 
-  const carPane = useRef();
-  const stintPane = useRef();
+    const [displayMode, setDisplayMode] = useSetting('analysis.strategy.displayMode', DisplayMode.LAPS);
+    const [scale, setScale] = useState(32);
+    const Chart = chartType[displayMode];
 
-  const [selectedStint, setSelectedStint] = useState(null);
+    const carPane = useRef();
+    const stintPane = useRef();
 
-  const [window, setWindow] = useState({ left: 0, right: 0, top: 0, bottom: 0 });
+    const [selectedStint, setSelectedStint] = useState(null);
 
-  const throttledSetWindow = useCallback( // eslint-disable-line react-hooks/exhaustive-deps
-    throttle(
-      (window) => {
-        setTimeout(
-          () => setWindow(window),
-          1
-        );
+    const [classFilter, setClassFilter] = useState('');
+
+    const [window, setWindow] = useState({ left: 0, right: 0, top: 0, bottom: 0 });
+
+    const throttledSetWindow = useCallback( // eslint-disable-line react-hooks/exhaustive-deps
+      throttle(
+        (window) => {
+          setTimeout(
+            () => setWindow(window),
+            1
+          );
+        },
+        10
+      ),
+      []
+    );
+
+    const handleStintPaneScroll = useCallback(
+      (e) => {
+        if (carPane.current) {
+          carPane.current.scrollTop = e.target.scrollTop;
+        }
+        throttledSetWindow({
+          left: e.target.scrollLeft,
+          right: e.target.scrollLeft + e.target.clientWidth,
+          top: e.target.scrollTop,
+          bottom: e.target.scrollTop + e.target.clientHeight
+      });
       },
-      10
-    ),
-    []
-  );
+      [throttledSetWindow]
+    );
 
-  const handleStintPaneScroll = useCallback(
-    (e) => {
-      if (carPane.current) {
-        carPane.current.scrollTop = e.target.scrollTop;
-      }
-      throttledSetWindow({
-        left: e.target.scrollLeft,
-        right: e.target.scrollLeft + e.target.clientWidth,
-        top: e.target.scrollTop,
-        bottom: e.target.scrollTop + e.target.clientHeight
-    });
-    },
-    [throttledSetWindow]
-  );
+    useEffect(
+      () => {
+        if (stintPane.current) {
+          handleStintPaneScroll({ target: stintPane.current });
+        }
+      },
+      [handleStintPaneScroll]
+    );
 
-  useEffect(
-    () => {
-      if (stintPane.current) {
-        handleStintPaneScroll({ target: stintPane.current });
-      }
-    },
-    [handleStintPaneScroll]
-  );
+    return (
+      <>
+        <Helmet>
+          <title>Strategy overview</title>
+        </Helmet>
+        <Container>
+          <h3>Strategy overview</h3>
+          <Controls>
+            <Control>
+              <label htmlFor='chart-type'>
+                X-axis shows:
+              </label>
+              <TypeSelector
+                id='chart-type'
+                onChange={(e) => setDisplayMode(e.target.value)}
+                value={displayMode}
+              >
+                <option value={DisplayMode.LAPS}>Laps</option>
+                <option value={DisplayMode.TIME}>Time</option>
+              </TypeSelector>
+            </Control>
 
-  return (
-    <>
-      <Helmet>
-        <title>Strategy overview</title>
-      </Helmet>
-      <Container>
-        <h3>Strategy overview</h3>
-        <Controls>
-          <Control>
-            <label htmlFor='chart-type'>
-              X-axis shows:
-            </label>
-            <TypeSelector
-              id='chart-type'
-              onChange={(e) => setDisplayMode(e.target.value)}
-              value={displayMode}
+            <Control>
+              <label htmlFor='class-filter'>
+                Show class:
+              </label>
+              <TypeSelector
+                id='class-filter'
+                onChange={(e) => setClassFilter(e.target.value)}
+                value={classFilter}
+              >
+                <option value=''>All</option>
+                {
+                  analysis.knownCarClasses.map(
+                    klass => (
+                      <CarOption
+                        car={{
+                          classColorString: klass.toLowerCase().replace(/[-/ ]/, '')
+                        }}
+                        key={klass}
+                        value={klass.toLowerCase().replace(/[-/ ]/, '')}
+                      >
+                        {klass}
+                      </CarOption>
+                    )
+                  )
+                }
+              </TypeSelector>
+
+            </Control>
+
+            <Control>
+              <label>
+                Scale:
+              </label>
+              <Slider
+                max={50}
+                min={10}
+                onChange={setScale}
+                value={scale}
+              />
+            </Control>
+          </Controls>
+          <ChartContainer>
+            <CarsInnerContainer ref={carPane}>
+              <CarsList classFilter={classFilter} />
+            </CarsInnerContainer>
+            <ChartInnerContainer
+              onScroll={handleStintPaneScroll}
+              ref={stintPane}
             >
-              <option value={DisplayMode.LAPS}>Laps</option>
-              <option value={DisplayMode.TIME}>Time</option>
-            </TypeSelector>
-          </Control>
-
-          <Control>
-            <label>
-              Scale:
-            </label>
-            <Slider
-              max={50}
-              min={10}
-              onChange={setScale}
-              value={scale}
-            />
-          </Control>
-        </Controls>
-        <ChartContainer>
-          <CarsInnerContainer ref={carPane}>
-            <CarsList />
-          </CarsInnerContainer>
-          <ChartInnerContainer
-            onScroll={handleStintPaneScroll}
-            ref={stintPane}
-          >
-            <Chart
-              containerRef={stintPane}
-              scale={scale}
-              showStintDetails={setSelectedStint}
-              window={window}
-            />
-          </ChartInnerContainer>
-        </ChartContainer>
-        <StintDetailModal
-          close={() => setSelectedStint(null)}
-          stint={selectedStint}
-        />
-      </Container>
-    </>
-  );
-};
+              <Chart
+                classFilter={classFilter}
+                containerRef={stintPane}
+                scale={scale}
+                showStintDetails={setSelectedStint}
+                window={window}
+              />
+            </ChartInnerContainer>
+          </ChartContainer>
+          <StintDetailModal
+            close={() => setSelectedStint(null)}
+            stint={selectedStint}
+          />
+        </Container>
+      </>
+    );
+  }
+);

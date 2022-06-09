@@ -55,9 +55,9 @@ const CarsListInner = styled.div`
 `;
 
 export const CarsList = observer(
-  () => {
+  ({ classFilter }) => {
     const analysis = useAnalysis();
-    const cars = analysis.carsInRunningOrder;
+    const cars = analysis.carsInRunningOrder.filter(c => !classFilter || c.classColorString === classFilter);
     const yPosTransition = useYPosTransition(cars);
 
     return (

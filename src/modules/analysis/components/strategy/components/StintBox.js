@@ -8,10 +8,10 @@ import { StintSparklines } from './StintSparklines';
 const Container = styled.div.attrs(
   props => ({
     style: {
-      height: props._height,
-      width: props._width,
+      height: props.$height,
+      width: props.$width,
       position: 'absolute',
-      transform: `translateX(${props._x}px)`
+      transform: `translateX(${props.$x}px)`
     }
   })
 )`
@@ -82,9 +82,9 @@ export const StintBox = animated(
 
     return (
       <Container
-        _height={height}
-        _width={width}
-        _x={x}
+        $height={height}
+        $width={width}
+        $x={x}
         car={stint.car}
         onClick={(e) => onClick(stint, e)}
       >

@@ -6,6 +6,7 @@ import { HEADER_HEIGHT, ROW_HEIGHT } from "../constants";
 import dayjs from "dayjs";
 import { HeaderText } from "./HeaderText";
 import { Gridline } from "./Gridline";
+import { TimeChartFlags } from "./TimeChartFlags";
 
 
 const TimeHeader = ({ height, maxTime, scale, startTime }) => {
@@ -81,7 +82,7 @@ export const TimeChart = observer(
 
     const cars = analysis.carsInRunningOrder;
 
-    const height = (cars.length * ROW_HEIGHT - 50);
+    const height = cars.length * ROW_HEIGHT;
     const startTime = analysis.manifest.startTime;
 
     const duration = analysis.referenceTimestamp() - startTime;
@@ -118,12 +119,19 @@ export const TimeChart = observer(
         xFunc={xFunc}
       >
         <svg
-          height={height}
+          height={height + HEADER_HEIGHT}
           style={{ position: 'absolute', left: 0, top: -HEADER_HEIGHT, zIndex: -1 }}
           width={width}
         >
+          <TimeChartFlags
+            height={height + HEADER_HEIGHT}
+            referenceTimestamp={analysis.referenceTimestamp()}
+            startTime={startTime}
+            widthFunc={widthFunc}
+            xFunc={xFunc}
+          />
           <TimeHeader
-            height={height}
+            height={height + HEADER_HEIGHT}
             maxTime={analysis.referenceTimestamp()}
             scale={xScale}
             startTime={startTime}

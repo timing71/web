@@ -7,6 +7,7 @@ import { useAnalysis } from "../context";
 import { GradientDefs } from "../GradientDefs";
 import { Cell, Table } from "../Table";
 import { FlagCell } from "../FlagCell";
+import { FlagRect } from "../FlagRect";
 
 dayjs.extend(duration);
 
@@ -18,10 +19,6 @@ const FlagsContainer = styled.svg.attrs(
 )`
   width: 100%;
   height: 48px;
-`;
-
-const FlagRect = styled.rect`
-  fill: ${ props => props.theme.flagStates[props.flag]?.fill || props.theme.flagStates[props.flag]?.background || 'black' };
 `;
 
 const ShownTable = styled(Table)`

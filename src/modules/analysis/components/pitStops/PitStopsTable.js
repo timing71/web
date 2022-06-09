@@ -2,12 +2,28 @@ import { observer } from "mobx-react-lite";
 import { useAnalysis } from "../context";
 import dayjs from '../../../../datetime';
 import { Cell, Heading, Row, Table } from "../Table";
+import styled, { css } from "styled-components";
+
+const YellowCell = styled(Cell)`
+  ${
+    props => props.isYellow && css`
+      color: yellow;
+    `
+  }
+`;
 
 const PitStopRow = ({ pitStop, referenceTimestamp }) => (
   <Row inProgress={pitStop.inProgress}>
-    <Cell right>{ pitStop.prevStint?.durationLaps }</Cell>
-    <Cell right>{ pitStop.prevStint?.durationSeconds && dayjs.duration(pitStop.prevStint.durationSeconds * 1000).format('HH:mm:ss') }</Cell>
+    <Cell right>{ pitStop.prevStint?.endLap }</Cell>
     <Cell right>{dayjs(pitStop.startTime).format('HH:mm:ss')}</Cell>
+    <Cell right>{ pitStop.prevStint?.durationSeconds && dayjs.duration(pitStop.prevStint.durationSeconds * 1000).format('HH:mm:ss') }</Cell>
+    <Cell right>{ pitStop.prevStint?.durationLaps }</Cell>
+    <YellowCell
+      isYellow={pitStop.prevStint?.yellowLaps > 0}
+      right
+    >
+      { pitStop.prevStint?.yellowLaps || '' }
+    </YellowCell>
     <Cell right>{pitStop.endTime ? dayjs(pitStop.endTime).format('HH:mm:ss') : 'In progress'}</Cell>
     <Cell right>
       {
@@ -29,11 +45,13 @@ export const PitStopsTable = observer(
       <Table>
         <thead>
           <Row>
-            <Heading right>Prev stint laps</Heading>
+            <Heading right>In lap</Heading>
+            <Heading right>Pit in time</Heading>
             <Heading right>Prev stint duration</Heading>
-            <Heading right>Start time</Heading>
-            <Heading right>End time</Heading>
-            <Heading right>Duration</Heading>
+            <Heading right>Prev stint laps</Heading>
+            <Heading right>Yellow laps</Heading>
+            <Heading right>Pit out time</Heading>
+            <Heading right>Stop duration</Heading>
           </Row>
         </thead>
         <tbody>

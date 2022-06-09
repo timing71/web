@@ -44,7 +44,7 @@ export const PitTimeChart = observer(
           keys={['duration']}
           margin={{ top: 30, bottom: 30, left: 50, right: 10 }}
           theme={chartTheme}
-          valueFormat={(v) => dayjs.duration(Math.floor(v)).format('m:ss.SSS')}
+          valueFormat={(v) => dayjs.duration(Math.floor(v)).format('m:ss')}
         />
       </Wrapper>
     );

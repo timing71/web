@@ -110,7 +110,7 @@ export const createSocketIo = (host, uuid, port, callback, forceWebsocket=false)
   const doWebsocket = () => {
     // Technically we should include the sid in the websocket URL;
     // but I don't want to reimplement socket.io's session handling...
-    ws = port.createWebsocket(wsUrl, uuid);
+    ws = port.createWebsocket(wsUrl, { autoReconnect: false });
     ws.on('open', () => {
       ws.readyState === 1 && ws.send('2probe');
     });

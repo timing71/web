@@ -117,9 +117,11 @@ export const createSocketIo = (host, uuid, port, callback, forceWebsocket=false)
     ws.on('close', () => {
       pingInterval && window.clearInterval(pingInterval);
       usingWebsocket = false;
-      polling = true;
       sid = null;
-      doPoll();
+      if (!polling) {
+        polling = true;
+        doPoll();
+      }
     });
     ws.on('message', (data) => {
       if (data.data) {

@@ -208,5 +208,108 @@ describe(
       expect(ps1.durationSeconds).toEqual(0.015); // Not very realistic but Date() takes timestamp with ms!
 
     });
+
+    it('creates a new stint if necessary at the end of the first lap', () => {
+      const colSpec = [
+        Stat.NUM,
+        Stat.STATE,
+        Stat.DRIVER,
+        Stat.LAST_LAP
+      ];
+      const se = new StatExtractor(colSpec);
+      const car = Car.create({ raceNum: RACE_NUM });
+
+      expect(car.stints.length).toBe(0);
+
+      const LAPTIME = 123.456;
+
+      car.update(
+        se, [ RACE_NUM, 'RUN', 'Shea Adam', ['', ''] ],
+        se, [ RACE_NUM, 'RUN', 'Shea Adam', [LAPTIME, ''] ],
+        FlagState.GREEN,
+        ARBITRARY_TIMESTAMP + LAPTIME
+      );
+
+      expect(car.stints.length).toBe(1);
+      expect(car.stints[0].inProgress).toBeTruthy();
+      expect(car.stints[0].startTime).toEqual(new Date(ARBITRARY_TIMESTAMP));
+      expect(car.stints[0].laps.length).toEqual(1);
+      expect(car.stints[0].laps[0].laptime).toEqual(LAPTIME);
+
+    });
+
+    it('creates a new finished stint if car pits at end of first lap', () => {
+      const colSpec = [
+        Stat.NUM,
+        Stat.STATE,
+        Stat.DRIVER,
+        Stat.LAST_LAP
+      ];
+      const se = new StatExtractor(colSpec);
+      const car = Car.create({ raceNum: RACE_NUM });
+
+      expect(car.stints.length).toBe(0);
+
+      car.update(
+        se, [ RACE_NUM, 'RUN', 'Shea Adam', ['', ''] ],
+        se, [ RACE_NUM, 'PIT', 'Shea Adam', ['', ''] ],
+        FlagState.GREEN,
+        ARBITRARY_TIMESTAMP,
+        ARBITRARY_TIMESTAMP - 60
+      );
+
+      expect(car.stints.length).toEqual(1);
+      expect(car.stints[0].inProgress).toBeFalsy();
+      expect(car.stints[0].laps.length).toEqual(0);
+      expect(car.stints[0].startTime).toEqual(new Date(ARBITRARY_TIMESTAMP - 60));
+      expect(car.stints[0].endTime).toEqual(new Date(ARBITRARY_TIMESTAMP));
+    });
+
+    it('deletes ghost stints on update', () => {
+
+      const colSpec = [
+        Stat.NUM,
+        Stat.STATE,
+        Stat.DRIVER,
+        Stat.LAST_LAP
+      ];
+      const se = new StatExtractor(colSpec);
+      const car = Car.create({
+        raceNum: RACE_NUM,
+        drivers: [
+          {
+            idx: 0,
+            car: RACE_NUM,
+            name: 'Paul Truswell'
+          }
+        ],
+        stints: [
+          {
+            car: RACE_NUM,
+            driver: 0,
+            startLap: 1,
+            startTime: ARBITRARY_TIMESTAMP - 60
+          },
+          {
+            car: RACE_NUM,
+            driver: 0,
+            startLap: 1,
+            startTime: ARBITRARY_TIMESTAMP
+          },
+        ]
+      });
+
+      car.update(
+        se, [ RACE_NUM, 'RUN', 'Paul Truswell', ['', ''] ],
+        se, [ RACE_NUM, 'RUN', 'Paul Truswell', [123.456, ''] ],
+        FlagState.GREEN,
+        ARBITRARY_TIMESTAMP + 123.456,
+        ARBITRARY_TIMESTAMP - 60
+      );
+
+      expect(car.stints.length).toEqual(1);
+      expect(car.stints[0].laps[0].laptime).toEqual(123.456);
+
+    });
   }
 );

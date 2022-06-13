@@ -1,4 +1,4 @@
-import { types } from 'mobx-state-tree';
+import { destroy, types } from 'mobx-state-tree';
 import { FlagState, Stat } from '../../racing';
 
 const sum = (total, v) => total + v;
@@ -150,7 +150,7 @@ export const Stint = types.model({
 
 const FLAG_WEIGHTS_INVERSE = Object.fromEntries(Object.entries(FLAG_WEIGHTS).map(a => a.reverse()));
 
-const IN_PIT_STATES = ['PIT', 'FUEL'];
+const IN_PIT_STATES = ['N/S', 'PIT', 'FUEL', 'RET'];
 
 export const Car = types.model({
   raceNum: types.identifier,
@@ -184,7 +184,26 @@ export const Car = types.model({
         self.stints.push(
           Stint.create({
             startLap: self.currentLap,
-            startTime: timestamp,
+            startTime: timestamp - laptime,
+            driver,
+            car: self
+          })
+        );
+
+        if (self.isInPit) {
+          // This basically means: we're pitting at the end of our first lap,
+          // but were shown as "running" before the race started
+          self.stints[0].end(self.currentLap, timestamp);
+        }
+      }
+
+      if (!self.isInPit && !self.currentStint) {
+        // FSR we missed creating a new stint when we left the pits - we're not
+        // there now...
+        self.stints.push(
+          Stint.create({
+            startLap: self.currentLap,
+            startTime: timestamp - laptime,
             driver,
             car: self
           })
@@ -196,7 +215,7 @@ export const Car = types.model({
 
     },
 
-    update(oldStatExtractor, oldCar, statExtractor, car, currentFlag, timestamp) {
+    update(oldStatExtractor, oldCar, statExtractor, car, currentFlag, timestamp, startTime) {
 
       const currentDriverName = statExtractor.get(car, Stat.DRIVER);
       let currentDriver = self.drivers.find( d => d.name === currentDriverName );
@@ -231,8 +250,22 @@ export const Car = types.model({
       const prevState = oldCar && oldStatExtractor?.get(oldCar, Stat.STATE);
       const prevStateIsPit = IN_PIT_STATES.includes(prevState);
 
-      if (currentStateIsPit && !prevStateIsPit && self.currentStint) {
-        self.currentStint.end(self.currentLap, timestamp);
+      if (currentStateIsPit && !prevStateIsPit) {
+        if (self.currentStint) {
+          self.currentStint.end(self.currentLap, timestamp);
+        }
+        else {
+          self.stints.push(
+            Stint.create({
+              startLap: self.currentLap,
+              endLap: self.currentLap,
+              driver: currentDriver,
+              car: self,
+              startTime: startTime,
+              endTime: timestamp
+            })
+          );
+        }
       }
       else if (!currentStateIsPit && prevStateIsPit) {
         self.stints.push(
@@ -286,7 +319,7 @@ export const Car = types.model({
         // Something has happened to confuse us, because only the most recent stint
         // should ever be marked as in progress - possibly junk data from the start
         // of a session?
-        self.stints.shift();
+        destroy(self.stints[0]);
       }
 
     },

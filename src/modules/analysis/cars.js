@@ -31,7 +31,8 @@ export const Cars = types.model({
                 statExtractor,
                 car,
                 currentFlag,
-                newState.lastUpdated
+                newState.lastUpdated,
+                newState.manifest.startTime
               );
             }
           }

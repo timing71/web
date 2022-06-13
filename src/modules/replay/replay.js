@@ -1,4 +1,5 @@
 import { BlobReader, TextWriter, ZipReader } from "@zip.js/zip.js";
+import { patch } from "../diffs";
 
 const FRAME_REGEX = /^([0-9]{5,11})(i?).json$/;
 
@@ -77,7 +78,7 @@ class Replay {
 
     for (let i = 0; i < iframes.length; i++) {
       const ifrState = await this.readEntry(this._iframes[iframes[i]]);
-      myState = applyIframe(myState, ifrState);
+      myState = await applyIframe(myState, ifrState);
     }
 
     return myState;
@@ -90,8 +91,17 @@ class Replay {
 }
 
 const applyIframe = (base, iframe) => {
-  // TODO actually apply iframes
-  return base;
+  return new Promise(
+    (resolve) => {
+      const result = {
+        cars: patch(iframe['cars'], base['cars']),
+        session: patch(iframe['session'], base['session']),
+        messages: iframe['messages'].concat(base['messages']).slice(0, 100),
+        highlight: iframe['highlight'] || []
+      };
+      resolve(result);
+    }
+  );
 };
 
 export const createReplay = async (file) => {

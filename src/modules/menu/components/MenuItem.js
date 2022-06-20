@@ -1,5 +1,5 @@
 import { MenuItem as RkMenuItem } from "reakit/Menu";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const MenuItem = styled(RkMenuItem).attrs({ as: 'div' })`
   font-size: medium;
@@ -27,5 +27,21 @@ export const ToggleMenuItem = styled(MenuItem)`
   & label {
     flex-grow: 1;
     margin: 0 1em;
+  }
+
+  ${
+    props => !!props.disabled && css`
+      color: gray;
+      cursor: not-allowed;
+
+      & > label {
+        cursor: not-allowed;
+      }
+
+      &:hover {
+        background-color: transparent;
+        color: gray;
+      }
+    `
   }
 `;

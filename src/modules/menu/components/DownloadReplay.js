@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 
 import { useServiceManifest } from "../../../components/ServiceContext";
 import { PluginContext } from "../../pluginBridge";
@@ -6,6 +6,7 @@ import { ToggleMenuItem } from "./MenuItem";
 import { SystemMessageContext } from "./SystemMessage";
 import { Logo } from "../../../components/Logo";
 import { Download } from "styled-icons/material";
+import { useMenuContext } from "./context";
 
 const ReplayGenerationMessage = () => (
   <>
@@ -17,16 +18,19 @@ const ReplayGenerationMessage = () => (
   </>
 );
 
-export const DownloadReplay = ({ hide }) => {
+export const DownloadReplay = () => {
   const { manifest } = useServiceManifest();
   const port = useContext(PluginContext);
   const { setMessage } = useContext(SystemMessageContext);
+  const { hide } = useMenuContext();
+  const [enabled, setEnabled] = useState(true);
 
   useEffect(
     () => {
       const handleMessage = (message) => {
         if (message?.uuid === manifest.uuid && message.type === 'REPLAY_GENERATION_FINISHED') {
           setMessage(null);
+          setEnabled(true);
         }
       };
 
@@ -41,6 +45,7 @@ export const DownloadReplay = ({ hide }) => {
 
   const startDownload = useCallback(
     () => {
+      setEnabled(false);
       port.send({ type: 'GENERATE_SERVICE_REPLAY', uuid: manifest.uuid }).then(
         () => setMessage(<ReplayGenerationMessage />)
       );
@@ -50,7 +55,10 @@ export const DownloadReplay = ({ hide }) => {
   );
 
   return (
-    <ToggleMenuItem onClick={startDownload}>
+    <ToggleMenuItem
+      disabled={!enabled}
+      onClick={() => enabled && startDownload()}
+    >
       <span>
         <Download size={24} />
       </span>

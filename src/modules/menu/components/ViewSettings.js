@@ -5,8 +5,9 @@ import { useSetting } from '../../settings';
 import { Check, FormatColorFill, Fullscreen, Highlight } from '@styled-icons/material';
 
 import { ToggleMenuItem } from "./MenuItem";
+import { useMenuContext } from "./context";
 
-const ToggleSetting = ({ icon, label, name }) => {
+const ToggleSetting = ({ disabled, icon, label, name }) => {
   const [setting, setSetting] = useSetting(name);
   const toggle = useCallback(
     () => {
@@ -17,7 +18,8 @@ const ToggleSetting = ({ icon, label, name }) => {
 
   return (
     <ToggleMenuItem
-      onClick={toggle}
+      disabled={disabled}
+      onClick={() => !disabled && toggle()}
     >
       <span>
         { icon }
@@ -34,10 +36,19 @@ const ToggleSetting = ({ icon, label, name }) => {
 export const ViewSettings = () => {
 
   const fsHandle = useFullscreenContext();
+  const { hide } = useMenuContext();
+
+  const toggleFullScreen = useCallback(
+    () => {
+      fsHandle.toggle();
+      hide();
+    },
+    [fsHandle, hide]
+  );
 
   return (
     <>
-      <ToggleMenuItem onClick={fsHandle.toggle}>
+      <ToggleMenuItem onClick={toggleFullScreen}>
         <span>
           <Fullscreen size={24} />
         </span>

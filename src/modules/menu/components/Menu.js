@@ -10,6 +10,7 @@ import styled from "styled-components";
 import { lighten } from "polished";
 
 import { stopEventBubble } from '../../../utils';
+import { MenuContextProvider } from "./context";
 
 
 const SettingsIcon = styled(Settings)`
@@ -66,12 +67,11 @@ const MyMenuButton = styled(MenuButton)`
   }
 `;
 
-export const Menu = ({ children, serviceUUID }) => {
+export const Menu = ({ children }) => {
   const menuState = useMenuState({ animated: 100, gutter: 6 });
 
-
   return (
-    <>
+    <MenuContextProvider value={menuState}>
       <MyMenuButton {...menuState}>
         <SettingsIcon />
       </MyMenuButton>
@@ -88,6 +88,6 @@ export const Menu = ({ children, serviceUUID }) => {
           }
         </MenuInner>
       </RkMenu>
-    </>
+    </MenuContextProvider>
   );
 };

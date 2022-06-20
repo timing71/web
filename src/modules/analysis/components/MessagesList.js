@@ -92,6 +92,9 @@ export const MessagesList = ({ messages }) => {
   const renderRow = useCallback(
     (rowIndex) => {
       const msg = messages[rowIndex];
+      if (!msg) {
+        return null;
+      }
       return (
         <Message
           key={rowIndex}

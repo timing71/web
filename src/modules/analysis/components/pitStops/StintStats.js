@@ -8,6 +8,11 @@ export const StintStats = observer(
   ({ raceNum }) => {
     const analysis = useAnalysis();
     const car = analysis.cars.get(raceNum);
+
+    if (!car) {
+      return null;
+    }
+
     const referenceTimestamp = analysis.referenceTimestamp();
 
     const durations = car.stints.map(

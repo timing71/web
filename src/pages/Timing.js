@@ -60,7 +60,9 @@ const TimingInner = ({ match: { params } }) => {
         msg => {
           setService(msg.service);
           setState(msg.state);
-          setInitialAnalysisState(msg.analysis.state);
+          if (!!msg.analysis) {
+            setInitialAnalysisState(msg.analysis.state);
+          }
         }
       );
 

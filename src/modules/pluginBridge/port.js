@@ -55,7 +55,7 @@ export class Port extends EventEmitter {
     return returnHeaders ? [response.data, response.headers] : response.data;
   }
 
-  createWebsocket(url, { tag=undefined, autoReconnect=true }) {
+  createWebsocket(url, { tag=undefined, autoReconnect=true }={}) {
 
     if (url.slice(0, 5) === 'ws://') {
       console.warn(`Attempting to connect to an insecure WebSocket: ${url}. In order to connect, the connection will be proxied via Timing71 servers.`); // eslint-disable-line no-console

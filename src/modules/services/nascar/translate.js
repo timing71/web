@@ -158,7 +158,7 @@ export const translate = (data) => {
   }
 
   return {
-    cars: mapCars(data.vehicles),
+    cars: mapCars(data.vehicles || []),
     session
   };
 };

@@ -40,6 +40,7 @@ export const Replay = () => {
       <ReplayProvider
         replayFile={replayFile}
         replayState={replayState}
+        reset={() => setReplayFile(null)}
       >
         <TimingScreen>
           <MenuBar>

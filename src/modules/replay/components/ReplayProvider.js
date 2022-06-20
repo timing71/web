@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { Button } from "../../../components/Button";
+import { ErrorScreen } from "../../../components/ErrorScreen";
 
 import { LoadingScreen } from '../../../components/LoadingScreen';
 import { ServiceManifestContext, ServiceStateContext } from "../../../components/ServiceContext";
@@ -22,9 +24,10 @@ const cancellable = promise => {
   return wrappedPromise;
 };
 
-export const ReplayProvider = ({ children, replayFile, replayState: { setDuration, tick, state } }) => {
+export const ReplayProvider = ({ children, replayFile, replayState: { setDuration, tick, state }, reset }) => {
 
   const [replay, setReplay] = useState(null);
+  const [error, setError] = useState(null);
 
   const [currentFrame, setCurrentFrame] = useState(null);
 
@@ -35,6 +38,8 @@ export const ReplayProvider = ({ children, replayFile, replayState: { setDuratio
           setReplay(r);
           setDuration(r.manifest.duration);
         }
+      ).catch(
+        setError
       );
     },
     [replayFile, setDuration]
@@ -82,6 +87,16 @@ export const ReplayProvider = ({ children, replayFile, replayState: { setDuratio
   );
 
   if (!replay) {
+    if (error) {
+      return (
+        <ErrorScreen error={error}>
+          <p>
+            The file you have selected is not a valid Timing71 replay file.
+          </p>
+          <Button onClick={reset}>Try another file</Button>
+        </ErrorScreen>
+      );
+    }
     return (
       <LoadingScreen
         message='Loading replay...'

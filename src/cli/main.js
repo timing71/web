@@ -1,4 +1,5 @@
 import { Argument, Command } from 'commander';
+import { finaliseRecording } from './record';
 
 import { serviceCommand } from './service';
 import { Services } from './services';
@@ -16,5 +17,10 @@ t71.command('start')
    .argument('[source]', 'Source URL (if needed by timing service)')
    .option('-r, --record', 'record service states to directory')
    .action(serviceCommand);
+
+t71.command('finalise')
+   .description('Finalise and zip a recording')
+   .argument('<recordingPath>', 'Path to directory containing recording data')
+   .action(finaliseRecording);
 
 t71.parse();

@@ -1,4 +1,4 @@
-import { Stat } from "../../racing";
+import { Stat } from '@timing71/common';
 import { Message } from "./Message";
 
 export const PitMessage = (se, oldCar, newCar) => {

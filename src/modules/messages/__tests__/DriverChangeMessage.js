@@ -1,5 +1,5 @@
 import { generateMessages } from '../';
-import { Stat } from '../../../racing';
+import { Stat } from '@timing71/common';
 
 it('generates car message on driver change', () => {
   const colSpec = [Stat.NUM, Stat.STATE, Stat.CLASS, Stat.DRIVER];

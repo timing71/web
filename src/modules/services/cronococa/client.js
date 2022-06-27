@@ -1,5 +1,5 @@
 import throttle from "lodash.throttle";
-import { FlagState, Stat } from "../../../racing";
+import { FlagState, Stat } from "@timing71/common";
 import { parseTime } from "../utils";
 
 const COLUMN_SPEC = [

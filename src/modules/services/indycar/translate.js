@@ -1,4 +1,4 @@
-import { FlagState, Stat } from "../../../racing";
+import { FlagState, Stat } from "@timing71/common";
 import { parseTime } from "../utils";
 
 const mapCarState = (car) => {

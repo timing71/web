@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
-import { FlagState } from '../../../../racing';
+import { FlagState } from '@timing71/common';
+
 import { LaptimeChart } from '../LaptimeChart';
 
 export const LapHistoryChart = observer(

@@ -1,4 +1,4 @@
-import { FlagState } from "../../../racing";
+import { FlagState } from "@timing71/common";
 import { Session } from "../session";
 
 describe('Session', () => {

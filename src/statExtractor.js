@@ -1,4 +1,4 @@
-import { Stat } from "./racing";
+import { Stat } from '@timing71/common';
 
 export class StatExtractor {
   constructor(columnSpec=[]) {

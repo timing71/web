@@ -1,5 +1,6 @@
 import styled, { css, keyframes } from "styled-components";
-import { Stat } from "../../../racing";
+import { Stat } from '@timing71/common';
+
 import { TimingTableCell } from "./TimingTableCell";
 
 const blink = keyframes`

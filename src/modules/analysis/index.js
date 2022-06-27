@@ -1,5 +1,6 @@
-import { onPatch, onSnapshot, types } from 'mobx-state-tree';
 import { useRef, useEffect, useContext } from 'react';
+import { Stat } from '@timing71/common';
+import { onPatch, onSnapshot, types } from 'mobx-state-tree';
 
 import { Cars } from './cars';
 import { Messages } from './messages';
@@ -12,7 +13,6 @@ import { useBroadcastChannel } from '../../broadcastChannel';
 import { State } from './state';
 import { Manifest } from './manifest';
 import { StatExtractor } from '../../statExtractor';
-import { Stat } from '../../racing';
 
 const MIN_LAPS_REQUIRED_FOR_PREDICTION = 10;
 

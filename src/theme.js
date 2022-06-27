@@ -1,6 +1,7 @@
+import { FlagState } from '@timing71/common';
+
 import { css, keyframes } from "styled-components";
 
-import { FlagState } from "./racing";
 import chequer from './img/chequer.png';
 
 const flashyKeyframes = keyframes`

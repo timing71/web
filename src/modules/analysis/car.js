@@ -1,5 +1,5 @@
+import { FlagState, Stat } from '@timing71/common';
 import { destroy, types } from 'mobx-state-tree';
-import { FlagState, Stat } from '../../racing';
 
 const sum = (total, v) => total + v;
 

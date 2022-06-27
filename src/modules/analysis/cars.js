@@ -1,7 +1,7 @@
+import { Stat } from '@timing71/common';
 import { types } from 'mobx-state-tree';
 import { Car } from './car';
 import { StatExtractor } from '../../statExtractor';
-import { Stat } from '../../racing';
 
 export const Cars = types.model({
   cars: types.map(Car)

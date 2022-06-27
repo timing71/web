@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 
+import { FlagState } from '@timing71/common';
 import { ThemeDecorator } from "../../../../stories/decorators";
-import { FlagState } from '../../../../racing';
 import { FlagPanel as FlagPanelComponent } from "../FlagPanel";
 
 export default {

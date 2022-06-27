@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
+import { Stat } from '@timing71/common';
 import styled from "styled-components";
+
 import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
-import { Stat } from "../../../racing";
 import { StatExtractor } from "../../../statExtractor";
 import { useSetting } from "../../settings";
 import { TimingTableHeader } from "./TimingTableHeader";

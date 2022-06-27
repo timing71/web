@@ -1,5 +1,5 @@
 import { generateMessages } from '../';
-import { FlagState } from '../../../racing';
+import { FlagState } from '@timing71/common';
 
 const FLAG_EXPECTATIONS = [
   [FlagState.GREEN, FlagState.YELLOW, 'Yellow flags shown'],

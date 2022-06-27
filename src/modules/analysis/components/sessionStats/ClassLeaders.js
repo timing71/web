@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import styled from 'styled-components';
-import { Stat } from '../../../../racing';
+import { Stat } from '@timing71/common';
 import { StatExtractor } from '../../../../statExtractor';
 import { useAnalysis } from '../context';
 import { Cell, Heading, Table } from '../Table';

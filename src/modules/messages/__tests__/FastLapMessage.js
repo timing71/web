@@ -1,5 +1,5 @@
 import { generateMessages } from '../';
-import { Stat } from '../../../racing';
+import { Stat } from '@timing71/common';
 
 it('generates car message on personal best lap', () => {
   const colSpec = [Stat.NUM, Stat.STATE, Stat.LAST_LAP, Stat.BEST_LAP];

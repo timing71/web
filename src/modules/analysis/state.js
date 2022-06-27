@@ -1,6 +1,6 @@
+import { FlagState } from '@timing71/common';
 import { types } from "mobx-state-tree";
 
-import { FlagState } from '../../racing';
 
 const StateSession = types.model({
   timeElapsed: types.optional(types.union(types.undefined, types.number), 0),

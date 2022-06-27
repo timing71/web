@@ -1,5 +1,5 @@
+import { FlagState } from '@timing71/common';
 import { Sparklines, SparklinesLine } from "react-sparklines";
-import { FlagState } from "../../../../../racing";
 
 export const StintSparklines = ({ height, stint, width }) => {
   const greenLaps = stint.relevantLaps.filter(l => l.flag === FlagState.GREEN);

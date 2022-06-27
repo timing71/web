@@ -1,4 +1,4 @@
-import { FlagState, Stat } from "../../racing";
+import { FlagState, Stat } from '@timing71/common';
 import { StatExtractor } from '../../statExtractor';
 
 export const CURRENT_VERSION = 3;

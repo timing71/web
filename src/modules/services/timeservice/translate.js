@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { FlagState, Stat } from '../../../racing';
+import { FlagState, Stat } from '@timing71/common';
 import { realToServerTime } from './utils';
 
 import CustomParseFormat from 'dayjs/plugin/customParseFormat';

@@ -1,4 +1,4 @@
-import { FlagState, Stat } from '../../../racing';
+import { FlagState, Stat } from '@timing71/common';
 import { dasherizeParts, parseTime } from '../utils';
 
 const COLSPEC = [

@@ -1,4 +1,4 @@
-import { FlagState, Stat } from "../../../racing";
+import { FlagState, Stat } from "@timing71/common";
 
 const FLAG_MAP = {
   1: FlagState.GREEN,

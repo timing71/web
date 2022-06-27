@@ -1,6 +1,6 @@
+import { FlagState } from "@timing71/common";
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
-import { FlagState } from "../../../../../racing";
 
 import { useAnalysis } from "../../context";
 import { FlagRect } from "../../FlagRect";

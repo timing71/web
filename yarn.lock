@@ -3483,6 +3483,11 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
 
+"@timing71/common@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@timing71/common/-/common-0.0.1.tgz#1adbfe2697e6942df4b103a40c5cee6328c15450"
+  integrity sha512-Geab4/Mzt5kjWSwVp1tYta1agLOC6Mzx401WdFstrjNkbnpcuGj1HmusjnNMe3WviJr4EIspK6VcNbWLH5OOGw==
+
 "@tootallnate/once@1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"

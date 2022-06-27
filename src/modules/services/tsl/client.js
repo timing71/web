@@ -1,4 +1,4 @@
-import { FlagState, Stat } from "../../../racing";
+import { FlagState, Stat } from "@timing71/common";
 import { RaceControlMessage } from "../../messages";
 import { dasherizeParts, parseTime, titleCase } from "../utils";
 

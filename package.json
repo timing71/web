@@ -116,7 +116,7 @@
     "postbuild": "yarn run generateConfig",
     "lint": "eslint src/",
     "test": "node ./scripts/test.js",
-    "generateConfig": "NODE_ENV=production babel-node --presets @babel/env,@babel/preset-react bin/generateConfigFile.js",
+    "generateConfig": "NODE_ENV=production webpack --config config/webpack.config.generator.js && node cli/generateConfig.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },

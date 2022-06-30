@@ -13,7 +13,7 @@ const pluginConfig = {
 SERVICE_PROVIDERS.forEach(
   provider => {
     if (!provider.private) {
-      pluginConfig.supportedURLs.push(provider.regex.source.replaceAll('\\', ''));
+      pluginConfig.supportedURLs.push(provider.regex.source.replace(/\\/g, ''));
     }
   }
 );

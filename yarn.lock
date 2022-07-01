@@ -3483,10 +3483,12 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
 
-"@timing71/common@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@timing71/common/-/common-0.0.1.tgz#1adbfe2697e6942df4b103a40c5cee6328c15450"
-  integrity sha512-Geab4/Mzt5kjWSwVp1tYta1agLOC6Mzx401WdFstrjNkbnpcuGj1HmusjnNMe3WviJr4EIspK6VcNbWLH5OOGw==
+"@timing71/common@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@timing71/common/-/common-0.0.2.tgz#9961881805feb23d3c990c07f97ddefecdb7d25d"
+  integrity sha512-oAs0GfNBbsmRf9Qc9dlOD5eQs0JYHybnisUl6TAd6r4mJBJ2SKU6YO65Dr5Oj+jkub/d7jLleMvm0/xGrc20RQ==
+  dependencies:
+    "@zip.js/zip.js" "^2.4.26"
 
 "@tootallnate/once@1":
   version "1.1.2"
@@ -4237,6 +4239,11 @@
   version "2.4.19"
   resolved "https://registry.yarnpkg.com/@zip.js/zip.js/-/zip.js-2.4.19.tgz#c9b8934e094e07fea6ba115d6d013697916e8c0b"
   integrity sha512-z1uKBl4q1O1KVhK8Q1m6OeGTQtMK9wCKXxALSUioFEJe/Chafi90/u1MFQWzinXjogwsM+zxCaEUZTWWbDzu/Q==
+
+"@zip.js/zip.js@^2.4.26":
+  version "2.4.26"
+  resolved "https://registry.yarnpkg.com/@zip.js/zip.js/-/zip.js-2.4.26.tgz#b79bb2055dc6e185890ee01cdb710caba505d5b2"
+  integrity sha512-I9HBO3BHIxEMQmltmHM3iqUW6IHqi3gsL9wTSXvHTRpOrA6q2OxtR58EDSaOGjHhDVJ+wIOAxZyKq2x00AVmqw==
 
 abab@^2.0.3, abab@^2.0.5:
   version "2.0.6"

@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+
+import { loadReplayFromFile } from '@timing71/common';
+
 import { Button } from "../../../components/Button";
 import { ErrorScreen } from "../../../components/ErrorScreen";
 
 import { LoadingScreen } from '../../../components/LoadingScreen';
 import { ServiceManifestContext, ServiceStateContext } from "../../../components/ServiceContext";
-import { createReplay } from '../replay';
 
 const cancellable = promise => {
   let rejectFn;
@@ -33,7 +35,7 @@ export const ReplayProvider = ({ children, replayFile, replayState: { setDuratio
 
   useEffect(
     () => {
-      createReplay(replayFile).then(
+      loadReplayFromFile(replayFile).then(
         r => {
           setReplay(r);
           setDuration(r.manifest.duration);

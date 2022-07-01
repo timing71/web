@@ -4,12 +4,11 @@ import fs from 'fs';
 import path from 'path';
 import * as zip from "@zip.js/zip.js";
 import { Blob } from "blob-polyfill";
+import { REPLAY_FRAME_REGEX } from '@timing71/common';
 
 globalThis.Blob = Blob;
 
 zip.configure({ useWebWorkers: false });  // We're not in browser any more, Toto
-
-const FRAME_REGEX = /^([0-9]{5,11})(i?).json$/;
 
 export class Recorder {
   constructor(uuid) {
@@ -78,7 +77,7 @@ export const finaliseRecording = async (recordingPath) => {
     new zip.TextReader(JSON.stringify(manifest))
   );
 
-  const frames = fs.readdirSync(recordingPath).filter(f => FRAME_REGEX.test(f));
+  const frames = fs.readdirSync(recordingPath).filter(f => REPLAY_FRAME_REGEX.test(f));
 
   frames.sort(
     (a, b) => parseInt(a, 10) - parseInt(b, 10)

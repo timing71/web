@@ -16,6 +16,9 @@ const hasJsxRuntime = (() => {
 })();
 
 module.exports = babelJest.createTransformer({
+  plugins: [
+    "babel-plugin-transform-import-meta"
+  ],
   presets: [
     [
       require.resolve('babel-preset-react-app'),

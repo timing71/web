@@ -115,7 +115,7 @@
     "cli:build:dev": "NODE_ENV=development webpack --config config/webpack.config.cli.js",
     "postbuild": "yarn run generateConfig",
     "lint": "eslint src/",
-    "test": "node ./scripts/test.js",
+    "test": "NODE_OPTIONS=--experimental-vm-modules node ./scripts/test.js",
     "generateConfig": "NODE_ENV=production webpack --config config/webpack.config.generator.js && node cli/generateConfig.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
@@ -204,7 +204,6 @@
       "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
     "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
       "^.+\\.module\\.(css|sass|scss)$"
     ],
     "modulePaths": [],

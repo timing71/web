@@ -72,10 +72,14 @@ export const useReplayState = () => {
         case actionTypes.TICK:
           const delta = Date.now() - prevState.prevTick;
 
+          const nextPos = prevState.position + (prevState.rate * delta / 1000);
+          const nextPlaying = nextPos < prevState.duration;
+
           return {
             ...prevState,
-            position: prevState.position + (prevState.rate * delta / 1000),
-            prevTick: Date.now()
+            position: Math.min(nextPos, prevState.duration),
+            prevTick: Date.now(),
+            playing: nextPlaying
           };
 
         default:

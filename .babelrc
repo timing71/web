@@ -6,6 +6,6 @@
   ],
   "presets": [
     "@babel/env",
-    "@babel/preset-react"
+    ["@babel/preset-react", { "runtime": "automatic" }]
   ]
 }

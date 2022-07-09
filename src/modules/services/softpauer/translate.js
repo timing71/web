@@ -255,7 +255,7 @@ export const translate = (state, clock) => {
     trackData: getTrackData(sq?.data?.W)
   };
 
-  if (free.data?.S === 'Sprint Qualifying' || free.data?.S === 'Race') {
+  if (free.data?.S === 'Sprint' || free.data?.S === 'Race') {
     const currentLap = free.data.L;
     const totalLaps = free.data.TL;
     session['lapsRemain'] = Math.floor(Math.max(0, totalLaps - currentLap + 1));

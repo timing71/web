@@ -43,7 +43,7 @@ const TimingTableRowInner = styled.tr`
   }
 `;
 
-export const TimingTableRow = ({ car, highlight, manifest, position, statExtractor }) => (
+export const TimingTableRow = ({ car, hiddenCols, highlight, manifest, position, statExtractor }) => (
   <TimingTableRowInner
     carState={statExtractor.get(car, Stat.STATE)}
     highlight={highlight}
@@ -51,12 +51,14 @@ export const TimingTableRow = ({ car, highlight, manifest, position, statExtract
   >
     <Position>{position}</Position>
     {
-      manifest.colSpec && manifest.colSpec.map(
+      manifest.colSpec && manifest.colSpec.filter(
+        stat => !hiddenCols.includes(stat[0])
+      ).map(
         (stat, idx) => (
           <TimingTableCell
             key={idx}
             stat={stat}
-            value={car[idx]}
+            value={statExtractor.get(car, stat)}
           />
         )
       )

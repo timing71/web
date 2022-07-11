@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+
 import { useFullscreenContext } from "../../../components/FullscreenContext";
 import { useSetting } from '../../settings';
 
@@ -6,6 +7,7 @@ import { Check, FormatColorFill, Fullscreen, Highlight } from '@styled-icons/mat
 
 import { ToggleMenuItem } from "./MenuItem";
 import { useMenuContext } from "./context";
+import { ColumnSettings } from "./ColumnSettings";
 
 const ToggleSetting = ({ disabled, icon, label, name }) => {
   const [setting, setSetting] = useSetting(name);
@@ -67,6 +69,7 @@ export const ViewSettings = () => {
         label='Use row flashing animations'
         name='animation'
       />
+      <ColumnSettings />
     </>
   );
 };

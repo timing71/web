@@ -32,6 +32,8 @@ export const TimingTable = () => {
   const { manifest } = useServiceManifest();
   const { state } = useServiceState();
 
+  const [hiddenCols] = useSetting('columns.hidden', []);
+
   const highlights = useRef({});
   const now = Date.now();
 
@@ -63,6 +65,7 @@ export const TimingTable = () => {
                 return (
                   <TimingTableRow
                     car={car}
+                    hiddenCols={hiddenCols}
                     highlight={doHighlight && ((state.highlight || []).includes(carNum) || (highlights.current[carNum] || 0) > now)}
                     key={carNum}
                     manifest={manifest}

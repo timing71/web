@@ -11,9 +11,11 @@ export const Debouncer = ({ children, minInterval=1000 }) => {
 
   useEffect(
     () => {
-      pendingState.current = state;
-      pendingHighlights.current = [...pendingHighlights.current, ...(state.highlight || [])];
-      hasUpdated.current = true;
+      if (state) {
+        pendingState.current = state;
+        pendingHighlights.current = [...pendingHighlights.current, ...(state.highlight || [])];
+        hasUpdated.current = true;
+      }
     },
     [state]
   );

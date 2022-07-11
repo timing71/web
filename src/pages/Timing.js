@@ -13,7 +13,7 @@ import { useSetting } from '../modules/settings';
 import { Analysis } from "../modules/analysis";
 import { LoadingScreen } from "../components/LoadingScreen";
 import { ServiceProvider } from "../modules/services";
-import { DEFAULT_STATE, processManifestUpdate, processStateUpdate } from "../modules/serviceHost";
+import { processManifestUpdate, processStateUpdate } from "../modules/serviceHost";
 import {
   DelayIndicator,
   DelaySetting,
@@ -36,7 +36,7 @@ const TimingInner = ({ match: { params } }) => {
   // directly to us as a direct descendent of a <Route> (in App.js).
   const { serviceUUID } = params;
   const [service, setService] = useState(null);
-  const [state, setState] = useState({ ...DEFAULT_STATE });
+  const [state, setState] = useState(null);
   const [initialAnalysisState, setInitialAnalysisState] = useState(null);
   const port = useContext(PluginContext);
 
@@ -81,13 +81,13 @@ const TimingInner = ({ match: { params } }) => {
 
   const updateManifest = useCallback(
     (newManifest) => processManifestUpdate(
-      state.manifest,
+      state?.manifest,
       newManifest,
       service.startTime,
       serviceUUID,
       (m) => updateState({ manifest: m })
     ),
-    [service?.startTime, serviceUUID, state.manifest, updateState]
+    [service?.startTime, serviceUUID, state?.manifest, updateState]
   );
 
   const [ delay ] = useSetting('delay');
@@ -106,10 +106,10 @@ const TimingInner = ({ match: { params } }) => {
     [port, serviceUUID]
   );
 
-  if (service && state && initialAnalysisState) {
+  if (service) {
 
     return (
-      <ServiceManifestContext.Provider value={{ manifest: state.manifest, updateManifest }}>
+      <ServiceManifestContext.Provider value={{ manifest: state?.manifest, updateManifest }}>
         <ServiceStateContext.Provider value={{ state, updateState }}>
           <ServiceProvider
             onReady={setReady}

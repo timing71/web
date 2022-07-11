@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   border-top: 2px solid ${ props => props.theme.site.highlightColor };
 
   min-height: 0;
-  overflow-y: auto;
+  overflow-y: scroll;
   padding: 0;
 
 `;
@@ -20,7 +20,7 @@ const MessagesTable = styled.table`
 
 export const Messages = () => {
 
-  const { state: { messages } } = useServiceState();
+  const { state } = useServiceState();
 
   return (
     <Wrapper
@@ -34,7 +34,7 @@ export const Messages = () => {
         </colgroup>
         <tbody>
           {
-            messages.map(
+            (state?.messages || []).map(
               (m, idx) => (
                 <Message
                   key={idx}

@@ -32,19 +32,23 @@ const Analyser = types.model({
     return {
       actions: {
         updateState: (oldState, newState, timestamp) => {
-          self.cars.update(oldState, newState);
-          self.messages.update(oldState, newState);
-          self.session.update(oldState, newState);
 
-          self.state.update(oldState, newState);
-          self.manifest = newState.manifest;
+          if (newState?.manifest && oldState?.manifest) {
+            self.cars.update(oldState, newState);
+            self.messages.update(oldState, newState);
+            self.session.update(oldState, newState);
 
-          self.latestTimestamp = timestamp || new Date();
+            self.state.update(oldState, newState);
+            self.manifest = newState.manifest;
 
-          const maxLap = Math.max(...self.cars.map(c => c.currentLap));
-          if (maxLap > 0) {
-            self.session.setLeaderLap(maxLap);
+            self.latestTimestamp = timestamp || new Date();
+
+            const maxLap = Math.max(...self.cars.map(c => c.currentLap));
+            if (maxLap > 0) {
+              self.session.setLeaderLap(maxLap);
+            }
           }
+
 
         },
 
@@ -134,8 +138,8 @@ const Analyser = types.model({
   });
 
 export const createAnalyser = (initialState, live) => {
-  if (initialState === undefined || initialState?.version === CURRENT_VERSION) {
-    const a = Analyser.create(initialState);
+  if (initialState === undefined || initialState === null || initialState?.version === CURRENT_VERSION) {
+    const a = Analyser.create(initialState || undefined);
     a.setLive(live);
     return a;
   }

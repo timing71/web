@@ -28,7 +28,9 @@ export const StateRetriever = ({ children, delay=0, serviceUUID }) => {
       }).then(
         s => {
           //console.log(`Got state for ${dayjs(timestamp).format("HH:mm:ss")} (delay ${delay})`, dayjs(s.state.lastUpdated).format("HH:mm:ss"));
-          setState({ ...s.state, delay });
+          if (s.state) {
+            setState({ ...s.state, delay });
+          }
         }
       );
     },

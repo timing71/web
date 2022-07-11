@@ -31,7 +31,13 @@ const DataTable = styled.table`
 export const DataPanel = () => {
 
   const { manifest } = useServiceManifest();
-  const { state: { session } } = useServiceState();
+  const { state } = useServiceState();
+
+  if (!state.session || !manifest) {
+    return null;
+  }
+
+  const session = state.session;
 
   const spec = manifest.trackDataSpec || [];
   const data = session.trackData || [];

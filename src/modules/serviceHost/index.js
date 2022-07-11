@@ -1,13 +1,6 @@
 import deepEqual from "deep-equal";
 import { generateMessages } from "../messages";
 
-export const DEFAULT_STATE = {
-  cars: [],
-  session: {},
-  messages: [],
-  manifest: {}
-};
-
 export const processStateUpdate = (oldState, updatedState) => {
   const newState = { ...oldState, ...updatedState };
 
@@ -27,7 +20,7 @@ export const processStateUpdate = (oldState, updatedState) => {
 
   newState.messages = [
     ...newMessages,
-    ...oldState.messages
+    ...(oldState?.messages || [])
   ].slice(0, 100);
 
   newState.lastUpdated = Date.now();

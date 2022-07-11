@@ -22,6 +22,9 @@ const PER_CAR_GENERATORS = [  // Order can be significant (e.g. driver change be
 ];
 
 export const generateMessages = (manifest, oldState, newState) => {
+  if (!newState || !oldState) {
+    return [];
+  }
   const globalMessages = GLOBAL_GENERATORS.flatMap(
     mg => {
       const maybeMessages = mg(manifest, oldState, newState);

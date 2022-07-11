@@ -12,7 +12,7 @@ export const UpdateTime = () => {
         size={16}
         title='Last updated'
       />
-      { dayjs(state.lastUpdated).format("HH:mm:ss") }
+      { state.lastUpdated ? dayjs(state.lastUpdated).format("HH:mm:ss") : '-' }
     </div>
   );
 };

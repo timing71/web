@@ -28,7 +28,7 @@ export const DownloadReplay = () => {
   useEffect(
     () => {
       const handleMessage = (message) => {
-        if (message?.uuid === manifest.uuid && message.type === 'REPLAY_GENERATION_FINISHED') {
+        if (message?.uuid === manifest?.uuid && message.type === 'REPLAY_GENERATION_FINISHED') {
           setMessage(null);
           setEnabled(true);
         }
@@ -40,7 +40,7 @@ export const DownloadReplay = () => {
         port.removeListener('message', handleMessage);
       };
     },
-    [manifest.uuid, port, setMessage]
+    [manifest?.uuid, port, setMessage]
   );
 
   const startDownload = useCallback(
@@ -56,7 +56,7 @@ export const DownloadReplay = () => {
 
   return (
     <ToggleMenuItem
-      disabled={!enabled}
+      disabled={!enabled && !!manifest}
       onClick={() => enabled && startDownload()}
     >
       <span>

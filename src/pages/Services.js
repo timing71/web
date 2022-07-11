@@ -10,6 +10,7 @@ import { Page } from '../components/Page';
 import { PluginContext } from '../modules/pluginBridge';
 import { Helmet } from 'react-helmet-async';
 import { Logo } from '../components/Logo';
+import { dasherizeParts } from '../modules/services/utils';
 
 const Wrapper = styled.div`
   padding: 1em;
@@ -18,11 +19,20 @@ const Wrapper = styled.div`
 const ServiceTable = styled.table`
 
 width: 100%;
+border-collapse: collapse;
 
 & th {
   color: ${ props => props.theme.site.highlightColor };
   text-align: left;
   font-family: ${ props => props.theme.site.headingFont };
+}
+
+& tr:nth-child(even) {
+  background-color: #202020;
+}
+
+& td {
+  padding: 0.5em;
 }
 
 & td button {
@@ -155,34 +165,44 @@ const WrappingCell = styled.td`
   word-break: break-all;
 `;
 
-const ServiceEntry = ({ openAnalysis, reload, service }) => (
-  <tr>
-    <WrappingCell>{service.source}</WrappingCell>
-    <UnwrappingCell>
-      { dayjs(service.startTime).format("YYYY-MM-DD HH:mm:ss") }
-    </UnwrappingCell>
-    <UnwrappingCell>
-      <RouteryButton
-        title='Open'
-        to={`/timing/${service.uuid}`}
-      >
-        <OpenInBrowser size={24} />
-      </RouteryButton>
-      <Button
-        onClick={() => openAnalysis(service.uuid)}
-        title='Launch analysis'
-      >
-        <StackedBarChart size={24} />
-      </Button>
-      <ReplayButton uuid={service.uuid} />
-      <AnalysisButton uuid={service.uuid} />
-      <DeleteButton
-        reload={reload}
-        uuid={service.uuid}
-      />
-    </UnwrappingCell>
-  </tr>
-);
+const ServiceEntry = ({ openAnalysis, reload, service }) => {
+
+  const name = service.state?.manifest?.name ? dasherizeParts(service.state.manifest.name, service.state.manifest.description) : service.source;
+
+  const duration = service.state?.manifest?.startTime && service.state?.lastUpdated ?
+  dayjs.duration(service.state.lastUpdated - service.state.manifest.startTime).format('HH:mm:ss') :
+  '-';
+
+  return (
+    <tr>
+      <UnwrappingCell>
+        { dayjs(service.startTime).format("YYYY-MM-DD HH:mm:ss") }
+      </UnwrappingCell>
+      <WrappingCell>{name}</WrappingCell>
+      <WrappingCell>{duration}</WrappingCell>
+      <UnwrappingCell>
+        <RouteryButton
+          title='Open'
+          to={`/timing/${service.uuid}`}
+        >
+          <OpenInBrowser size={24} />
+        </RouteryButton>
+        <Button
+          onClick={() => openAnalysis(service.uuid)}
+          title='Launch analysis'
+        >
+          <StackedBarChart size={24} />
+        </Button>
+        <ReplayButton uuid={service.uuid} />
+        <AnalysisButton uuid={service.uuid} />
+        <DeleteButton
+          reload={reload}
+          uuid={service.uuid}
+        />
+      </UnwrappingCell>
+    </tr>
+  );
+};
 
 const PageTitle = styled.h2`
   display: flex;
@@ -242,10 +262,13 @@ export const Services = () => {
               <thead>
                 <tr>
                   <th>
+                    Started at
+                  </th>
+                  <th>
                     Source
                   </th>
                   <th>
-                    Started at
+                    Duration
                   </th>
                   <th>
                     Actions

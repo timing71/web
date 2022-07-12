@@ -59,12 +59,26 @@ const TimingScreenInner = ({ children }) => {
   );
 };
 
+const DelaySetting = () => {
+  const [ delay, setDelay ] = useSetting('delay');
+  return (
+    <div style={{ marginTop: '1em' }}>
+      Delay (seconds):
+      <Spinner
+        min={0}
+        onChange={e => setDelay(e || 0)}
+        value={delay || 0}
+      />
+    </div>
+  );
+};
+
 export const TimingScreen = ({ children }) => {
 
   const { manifest } = useServiceManifest();
   const { state } = useServiceState();
 
-  const [ delay, setDelay ] = useSetting('delay');
+  const [ delay ] = useSetting('delay');
 
   const showTable = !!manifest && !!state?.manifest?.colSpec;
 
@@ -85,14 +99,9 @@ export const TimingScreen = ({ children }) => {
             !showTable && (
               <LoadingMessage>
                 Waiting for data...
-                <div style={{ marginTop: '1em' }}>
-                  Delay (seconds):
-                  <Spinner
-                    min={0}
-                    onChange={e => setDelay(e || 0)}
-                    value={delay || 0}
-                  />
-                </div>
+                {
+                  delay > 0 && <DelaySetting />
+                }
               </LoadingMessage>
             )
           }

@@ -33,7 +33,7 @@ export const DataPanel = () => {
   const { manifest } = useServiceManifest();
   const { state } = useServiceState();
 
-  if (!state.session || !manifest) {
+  if (!state?.session || !manifest) {
     return null;
   }
 

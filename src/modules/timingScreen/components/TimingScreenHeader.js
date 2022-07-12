@@ -5,7 +5,9 @@ import { FlagPanel } from './FlagPanel';
 export const TimingScreenHeader = () => {
 
   const { manifest } = useServiceManifest();
-  const { state: { session } } = useServiceState();
+  const { state } = useServiceState();
+
+  const session = state?.session;
 
   const useLaps = session && session.lapsRemain !== undefined;
 
@@ -22,13 +24,13 @@ export const TimingScreenHeader = () => {
         )
       }
       <FlagPanel
-        flag={session.flagState}
+        flag={session?.flagState}
         text={`${manifest.name} - ${manifest.description}`}
       />
       {
         useLaps && (
           <ClockInner className='right'>
-            {session.lapsRemain} lap{session.lapsRemain === 1 ? '' : 's'} remaining
+            {session?.lapsRemain} lap{session?.lapsRemain === 1 ? '' : 's'} remaining
           </ClockInner>
         )
       }

@@ -21,7 +21,7 @@ const getServiceData = async (source, port) => {
   const page = await port.fetch(source);
   const match = page.match(TID_REGEX);
 
-  return JSON.parse(match.groups.service_data || 'null');
+  return JSON.parse(match.groups?.service_data || 'null');
 
 };
 

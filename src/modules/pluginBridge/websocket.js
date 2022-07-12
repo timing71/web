@@ -40,10 +40,14 @@ export class WrappedWebsocket extends EventEmitter {
   }
 
   onReceivedMessage(msg) {
-    this.emit('message', { data: msg.data });
-    if (this.onmessage) {
-      this.onmessage({ data: msg.data });
-    }
+    Promise.resolve().then(
+      () => {
+        this.emit('message', { data: msg.data });
+        if (this.onmessage) {
+          this.onmessage({ data: msg.data });
+        }
+      }
+    );
   }
 
   send(data) {

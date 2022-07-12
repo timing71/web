@@ -24,18 +24,22 @@ export const Debouncer = ({ children, minInterval=1000 }) => {
     () => {
       const interval = window.setInterval(
         () => {
-          if (hasUpdated.current) {
-            const now = Date.now();
-            if (now - lastUpdate.current >= minInterval) {
-              setDebouncedState({
-                ...pendingState.current,
-                highlight: [...pendingHighlights.current]
-              });
-              pendingHighlights.current = [];
-              lastUpdate.current = now;
-              hasUpdated.current = false;
+          Promise.resolve().then(
+            () => {
+              if (hasUpdated.current) {
+                const now = Date.now();
+                if (now - lastUpdate.current >= minInterval) {
+                  setDebouncedState({
+                    ...pendingState.current,
+                    highlight: [...pendingHighlights.current]
+                  });
+                  pendingHighlights.current = [];
+                  lastUpdate.current = now;
+                  hasUpdated.current = false;
+                }
+              }
             }
-          }
+          );
         },
         minInterval / 2
       );

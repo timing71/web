@@ -24,12 +24,16 @@ export const Analysis = ({ match: { params: { serviceUUID } } }) => {
         uuid: serviceUUID
       }).then(
         msg => {
-          setManifest(msg.state.manifest);
-          applySnapshot(
-            analyser.current,
-            msg.analysis.state
-          );
-          initialised.current = true;
+          if (msg.state?.manifest) {
+            setManifest(msg.state.manifest);
+          }
+          if (msg.analysis?.state) {
+            applySnapshot(
+              analyser.current,
+              msg.analysis.state
+            );
+            initialised.current = true;
+          }
         }
       );
 

@@ -60,7 +60,9 @@ export const ReplayProvider = ({ children, replayFile, replayState: { setDuratio
 
         const seek = cancellable(replay.getStateAtRelative(position));
         prevSeek.current = seek;
-        seek.then(setCurrentFrame).catch(
+        seek.then(
+          f => setCurrentFrame({ ...f, manifest: replay.manifest })
+        ).catch(
           e => {
             if (!e.cancelled) {
               throw e;

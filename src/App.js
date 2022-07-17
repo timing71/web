@@ -8,6 +8,7 @@ import { Analysis } from './pages/Analysis';
 import { FAQ } from './pages/FAQ';
 import { FileAnalysis } from './pages/FileAnalysis';
 import { Home } from './pages/Home';
+import { MainMenu } from './pages/MainMenu';
 import { Replay } from './pages/Replay';
 import { Services } from './pages/Services';
 import { SettingsProvider } from './modules/settings';
@@ -39,6 +40,10 @@ function App() {
               <SettingsProvider>
                 <ThemeSettingsProvider>
                   <Switch>
+                    <Route
+                      component={MainMenu}
+                      path='/menu'
+                    />
                     <Route
                       component={Services}
                       path='/services'

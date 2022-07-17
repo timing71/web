@@ -1,10 +1,9 @@
-import { useCallback, useContext } from "react";
 import styled from "styled-components";
 
 import { History, OndemandVideo, Quiz, StackedBarChart } from '@styled-icons/material';
 
-import { PluginContext } from "../modules/pluginBridge";
 import { Button } from "./Button";
+import { useHistory } from "react-router-dom";
 
 const MenuButton = styled(Button)`
 
@@ -15,7 +14,7 @@ const MenuButton = styled(Button)`
 
 const MenuContainer = styled.div`
 
-  align-self: stretch;
+  align-self: start;
   margin: 0 25%;
 
   display: flex;
@@ -24,40 +23,30 @@ const MenuContainer = styled.div`
 
 export const MainMenu = () => {
 
-  const port = useContext(PluginContext);
-
-  const showPage = useCallback(
-    (page) => {
-      port.send({
-        type: 'SHOW_T71_PAGE',
-        page
-      });
-    },
-    [port]
-  );
+  const history = useHistory();
 
   return (
     <MenuContainer>
       <MenuButton
-        onClick={() => showPage('services')}
+        onClick={() => history.push('/services')}
       >
         <History />
         Recent sessions
       </MenuButton>
       <MenuButton
-        onClick={() => showPage('replay')}
+        onClick={() => history.push('replay')}
       >
         <OndemandVideo />
         Load replay
       </MenuButton>
       <MenuButton
-        onClick={() => showPage('file-analysis')}
+        onClick={() => history.push('file-analysis')}
       >
         <StackedBarChart />
         Load analysis
       </MenuButton>
       <MenuButton
-        onClick={() => showPage('faq')}
+        onClick={() => history.push('faq')}
       >
         <Quiz />
         FAQ

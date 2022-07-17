@@ -11,9 +11,11 @@ import { PluginContext } from '../modules/pluginBridge';
 import { Helmet } from 'react-helmet-async';
 import { Logo } from '../components/Logo';
 import { dasherizeParts } from '../modules/services/utils';
+import { GlobalBackButton } from '../components/GlobalBackButton';
 
 const Wrapper = styled.div`
   padding: 1em;
+  margin-left: 10%;
 `;
 
 const ServiceTable = styled.table`
@@ -179,7 +181,7 @@ const ServiceEntry = ({ openAnalysis, reload, service }) => {
         { dayjs(service.startTime).format("YYYY-MM-DD HH:mm:ss") }
       </UnwrappingCell>
       <WrappingCell>{name}</WrappingCell>
-      <WrappingCell>{duration}</WrappingCell>
+      <UnwrappingCell>{duration}</UnwrappingCell>
       <UnwrappingCell>
         <RouteryButton
           title='Open'
@@ -242,6 +244,7 @@ export const Services = () => {
       <Helmet>
         <title>Recent sessions</title>
       </Helmet>
+      <GlobalBackButton />
       <Wrapper>
         <PageTitle>
           <Logo

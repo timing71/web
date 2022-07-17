@@ -1,4 +1,6 @@
+import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
+import { GlobalBackButton } from "../components/GlobalBackButton";
 import { Page } from "../components/Page";
 import { Section } from "../components/Section";
 import { CHROME_STORE_URL } from "../constants";
@@ -15,7 +17,11 @@ const HomeInner = styled.div`
 
 export const FAQ = () => (
   <Page>
+    <Helmet>
+      <title>FAQ</title>
+    </Helmet>
     <HomeInner>
+      <GlobalBackButton />
 
       <Section>
         <h2>What is Timing71 Beta?</h2>

@@ -14,6 +14,7 @@ export const Button = styled.button`
   transition-duration: 0.25s;
 
   cursor: ${ props => props.disabled ? 'not-allowed' : 'pointer' };
+  user-select: none;
 
   ${
     props => !props.disabled && css`

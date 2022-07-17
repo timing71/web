@@ -1,22 +1,21 @@
 import styled from 'styled-components';
-import InlineSVG from 'react-inlinesvg';
 import { Link } from 'react-router-dom';
-import dayjs from 'dayjs';
 
-import { MainMenu } from '../components/MainMenu';
 import { Page } from '../components/Page';
 import { Section } from '../components/Section';
 import { ImageChanger } from '../components/ImageChanger';
 
-import { CHROME_STORE_URL, PAYPAL_DONATE_LINK } from '../constants';
+import { CHROME_STORE_URL } from '../constants';
 
-import logo from '../img/logo.svg';
 import chromeStore from '../img/chrome_store.png';
 import background from '../img/timing_screen_blurred.jpg';
 import launchT71 from '../img/launch_t71.png';
 import addToChrome from '../img/add_to_chrome.png';
-import { Paypal } from 'styled-icons/fa-brands';
-import { PluginDetector } from '../modules/pluginBridge';
+import { PluginContext, PluginDetector } from '../modules/pluginBridge';
+import { Footer } from '../components/Footer';
+import { useCallback, useContext } from 'react';
+import { Button } from '../components/Button';
+import { Logo as LogoComponent } from '../components/Logo';
 
 const HomeInner = styled.div`
   display: flex;
@@ -37,8 +36,8 @@ const LogosBox = styled.div`
   border-radius: 5px;
 `;
 
-const Logo = styled(InlineSVG).attrs(
-  () => ({ alt: 'Timing71.org BETA', src: logo })
+const Logo = styled(LogoComponent).attrs(
+  () => ({ alt: 'Timing71.org BETA' })
 )`
   max-width: 40%;
   max-height: 180px;
@@ -56,36 +55,49 @@ const StartNow = styled.div`
   justify-content: space-evenly;
 `;
 
-const Footer = styled.div`
-
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
+const Content = styled.div`
+  flex-grow: 1;
+  align-self: stretch;
   display: flex;
-  justify-content: space-around;
-
-  padding: 1em;
-
-  background-color: rgba(0, 0, 0, 0.6);
-  border-top: 1px solid ${ props => props.theme.site.highlightColor };
-
-  font-size: small;
+  flex-direction: column;
+  align-items: center;
 `;
 
-const CopyrightYear = () => (
-  <span>
-    2016–{ dayjs().format('YYYY') }
-  </span>
-);
-
-const PP = styled(Paypal)`
-  width: 1em;
+const LaunchButtonInner = styled(Button)`
+  font-size: xx-large;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
+
+const LaunchButton = () => {
+
+  const port = useContext(PluginContext);
+
+  const showPage = useCallback(
+    (page) => {
+      port.send({
+        type: 'SHOW_T71_PAGE',
+        page,
+        devMode: process.env.NODE_ENV === 'development'
+      });
+    },
+    [port]
+  );
+
+  return (
+    <LaunchButtonInner onClick={() => showPage('menu')}>
+      <Logo />
+      <span>
+        Launch Timing71 main menu
+      </span>
+    </LaunchButtonInner>
+  );
+};
 
 const DefaultContent = () => (
-  <>
+  <Content>
     <Section>
       <h2>Get started now!</h2>
       <StartNow>
@@ -116,14 +128,15 @@ const DefaultContent = () => (
         </Link>.
       </p>
     </Section>
-  </>
+  </Content>
 );
+
 
 export const Home = () => (
   <Page>
     <HomeInner>
       <LogosBox>
-        <Logo />
+        <Logo $text />
         <a href={CHROME_STORE_URL}>
           <img
             alt='Available in the Chrome Web Store'
@@ -134,21 +147,11 @@ export const Home = () => (
       <PluginDetector
         beforeDetection={DefaultContent}
       >
-        <MainMenu />
+        <Content>
+          <LaunchButton />
+        </Content>
       </PluginDetector>
-      <Footer>
-        <span>
-          Timing71 and Timing71 Beta are copyright &copy; <CopyrightYear /> James Muscat.
-        </span>
-        <a href="mailto:info@timing71.org">info@timing71.org</a>
-        <a
-          href={PAYPAL_DONATE_LINK}
-          rel='noreferrer'
-          target='_blank'
-        >
-          Donate via <PP /> PayPal
-        </a>
-      </Footer>
+      <Footer />
     </HomeInner>
   </Page>
 );

@@ -6,6 +6,7 @@ import {
 } from "reakit/Dialog";
 import styled from "styled-components";
 import { ViewColumn } from "styled-icons/material";
+import { Button } from "../../../components/Button";
 import { useFullscreenContext } from "../../../components/FullscreenContext";
 import { useServiceState } from "../../../components/ServiceContext";
 
@@ -101,6 +102,17 @@ const ColumnConfig = ({ col, isHidden, toggleVisibility }) => (
   </Column>
 );
 
+const Title = styled.div`
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+
+  & h1 {
+    flex-grow: 1;
+    margin: 0.25em;
+  }
+`;
+
 const ColumnConfigDialog = ({ dialog }) => {
 
   const [hiddenCols, setHiddenCols] = useSetting('columns.hidden', []);
@@ -123,8 +135,16 @@ const ColumnConfigDialog = ({ dialog }) => {
 
   return (
     <MyDialogBackdrop {...dialog}>
-      <MyDialog {...dialog}>
-        <h1>Configure columns</h1>
+      <MyDialog
+        aria-label='Configure columns'
+        {...dialog}
+      >
+        <Title>
+          <h1>Configure columns</h1>
+          <Button onClick={dialog.toggle}>
+            Close
+          </Button>
+        </Title>
         <table>
           <thead>
             <tr>

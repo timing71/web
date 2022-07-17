@@ -6,6 +6,7 @@ import {
 } from "reakit/Dialog";
 import styled from "styled-components";
 import { ViewColumn } from "styled-icons/material";
+import { useFullscreenContext } from "../../../components/FullscreenContext";
 import { useServiceState } from "../../../components/ServiceContext";
 
 import { useSetting } from "../../settings";
@@ -157,10 +158,22 @@ export const ColumnSettings = () => {
 
   const dialog = useDialogState();
 
+  const fs = useFullscreenContext();
+
+  const show = useCallback(
+    () => {
+      if (fs.active) {
+        fs.exit();
+      }
+      dialog.toggle();
+    },
+    [dialog, fs]
+  );
+
   return (
     <>
       <DialogMenuItem
-        onClick={dialog.toggle}
+        onClick={show}
         {...dialog}
       >
         <span>

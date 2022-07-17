@@ -137,7 +137,6 @@ const DeleteButton = ({ reload, uuid }) => {
       setDeleting(true);
       port.send({ type: 'DELETE_SERVICE', uuid }).then(
         () => {
-          setDeleting(false);
           reload();
         }
       );
@@ -256,8 +255,7 @@ export const Services = () => {
         <p>
           This page lists recent timing sessions. You can reconnect to them,
           launch the analysis screen, or download a replay file. Sessions will
-          automatically be deleted after 24 hours of inactivity, or you can
-          delete them manually.
+          automatically be deleted after 7 days, or you can delete them manually.
         </p>
         {
           services !== null && (

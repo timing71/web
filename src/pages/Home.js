@@ -34,12 +34,13 @@ const LogosBox = styled.div`
   background-color: rgba(0, 0, 0, 0.6);
   margin: 3em;
   border-radius: 5px;
+  width: 50vw;
 `;
 
 const Logo = styled(LogoComponent).attrs(
   () => ({ alt: 'Timing71.org BETA' })
 )`
-  max-width: 40%;
+  max-width: 50%;
   max-height: 180px;
 `;
 
@@ -136,7 +137,10 @@ export const Home = () => (
   <Page>
     <HomeInner>
       <LogosBox>
-        <Logo $text />
+        <Logo
+          $text
+          size='400px'
+        />
         <a href={CHROME_STORE_URL}>
           <img
             alt='Available in the Chrome Web Store'

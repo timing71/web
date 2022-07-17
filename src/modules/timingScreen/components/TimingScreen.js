@@ -11,6 +11,7 @@ import { FullscreenContext, useFullscreenContext } from "../../../components/Ful
 import { Logo } from "../../../components/Logo";
 import { useSetting } from "../../settings";
 import { Spinner } from "../../../components/Spinner";
+import { stopEventBubble } from "../../../utils";
 
 const LoadingMessageInner = styled.div`
   display: flex;
@@ -62,7 +63,10 @@ const TimingScreenInner = ({ children }) => {
 const DelaySetting = () => {
   const [ delay, setDelay ] = useSetting('delay');
   return (
-    <div style={{ marginTop: '1em' }}>
+    <div
+      onDoubleClick={stopEventBubble()}
+      style={{ marginTop: '1em' }}
+    >
       Delay (seconds):
       <Spinner
         min={0}

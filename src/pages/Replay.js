@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react";
-import { Helmet } from "react-helmet-async";
-import { FileLoader } from "../components/FileLoader";
+import { useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { Button } from "../components/Button";
+
+import { useFileContext } from "../components/FileLoaderContext";
 import { Menu, MenuBar, MenuSeparator, ViewSettings } from "../modules/menu";
+import { BackMenuItem } from "../modules/menu/components/BackMenuItem";
 import { PlaybackControls, ReplayProvider } from "../modules/replay";
 import { RateControls } from "../modules/replay/components/RateControls";
 import { useReplayState } from "../modules/replay/state";
@@ -9,38 +12,38 @@ import { TimingScreen } from "../modules/timingScreen";
 
 
 export const Replay = () => {
-  const [replayFile, setReplayFile] = useState(null);
+
+  const { clearFile, file } = useFileContext();
+  const history = useHistory();
 
   const replayState = useReplayState();
 
   useEffect(
     () => () => {
-      if (replayFile) {
-        window.URL.revokeObjectURL(replayFile);
+      if (file) {
+        window.URL.revokeObjectURL(file);
+        clearFile();
       }
     },
-    [replayFile]
+    [clearFile, file]
   );
 
-  if (!replayFile) {
+  if (!file) {
     return (
-      <>
-        <Helmet>
-          <title>Load replay</title>
-        </Helmet>
-        <FileLoader
-          accept='.zip,application/zip'
-          loadFile={setReplayFile}
-        />
-      </>
+      <div>
+        <p>No file selected</p>
+        <Button onClick={history.goBack}>
+          Back
+        </Button>
+      </div>
     );
   }
   else {
     return (
       <ReplayProvider
-        replayFile={replayFile}
+        replayFile={file}
         replayState={replayState}
-        reset={() => setReplayFile(null)}
+        reset={() => { history.goBack(); clearFile(); }}
       >
         <TimingScreen>
           <MenuBar>
@@ -49,6 +52,8 @@ export const Replay = () => {
               <RateControls replayState={replayState} />
               <MenuSeparator />
               <ViewSettings />
+              <MenuSeparator />
+              <BackMenuItem />
             </Menu>
           </MenuBar>
         </TimingScreen>

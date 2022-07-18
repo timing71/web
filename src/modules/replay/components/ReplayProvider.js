@@ -97,7 +97,7 @@ export const ReplayProvider = ({ children, replayFile, replayState: { setDuratio
           <p>
             The file you have selected is not a valid Timing71 replay file.
           </p>
-          <Button onClick={reset}>Try another file</Button>
+          <Button onClick={reset}>Go back</Button>
         </ErrorScreen>
       );
     }

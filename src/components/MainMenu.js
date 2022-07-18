@@ -1,9 +1,11 @@
+import { useCallback } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 import { History, OndemandVideo, Quiz, StackedBarChart } from '@styled-icons/material';
 
 import { Button } from "./Button";
-import { useHistory } from "react-router-dom";
+import { useFileContext } from "./FileLoaderContext";
 
 const MenuButton = styled(Button)`
 
@@ -24,6 +26,16 @@ const MenuContainer = styled.div`
 export const MainMenu = () => {
 
   const history = useHistory();
+  const { loadFile } = useFileContext();
+
+  const loadReplay = useCallback(
+    () => {
+      loadFile('.zip,application/zip').then(
+        () => history.push('replay')
+      );
+    },
+    [history, loadFile]
+  );
 
   return (
     <MenuContainer>
@@ -34,7 +46,7 @@ export const MainMenu = () => {
         Recent sessions
       </MenuButton>
       <MenuButton
-        onClick={() => history.push('replay')}
+        onClick={loadReplay}
       >
         <OndemandVideo />
         Load replay

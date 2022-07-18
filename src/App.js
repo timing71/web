@@ -7,6 +7,7 @@ import { PluginDetector } from './modules/pluginBridge';
 import { Analysis } from './pages/Analysis';
 import { FAQ } from './pages/FAQ';
 import { FileAnalysis } from './pages/FileAnalysis';
+import { FileLoaderContextProvider } from './components/FileLoaderContext';
 import { Home } from './pages/Home';
 import { MainMenu } from './pages/MainMenu';
 import { Replay } from './pages/Replay';
@@ -39,36 +40,38 @@ function App() {
             <PluginDetector>
               <SettingsProvider>
                 <ThemeSettingsProvider>
-                  <Switch>
-                    <Route
-                      component={MainMenu}
-                      path='/menu'
-                    />
-                    <Route
-                      component={Services}
-                      path='/services'
-                    />
-                    <Route
-                      component={Start}
-                      path='/start'
-                    />
-                    <Route
-                      component={Timing}
-                      path='/timing/:serviceUUID'
-                    />
-                    <Route
-                      component={Analysis}
-                      path='/analysis/:serviceUUID'
-                    />
-                    <Route
-                      component={FileAnalysis}
-                      path='/file-analysis'
-                    />
-                    <Route
-                      component={Replay}
-                      path='/replay'
-                    />
-                  </Switch>
+                  <FileLoaderContextProvider>
+                    <Switch>
+                      <Route
+                        component={MainMenu}
+                        path='/menu'
+                      />
+                      <Route
+                        component={Services}
+                        path='/services'
+                      />
+                      <Route
+                        component={Start}
+                        path='/start'
+                      />
+                      <Route
+                        component={Timing}
+                        path='/timing/:serviceUUID'
+                      />
+                      <Route
+                        component={Analysis}
+                        path='/analysis/:serviceUUID'
+                      />
+                      <Route
+                        component={FileAnalysis}
+                        path='/file-analysis'
+                      />
+                      <Route
+                        component={Replay}
+                        path='/replay'
+                      />
+                    </Switch>
+                  </FileLoaderContextProvider>
                 </ThemeSettingsProvider>
               </SettingsProvider>
             </PluginDetector>

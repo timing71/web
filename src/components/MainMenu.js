@@ -37,6 +37,15 @@ export const MainMenu = () => {
     [history, loadFile]
   );
 
+  const loadAnalysis = useCallback(
+    () => {
+      loadFile('.json,application/json').then(
+        () => history.push('file-analysis')
+      );
+    },
+    [history, loadFile]
+  );
+
   return (
     <MenuContainer>
       <MenuButton
@@ -52,7 +61,7 @@ export const MainMenu = () => {
         Load replay
       </MenuButton>
       <MenuButton
-        onClick={() => history.push('file-analysis')}
+        onClick={loadAnalysis}
       >
         <StackedBarChart />
         Load analysis

@@ -40,7 +40,7 @@ export const generateMessages = (manifest, oldState, newState) => {
 
   const perCarMessages = [];
 
-  if (manifest.colSpec?.find(s => s[0] === Stat.NUM[0])) { // Can't use includes() any more FSR...
+  if (manifest?.colSpec?.find(s => s[0] === Stat.NUM[0])) { // Can't use includes() any more FSR...
     const se = new StatExtractor(manifest.colSpec);
     (newState.cars || []).forEach(
       newCar => {

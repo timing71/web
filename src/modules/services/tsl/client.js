@@ -138,7 +138,7 @@ export class Client {
 
   onSession([ session ]) {
 
-    if (session.ID !== this.session.ID && this.session.ID) {
+    if (session && session.ID !== this.session.ID && this.session.ID) {
       this.reset();
     }
 

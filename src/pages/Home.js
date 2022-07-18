@@ -16,6 +16,7 @@ import { Footer } from '../components/Footer';
 import { useCallback, useContext } from 'react';
 import { Button } from '../components/Button';
 import { Logo as LogoComponent } from '../components/Logo';
+import { useState } from 'react';
 
 const HomeInner = styled.div`
   display: flex;
@@ -75,6 +76,7 @@ const LaunchButtonInner = styled(Button)`
 const LaunchButton = () => {
 
   const port = useContext(PluginContext);
+  const [spin, setSpin] = useState(false);
 
   const showPage = useCallback(
     (page) => {
@@ -88,8 +90,12 @@ const LaunchButton = () => {
   );
 
   return (
-    <LaunchButtonInner onClick={() => showPage('menu')}>
-      <Logo />
+    <LaunchButtonInner
+      onClick={() => showPage('menu')}
+      onMouseOut={() => setSpin(false)}
+      onMouseOver={() => setSpin(true)}
+    >
+      <Logo $spin={spin} />
       <span>
         Launch Timing71 main menu
       </span>

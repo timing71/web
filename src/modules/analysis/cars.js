@@ -14,7 +14,7 @@ export const Cars = types.model({
 
         const currentFlag = newState.session?.flagState;
 
-        newState.cars.forEach(
+        (newState.cars || []).forEach(
           car => {
             const raceNum = statExtractor.get(car, Stat.NUM);
             if (raceNum) {

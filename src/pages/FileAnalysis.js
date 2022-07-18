@@ -4,6 +4,10 @@ import { LoadingScreen } from '../components/LoadingScreen';
 import { createAnalyser } from '../modules/analysis';
 import { AnalysisScreen } from '../modules/analysis/components/AnalysisScreen';
 import { useFileContext } from '../components/FileLoaderContext';
+import { useHistory } from 'react-router-dom';
+import { Button } from '../components/Button';
+import { ArrowBack } from 'styled-icons/material';
+import styled from 'styled-components';
 
 const LoadState = {
   UNLOADED: 1,
@@ -12,12 +16,20 @@ const LoadState = {
   ERROR: 4
 };
 
+const BackButton = styled(Button)`
+  margin: 0 0.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const FileAnalysis = () => {
 
   const [loadState, setLoadState] = useState(LoadState.UNLOADED);
   const [data, setData] = useState();
   const analyser = useRef();
-  const { file } = useFileContext();
+  const { clearFile, file } = useFileContext();
+  const history = useHistory();
 
   const startLoading = useCallback(
     async () => {
@@ -56,7 +68,12 @@ export const FileAnalysis = () => {
       <AnalysisScreen
         analyser={analyser.current}
         manifest={data.manifest || data.service || {}}
-      />
+      >
+        <BackButton onClick={() => { history.goBack(); clearFile(); }}>
+          <ArrowBack size={24} />
+          Main menu
+        </BackButton>
+      </AnalysisScreen>
     );
   }
   else if (loadState === LoadState.LOADING) {

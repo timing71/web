@@ -41,9 +41,12 @@ const Title = styled.div`
 const MenuWrapper = styled.div`
   grid-area: menu;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
-export const AnalysisScreen = ({ analyser, manifest }) => {
+export const AnalysisScreen = ({ analyser, children, manifest }) => {
 
   const [selectedCar, setSelectedCar] = useState(null);
 
@@ -60,7 +63,10 @@ export const AnalysisScreen = ({ analyser, manifest }) => {
                 setSelectedCar={setSelectedCar}
               />
               {
-                process.env.NODE_ENV === 'development' && <span>[DEV]</span>
+                children
+              }
+              {
+                process.env.NODE_ENV === 'development' && <div>[DEV]</div>
               }
             </MenuWrapper>
             <Contents selectedCar={selectedCar} />

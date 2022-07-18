@@ -69,7 +69,7 @@ export const FileAnalysis = () => {
         analyser={analyser.current}
         manifest={data.manifest || data.service || {}}
       >
-        <BackButton onClick={() => { history.goBack(); clearFile(); }}>
+        <BackButton onClick={() => { history.push('/'); clearFile(); }}>
           <ArrowBack size={24} />
           Main menu
         </BackButton>

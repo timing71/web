@@ -37,12 +37,20 @@ export class HTTPPollingService extends Service {
 
   async _fetch() {
     const myUrl = (typeof(this.url) === 'function') ? this.url() : this.url;
-    const response = await this.connectionService.fetch(myUrl);
-    this.handleResponse(response);
-    this._timeout = setTimeout(
-      this._fetch,
-      this.pollInterval
-    );
+    try {
+      const response = await this.connectionService.fetch(myUrl);
+      this.handleResponse(response);
+    }
+    catch (e) {
+      console.warn(`Failed to fetch url ${myUrl}:`, e.error); // eslint-disable-line no-console
+      // We'll try again next time
+    }
+    finally {
+      this._timeout = setTimeout(
+        this._fetch,
+        this.pollInterval
+      );
+    }
   }
 
   async handleResponse(response) {

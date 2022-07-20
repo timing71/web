@@ -332,21 +332,4 @@ export class TimeService extends Service {
   }
 }
 
-/*
-export const Service = ({ service }) => {
-
-  const port = useContext(PluginContext);
-  const [serviceData, setServiceData] = useState(null);
-
-  useEffect(
-    () => {
-      getServiceData(service.source, port).then(setServiceData);
-    },
-    [port, service]
-  );
-
-  return serviceData && <Session serviceData={serviceData} />;
-};
-
-*/
 TimeService.regex = /livetiming\.getraceresults\.com\/[0-9a-zA-Z]+/;

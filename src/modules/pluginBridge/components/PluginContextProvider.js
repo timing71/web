@@ -1,20 +1,22 @@
 import { useCallback, useEffect, useState } from "react";
-import { PluginContext } from "../context";
-import { Port } from "../port";
+import { WebConnectionService } from "../connectionService";
+import { ConnectionServiceProvider } from "../../../ConnectionServiceProvider";
 
 export const PluginContextProvider = ({ extensionID, children }) => {
 
-  const [port, setPort] = useState();
+  const [connectionService, setConnectionService] = useState();
 
-  const assignPort = useCallback(
+  const assignConnectionService = useCallback(
     () => {
       const hostIframe = document.querySelector('#t71-host-frame');
       if (hostIframe) {
-        setPort(new Port(extensionID, hostIframe.contentWindow));
+        setConnectionService(
+          new WebConnectionService(extensionID, hostIframe.contentWindow)
+        );
       }
       else {
         window.setTimeout(
-          assignPort,
+          assignConnectionService,
           1000
         );
       }
@@ -24,22 +26,22 @@ export const PluginContextProvider = ({ extensionID, children }) => {
 
   useEffect(
     () => {
-      if (!port) {
-        assignPort();
+      if (!connectionService) {
+        assignConnectionService();
       }
     },
-    [assignPort, port]
+    [assignConnectionService, connectionService]
   );
 
-  if (!port) {
+  if (!connectionService) {
     return (
       <p>Connecting to plugin...</p>
     );
   }
 
   return (
-    <PluginContext.Provider value={port}>
+    <ConnectionServiceProvider connectionService={connectionService}>
       { children }
-    </PluginContext.Provider>
+    </ConnectionServiceProvider>
   );
 };

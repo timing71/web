@@ -1,13 +1,14 @@
-import { useRef, useEffect, useContext } from 'react';
+import { useRef, useEffect } from 'react';
 import { Stat } from '@timing71/common';
 import { onPatch, onSnapshot, types } from 'mobx-state-tree';
+
+import { useConnectionService } from '../../ConnectionServiceProvider';
 
 import { Cars } from './cars';
 import { Messages } from './messages';
 import { Session } from './session';
 
 import { CURRENT_VERSION, migrateAnalysisState } from './migrate';
-import { PluginContext } from '../pluginBridge';
 import { useServiceState } from '../../components/ServiceContext';
 import { useBroadcastChannel } from '../../broadcastChannel';
 import { State } from './state';
@@ -154,7 +155,7 @@ export const createAnalyser = (initialState, live) => {
 
 export const Analysis = ({ analysisState, live=false, serviceUUID }) => {
 
-  const port = useContext(PluginContext);
+  const cs = useConnectionService();
   const { state } = useServiceState();
   const { emit } = useBroadcastChannel(`analysis/${serviceUUID}`);
 
@@ -174,7 +175,7 @@ export const Analysis = ({ analysisState, live=false, serviceUUID }) => {
           (state) => {
             latestSnapshot.current = state;
             try {
-              port.send({
+              cs.send({
                 type: 'UPDATE_SERVICE_ANALYSIS',
                 analysis: state,
                 uuid: serviceUUID,
@@ -195,7 +196,7 @@ export const Analysis = ({ analysisState, live=false, serviceUUID }) => {
         );
       }
     },
-    [emit, port, serviceUUID]
+    [cs, emit, serviceUUID]
   );
 
   useEffect(
@@ -223,7 +224,7 @@ export const Analysis = ({ analysisState, live=false, serviceUUID }) => {
 
       prevState.current = state;
     },
-    [port, serviceUUID, state]
+    [cs, serviceUUID, state]
   );
 
   return null;

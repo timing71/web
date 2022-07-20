@@ -1,5 +1,5 @@
-import { useCallback, useContext, useEffect, useState } from "react";
-import { PluginContext } from "../modules/pluginBridge";
+import { useCallback, useEffect, useState } from "react";
+import { useConnectionService } from "../ConnectionServiceProvider";
 import { ServiceStateContext, useServiceState } from "./ServiceContext";
 
 const DEFAULT_STATE = {
@@ -12,7 +12,7 @@ const DEFAULT_STATE = {
 export const StateRetriever = ({ children, delay=0, serviceUUID }) => {
   const [state, setState] = useState(DEFAULT_STATE);
 
-  const port = useContext(PluginContext);
+  const cs = useConnectionService();
 
   const upstream = useServiceState();
 
@@ -21,7 +21,7 @@ export const StateRetriever = ({ children, delay=0, serviceUUID }) => {
 
       const timestamp = Date.now() - delay;
 
-      port.send({
+      cs.send({
         type: 'FETCH_SERVICE',
         uuid: serviceUUID,
         timestamp: timestamp
@@ -34,7 +34,7 @@ export const StateRetriever = ({ children, delay=0, serviceUUID }) => {
         }
       );
     },
-    [delay, port, serviceUUID]
+    [cs, delay, serviceUUID]
   );
 
   useEffect(

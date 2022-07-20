@@ -1,7 +1,7 @@
 import { EventEmitter } from "../../eventEmitter";
 import { WrappedWebsocket } from './websocket';
 
-export class Port extends EventEmitter {
+export class WebConnectionService extends EventEmitter {
   constructor(extensionID, targetWindow) {
     super();
     this._messageCount = 0;

@@ -1,13 +1,13 @@
 import { applyPatch, applySnapshot } from 'mobx-state-tree';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useBroadcastChannel } from '../broadcastChannel';
 import { LoadingScreen } from '../components/LoadingScreen';
+import { useConnectionService } from '../ConnectionServiceProvider';
 import { createAnalyser } from '../modules/analysis';
 import { AnalysisScreen } from '../modules/analysis/components/AnalysisScreen';
-import { PluginContext } from '../modules/pluginBridge';
 
 export const Analysis = ({ match: { params: { serviceUUID } } }) => {
-  const port = useContext(PluginContext);
+  const cs = useConnectionService();
 
   const [manifest, setManifest] = useState();
 
@@ -19,7 +19,7 @@ export const Analysis = ({ match: { params: { serviceUUID } } }) => {
   useEffect(
     () => {
 
-      port.send({
+      cs.send({
         type: 'FETCH_SERVICE',
         uuid: serviceUUID
       }).then(
@@ -38,7 +38,7 @@ export const Analysis = ({ match: { params: { serviceUUID } } }) => {
       );
 
     },
-    [port, serviceUUID]
+    [cs, serviceUUID]
   );
 
   useEffect(

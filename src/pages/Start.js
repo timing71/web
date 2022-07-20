@@ -1,10 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { v4 as uuid } from 'uuid';
 import { LoadingScreen } from '../components/LoadingScreen';
-
-import { PluginContext } from '../modules/pluginBridge';
+import { useConnectionService } from '../ConnectionServiceProvider';
 
 
 export const Start = ({ location: { search } }) => {
@@ -12,7 +11,7 @@ export const Start = ({ location: { search } }) => {
   const usp = new URLSearchParams(search);
   const source = usp.get('source');
 
-  const port = useContext(PluginContext);
+  const cs = useConnectionService();
 
   const [serviceUUID, setServiceUUID] = useState(null);
 
@@ -20,7 +19,7 @@ export const Start = ({ location: { search } }) => {
     () => {
       const myUUID = uuid();
 
-      port.send({
+      cs.send({
         type: 'START_SERVICE',
         uuid: myUUID,
         source
@@ -28,7 +27,7 @@ export const Start = ({ location: { search } }) => {
         setServiceUUID(myUUID)
       );
     },
-    [port, source]
+    [cs, source]
   );
 
     return !!serviceUUID ?

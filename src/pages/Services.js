@@ -1,13 +1,14 @@
 import dayjs from 'dayjs';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Delete, Download, OpenInBrowser, StackedBarChart } from '@styled-icons/material';
 
+import { useConnectionService } from '../ConnectionServiceProvider';
+
 import { Button } from '../components/Button';
 import { Page } from '../components/Page';
-import { PluginContext } from '../modules/pluginBridge';
 import { Helmet } from 'react-helmet-async';
 import { Logo } from '../components/Logo';
 import { dasherizeParts } from '../modules/services/utils';
@@ -56,7 +57,7 @@ const RouteryButton = ({ to, ...props }) => {
 const GeneratorButton = ({ children, finishMessage, progressMessage, startMessage, uuid }) => {
 
   const [isGenerating, setGenerating] = useState(false);
-  const port = useContext(PluginContext);
+  const cs = useConnectionService();
   const [progress, setProgress] = useState(null);
 
   useEffect(
@@ -72,22 +73,22 @@ const GeneratorButton = ({ children, finishMessage, progressMessage, startMessag
         }
       };
 
-      port.on('message', handleMessage);
+      cs.on('message', handleMessage);
 
       return () => {
-        port.removeListener('message', handleMessage);
+        cs.removeListener('message', handleMessage);
       };
     },
-    [finishMessage, port, progressMessage, uuid]
+    [cs, finishMessage, progressMessage, uuid]
   );
 
   const startGeneration = useCallback(
     () => {
-      port.send({ type: startMessage, uuid }).then(
+      cs.send({ type: startMessage, uuid }).then(
         () => setGenerating(true)
       );
     },
-    [port, startMessage, uuid]
+    [cs, startMessage, uuid]
   );
 
 
@@ -130,18 +131,18 @@ const AnalysisButton = ({ uuid }) => (
 const DeleteButton = ({ reload, uuid }) => {
   const [ isDeleting, setDeleting ] = useState(false);
 
-  const port = useContext(PluginContext);
+  const cs = useConnectionService();
 
   const doDelete = useCallback(
     () => {
       setDeleting(true);
-      port.send({ type: 'DELETE_SERVICE', uuid }).then(
+      cs.send({ type: 'DELETE_SERVICE', uuid }).then(
         () => {
           reload();
         }
       );
     },
-    [port, reload, uuid]
+    [cs, reload, uuid]
   );
 
   return (
@@ -217,23 +218,23 @@ const PageTitle = styled.h2`
 
 export const Services = () => {
 
-  const port = useContext(PluginContext);
+  const cs = useConnectionService();
   const [services, setServices] = useState(null);
 
   const openAnalysis = useCallback(
     serviceUUID => {
-      port.send({ type: 'SHOW_T71_PAGE', page: `analysis/${serviceUUID}` });
+      cs.send({ type: 'SHOW_T71_PAGE', page: `analysis/${serviceUUID}` });
     },
-    [port]
+    [cs]
   );
 
   const reload = useCallback(
     () => {
-      port.send({ type: 'RETRIEVE_SERVICES_LIST' }).then(
+      cs.send({ type: 'RETRIEVE_SERVICES_LIST' }).then(
         msg => setServices(msg.services || [])
       );
     },
-    [port]
+    [cs]
   );
 
   useEffect(reload, [reload]);

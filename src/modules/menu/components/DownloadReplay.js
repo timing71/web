@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 
 import { useServiceManifest } from "../../../components/ServiceContext";
-import { PluginContext } from "../../pluginBridge";
+import { useConnectionService } from "../../../ConnectionServiceProvider";
 import { ToggleMenuItem } from "./MenuItem";
 import { SystemMessageContext } from "./SystemMessage";
 import { Logo } from "../../../components/Logo";
@@ -20,7 +20,7 @@ const ReplayGenerationMessage = () => (
 
 export const DownloadReplay = () => {
   const { manifest } = useServiceManifest();
-  const port = useContext(PluginContext);
+  const cs = useConnectionService();
   const { setMessage } = useContext(SystemMessageContext);
   const { hide } = useMenuContext();
   const [enabled, setEnabled] = useState(true);
@@ -34,24 +34,24 @@ export const DownloadReplay = () => {
         }
       };
 
-      port.on('message', handleMessage);
+      cs.on('message', handleMessage);
 
       return () => {
-        port.removeListener('message', handleMessage);
+        cs.removeListener('message', handleMessage);
       };
     },
-    [manifest?.uuid, port, setMessage]
+    [cs, manifest?.uuid, setMessage]
   );
 
   const startDownload = useCallback(
     () => {
       setEnabled(false);
-      port.send({ type: 'GENERATE_SERVICE_REPLAY', uuid: manifest.uuid }).then(
+      cs.send({ type: 'GENERATE_SERVICE_REPLAY', uuid: manifest.uuid }).then(
         () => setMessage(<ReplayGenerationMessage />)
       );
       hide();
     },
-    [hide, manifest, port, setMessage]
+    [cs, hide, manifest, setMessage]
   );
 
   return (

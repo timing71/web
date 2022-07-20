@@ -1,9 +1,8 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { StackedBarChart } from '@styled-icons/material';
 
-
 import withGracefulUnmount from "../components/withGracefulUnmount";
-import { PluginContext } from "../modules/pluginBridge";
+import { useConnectionService } from "../ConnectionServiceProvider";
 import { TimingScreen } from "../modules/timingScreen";
 import { ServiceManifestContext, ServiceStateContext } from "../components/ServiceContext";
 import { StateStorer } from "../components/StateStorer";
@@ -38,22 +37,12 @@ const TimingInner = ({ match: { params } }) => {
   const [service, setService] = useState(null);
   const [state, setState] = useState(null);
   const [initialAnalysisState, setInitialAnalysisState] = useState(null);
-  const port = useContext(PluginContext);
-
-  // useEffect(
-  //   () => () => {
-  //     port.postMessage({
-  //       type: 'TERMINATE_SERVICE',
-  //       uuid: serviceUUID
-  //     });
-  //   },
-  //   [port, serviceUUID]
-  // );
+  const cs = useConnectionService();
 
   useEffect(
     () => {
 
-      port.send({
+      cs.send({
         type: 'FETCH_SERVICE',
         uuid: serviceUUID
       }).then(
@@ -67,7 +56,7 @@ const TimingInner = ({ match: { params } }) => {
       );
 
     },
-    [port, serviceUUID]
+    [cs, serviceUUID]
   );
 
   const updateState = useCallback(
@@ -101,9 +90,9 @@ const TimingInner = ({ match: { params } }) => {
 
   const openAnalysis = useCallback(
     () => {
-      port.send({ type: 'SHOW_T71_PAGE', page: `analysis/${serviceUUID}` });
+      cs.send({ type: 'SHOW_T71_PAGE', page: `analysis/${serviceUUID}` });
     },
-    [port, serviceUUID]
+    [cs, serviceUUID]
   );
 
   if (service) {

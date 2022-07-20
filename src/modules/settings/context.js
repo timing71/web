@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useState } from "rea
 
 import { getProperty, setProperty } from 'dot-prop';
 
-import { PluginContext } from "../pluginBridge";
+import { useConnectionService } from "../../ConnectionServiceProvider";
 
 const DEFAULT_SETTINGS = {
   animation: true,
@@ -14,17 +14,17 @@ const SettingsContext = createContext();
 
 export const SettingsProvider = ({ children }) => {
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
-  const port = useContext(PluginContext);
+  const cs = useConnectionService();
 
   useEffect(
     () => {
-      port.send({ type: 'RETRIEVE_SETTINGS' }).then(
+      cs.send({ type: 'RETRIEVE_SETTINGS' }).then(
         ({ settings }) => {
           setSettings({ ...DEFAULT_SETTINGS, ...settings });
         }
       );
     },
-    [port]
+    [cs]
   );
 
   const updateSettings = useCallback(
@@ -39,12 +39,12 @@ export const SettingsProvider = ({ children }) => {
             }
           );
 
-          port.send({ type: 'STORE_SETTINGS', settings: saveableSettings });
+          cs.send({ type: 'STORE_SETTINGS', settings: saveableSettings });
           return saveableSettings;
         }
       );
     },
-    [port]
+    [cs]
   );
 
   return (

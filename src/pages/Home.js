@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -11,12 +12,11 @@ import chromeStore from '../img/chrome_store.png';
 import background from '../img/timing_screen_blurred.jpg';
 import launchT71 from '../img/launch_t71.png';
 import addToChrome from '../img/add_to_chrome.png';
-import { PluginContext, PluginDetector } from '../modules/pluginBridge';
+import { PluginDetector } from '../modules/pluginBridge';
 import { Footer } from '../components/Footer';
-import { useCallback, useContext } from 'react';
 import { Button } from '../components/Button';
 import { Logo as LogoComponent } from '../components/Logo';
-import { useState } from 'react';
+import { useConnectionService } from '../ConnectionServiceProvider';
 
 const HomeInner = styled.div`
   display: flex;
@@ -75,18 +75,18 @@ const LaunchButtonInner = styled(Button)`
 
 const LaunchButton = () => {
 
-  const port = useContext(PluginContext);
+  const cs = useConnectionService();
   const [spin, setSpin] = useState(false);
 
   const showPage = useCallback(
     (page) => {
-      port.send({
+      cs.send({
         type: 'SHOW_T71_PAGE',
         page,
         devMode: process.env.NODE_ENV === 'development'
       });
     },
-    [port]
+    [cs]
   );
 
   return (

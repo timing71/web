@@ -1,10 +1,10 @@
-import { useContext, useEffect, useRef } from "react";
-import { PluginContext } from "../modules/pluginBridge";
+import { useEffect, useRef } from "react";
+import { useConnectionService } from "../ConnectionServiceProvider";
 import { useServiceState } from "./ServiceContext";
 
 export const StateStorer = ({ serviceUUID }) => {
 
-  const port = useContext(PluginContext);
+  const cs = useConnectionService();
   const { state } = useServiceState();
   const lastStoreTime = useRef(0);
 
@@ -15,7 +15,7 @@ export const StateStorer = ({ serviceUUID }) => {
       if (lastStoreTime.current + 1000 <= now) {
         // console.log("Saving state at time", state.lastUpdated)
         try {
-          port.send({
+          cs.send({
             type: 'UPDATE_SERVICE_STATE',
             state,
             uuid: serviceUUID,
@@ -28,7 +28,7 @@ export const StateStorer = ({ serviceUUID }) => {
         lastStoreTime.current = now;
       }
     },
-    [port, serviceUUID, state]
+    [cs, serviceUUID, state]
   );
 
   return null;

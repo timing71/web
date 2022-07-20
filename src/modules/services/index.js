@@ -1,8 +1,7 @@
-import { useContext, useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import * as Sentry from "@sentry/react";
 
 import { useServiceManifest, useServiceState } from "../../components/ServiceContext";
-import { PluginContext } from "../pluginBridge";
 
 import { ALMS, ELMS, LeMansCup, WEC } from "./aco";
 import { AlKamel } from "./alkamel";
@@ -16,6 +15,7 @@ import { SwissTiming } from "./swissTiming";
 import { TimeService } from "./timeservice";
 import { TSL } from "./tsl";
 import { LM24 } from "./aco/lm24";
+import { useConnectionService } from "../../ConnectionServiceProvider";
 
 export const SERVICE_PROVIDERS = [
   AlKamel,
@@ -55,7 +55,7 @@ export const mapServiceProvider = (source) => {
 
 
 export const ServiceProvider = ({ onReady, service }) => {
-  const port = useContext(PluginContext);
+  const cs = useConnectionService();
 
   const { updateManifest } = useServiceManifest();
   const { updateState } = useServiceState();
@@ -75,7 +75,7 @@ export const ServiceProvider = ({ onReady, service }) => {
         });
 
         serviceInstance.current = new serviceClass(updateState, updateManifest, service);
-        serviceInstance.current.start(port);
+        serviceInstance.current.start(cs);
         setHasService(true);
         onReady();
       }
@@ -83,7 +83,7 @@ export const ServiceProvider = ({ onReady, service }) => {
         setHasService(false);
       }
     },
-    [onReady, port, service, updateManifest, updateState]
+    [cs, onReady, service, updateManifest, updateState]
   );
 
   useEffect(

@@ -10,7 +10,10 @@ const SECTOR_STATS = [
   Stat.S5,
 ];
 
-const createColspec = (numSectors, hasClasses) => ([
+const STAT_FANBOOST = ['FB', 'text', 'Fanboost status'];
+const STAT_ATTACK_MODE_REMAIN = ['ATK', 'text', 'Attack mode remaining'];
+
+const createColspec = (numSectors, hasClasses, isFormulaE) => ([
   Stat.NUM,
   Stat.STATE
 ].concat(
@@ -19,6 +22,9 @@ const createColspec = (numSectors, hasClasses) => ([
   Stat.DRIVER,
   Stat.TEAM,
   Stat.CAR,
+]).concat(
+  isFormulaE ? [STAT_FANBOOST, STAT_ATTACK_MODE_REMAIN] : []
+).concat([
   Stat.LAPS,
   Stat.GAP,
   Stat.INT
@@ -126,7 +132,13 @@ export const augment = (standing) => { // Exported for tests
   });
 };
 
-const mapCars = (standings, entries, numSectors, gapFunc, bestResults, bestResultsByClass) => {
+const FANBOOST_MAP = {
+  1: ['FB', 'fb-inactive'],
+  2: ['FB', 'fb-active'],
+  3: ['FB', 'fb-used'],
+};
+
+const mapCars = (standings, entries, numSectors, gapFunc, bestResults, bestResultsByClass, attackMode, isFormulaE) => {
   let leadCar = null;
   let prevCar = null;
   const cars = [];
@@ -141,6 +153,8 @@ const mapCars = (standings, entries, numSectors, gapFunc, bestResults, bestResul
       const raceNum = data[1];
       const entry = (entries && entries[raceNum]) || {};
       const state = mapCarState(data[2], data[8], !!standing.isCheckered);
+
+      const attackModeData = attackMode?.data[raceNum] || {};
 
       classCount[entry.class] = (classCount[entry.class] || 0) + 1;
 
@@ -192,6 +206,12 @@ const mapCars = (standings, entries, numSectors, gapFunc, bestResults, bestResul
         `${(entry.lastname || '').toUpperCase()}, ${entry.firstname}`,
         entry.team,
         entry.vehicle,
+      ]).concat(
+        isFormulaE ? [
+          FANBOOST_MAP[attackModeData.fanboostStatus] || ['', ''],
+          ''
+        ] : []
+      ).concat([
         data[4],
         gap > 0 || typeof(gap) === 'string' ? gap : '',
         interval > 0 || typeof(interval) === 'string' ? interval : ''
@@ -259,12 +279,12 @@ const mapSession = (status={}, weather={}, unitOfMeasure) => {
 
 export const getSectorCount = (trackInfo) => Object.keys((trackInfo?.sectors || {})).length;
 
-export const getManifest = ({ session_info, standings, session, track_info }) => {
+export const getManifest = ({ session_info, standings, session, track_info }, isFormulaE) => {
   const numSectors = getSectorCount(track_info);
   return {
     name: session_info?.champName || '',
     description: `${session_info?.eventName} - ${session?.name}`,
-    colSpec: createColspec(numSectors, standings?.hasClasses),
+    colSpec: createColspec(numSectors, standings?.hasClasses, isFormulaE),
     trackDataSpec: [
       'Air temp',
       'Track temp',
@@ -276,6 +296,7 @@ export const getManifest = ({ session_info, standings, session, track_info }) =>
 
 export const translate = (
   {
+    attackMode,
     best_results,
     race_control,
     sessionBestResultsByClass,
@@ -286,7 +307,8 @@ export const translate = (
     standings,
     weather
   },
-  raceControlLastIndex
+  raceControlLastIndex,
+  isFormulaE
 ) => {
   const numSectors = getSectorCount(track_info);
   const gapFunc = getGapFunction(session_info?.type);
@@ -294,7 +316,7 @@ export const translate = (
   const { messages, index } = extractRaceControlMessages(race_control?.log || {}, raceControlLastIndex);
 
   return {
-    cars: mapCars(standings, session_entry, numSectors, gapFunc, best_results, sessionBestResultsByClass),
+    cars: mapCars(standings, session_entry, numSectors, gapFunc, best_results, sessionBestResultsByClass, attackMode, isFormulaE),
     session: mapSession(session_status, weather, session_info?.unitOfMeasure),
     extraMessages: messages,
     meta: {

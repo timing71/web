@@ -190,6 +190,8 @@ export const Theme = {
     'pb': '#00FF00',
     'sb': '#FF53E3',
     'sb-new': '#FF53E3',
+    'fb-used': '#808080',
+    'fb-active': '#00FF00'
   },
   flagStates: {
     [FlagState.GREEN]: {

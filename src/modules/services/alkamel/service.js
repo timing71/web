@@ -13,7 +13,9 @@ export class AlKamel extends Service {
   constructor(...args) {
     super(...args);
 
+    const source = this.service.source;
     this.feed = this.service.source.slice(this.service.source.lastIndexOf('/') + 1);
+    this.host = source.slice(source.indexOf('://') + 3, source.indexOf('.com') + 4);
     this.server = null;
 
     this.updateSession = this.updateSession.bind(this);
@@ -32,7 +34,7 @@ export class AlKamel extends Service {
     };
 
     this.server = new ddpClient({
-      url: `wss://livetiming.alkamelsystems.com/sockjs/${randomNum(3)}/${randomString(8)}/websocket`,
+      url: `wss://${this.host}/sockjs/${randomNum(3)}/${randomString(8)}/websocket`,
       socketContructor: SpecificAKSSocket // NB Typo 'Contructor' in ddp-client library!
     });
 
@@ -43,7 +45,9 @@ export class AlKamel extends Service {
       // maybe already added (HMR can cause this)
     }
 
-    // window._ddp = this.server;
+    if (process.env.NODE_ENV === 'development') {
+      window._ddp = this.server;
+    }
 
     const sessionObserver = this.server.observe(
       'session_info',
@@ -71,6 +75,7 @@ export class AlKamel extends Service {
   updateSession() {
     const allInfo = Object.values(this.server.collections.session_info);
     const currentSessionInfo = allInfo.find(s => !s.info?.closed) || allInfo[allInfo.length - 1];
+    const isFormulaE = this.host === 'livetiming-formula-e.alkamelsystems.com';
 
     if (currentSessionInfo && currentSessionInfo.session?.value !== this.sessionMonitor?.sessionID?.value) {
       console.log("Session change to ", currentSessionInfo.session.value); // eslint-disable-line no-console
@@ -81,6 +86,7 @@ export class AlKamel extends Service {
       this.sessionMonitor = new SessionMonitor(
         currentSessionInfo.session,
         this.server,
+        isFormulaE,
         this.onStateChange,
         this.onManifestChange
       );
@@ -103,7 +109,8 @@ const SESSION_SUBSCRIPTIONS = [
   'weather',
   'bestResults',
   'raceControl',
-  'sessionBestResultsByClass'
+  'sessionBestResultsByClass',
+  'sessionAttackMode'
 ];
 
 // ...but these are (usually) snake-cased.
@@ -117,12 +124,14 @@ const SESSION_COLLECTIONS = [
   'race_control',
   'sessionBestResultsByClass', // ...except when they're not.
   'session_entry', // And this one is named differently
+  'attackMode', // so is this
 ];
 
 class SessionMonitor {
-  constructor(sessionID, ddp, onStateChange, onManifestChange) {
+  constructor(sessionID, ddp, isFormulaE, onStateChange, onManifestChange) {
     this.sessionID = sessionID;
     this.ddp = ddp;
+    this.isFormulaE = isFormulaE;
     this.onStateChange = onStateChange;
     this.onManifestChange = onManifestChange;
 
@@ -169,9 +178,9 @@ class SessionMonitor {
     if (this._pending === 0) {
       const collections = this._currentSessionCollections();
 
-      this.onManifestChange(getManifest(collections));
+      this.onManifestChange(getManifest(collections, this.isFormulaE));
 
-      const nextState = translate(collections, this._raceControlLastIndex);
+      const nextState = translate(collections, this.isFormulaE, this._raceControlLastIndex);
       this._raceControlLastIndex = nextState.meta.raceControlLastIndex;
       this.onStateChange(nextState);
     }
@@ -198,4 +207,4 @@ const mapToRelevantKey = (obj) => {
   return {};
 };
 
-AlKamel.regex = /livetiming\.alkamelsystems\.com\/[0-9a-zA-Z]+/;
+AlKamel.regex = /livetiming(-formula-e)?\.alkamelsystems\.com\/[0-9a-zA-Z]+/;

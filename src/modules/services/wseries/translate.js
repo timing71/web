@@ -1,4 +1,4 @@
-import { Stat } from "../../../racing";
+import { Stat } from "@timing71/common";
 import { parseTime } from '../utils';
 
 const COLUMN_SPEC = [

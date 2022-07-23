@@ -59,7 +59,7 @@ export const TimingTable = () => {
         <TimingTableHeader manifest={manifest} />
         <tbody>
           {
-            state.cars.map(
+            (state.cars || []).map(
               (car, idx) => {
                 const carNum = statExtractor.get(car, Stat.NUM, idx);
                 return (

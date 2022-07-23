@@ -37,17 +37,19 @@ export const Session = types.model({
 }).actions(
   self => ({
     update(oldState, newState) {
-      if (oldState.session?.flagState !== newState.session?.flagState || self.flagStats.length === 0) {
-        if (self.flagStats.length > 0) {
-          self.flagStats[self.flagStats.length - 1].end(self.leaderLap, newState.lastUpdated);
+      if (newState.session?.flagState) {
+        if (oldState.session?.flagState !== newState.session.flagState || self.flagStats.length === 0) {
+          if (self.flagStats.length > 0) {
+            self.flagStats[self.flagStats.length - 1].end(self.leaderLap, newState.lastUpdated);
+          }
+          self.flagStats.push(
+            FlagStat.create({
+              flag: newState.session.flagState,
+              startTime: self.flagStats.length === 0 && oldState.lastUpdated ? oldState.lastUpdated : newState.lastUpdated,
+              startLap: self.leaderLap
+            })
+          );
         }
-        self.flagStats.push(
-          FlagStat.create({
-            flag: newState.session.flagState,
-            startTime: self.flagStats.length === 0 && oldState.lastUpdated ? oldState.lastUpdated : newState.lastUpdated,
-            startLap: self.leaderLap
-          })
-        );
       }
     },
 

@@ -6,6 +6,7 @@ import { History, OndemandVideo, Quiz, StackedBarChart } from '@styled-icons/mat
 
 import { Button } from "./Button";
 import { useFileContext } from "./FileLoaderContext";
+import { URLBox } from "./URLBox";
 
 const MenuButton = styled(Button)`
 
@@ -19,8 +20,9 @@ const MenuContainer = styled.div`
   align-self: start;
   margin: 0 25%;
 
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-gap: 3em;
 `;
 
 export const MainMenu = () => {
@@ -48,6 +50,7 @@ export const MainMenu = () => {
 
   return (
     <MenuContainer>
+      <URLBox />
       <MenuButton
         onClick={() => history.push('/services')}
       >

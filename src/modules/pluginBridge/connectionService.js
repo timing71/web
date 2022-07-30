@@ -72,6 +72,11 @@ export class WebConnectionService extends EventEmitter {
     return new DOMParser();
   }
 
+  async listRecentSources() {
+    const result = await this.send({ 'type': 'RETRIEVE_SOURCES_LIST' });
+    return result.sources || [];
+  }
+
   disconnect() {
     window.removeEventListener('message', this.receive);
   }

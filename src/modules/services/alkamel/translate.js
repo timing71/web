@@ -154,7 +154,7 @@ const mapCars = (standings, entries, numSectors, gapFunc, bestResults, bestResul
       const entry = (entries && entries[raceNum]) || {};
       const state = mapCarState(data[2], data[8], !!standing.isCheckered);
 
-      const attackModeData = attackMode?.data[raceNum] || {};
+      const attackModeData = attackMode?.data ? attackMode.data[raceNum] || {} : {};
 
       classCount[entry.class] = (classCount[entry.class] || 0) + 1;
 

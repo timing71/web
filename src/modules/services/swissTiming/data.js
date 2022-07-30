@@ -38,7 +38,15 @@ export const patch = (source, diff) => {
 
 const patchArray = (source, diff) => {
 
-  const next = [...source];
+  let next = [];
+
+  if (!Array.isArray(source)) {
+    throw new Error({ 'message': 'patchArray called with non-array source', source });
+  }
+  else {
+    next = [...source];
+  }
+
 
   const updates = diff.u || {};
   Object.entries(updates).forEach(

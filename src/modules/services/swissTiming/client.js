@@ -95,10 +95,17 @@ export class Client extends EventEmitter {
         const dataURL = `${meta.CachingClusterURL}${room.replaceAll('|', '/')}/${data.sync}.json?t=0`;
         this.connectionService.fetch(dataURL).then(
           resp => {
-            const jsonData = JSON.parse(resp);
-            this._apply_data(room, jsonData);
-            this._meta[room].CurrentSync = meta.sync;
-            this.emit(meta.eventName, room, this._data[room]);
+            try {
+              const jsonData = JSON.parse(resp);
+              this._apply_data(room, jsonData);
+              this._meta[room].CurrentSync = meta.sync;
+              this.emit(meta.eventName, room, this._data[room]);
+            }
+            catch (e) {
+              console.warn('Error applying async data; performing full reload', room, resp);  // eslint-disable-line no-console
+              this._meta[room].CurrentSync = 0;
+              this.init_async_data(meta.eventName)(room, this._meta[room]);
+            }
           }
         );
       }

@@ -38,9 +38,16 @@ export class AlkamelSocket extends EventEmitter {
         data: mungedData.length > 0 ? JSON.parse(mungedData) : null
       };
 
-      this.emit('message', mungedMessage);
-      if (this.onmessage) {
-        this.onmessage(mungedMessage);
+      try {
+        this.emit('message', mungedMessage);
+        if (this.onmessage) {
+          this.onmessage(mungedMessage);
+        }
+      }
+      catch (e) {
+        // Something in the DDP subscription cleanup doesn't work properly -
+        // somehow a bunch of undefineds end up in the handler list somewhere
+        console.warn(e); // eslint-disable-line no-console
       }
 
     }

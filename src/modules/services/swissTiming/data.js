@@ -17,7 +17,7 @@ export const patch = (source, diff) => {
           next[n] = patchArray(source[n], i);
         }
         else {
-          const r = source[n] || undefined;
+          const r = source ? source[n] || undefined : undefined;
           if (typeof(r) === 'object') {
             next[n] = patch(r, i);
           }

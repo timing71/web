@@ -115,7 +115,7 @@ export const createSocketIo = (host, uuid, port, callback, forceWebsocket=false)
       ws.readyState === 1 && ws.send('2probe');
     });
     ws.on('close', () => {
-      pingInterval && window.clearInterval(pingInterval);
+      pingInterval && clearInterval(pingInterval);
       usingWebsocket = false;
       sid = null;
       if (!polling) {
@@ -131,7 +131,7 @@ export const createSocketIo = (host, uuid, port, callback, forceWebsocket=false)
         wsDecoder.add(data.toString());
       }
     });
-    pingInterval = window.setInterval(
+    pingInterval = setInterval(
       () => ws.readyState === 1 && ws.send('2'),
       20000
     );
@@ -199,7 +199,7 @@ export const createSocketIo = (host, uuid, port, callback, forceWebsocket=false)
     },
 
     stop: () => {
-      pingInterval && window.clearInterval(pingInterval);
+      pingInterval && clearInterval(pingInterval);
       ws && ws.close();
     }
   };

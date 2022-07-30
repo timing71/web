@@ -45,7 +45,7 @@ export class AlKamel extends Service {
       // maybe already added (HMR can cause this)
     }
 
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' && typeof(window) !== 'undefined') {
       window._ddp = this.server;
     }
 

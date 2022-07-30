@@ -197,6 +197,25 @@ const mapCars = (standings, entries, numSectors, gapFunc, bestResults, bestResul
         }
       }
 
+      let attackModeText = '';
+      let attackModeClass = '';
+
+      if (attackMode?.settings?.maxNumberOfSuccessAttempt) {
+        if (attackModeData.isFullPower) {
+          attackModeClass = 'attack-active';
+          if (attackModeData.attackModeStartTimeUTC) {
+
+          }
+          else {
+            attackModeText = '250';
+          }
+        }
+        else if (attackModeData.currentStatus === 0) {
+          attackModeText = attackMode.settings.maxNumberOfSuccessAttempt - attackModeData.successAttempts;
+          attackModeClass = 'attack-inactive';
+        }
+      }
+
       cars.push([
         raceNum,
         state
@@ -209,7 +228,7 @@ const mapCars = (standings, entries, numSectors, gapFunc, bestResults, bestResul
       ]).concat(
         isFormulaE ? [
           FANBOOST_MAP[attackModeData.fanboostStatus] || ['', ''],
-          ''
+          [attackModeText, attackModeClass]
         ] : []
       ).concat([
         data[4],

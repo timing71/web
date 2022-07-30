@@ -180,7 +180,7 @@ class SessionMonitor {
 
       this.onManifestChange(getManifest(collections, this.isFormulaE));
 
-      const nextState = translate(collections, this.isFormulaE, this._raceControlLastIndex);
+      const nextState = translate(collections, this._raceControlLastIndex, this.isFormulaE);
       this._raceControlLastIndex = nextState.meta.raceControlLastIndex;
       this.onStateChange(nextState);
     }

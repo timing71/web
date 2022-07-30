@@ -191,7 +191,8 @@ export const Theme = {
     'sb': '#FF53E3',
     'sb-new': '#FF53E3',
     'fb-used': '#808080',
-    'fb-active': '#00FF00'
+    'fb-active': '#00FF00',
+    'attack-active': '#ff53e3'
   },
   flagStates: {
     [FlagState.GREEN]: {

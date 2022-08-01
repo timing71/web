@@ -79,6 +79,8 @@ export class Client extends EventEmitter {
               this._apply_data(room, jsonData);
               this.emit(eventName, room, this._data[room]);
             }
+          ).catch(
+            e => this._handle_error_for_room(room, e)
           );
 
         }
@@ -102,14 +104,21 @@ export class Client extends EventEmitter {
               this.emit(meta.eventName, room, this._data[room]);
             }
             catch (e) {
-              console.warn('Error applying async data; performing full reload', room, resp);  // eslint-disable-line no-console
-              this._meta[room].CurrentSync = 0;
-              this.init_async_data(meta.eventName)(room, this._meta[room]);
+              this._handle_error_for_room(room, e);
             }
           }
+        ).catch(
+          e => this._handle_error_for_room(room, e)
         );
       }
     }
+  }
+
+  _handle_error_for_room(room, errorDetails) {
+    console.warn('Error applying async data; performing full reload', room, errorDetails);  // eslint-disable-line no-console
+    const meta = this._meta[room];
+    meta.CurrentSync = 0;
+    this.init_async_data(meta.eventName)(room, meta);
   }
 
   _apply_data(room, data) {

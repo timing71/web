@@ -62,7 +62,7 @@ const splitPayload = (data) => {
 };
 
 
-export const createSocketIo = (host, uuid, port, callback, forceWebsocket=false) => {
+export const createSocketIo = (host, connectionService, callback, forceWebsocket=false) => {
   // In which we badly reimplement some of socket.io's transport handling
   // Ideally we could implement a socket.io client in the plugin and use
   // message passing to send data to the web client.
@@ -91,7 +91,7 @@ export const createSocketIo = (host, uuid, port, callback, forceWebsocket=false)
       if (sid) {
         myUrl += `&sid=${sid}`;
       }
-      port.fetch(myUrl).then(
+      connectionService.fetch(myUrl).then(
         pollData => {
           splitPayload(pollData).forEach(
             msg => pollDecoder.add(msg)
@@ -110,7 +110,7 @@ export const createSocketIo = (host, uuid, port, callback, forceWebsocket=false)
   const doWebsocket = () => {
     // Technically we should include the sid in the websocket URL;
     // but I don't want to reimplement socket.io's session handling...
-    ws = port.createWebsocket(wsUrl, { autoReconnect: false });
+    ws = connectionService.createWebsocket(wsUrl, { autoReconnect: false });
     ws.on('open', () => {
       ws.readyState === 1 && ws.send('2probe');
     });

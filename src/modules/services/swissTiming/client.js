@@ -25,7 +25,6 @@ export class Client extends EventEmitter {
 
     this._socket = createSocketIo(
       HOST,
-      serviceUUID,
       connectionService,
       this._handlePacket,
       true

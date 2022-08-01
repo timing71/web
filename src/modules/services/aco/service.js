@@ -37,7 +37,6 @@ export class ACO extends Service {
 
     this._socketIO = createSocketIo(
       this._host,
-      this.service.uuid,
       connectionService,
       client.handle
     );

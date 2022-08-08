@@ -85,3 +85,5 @@ export const FileAnalysis = () => {
     return null;
   }
 };
+
+export default FileAnalysis;

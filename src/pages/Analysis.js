@@ -82,3 +82,5 @@ export const Analysis = ({ match: { params: { serviceUUID } } }) => {
     );
   }
 };
+
+export default Analysis;

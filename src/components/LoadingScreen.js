@@ -13,7 +13,7 @@ const Container = styled.div`
   color: ${ props => props.theme.site.highlightColor };
 `;
 
-export const LoadingScreen = ({ message }) => (
+export const LoadingScreen = ({ message='Loading...' }) => (
   <Page>
     <Container>
       <Logo

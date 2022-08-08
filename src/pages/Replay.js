@@ -10,7 +10,6 @@ import { RateControls } from "../modules/replay/components/RateControls";
 import { useReplayState } from "../modules/replay/state";
 import { TimingScreen } from "../modules/timingScreen";
 
-
 export const Replay = () => {
 
   const { clearFile, file } = useFileContext();
@@ -62,3 +61,5 @@ export const Replay = () => {
   }
 
 };
+
+export default Replay;

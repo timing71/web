@@ -15,8 +15,8 @@ export const StopStats = observer(
       s => s.durationSeconds ? s.durationSeconds * 1000 : (referenceTimestamp - s.startTime)
     );
 
-    const minTime = Math.min(...durations);
-    const maxTime = Math.max(...durations);
+    const minTime = durations.length > 0 ? Math.min(...durations) : null;
+    const maxTime = durations.length > 0 ? Math.max(...durations) : null;
     const totalTime = durations.reduce((a,b) => a + b, 0);
     const aveTime = durations.length > 0 && totalTime / durations.length;
 

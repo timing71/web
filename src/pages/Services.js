@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Delete, Download, OpenInBrowser, StackedBarChart } from '@styled-icons/material';
+import { Delete, OpenInBrowser, StackedBarChart } from '@styled-icons/material';
 
 import { useConnectionService } from '../ConnectionServiceProvider';
 
@@ -13,6 +13,7 @@ import { Helmet } from 'react-helmet-async';
 import { Logo } from '../components/Logo';
 import { dasherizeParts } from '../modules/services/utils';
 import { GlobalBackButton } from '../components/GlobalBackButton';
+import { AnalysisButton, ReplayButton } from '../components/GeneratorButton';
 
 const Wrapper = styled.div`
   padding: 1em;
@@ -53,80 +54,6 @@ const RouteryButton = ({ to, ...props }) => {
     />
   );
 };
-
-const GeneratorButton = ({ children, finishMessage, progressMessage, startMessage, uuid }) => {
-
-  const [isGenerating, setGenerating] = useState(false);
-  const cs = useConnectionService();
-  const [progress, setProgress] = useState(null);
-
-  useEffect(
-    () => {
-      const handleMessage = (message) => {
-        if (message?.uuid === uuid) {
-          if (message.type === finishMessage) {
-            setGenerating(false);
-          }
-          else if (message.type === progressMessage) {
-            setProgress(message.progress);
-          }
-        }
-      };
-
-      cs.on('message', handleMessage);
-
-      return () => {
-        cs.removeListener('message', handleMessage);
-      };
-    },
-    [cs, finishMessage, progressMessage, uuid]
-  );
-
-  const startGeneration = useCallback(
-    () => {
-      cs.send({ type: startMessage, uuid }).then(
-        () => setGenerating(true)
-      );
-    },
-    [cs, startMessage, uuid]
-  );
-
-
-  return (
-    <Button
-      disabled={isGenerating}
-      onClick={startGeneration}
-    >
-      {
-        isGenerating ? 'Generating...' : children
-      }
-      {
-        isGenerating && progress !== null ? ` (${progress.percent}%)`: null
-      }
-    </Button>
-  );
-};
-
-const ReplayButton = ({ uuid }) => (
-  <GeneratorButton
-    finishMessage='REPLAY_GENERATION_FINISHED'
-    progressMessage='REPLAY_GENERATION_PROGRESS'
-    startMessage='GENERATE_SERVICE_REPLAY'
-    uuid={uuid}
-  >
-    <Download size={24} /> Replay
-  </GeneratorButton>
-);
-
-const AnalysisButton = ({ uuid }) => (
-  <GeneratorButton
-    finishMessage='ANALYSIS_GENERATION_FINISHED'
-    startMessage='GENERATE_ANALYSIS_DOWNLOAD'
-    uuid={uuid}
-  >
-    <Download size={24} /> Analysis
-  </GeneratorButton>
-);
 
 const DeleteButton = ({ reload, uuid }) => {
   const [ isDeleting, setDeleting ] = useState(false);

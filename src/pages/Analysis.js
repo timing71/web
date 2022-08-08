@@ -1,6 +1,7 @@
 import { applyPatch, applySnapshot } from 'mobx-state-tree';
 import { useEffect, useRef, useState } from 'react';
 import { useBroadcastChannel } from '../broadcastChannel';
+import { AnalysisButton } from '../components/GeneratorButton';
 import { LoadingScreen } from '../components/LoadingScreen';
 import { useConnectionService } from '../ConnectionServiceProvider';
 import { createAnalyser } from '../modules/analysis';
@@ -67,7 +68,12 @@ export const Analysis = ({ match: { params: { serviceUUID } } }) => {
       <AnalysisScreen
         analyser={analyser.current}
         manifest={manifest}
-      />
+      >
+        <AnalysisButton
+          label='Download analysis'
+          uuid={serviceUUID}
+        />
+      </AnalysisScreen>
     );
   }
   else {

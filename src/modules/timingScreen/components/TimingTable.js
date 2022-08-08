@@ -19,7 +19,8 @@ const TimingTableInner = styled.table`
   margin: 0;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
 
   td, th {
     padding: 0.5em;

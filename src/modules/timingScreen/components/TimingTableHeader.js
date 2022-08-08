@@ -1,6 +1,12 @@
 import styled from "styled-components";
 import { useSetting } from "../../settings";
 
+const HeaderRow = styled.tr`
+  background-color: black;
+  position: sticky;
+  top: 0;
+`;
+
 const Header = styled.th`
   font-family: Play, sans-serif;
   text-transform: uppercase;
@@ -15,7 +21,7 @@ export const TimingTableHeader = ({ manifest }) => {
   const [hiddenCols] = useSetting('columns.hidden', []);
   return (
     <thead>
-      <tr>
+      <HeaderRow>
         <Header>Pos</Header>
         {
           manifest.colSpec && manifest.colSpec.filter(
@@ -26,7 +32,7 @@ export const TimingTableHeader = ({ manifest }) => {
             )
           )
         }
-      </tr>
+      </HeaderRow>
     </thead>
   );
 };

@@ -44,7 +44,7 @@ function App() {
               <SettingsProvider>
                 <ThemeSettingsProvider>
                   <FileLoaderContextProvider>
-                    <Suspense fallback={LoadingScreen}>
+                    <Suspense fallback={<LoadingScreen />}>
                       <Switch>
                         <Route
                           component={MainMenu}

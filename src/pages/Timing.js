@@ -90,7 +90,7 @@ const TimingInner = ({ match: { params } }) => {
 
   const openAnalysis = useCallback(
     () => {
-      cs.send({ type: 'SHOW_T71_PAGE', page: `analysis/${serviceUUID}` });
+      cs.send({ type: 'SHOW_T71_PAGE', page: `analysis/${serviceUUID}`, devMode: process.env.NODE_ENV === 'development' });
     },
     [cs, serviceUUID]
   );

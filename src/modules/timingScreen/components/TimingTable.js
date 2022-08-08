@@ -11,6 +11,7 @@ import { TimingTableRow } from "./TimingTableRow";
 const TimingTableWrapper = styled.div`
   grid-area: timing;
   overflow: auto;
+  height: 100%;
 `;
 
 const TimingTableInner = styled.table`

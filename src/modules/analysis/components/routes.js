@@ -1,4 +1,5 @@
 import { CarMessages } from './CarMessages';
+import { Classification } from './Classification';
 import { DriverStints } from './driverStints';
 import { DriveTime } from './driveTime';
 import { LapHistory } from './lapHistory';
@@ -12,6 +13,11 @@ export const routes = [
     path: '/session',
     name: 'Session statistics',
     component: SessionStats
+  },
+  {
+    path: '/classification',
+    name: 'Classification',
+    component: Classification
   },
   {
     path: '/strategy',

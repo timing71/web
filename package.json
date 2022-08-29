@@ -100,8 +100,8 @@
   },
   "scripts": {
     "prestart": "OUTPUT_FILE=public/pluginConfig.json yarn run generateConfig",
-    "start": "node ./scripts/start.js",
-    "build": "REACT_APP_COMMIT_REF=${COMMIT_REF} node ./scripts/build.js",
+    "start": "NODE_ENV=development webpack-dev-server --config config/webpack.config.js",
+    "build": "NODE_ENV=production REACT_APP_COMMIT_REF=${COMMIT_REF} webpack --config config/webpack.config.js",
     "clean": "rm -rf ./build && rm -rf ./cli",
     "cli:build": "NODE_ENV=production webpack --config config/webpack.config.cli.js",
     "cli:build:dev": "NODE_ENV=development webpack --config config/webpack.config.cli.js",
@@ -110,8 +110,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules node ./scripts/test.js",
     "generateConfig": "NODE_ENV=production webpack --config config/webpack.config.generator.js && node cli/generateConfig.js",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
-    "newbuild": "webpack --config config/webpack.new.config.js"
+    "build-storybook": "build-storybook"
   },
   "eslintConfig": {
     "extends": [

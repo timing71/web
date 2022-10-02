@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { DEFAULT_STATE, processManifestUpdate, processStateUpdate } from '../modules/serviceHost';
+import { processManifestUpdate, processStateUpdate } from '../modules/serviceHost';
 
 import { connectionService } from "./connectionService";
 import { Recorder } from './record';
@@ -20,7 +20,7 @@ export const serviceCommand = (serviceName, source, options) => {
       uuid: myUUID
     };
 
-    let state = { ...DEFAULT_STATE };
+    let state = { };
 
     const onStateChange = (newState) => {
       state = processStateUpdate(state, newState);

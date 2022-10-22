@@ -1,5 +1,4 @@
-import { Stat } from '@timing71/common';
-import { StatExtractor } from '../../statExtractor';
+import { Stat, StatExtractor } from '@timing71/common';
 
 import { DriverChangeMessage } from './DriverChangeMessage';
 import { FastLapMessage } from './FastLapMessage';

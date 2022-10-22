@@ -1,5 +1,4 @@
-import { FlagState, Stat } from '@timing71/common';
-import { StatExtractor } from '../../statExtractor';
+import { FlagState, Stat, StatExtractor } from '@timing71/common';
 
 export const CURRENT_VERSION = 3;
 

@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react';
-import { Stat } from '@timing71/common';
+import { Stat, StatExtractor } from '@timing71/common';
 import { onPatch, onSnapshot, types } from 'mobx-state-tree';
 
 import { useConnectionService } from '../../ConnectionServiceProvider';
@@ -13,7 +13,6 @@ import { useServiceState } from '../../components/ServiceContext';
 import { useBroadcastChannel } from '../../broadcastChannel';
 import { State } from './state';
 import { Manifest } from './manifest';
-import { StatExtractor } from '../../statExtractor';
 
 const MIN_LAPS_REQUIRED_FOR_PREDICTION = 10;
 

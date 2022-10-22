@@ -1,7 +1,5 @@
-import { Stat } from '@timing71/common';
+import { Stat, timeInSeconds } from '@timing71/common';
 import styled from "styled-components";
-
-import { timeInSeconds } from "../../../formats";
 
 const formatValue = (value, formatKey) => {
 

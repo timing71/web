@@ -1,6 +1,6 @@
+import { timeWithHours } from '@timing71/common';
 import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { timeWithHours } from "../../../formats";
 
 export const ClockInner = styled.div`
   justify-self: center;

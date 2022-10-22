@@ -1,8 +1,8 @@
+import { timeWithHours } from "@timing71/common";
 import styled from "styled-components";
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
-import { timeWithHours } from "../../../formats";
 import { PlayPauseButton } from "./PlayPauseButton";
 import { SkipBackwards, SkipForwards } from "./SkipButton";
 

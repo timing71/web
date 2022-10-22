@@ -3668,10 +3668,10 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
 
-"@timing71/common@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@timing71/common/-/common-0.0.2.tgz#9961881805feb23d3c990c07f97ddefecdb7d25d"
-  integrity sha512-oAs0GfNBbsmRf9Qc9dlOD5eQs0JYHybnisUl6TAd6r4mJBJ2SKU6YO65Dr5Oj+jkub/d7jLleMvm0/xGrc20RQ==
+"@timing71/common@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@timing71/common/-/common-0.0.3.tgz#56538e0c4344962c2c74b591a8f216cc0ec92429"
+  integrity sha512-TwS/Arq6SBxLJPQfRNIYqPNtRrsV1XgFZEBEBKGrPoZglyjZc/kOCeQMTx6rhsfEilL1bDokgWiyM8cY5PVa7g==
   dependencies:
     "@zip.js/zip.js" "^2.4.26"
 

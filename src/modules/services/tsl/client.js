@@ -1,5 +1,5 @@
 import { FlagState, Stat } from "@timing71/common";
-import { RaceControlMessage } from "../../messages";
+import { RaceControlMessage } from "@timing71/common/messages";
 import { dasherizeParts, parseTime, titleCase } from "../utils";
 
 const SECTOR_STATS = [

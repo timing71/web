@@ -1,7 +1,7 @@
+import { RaceControlMessage } from '@timing71/common/messages';
 import { Service } from '../service';
 import { createSignalRConnection } from '../signalr';
 import { getManifest, translate } from './translate';
-import { RaceControlMessage } from '../../messages/Message';
 
 const HOST = `livetiming.formula${ (6 / 2) - 2 }.com`;
 

@@ -1,5 +1,5 @@
 import { FlagState, Stat } from "@timing71/common";
-import { RaceControlMessage } from '../../messages/Message';
+import { RaceControlMessage } from '@timing71/common/messages';
 import { ReferenceData } from "./reference";
 import { dasherizeParts } from '../utils';
 

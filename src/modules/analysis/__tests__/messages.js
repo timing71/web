@@ -1,5 +1,5 @@
+import { Message as CTFMessage } from '@timing71/common/messages';
 import { Messages, Message } from '../messages';
-import { Message as CTFMessage } from '../../messages';
 
 describe('Message', () => {
   it('can be instantiated with a CTF Message object', () => {

@@ -1,5 +1,5 @@
+import { RaceControlMessage } from '@timing71/common/messages';
 import dayjs from '../../../datetime';
-import { RaceControlMessage } from '../../messages';
 import { Service } from "../service";
 import { Client } from "./client";
 import { generateManifest, translateState } from "./translate";

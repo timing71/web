@@ -1,5 +1,5 @@
 import { FlagState, Stat } from '@timing71/common';
-import { Message, RaceControlMessage } from '../../messages';
+import { Message, RaceControlMessage } from '@timing71/common/messages';
 
 export class RedirectError extends Error {
   constructor(url) {

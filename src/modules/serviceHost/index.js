@@ -1,5 +1,5 @@
 import deepEqual from "deep-equal";
-import { generateMessages } from "../messages";
+import { generateMessages } from "@timing71/common/messages";
 
 export const processStateUpdate = (oldState, updatedState) => {
   const newState = { ...oldState, ...updatedState };

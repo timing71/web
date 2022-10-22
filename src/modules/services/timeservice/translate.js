@@ -1,10 +1,11 @@
 import dayjs from 'dayjs';
 
 import { FlagState, Stat } from '@timing71/common';
+import { Message, RaceControlMessage } from '@timing71/common/messages';
+
 import { realToServerTime } from './utils';
 
 import CustomParseFormat from 'dayjs/plugin/customParseFormat';
-import { Message, RaceControlMessage } from '../../messages/Message';
 dayjs.extend(CustomParseFormat);
 
 const ident = a => a;

@@ -1,6 +1,6 @@
 import { types } from 'mobx-state-tree';
 
-import { Message as CTFMessage } from '../messages';
+import { Message as CTFMessage } from '@timing71/common/messages';
 
 export const Message = types.model({
   category: types.optional(types.string, ''),

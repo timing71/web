@@ -13,6 +13,7 @@ const commonConfig = {
       logging: 'warn'
     },
     compress: true,
+    historyApiFallback: true,
     hot: true,
     port: 3000
   },

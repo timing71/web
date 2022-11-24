@@ -9,7 +9,7 @@ import { StateStorer } from "../components/StateStorer";
 import { Debouncer } from "../components/Debouncer";
 import { StateRetriever } from "../components/StateRetriever";
 import { useSetting } from '../modules/settings';
-import { Analysis } from "../modules/analysis";
+import { Analysis } from "../modules/analysis/components";
 import { LoadingScreen } from "../components/LoadingScreen";
 import { ServiceProvider } from "../modules/services";
 import { processManifestUpdate, processStateUpdate } from "../modules/serviceHost";

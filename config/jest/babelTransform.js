@@ -20,6 +20,7 @@ module.exports = babelJest.createTransformer({
     "babel-plugin-transform-import-meta"
   ],
   presets: [
+    '@babel/env',
     [
       require.resolve('babel-preset-react-app-webpack-5'),
       {

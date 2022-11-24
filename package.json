@@ -4,6 +4,7 @@
   "repository": "https://github.com/timing71/beta-web",
   "author": "James Muscat <jamesremuscat@gmail.com>",
   "license": "AGPL-3.0-or-later",
+  "type": "module",
   "dependencies": {
     "@nivo/bar": "^0.79.0",
     "@nivo/core": "^0.79.0",
@@ -51,9 +52,6 @@
     "file-loader": "6.1.1",
     "fs-extra": "^9.0.1",
     "identity-obj-proxy": "3.0.0",
-    "jest": "26.6.0",
-    "jest-resolve": "26.6.0",
-    "jest-watch-typeahead": "0.6.1",
     "lodash.throttle": "^4.1.1",
     "lz-string": "^1.4.4",
     "mini-css-extract-plugin": "0.11.3",
@@ -107,7 +105,7 @@
     "cli:build:dev": "NODE_ENV=development webpack --config config/webpack.config.cli.js",
     "postbuild": "yarn run generateConfig",
     "lint": "eslint src/",
-    "test": "NODE_OPTIONS=--experimental-vm-modules node ./scripts/test.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "generateConfig": "NODE_ENV=production webpack --config config/webpack.config.generator.js && node cli/generateConfig.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
@@ -162,7 +160,10 @@
     "babel-plugin-transform-import-meta": "^2.1.1",
     "babel-preset-react-app-webpack-5": "^10.0.0",
     "html-webpack-plugin": "^5.5.0",
-    "jest-circus": "^27.5.1",
+    "jest": "^29.0.0",
+    "jest-environment-jsdom": "^29.3.1",
+    "jest-resolve": "^29.0.0",
+    "jest-watch-typeahead": "^2.0.0",
     "react-error-overlay": "6.0.9",
     "source-map-loader": "^4.0.0",
     "storybook-react-router": "^1.0.8",
@@ -191,22 +192,14 @@
       "react-app-polyfill/jsdom"
     ],
     "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.js"
+      "<rootDir>/src/setupTests.mjs"
     ],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
       "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
     ],
     "testEnvironment": "jsdom",
-    "testRunner": "jest-circus/runner.js",
-    "transform": {
-      "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
-    },
-    "transformIgnorePatterns": [
-      "^.+\\.module\\.(css|sass|scss)$"
-    ],
+    "transform": {},
     "modulePaths": [],
     "moduleNameMapper": {
       "^react-native$": "react-native-web",

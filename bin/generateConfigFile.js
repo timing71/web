@@ -1,7 +1,8 @@
 const { SERVICE_PROVIDERS } = require('../src/modules/services');
 const fs = require('fs');
 
-const manifest = require('../package.json');
+const packageJson = fs.readFileSync('package.json');
+const manifest = JSON.parse(packageJson);
 
 const OUTPUT_FILE = process.env.OUTPUT_FILE || './build/pluginConfig.json';
 

@@ -14,11 +14,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup Node.js environment
+      - name: Set up Node.js environment
         uses: actions/setup-node@v3
         with:
+          always-auth: true
           node-version: 16
           cache: "yarn"
+
+      - name: Set up token for private package access
+        env:
+          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+        run: |
+          echo "@timing71:registry=https://npm.pkg.github.com" > .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${GH_PACKAGES_TOKEN}" >> .npmrc
+          echo "always-auth=true" >> .npmrc
 
       - name: Install dependencies
         run: yarn install

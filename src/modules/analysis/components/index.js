@@ -2,9 +2,9 @@ import { useRef, useEffect } from 'react';
 
 import { onPatch, onSnapshot } from 'mobx-state-tree';
 
-import { useConnectionService } from '../../ConnectionServiceProvider';
-import { useServiceState } from '../../components/ServiceContext';
-import { useBroadcastChannel } from '../../broadcastChannel';
+import { useConnectionService } from '../../../ConnectionServiceProvider';
+import { useServiceState } from '../../../components/ServiceContext';
+import { useBroadcastChannel } from '../../../broadcastChannel';
 import { createAnalyser } from '..';
 
 

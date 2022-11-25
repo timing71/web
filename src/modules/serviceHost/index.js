@@ -1,5 +1,11 @@
-import deepEqual from "deep-equal";
+import { useEffect, useState, useRef } from "react";
+import * as Sentry from "@sentry/react";
 import { generateMessages } from "@timing71/common/messages";
+import { mapServiceProvider } from '@timing71/services';
+import deepEqual from "deep-equal";
+
+import { useServiceManifest, useServiceState } from "../../components/ServiceContext";
+import { useConnectionService } from "../../ConnectionServiceProvider";
 
 export const processStateUpdate = (oldState, updatedState) => {
   const newState = { ...oldState, ...updatedState };
@@ -41,4 +47,52 @@ export const processManifestUpdate = (oldManifest, newManifest, startTime, uuid,
   if (!deepEqual(newManifestWithStartTime, oldManifest)) {
     callback(newManifestWithStartTime);
   }
+};
+
+export const ServiceProvider = ({ onReady, service }) => {
+  const cs = useConnectionService();
+
+  const { updateManifest } = useServiceManifest();
+  const { updateState } = useServiceState();
+
+  const [hasService, setHasService] = useState(false);
+
+  const serviceInstance = useRef();
+
+  useEffect(
+    () => {
+      const serviceClass = mapServiceProvider(service.source);
+      if (serviceClass && !serviceInstance.current) {
+
+        Sentry.setTags({
+          serviceClass: serviceClass.name,
+          source: service.source
+        });
+
+        serviceInstance.current = new serviceClass(updateState, updateManifest, service);
+        serviceInstance.current.start(cs);
+        setHasService(true);
+        onReady();
+      }
+      else if (!serviceClass) {
+        setHasService(false);
+      }
+    },
+    [cs, onReady, service, updateManifest, updateState]
+  );
+
+  useEffect(
+    () => () => {
+      serviceInstance.current?.stop();
+    },
+    []
+  );
+
+  if (!hasService) {
+    return (
+      <p>No service provider found for <cite>{service.source}</cite>!</p>
+    );
+  }
+
+  return null;
 };

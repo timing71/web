@@ -64,7 +64,6 @@ module.exports = {
   appJsConfig: resolveApp('jsconfig.json'),
   cliBuild: resolveApp('cli'),
   cliEntryPoint: resolveModule(resolveApp, 'src/cli/main'),
-  builderEntryPoint: resolveModule(resolveApp, 'bin/generateConfigFile'),
   yarnLockFile: resolveApp('yarn.lock'),
   testsSetup: resolveModule(resolveApp, 'src/setupTests'),
   proxySetup: resolveApp('src/setupProxy.js'),

@@ -11,7 +11,7 @@ import { StateRetriever } from "../components/StateRetriever";
 import { useSetting } from '../modules/settings';
 import { Analysis } from "../modules/analysis/components";
 import { LoadingScreen } from "../components/LoadingScreen";
-import { ServiceProvider } from "../modules/services";
+import { ServiceProvider } from "../modules/serviceHost";
 import { processManifestUpdate, processStateUpdate } from "../modules/serviceHost";
 import {
   DelayIndicator,

@@ -1,9 +1,3 @@
-import { useEffect, useState, useRef } from "react";
-import * as Sentry from "@sentry/react";
-
-import { useServiceManifest, useServiceState } from "../../components/ServiceContext";
-import { useConnectionService } from "../../ConnectionServiceProvider";
-
 import { ALMS, ELMS, LeMansCup, WEC } from "./aco";
 import { AlKamel } from "./alkamel";
 import { Cronococa } from './cronococa';
@@ -53,53 +47,4 @@ export const mapServiceProvider = (source) => {
       return SERVICE_PROVIDERS[i];
     }
   }
-};
-
-
-export const ServiceProvider = ({ onReady, service }) => {
-  const cs = useConnectionService();
-
-  const { updateManifest } = useServiceManifest();
-  const { updateState } = useServiceState();
-
-  const [hasService, setHasService] = useState(false);
-
-  const serviceInstance = useRef();
-
-  useEffect(
-    () => {
-      const serviceClass = mapServiceProvider(service.source);
-      if (serviceClass && !serviceInstance.current) {
-
-        Sentry.setTags({
-          serviceClass: serviceClass.name,
-          source: service.source
-        });
-
-        serviceInstance.current = new serviceClass(updateState, updateManifest, service);
-        serviceInstance.current.start(cs);
-        setHasService(true);
-        onReady();
-      }
-      else if (!serviceClass) {
-        setHasService(false);
-      }
-    },
-    [cs, onReady, service, updateManifest, updateState]
-  );
-
-  useEffect(
-    () => () => {
-      serviceInstance.current?.stop();
-    },
-    []
-  );
-
-  if (!hasService) {
-    return (
-      <p>No service provider found for <cite>{service.source}</cite>!</p>
-    );
-  }
-
-  return null;
 };

@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const paths = require('./paths');
+const paths = require('./paths.cjs');
 
 const isEnvProduction = process.env.NODE_ENV === 'production';
 const isEnvDevelopment = process.env.NODE_ENV === 'development';
@@ -28,7 +28,10 @@ const commonConfig = {
       {
         test: /\.(js|jsx)$/,
         use: 'babel-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        resolve: {
+          fullySpecified: false
+        }
       },
       {
         test: /\.css$/,

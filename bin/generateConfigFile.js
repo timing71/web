@@ -1,5 +1,5 @@
-const { SERVICE_PROVIDERS } = require('../src/modules/services');
-const fs = require('fs');
+import { SERVICE_PROVIDERS } from '@timing71/services';
+import fs from 'fs';
 
 const packageJson = fs.readFileSync('package.json');
 const manifest = JSON.parse(packageJson);

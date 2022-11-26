@@ -3788,6 +3788,14 @@
   dependencies:
     "@zip.js/zip.js" "^2.4.26"
 
+"@timing71/common@^0.0.5":
+  version "0.0.5"
+  resolved "https://npm.pkg.github.com/download/@timing71/common/0.0.5/d86c53ec3f779690d0515747aaf04560d82b7e50#d86c53ec3f779690d0515747aaf04560d82b7e50"
+  integrity sha512-mUKcIqezo5Y1X3HZRifT8IhmS5ETWv4bHeJsPici9daEpOkkEwwwIViOSdAfOG+qMJW1A2ByeJoqdfoP63hzNA==
+  dependencies:
+    "@zip.js/zip.js" "^2.4.26"
+    dayjs "^1.11.6"
+
 "@timing71/services@^0.1.0":
   version "0.1.0"
   resolved "https://npm.pkg.github.com/download/@timing71/services/0.1.0/337c94671db9536e33043f25304f4049a5845279#337c94671db9536e33043f25304f4049a5845279"
@@ -7121,6 +7129,11 @@ dayjs@^1.10.7:
   version "1.11.3"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.3.tgz#4754eb694a624057b9ad2224b67b15d552589258"
   integrity sha512-xxwlswWOlGhzgQ4TKzASQkUhqERI3egRNqgV4ScR8wlANA/A9tZ7miXa44vTTKEq5l7vWoL5G57bG3zA+Kow0A==
+
+dayjs@^1.11.6:
+  version "1.11.6"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.6.tgz#2e79a226314ec3ec904e3ee1dd5a4f5e5b1c7afb"
+  integrity sha512-zZbY5giJAinCG+7AGaw0wIhNZ6J8AhWuSXKvuc1KAyMiRsvGQWqh4L+MomvhdAYjN+lqvVCMq1I41e3YHvXkyQ==
 
 ddp-client@^0.1.2:
   version "0.1.2"

@@ -1,11 +1,14 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 
 const paths = require('./paths.cjs');
 
 const isEnvProduction = process.env.NODE_ENV === 'production';
 const isEnvDevelopment = process.env.NODE_ENV === 'development';
+
+const outputPath = path.resolve(__dirname, '../build');
 
 const commonConfig = {
   devServer: {
@@ -19,7 +22,7 @@ const commonConfig = {
   },
   entry: './src/index.js',
   output: {
-    path: path.resolve(__dirname, '../build'),
+    path: outputPath,
     filename: '[name].[contenthash].js',
     chunkFilename: isEnvProduction ? 'static/js/[name].[contenthash:8].chunk.js' : isEnvDevelopment && 'static/js/[name].chunk.js',
   },
@@ -90,6 +93,15 @@ const commonConfig = {
       // because the `util` package expects there to be a global variable named `process`.
       // Thanks to https://stackoverflow.com/a/65018686/14239942
       process: 'process/browser'
+   }),
+   new CopyPlugin({
+     patterns: [
+       {
+         from: paths.appPublic,
+         filter: f => f !== paths.appHtml,
+         to: outputPath
+       }
+     ]
    })
   ],
   target: ['browserslist']

@@ -1,8 +1,8 @@
 import { ResponsiveBar } from "@nivo/bar";
+import { dayjs } from '@timing71/common';
 import { observer } from "mobx-react-lite";
 
 import { useAnalysis } from "../context";
-import dayjs from '../../../../datetime';
 import { theme as chartTheme } from '../../charts';
 import styled from "styled-components";
 

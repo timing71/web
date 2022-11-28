@@ -1,5 +1,4 @@
-import dayjs from "dayjs";
-import duration from 'dayjs/plugin/duration';
+import { dayjs } from '@timing71/common';
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import styled from "styled-components";
@@ -8,8 +7,6 @@ import { GradientDefs } from "../GradientDefs";
 import { Cell, Table } from "../Table";
 import { FlagCell } from "../FlagCell";
 import { FlagRect } from "../FlagRect";
-
-dayjs.extend(duration);
 
 const FlagsContainer = styled.svg.attrs(
   props => ({

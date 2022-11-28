@@ -1,13 +1,10 @@
-import dayjs from "dayjs";
-import duration from 'dayjs/plugin/duration';
+import { dayjs } from '@timing71/common';
 import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 
 import { useAnalysis } from "../context";
 import { Cell, Heading } from "../Table";
 import { FlagCell } from "../FlagCell";
-
-dayjs.extend(duration);
 
 export const CurrentFlag = observer(
   () => {

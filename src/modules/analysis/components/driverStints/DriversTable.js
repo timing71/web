@@ -1,8 +1,8 @@
+import { dayjs } from '@timing71/common';
 import { observer } from "mobx-react-lite";
 
 import { useAnalysis } from "../context";
 import { Table, Row, Heading, Cell } from '../Table';
-import dayjs from '../../../../datetime';
 
 const DriverRow = ({ driver, timestamp }) => (
   <Row inProgress={driver.inCar}>

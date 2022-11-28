@@ -1,9 +1,9 @@
+import { dayjs } from '@timing71/common';
 import { observer } from "mobx-react-lite";
+import styled from "styled-components";
 
 import { useAnalysis } from "../context";
 import { Table, Row, Heading, Cell } from '../Table';
-import dayjs from '../../../../datetime';
-import styled from "styled-components";
 
 const StintRow = ({ stint, timestamp }) => (
   <Row inProgress={stint.inProgress}>

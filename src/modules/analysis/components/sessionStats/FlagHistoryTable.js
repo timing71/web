@@ -1,13 +1,10 @@
-import dayjs from "dayjs";
-import duration from 'dayjs/plugin/duration';
+import { dayjs } from '@timing71/common';
 import { observer } from "mobx-react-lite";
 import { useCallback, useEffect, useState } from "react";
 
 import { useAnalysis } from "../context";
 import { Cell, Heading, Row } from "../Table";
 import { FlagCell } from "../FlagCell";
-
-dayjs.extend(duration);
 
 const AggregateRow = ({ flag, count, time, laps, additionalLapsFrom, additionalTimeFrom, leaderLap, referenceTimestamp }) => {
 

@@ -1,4 +1,5 @@
-import dayjs from '../../../../datetime';
+import { dayjs } from '@timing71/common';
+
 import { DriveShareChart } from "./DriveShareChart";
 
 

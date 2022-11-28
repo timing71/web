@@ -1,7 +1,7 @@
+import { dayjs } from '@timing71/common';
 import styled from 'styled-components';
 
 import { Cell, Heading, Table } from '../../Table';
-import dayjs from '../../../../../datetime';
 
 const SDTable = styled(Table)`
 

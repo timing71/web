@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Delete, OpenInBrowser, StackedBarChart } from '@styled-icons/material';
-import { dasherizeParts } from '@timing71/common';
-import dayjs from 'dayjs';
+import { dasherizeParts, dayjs } from '@timing71/common';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 

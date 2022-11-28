@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import dayjs from 'dayjs';
+import { dayjs } from '@timing71/common';
 import { Paypal } from 'styled-icons/fa-brands';
 
 import { PAYPAL_DONATE_LINK } from "../constants";

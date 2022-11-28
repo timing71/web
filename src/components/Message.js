@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import { dayjs } from '@timing71/common';
 import styled from "styled-components";
 
 const CategoryCell = styled.td`

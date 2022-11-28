@@ -1,11 +1,8 @@
+import { dayjs } from '@timing71/common';
 import styled from 'styled-components';
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
 import { observer } from 'mobx-react-lite';
 
 import { useAnalysis } from "../context";
-
-dayjs.extend(duration);
 
 const SubLine = styled.small`
   display: block;

@@ -1,8 +1,9 @@
+import { dayjs } from '@timing71/common';
 import { observer } from "mobx-react-lite";
-import { useAnalysis } from "../context";
-import dayjs from '../../../../datetime';
-import { Cell, Heading, Row, Table } from "../Table";
 import styled, { css } from "styled-components";
+
+import { useAnalysis } from "../context";
+import { Cell, Heading, Row, Table } from "../Table";
 
 const YellowCell = styled(Cell)`
   ${

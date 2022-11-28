@@ -1,9 +1,10 @@
 import { Fragment, useCallback, useMemo } from "react";
+import { dayjs } from '@timing71/common';
 import { observer } from "mobx-react-lite";
+
 import { useAnalysis } from "../../context";
 import { StintLayer } from './StintLayer';
 import { HEADER_HEIGHT, ROW_HEIGHT } from "../constants";
-import dayjs from "dayjs";
 import { HeaderText } from "./HeaderText";
 import { Gridline } from "./Gridline";
 import { TimeChartFlags } from "./TimeChartFlags";

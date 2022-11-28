@@ -1,12 +1,11 @@
+import { dayjs } from '@timing71/common';
 import { observer } from "mobx-react-lite";
-
 import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
+
 import { useAnalysis } from "../context";
-import dayjs from '../../../../datetime';
 import { Heading, Table } from "../Table";
 import { FlagCell } from '../FlagCell';
-
 import { LapHistoryChart } from './LapHistoryChart';
 
 const Container = styled.div`

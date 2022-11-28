@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import { dayjs } from '@timing71/common';
 import { Update } from 'styled-icons/material';
 
 import { useServiceState } from "../../../components/ServiceContext";

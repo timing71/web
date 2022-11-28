@@ -1,6 +1,6 @@
+import { dayjs } from '@timing71/common';
 import { observer } from "mobx-react-lite";
 
-import dayjs from '../../../../datetime';
 import { useAnalysis } from "../context";
 import { Cell, Heading, Row, Table } from "../Table";
 

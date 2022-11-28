@@ -1,8 +1,7 @@
 import { useCallback } from 'react';
+import { dayjs } from '@timing71/common';
 import { Table, useVirtual } from  'af-virtual-scroll';
 import styled from 'styled-components';
-
-import dayjs from '../../../datetime';
 
 import { Message } from '../../../components/Message';
 

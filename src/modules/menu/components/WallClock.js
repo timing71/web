@@ -1,5 +1,5 @@
-import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { dayjs } from '@timing71/common';
 import { Clock } from 'styled-icons/bootstrap';
 
 export const WallClock = () => {

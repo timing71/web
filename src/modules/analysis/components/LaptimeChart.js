@@ -1,12 +1,10 @@
 import { useMemo } from 'react';
-import { FlagState } from '@timing71/common';
+import { dayjs, FlagState } from '@timing71/common';
 import { ResponsiveBar, ResponsiveBarCanvas } from "@nivo/bar";
 import { linearGradientDef } from '@nivo/core';
 import styled from "styled-components";
 
 import { theme as chartTheme } from '../charts';
-
-import dayjs from '../../../datetime';
 import { Theme as siteTheme } from '../../../theme';
 
 const getBarColor = ({ data }) => {

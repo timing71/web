@@ -1,7 +1,7 @@
-import styled from 'styled-components';
 import { animated } from '@react-spring/web';
-import dayjs from 'dayjs';
+import { dayjs } from '@timing71/common';
 import { darken } from 'polished';
+import styled from 'styled-components';
 
 import { StintSparklines } from './StintSparklines';
 

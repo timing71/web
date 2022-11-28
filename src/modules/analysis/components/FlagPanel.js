@@ -1,11 +1,8 @@
+import { dayjs } from '@timing71/common';
 import { observer } from "mobx-react-lite";
 import styled from 'styled-components';
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
 
 import { useAnalysis } from './context';
-
-dayjs.extend(duration);
 
 const Outer = styled.div`
   grid-area: flag;

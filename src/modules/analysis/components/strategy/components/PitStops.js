@@ -1,6 +1,6 @@
-import styled from 'styled-components';
 import { animated, useTransition } from '@react-spring/web';
-import dayjs from 'dayjs';
+import { dayjs } from '@timing71/common';
+import styled from 'styled-components';
 
 const PitStopInner = styled(animated.div).attrs(
   props => ({

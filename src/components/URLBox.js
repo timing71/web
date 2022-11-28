@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
+import { mapServiceProvider } from "@timing71/services";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { PlayArrow } from "styled-icons/material";
 
 import { useConnectionService } from '../ConnectionServiceProvider';
 import { Button } from "./Button";
-import { PlayArrow } from "styled-icons/material";
-import { mapServiceProvider } from "../modules/services";
-import { useHistory } from "react-router-dom";
 import { Autocomplete } from "./Autocomplete";
 
 const Wrapper = styled.div`
@@ -24,6 +24,12 @@ const Wrapper = styled.div`
     width: 100%;
     display: flex;
 
+    .autocomplete-list {
+      border: 1px solid ${ props => props.theme.site.highlightColor };
+      border-top: none;
+      border-radius: 0 0 0.25em 0.25em;
+    }
+
     & input {
       flex-grow: 1;
       background-color: black;
@@ -35,6 +41,10 @@ const Wrapper = styled.div`
       font-size: x-large;
 
       padding: 0.75em;
+    }
+
+    &.open input {
+      border-radius: 0.25em 0.25em 0 0;
     }
   }
 
@@ -63,17 +73,17 @@ const useSourcesList = () => {
 
 const URLEntry = styled.div`
   color: ${props => props.theme.site.highlightColor};
-  background-color:${ props => props.highlighted ? '#404040' : 'black' };
+  background-color: ${ props => props.highlighted ? '#404040' : 'black' };
   font-family: ${props => props.theme.site.textFont};
   font-size: x-large;
 
-  padding: 0.25em;
+  padding: 0.5em;
 
   cursor: pointer;
   user-select: none;
 
   &:hover {
-    background-color: '#404040';
+    background-color: ${ props => props.highlighted ? '#404040' : '#202020' };
   }
 `;
 

@@ -1,7 +1,7 @@
 import { cloneElement, useCallback, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 
-const List = styled.div`
+const List = styled.div.attrs({ className: 'autocomplete-list' })`
 
   position: fixed;
   overflow: auto;
@@ -26,7 +26,7 @@ export const Autocomplete = ({ items, onChange, onSelect, renderItem, shouldItem
       setShowList(true);
       if (inputRef.current) {
         const rect = inputRef.current.getBoundingClientRect();
-        const computedStyle = global.window.getComputedStyle(inputRef.current);
+        const computedStyle = window.getComputedStyle(inputRef.current);
         const marginBottom = parseInt(computedStyle.marginBottom, 10) || 0;
         const marginLeft = parseInt(computedStyle.marginLeft, 10) || 0;
         const marginRight = parseInt(computedStyle.marginRight, 10) || 0;
@@ -136,7 +136,7 @@ export const Autocomplete = ({ items, onChange, onSelect, renderItem, shouldItem
   );
 
   return (
-    <div>
+    <div className={showList ? 'open' : undefined}>
       <input
         autoComplete='false'
         onBlur={handleBlur}

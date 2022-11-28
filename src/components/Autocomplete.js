@@ -8,7 +8,7 @@ const List = styled.div.attrs({ className: 'autocomplete-list' })`
   max-height: 50%;
 `;
 
-export const Autocomplete = ({ items, onChange, onSelect, renderItem, shouldItemRender, value }) => {
+export const Autocomplete = ({ inputProps={}, items, onChange, onSelect, renderItem, shouldItemRender, value }) => {
 
   const [showList, setShowList] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(null);
@@ -146,6 +146,7 @@ export const Autocomplete = ({ items, onChange, onSelect, renderItem, shouldItem
         ref={inputRef}
         type='text'
         value={value}
+        {...inputProps}
       />
       {
         showList && (

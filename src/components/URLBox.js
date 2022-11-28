@@ -134,7 +134,7 @@ export const URLBox = () => {
       <Autocomplete
         getItemValue={i => i}
         inputProps={{
-          placeholder: 'Enter the URL of a timing site, or click to show recent sources',
+          placeholder: 'Enter a timing site URL or click to show recent sources',
           spellCheck: false
         }}
         items={sources}

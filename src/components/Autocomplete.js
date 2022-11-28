@@ -54,7 +54,7 @@ export const Autocomplete = ({ items, onChange, onSelect, renderItem, shouldItem
 
   const handleBlur = useCallback(
     () => {
-      if (ignoreBlur.current) {
+      if (!ignoreBlur.current) {
         setShowList(false);
         setHighlightedIndex(null);
       }

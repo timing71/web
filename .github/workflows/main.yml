@@ -53,14 +53,14 @@ jobs:
       - name: Run tests
         run: yarn run test
 
-      - name: Build CLI app
-        run: yarn run cli:build
+      # - name: Build CLI app
+      #   run: yarn run cli:build
 
-      - name: Publish CLI app
-        uses: actions/upload-artifact@v3
-        with:
-          name: 'timing71.js'
-          path: 'cli/timing71.js'
+      # - name: Publish CLI app
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: 'timing71.js'
+      #     path: 'cli/timing71.js'
 
       - name: Publish to Netlify
         if: github.ref == 'refs/heads/master'

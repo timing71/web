@@ -1,25 +1,33 @@
-import { SERVICE_PROVIDERS } from '@timing71/services';
+import { TransformStream } from 'web-streams-polyfill/dist/ponyfill.es2018.mjs';
 import fs from 'fs';
 
-const packageJson = fs.readFileSync('package.json');
-const manifest = JSON.parse(packageJson);
+// @zip.js/zip.js needs TransformStream to be available
+// Needs to happen before import of SERVICE_PROVIDERS
+global.TransformStream = TransformStream;
 
-const OUTPUT_FILE = process.env.OUTPUT_FILE || './build/pluginConfig.json';
+import('@timing71/services').then(
+  ({ SERVICE_PROVIDERS }) => {
+    const packageJson = fs.readFileSync('package.json');
+    const manifest = JSON.parse(packageJson);
 
-const pluginConfig = {
-  supportedURLs: [],
-  version: manifest.version
-};
+    const OUTPUT_FILE = process.env.OUTPUT_FILE || './build/pluginConfig.json';
 
-SERVICE_PROVIDERS.forEach(
-  provider => {
-    if (!provider.private) {
-      pluginConfig.supportedURLs.push(provider.regex.source.replace(/\\/g, ''));
-    }
+    const pluginConfig = {
+      supportedURLs: [],
+      version: manifest.version
+    };
+
+    SERVICE_PROVIDERS.forEach(
+      provider => {
+        if (!provider.private) {
+          pluginConfig.supportedURLs.push(provider.regex.source.replace(/\\/g, ''));
+        }
+      }
+    );
+
+    fs.writeFileSync(
+      OUTPUT_FILE,
+      JSON.stringify(pluginConfig)
+    );
   }
-);
-
-fs.writeFileSync(
-  OUTPUT_FILE,
-  JSON.stringify(pluginConfig)
 );

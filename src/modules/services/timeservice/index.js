@@ -1,1 +1,0 @@
-export { TimeService } from './service';

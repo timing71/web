@@ -1,1 +1,0 @@
-export { SwissTiming } from './service';

@@ -1,9 +1,10 @@
-import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
+import { Delete, OpenInBrowser, StackedBarChart } from '@styled-icons/material';
+import { dasherizeParts } from '@timing71/common';
+import dayjs from 'dayjs';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Delete, OpenInBrowser, StackedBarChart } from '@styled-icons/material';
 
 import { useConnectionService } from '../ConnectionServiceProvider';
 
@@ -11,7 +12,6 @@ import { Button } from '../components/Button';
 import { Page } from '../components/Page';
 import { Helmet } from 'react-helmet-async';
 import { Logo } from '../components/Logo';
-import { dasherizeParts } from '../modules/services/utils';
 import { GlobalBackButton } from '../components/GlobalBackButton';
 import { AnalysisButton, ReplayButton } from '../components/GeneratorButton';
 

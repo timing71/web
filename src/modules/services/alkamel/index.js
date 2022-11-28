@@ -1,1 +1,0 @@
-export { AlKamel } from './service';

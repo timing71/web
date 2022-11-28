@@ -1,1 +1,0 @@
-export { SoftPauer } from './service';

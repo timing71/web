@@ -17,6 +17,7 @@ import { ThemeSettingsProvider } from './components/ThemeSettingsProvider';
 import { Theme } from './theme';
 import { LoadingScreen } from './components/LoadingScreen';
 
+const Archive = lazy(() => import('./pages/Archive'));
 const Analysis = lazy(() => import('./pages/Analysis'));
 const FileAnalysis = lazy(() => import('./pages/FileAnalysis'));
 const Replay = lazy(() => import('./pages/Replay'));
@@ -49,6 +50,10 @@ function App() {
                         <Route
                           component={MainMenu}
                           path='/menu'
+                        />
+                        <Route
+                          component={Archive}
+                          path='/archive'
                         />
                         <Route
                           component={Services}

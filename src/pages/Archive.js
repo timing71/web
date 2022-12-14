@@ -20,6 +20,7 @@ const FullHeightSection = styled(Section)`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  height: 90vh;
 `;
 
 export const Archive = () => (

@@ -1,6 +1,12 @@
+import { useState } from "react";
 import styled from "styled-components";
 
+import { Option, Select } from '../../../components/Select';
+
+import { useReplayCount, useReplayQuery, useSeriesList } from "../api";
+
 import raceday from '../img/raceday.png';
+import { ReplayList } from "./ReplayList";
 
 const Inner = styled.div`
 
@@ -8,10 +14,16 @@ const Inner = styled.div`
   flex-direction: column;
   height: 100%;
   flex-grow: 1;
+  min-height: 0;
 `;
 
 const Bar = styled.div`
   padding: 1em;
+  padding-bottom: 0;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const Content = styled.div`
@@ -23,10 +35,9 @@ const Content = styled.div`
 `;
 
 const BottomBar = styled(Bar)`
-
-  display: flex;
   justify-content: flex-end;
-  align-items: center;
+  padding-top: 0.5em;
+  padding-bottom: 1em;
 
   & img {
     margin-left: 0.5em;
@@ -34,12 +45,46 @@ const BottomBar = styled(Bar)`
 `;
 
 export const ArchiveMenu = () => {
+
+  const seriesList = useSeriesList();
+
+  const [seriesFilter, setSeriesFilter] = useState('');
+
+  const replayCount = useReplayCount(seriesFilter);
+  const replays = useReplayQuery(seriesFilter);
+
   return (
     <Inner>
       <Bar>
-        Hello
+        <Select
+          onChange={e => setSeriesFilter(e.target.value)}
+          value={seriesFilter}
+        >
+          <Option value=''>Show all series</Option>
+          {
+            seriesList.isSuccess && seriesList.data.series.map(
+              s => (
+                <Option
+                  key={s}
+                  value={s}
+                >
+                  {s}
+                </Option>
+              )
+            )
+          }
+        </Select>
+        { replayCount.isSuccess && `${replayCount.data.count} replay${replayCount.data.count === 1 ? '' : 's'} available` }
       </Bar>
-      <Content>Content</Content>
+      <Content>
+        {
+          replays.isSuccess && (
+            <ReplayList
+              replays={replays.data || []}
+            />
+          )
+        }
+      </Content>
       <BottomBar>
         In partnership with
         <a

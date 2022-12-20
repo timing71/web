@@ -34,6 +34,10 @@ const Bar = styled.div`
     width: 0;
     margin-bottom: 0.5em;
   }
+
+  & > span {
+    margin-bottom: 0.5em;
+  }
 `;
 
 const SeriesSelect = styled(Select)`

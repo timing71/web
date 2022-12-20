@@ -23,6 +23,7 @@ const commonConfig = {
   entry: './src/index.js',
   output: {
     path: outputPath,
+    publicPath: '/',
     filename: '[name].[contenthash].js',
     chunkFilename: isEnvProduction ? 'static/js/[name].[contenthash:8].chunk.js' : isEnvDevelopment && 'static/js/[name].chunk.js',
   },

@@ -57,7 +57,7 @@ function App() {
                           />
                           <Route
                             component={Archive}
-                            path='/archive'
+                            path='/archive/:series?'
                           />
                           <Route
                             component={Services}

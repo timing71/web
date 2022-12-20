@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 
 import { Option, Select } from '../../../components/Select';
@@ -8,6 +7,7 @@ import { useReplayCount, useReplayQuery, useSeriesList } from "../api";
 
 import raceday from '../img/raceday.png';
 import { ReplayList } from "./ReplayList";
+import { useHistory, useParams } from "react-router-dom";
 
 const Inner = styled.div`
 
@@ -57,12 +57,19 @@ const Loading = styled.div`
 
 export const ArchiveMenu = () => {
 
+  const params = useParams();
+  const history = useHistory();
+
   const seriesList = useSeriesList();
 
-  const [seriesFilter, setSeriesFilter] = useState('');
+  const seriesFilter = params.series || '';
 
   const replayCount = useReplayCount(seriesFilter);
   const replays = useReplayQuery(seriesFilter);
+
+  const setSeriesFilter = (newFilter) => {
+    history.push(`/archive/${encodeURIComponent(newFilter)}`);
+  };
 
   return (
     <Inner>

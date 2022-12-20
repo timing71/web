@@ -88,6 +88,10 @@ const loadReplay = (id) => {
   window.location.href = `${API_ROOT}/download/${id}`;
 };
 
+const loadAnalysis = (id) => {
+  window.location.href = `${API_ROOT}/analysis/${id}`;
+};
+
 export const Replay = ({ replay }) => {
   return (
     <Inner data-id={replay.id}>
@@ -103,7 +107,10 @@ export const Replay = ({ replay }) => {
           <Download />
           Replay
         </DownloadButton>
-        <DownloadButton disabled>
+        <DownloadButton
+          disabled={!replay.analysisFilename}
+          onClick={() => loadAnalysis(replay.id)}
+        >
           <Download />
           Analysis
         </DownloadButton>

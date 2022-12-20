@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 
-const API_ROOT = process.env.ARCHIVE_API_ROOT;
+export const API_ROOT = process.env.ARCHIVE_API_ROOT;
 
 const fetchQuery = async (url) => {
   const response = await fetch(url);

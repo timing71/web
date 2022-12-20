@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { Option, Select } from '../../../components/Select';
+import { Logo } from '../../../components/Logo';
 
 import { useReplayCount, useReplayQuery, useSeriesList } from "../api";
 
@@ -44,6 +45,16 @@ const BottomBar = styled(Bar)`
   }
 `;
 
+const Loading = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  color: ${ props => props.theme.site.highlightColor };
+`;
+
 export const ArchiveMenu = () => {
 
   const seriesList = useSeriesList();
@@ -77,6 +88,17 @@ export const ArchiveMenu = () => {
         { replayCount.isSuccess && `${replayCount.data.count} replay${replayCount.data.count === 1 ? '' : 's'} available` }
       </Bar>
       <Content>
+        {
+          replays.isLoading && (
+            <Loading>
+              <Logo
+                $spin
+                size='10vw'
+              />
+              Loading...
+            </Loading>
+          )
+        }
         {
           replays.isSuccess && (
             <ReplayList

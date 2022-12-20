@@ -10,6 +10,7 @@ import { useReplayCount, useReplayQuery, useSeriesList } from "../api";
 
 import raceday from '../img/raceday.png';
 import { ReplayList } from "./ReplayList";
+import { YearSelection } from "./YearSelection";
 
 const Inner = styled.div`
 
@@ -28,9 +29,16 @@ const Bar = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  & > input, & > select, & > span {
+  & > input {
     flex: 1 1 auto;
+    width: 0;
+    margin-bottom: 0.5em;
   }
+`;
+
+const SeriesSelect = styled(Select)`
+  flex: 1 1 auto;
+  width: 0;
 `;
 
 const Content = styled.div`
@@ -70,11 +78,12 @@ export const ArchiveMenu = () => {
 
   const seriesFilter = params.series || '';
   const [descriptionFilter, setDescriptionFilter] = useState('');
+  const [yearFilter, setYearFilter] = useState('');
 
   const [debouncedDescriptionFilter] = useDebounce(descriptionFilter, 250);
 
-  const replayCount = useReplayCount(seriesFilter, debouncedDescriptionFilter);
-  const replays = useReplayQuery(seriesFilter, debouncedDescriptionFilter);
+  const replayCount = useReplayCount(seriesFilter, debouncedDescriptionFilter, yearFilter);
+  const replays = useReplayQuery(seriesFilter, debouncedDescriptionFilter, yearFilter);
 
   const setSeriesFilter = useCallback(
     (newFilter) => {
@@ -86,7 +95,7 @@ export const ArchiveMenu = () => {
   return (
     <Inner>
       <Bar>
-        <Select
+        <SeriesSelect
           onChange={e => setSeriesFilter(e.target.value)}
           value={seriesFilter}
         >
@@ -103,7 +112,11 @@ export const ArchiveMenu = () => {
               )
             )
           }
-        </Select>
+        </SeriesSelect>
+        <YearSelection
+          onChange={(e) => setYearFilter(e.target.value)}
+          value={yearFilter}
+        />
         <Input
           onChange={(e) => setDescriptionFilter(e.target.value)}
           placeholder='Search descriptions...'

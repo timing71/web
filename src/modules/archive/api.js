@@ -16,19 +16,24 @@ export const useSeriesList = () => useQuery(
   () => fetchQuery(`${API_ROOT}/replays/series`)
 );
 
-export const useReplayCount = (seriesFilter) => {
-  let queryString = `${API_ROOT}/replays/count`;
+export const useReplayCount = (seriesFilter = '', descriptionFilter = '') => {
+  let queryString = `${API_ROOT}/replays/count?`;
 
   if (seriesFilter !== '') {
-    queryString += `?where[series]=${encodeURIComponent(seriesFilter)}`;
+    queryString += `where[series]=${encodeURIComponent(seriesFilter)}&`;
   }
+
+  if (descriptionFilter !== '') {
+    queryString += `where[description][ilike]=${encodeURIComponent(`%${descriptionFilter}%`)}`;
+  }
+
   return useQuery(
-    ['replayCount', seriesFilter],
+    ['replayCount', seriesFilter, descriptionFilter],
     () => fetchQuery(queryString)
   );
 };
 
-export const useReplayQuery = (seriesFilter) => {
+export const useReplayQuery = (seriesFilter = '', descriptionFilter = '') => {
 
   let queryString = `${API_ROOT}/replays?filter[order]=startTime%20DESC`;
 
@@ -36,8 +41,12 @@ export const useReplayQuery = (seriesFilter) => {
     queryString += `&filter[where][series]=${encodeURIComponent(seriesFilter)}`;
   }
 
+  if (descriptionFilter !== '') {
+    queryString += `&filter[where][description][ilike]=${encodeURIComponent(`%${descriptionFilter}%`)}`;
+  }
+
   return useQuery(
-    ['replays', seriesFilter],
+    ['replays', seriesFilter, descriptionFilter],
     () => fetchQuery(queryString)
   );
 };

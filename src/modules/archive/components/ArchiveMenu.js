@@ -1,13 +1,15 @@
+import { useCallback, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import { useDebounce } from "use-debounce";
 import styled from "styled-components";
 
-import { Option, Select } from '../../../components/Select';
+import { Input, Option, Select } from '../../../components/Forms';
 import { Logo } from '../../../components/Logo';
 
 import { useReplayCount, useReplayQuery, useSeriesList } from "../api";
 
 import raceday from '../img/raceday.png';
 import { ReplayList } from "./ReplayList";
-import { useHistory, useParams } from "react-router-dom";
 
 const Inner = styled.div`
 
@@ -25,6 +27,10 @@ const Bar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  & > input, & > select, & > span {
+    flex: 1 1 auto;
+  }
 `;
 
 const Content = styled.div`
@@ -63,13 +69,19 @@ export const ArchiveMenu = () => {
   const seriesList = useSeriesList();
 
   const seriesFilter = params.series || '';
+  const [descriptionFilter, setDescriptionFilter] = useState('');
 
-  const replayCount = useReplayCount(seriesFilter);
-  const replays = useReplayQuery(seriesFilter);
+  const [debouncedDescriptionFilter] = useDebounce(descriptionFilter, 250);
 
-  const setSeriesFilter = (newFilter) => {
-    history.push(`/archive/${encodeURIComponent(newFilter)}`);
-  };
+  const replayCount = useReplayCount(seriesFilter, debouncedDescriptionFilter);
+  const replays = useReplayQuery(seriesFilter, debouncedDescriptionFilter);
+
+  const setSeriesFilter = useCallback(
+    (newFilter) => {
+      history.push(`/archive/${encodeURIComponent(newFilter)}`);
+    },
+    [history]
+  );
 
   return (
     <Inner>
@@ -92,7 +104,14 @@ export const ArchiveMenu = () => {
             )
           }
         </Select>
-        { replayCount.isSuccess && `${replayCount.data.count} replay${replayCount.data.count === 1 ? '' : 's'} available` }
+        <Input
+          onChange={(e) => setDescriptionFilter(e.target.value)}
+          placeholder='Search descriptions...'
+          value={descriptionFilter}
+        />
+        <span>
+          { replayCount.isSuccess && `${replayCount.data.count} replay${replayCount.data.count === 1 ? '' : 's'} available` }
+        </span>
       </Bar>
       <Content>
         {

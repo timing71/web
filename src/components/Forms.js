@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
-export const Select = styled.select`
-
+export const Input = styled.input`
   background-color: black;
   border: 1px solid ${ props => props.theme.site.highlightColor };
   border-radius: 0.25em;
@@ -15,8 +14,14 @@ export const Select = styled.select`
   padding: 0.25em;
 
   outline: 0;
-
 `;
+
+export const Select = (props) => (
+  <Input
+    {...props}
+    as='select'
+  />
+);
 
 
 export const Option = styled.option`

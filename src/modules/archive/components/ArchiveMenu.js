@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useDebounce } from "use-debounce";
 import styled from "styled-components";
 
@@ -11,6 +11,8 @@ import { useReplayCount, useReplayQuery, useSeriesList } from "../api";
 import raceday from '../img/raceday.png';
 import { ReplayList } from "./ReplayList";
 import { YearSelection } from "./YearSelection";
+import { useMemo } from "react";
+import { Paginator } from "../../../components/Paginator";
 
 const Inner = styled.div`
 
@@ -54,8 +56,7 @@ const Content = styled.div`
 `;
 
 const BottomBar = styled(Bar)`
-  justify-content: flex-end;
-  padding-top: 0.5em;
+  justify-content: space-between;
   padding-bottom: 1em;
 
   & img {
@@ -73,10 +74,25 @@ const Loading = styled.div`
   color: ${ props => props.theme.site.highlightColor };
 `;
 
+const Partner = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const PAGE_SIZE = 24;
+
+function useQuery() {
+  const { search } = useLocation();
+
+  return useMemo(() => new URLSearchParams(search), [search]);
+}
+
 export const ArchiveMenu = () => {
 
   const params = useParams();
   const history = useHistory();
+  const location = useLocation();
+  const query = useQuery();
 
   const seriesList = useSeriesList();
 
@@ -86,14 +102,47 @@ export const ArchiveMenu = () => {
 
   const [debouncedDescriptionFilter] = useDebounce(descriptionFilter, 250);
 
-  const replayCount = useReplayCount(seriesFilter, debouncedDescriptionFilter, yearFilter);
-  const replays = useReplayQuery(seriesFilter, debouncedDescriptionFilter, yearFilter);
+  const replayCount = useReplayCount({
+    seriesFilter,
+    descriptionFilter: debouncedDescriptionFilter,
+    yearFilter
+  });
+
+  const pages = useMemo(
+    () => Math.ceil((replayCount.data?.count || 0) / PAGE_SIZE) || 0,
+    [replayCount.data]
+  );
+
+  const page = Math.max(
+    1,
+    Math.min(
+      parseInt(query.get('page'), 10) || 1,
+      pages
+    )
+  );
+
+  const replays = useReplayQuery({
+    seriesFilter,
+    descriptionFilter: debouncedDescriptionFilter,
+    yearFilter,
+    page,
+    limit: PAGE_SIZE
+  });
 
   const setSeriesFilter = useCallback(
     (newFilter) => {
       history.push(`/archive/${encodeURIComponent(newFilter)}`);
     },
     [history]
+  );
+
+  const seekPage = useCallback(
+    (pageNum) => {
+      const params = new URLSearchParams(location.search);
+      params.set('page', pageNum);
+      history.replace({ pathname: location.pathname, search: params.toString() });
+    },
+    [history, location.pathname, location.search]
   );
 
   return (
@@ -151,17 +200,24 @@ export const ArchiveMenu = () => {
         }
       </Content>
       <BottomBar>
-        In partnership with
-        <a
-          href="https://raceday.watch/"
-          rel="noreferrer"
-          target="_blank"
-        >
-          <img
-            alt='RaceDay.watch'
-            src={raceday}
-          />
-        </a>
+        <Paginator
+          page={page}
+          pages={pages}
+          seekPage={seekPage}
+        />
+        <Partner>
+          In partnership with
+          <a
+            href="https://raceday.watch/"
+            rel="noreferrer"
+            target="_blank"
+          >
+            <img
+              alt='RaceDay.watch'
+              src={raceday}
+            />
+          </a>
+        </Partner>
       </BottomBar>
     </Inner>
   );

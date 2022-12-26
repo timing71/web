@@ -1,5 +1,5 @@
+import { mapServiceProvider } from "@timing71/common";
 import { useCallback, useEffect, useState } from "react";
-import { mapServiceProvider } from "@timing71/services";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { PlayArrow } from "styled-icons/material";

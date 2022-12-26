@@ -17,9 +17,15 @@ if (process.env.REACT_APP_SENTRY_DSN) {
   });
 }
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+// Allow the import of @timing71/services to fail. This allows the web app to
+// be compiled and run without the (private) services.
+import('@timing71/services').finally(
+  () => {
+    ReactDOM.render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>,
+      document.getElementById('root')
+    );
+  }
 );

@@ -104,6 +104,11 @@ const commonConfig = {
      ]
    })
   ],
+  resolve: {
+    alias: {
+       process: "process/browser"
+    }
+  },
   target: ['browserslist']
 };
 

@@ -4,7 +4,8 @@ import styled from "styled-components";
 const List = styled.div.attrs({ className: 'autocomplete-list' })`
 
   position: fixed;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   max-height: 50%;
 `;
 

@@ -28,6 +28,8 @@ const Wrapper = styled.div`
       border: 1px solid ${ props => props.theme.site.highlightColor };
       border-top: none;
       border-radius: 0 0 0.25em 0.25em;
+
+      max-width: calc(50vw - 4em);
     }
 
     & input {
@@ -41,6 +43,11 @@ const Wrapper = styled.div`
       font-size: x-large;
 
       padding: 0.75em;
+
+      &:focus-visible {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
     }
 
     &.open input {

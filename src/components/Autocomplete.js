@@ -50,25 +50,18 @@ export const Autocomplete = ({ inputProps={}, items, onChange, onSelect, renderI
     [open]
   );
 
-  const ignoreBlur = useRef(false);
-
   const handleBlur = useCallback(
     () => {
-      if (!ignoreBlur.current) {
-        setShowList(false);
-        setHighlightedIndex(null);
-      }
+      setShowList(false);
+      setHighlightedIndex(null);
     },
     []
   );
 
   const handleItemClick = useCallback(
     (item) => (event) => {
-      ignoreBlur.current = true;
       onSelect(item);
-      setShowList(false);
       event.preventDefault();
-      ignoreBlur.current = false;
     },
     [onSelect]
   );
@@ -128,7 +121,7 @@ export const Autocomplete = ({ inputProps={}, items, onChange, onSelect, renderI
       return cloneElement(
         rendered,
         {
-          onClick: handleItemClick(item)
+          onMouseUp: handleItemClick(item)
         }
       );
     },
@@ -139,7 +132,7 @@ export const Autocomplete = ({ inputProps={}, items, onChange, onSelect, renderI
     <div className={showList ? 'open' : undefined}>
       <input
         autoComplete='false'
-        onBlur={handleBlur}
+        onBlur={() => setTimeout(handleBlur, 100)}
         onChange={onChange}
         onClick={handleClick}
         onKeyDown={handleKeyDown}

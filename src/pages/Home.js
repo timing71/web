@@ -61,8 +61,13 @@ const Content = styled.div`
   flex-grow: 1;
   align-self: stretch;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  align-items: flex-start;
+
+  & ${Section} {
+    width: unset;
+    flex: 1 1 50%;
+  }
 `;
 
 const LaunchButtonInner = styled(Button)`
@@ -71,6 +76,12 @@ const LaunchButtonInner = styled(Button)`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const LaunchButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  flex: 1 1 50%;
 `;
 
 const LaunchButton = () => {
@@ -104,38 +115,36 @@ const LaunchButton = () => {
 };
 
 const DefaultContent = () => (
-  <Content>
-    <Section>
-      <h2>Get started now!</h2>
-      <StartNow>
-        <ol>
-          <li>
-            Install the <a href={CHROME_STORE_URL}>Timing71 Chrome extension</a> from the <a href={CHROME_STORE_URL}>Chrome Web Store</a>.
-          </li>
-          <li>
-            Visit any supported live timing page. More will be added over time!
-          </li>
-          <li>
-            Click the "Launch Timing71" button and enjoy the racing!
-          </li>
-        </ol>
-        <ImageChanger
-          delay={5}
-          imageComponent={LaunchImage}
-          images={[
-            addToChrome,
-            launchT71,
-          ]}
-        />
-      </StartNow>
-      <p style={{ textAlign: 'center' }}>
-        Want to find out more? { ' ' }
-        <Link to='/faq'>
-          Visit our FAQ page
-        </Link>.
-      </p>
-    </Section>
-  </Content>
+  <Section>
+    <h2>Install the Chrome extension for more!</h2>
+    <StartNow>
+      <ol>
+        <li>
+          Install the <a href={CHROME_STORE_URL}>Timing71 Chrome extension</a> from the <a href={CHROME_STORE_URL}>Chrome Web Store</a>.
+        </li>
+        <li>
+          Visit any supported live timing page. More will be added over time!
+        </li>
+        <li>
+          Click the "Launch Timing71" button and enjoy the racing!
+        </li>
+      </ol>
+      <ImageChanger
+        delay={5}
+        imageComponent={LaunchImage}
+        images={[
+          addToChrome,
+          launchT71,
+        ]}
+      />
+    </StartNow>
+    <p style={{ textAlign: 'center' }}>
+      Want to find out more? { ' ' }
+      <Link to='/faq'>
+        Visit our FAQ page
+      </Link>.
+    </p>
+  </Section>
 );
 
 
@@ -154,13 +163,19 @@ export const Home = () => (
           />
         </a>
       </LogosBox>
-      <PluginDetector
-        beforeDetection={DefaultContent}
-      >
-        <Content>
-          <LaunchButton />
-        </Content>
-      </PluginDetector>
+      <Content>
+        <Section>
+          <h2>Hosted events</h2>
+          <p>None right now...</p>
+        </Section>
+        <PluginDetector
+          beforeDetection={DefaultContent}
+        >
+          <LaunchButtonWrapper>
+            <LaunchButton />
+          </LaunchButtonWrapper>
+        </PluginDetector>
+      </Content>
       <Footer />
     </HomeInner>
   </Page>

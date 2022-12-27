@@ -110,7 +110,7 @@ const DefaultContent = () => (
       <StartNow>
         <ol>
           <li>
-            Install the <a href={CHROME_STORE_URL}>Timing71 Beta Chrome extension</a> from the <a href={CHROME_STORE_URL}>Chrome Web Store</a>.
+            Install the <a href={CHROME_STORE_URL}>Timing71 Chrome extension</a> from the <a href={CHROME_STORE_URL}>Chrome Web Store</a>.
           </li>
           <li>
             Visit any supported live timing page. More will be added over time!

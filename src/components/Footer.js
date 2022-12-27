@@ -31,7 +31,7 @@ const PP = styled(Paypal)`
 export const Footer = () => (
   <FooterInner>
     <span>
-      Timing71 and Timing71 Beta are copyright &copy; <CopyrightYear /> James Muscat.
+      Timing71 is copyright &copy; <CopyrightYear /> James Muscat.
     </span>
     <a href="mailto:info@timing71.org">info@timing71.org</a>
     <a

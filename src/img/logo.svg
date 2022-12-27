@@ -10,11 +10,11 @@
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg850"
    version="1.1"
-   viewBox="0 0 172.26182 55.559832"
-   height="209.98991"
-   width="651.0683"
+   viewBox="0 0 138.90625 50.270834"
+   height="190"
+   width="525"
    sodipodi:docname="logo.svg"
-   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    inkscape:export-filename="/home/james/timing71_logo.png"
    inkscape:export-xdpi="105.73"
    inkscape:export-ydpi="105.73">
@@ -31,20 +31,18 @@
      inkscape:window-height="959"
      id="namedview1452"
      showgrid="false"
-     inkscape:zoom="1"
-     inkscape:cx="242.9879"
-     inkscape:cy="126.29334"
-     inkscape:window-x="0"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="414.06033"
+     inkscape:cy="155.02636"
+     inkscape:window-x="1680"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg850"
+     inkscape:current-layer="g869"
      fit-margin-top="5"
      fit-margin-left="5"
      fit-margin-right="5"
      fit-margin-bottom="5"
-     inkscape:pagecheckerboard="true"
-     inkscape:snap-text-baseline="true"
-     showguides="false" />
+     inkscape:pagecheckerboard="true" />
   <defs
      id="defs844">
     <inkscape:perspective
@@ -58,7 +56,7 @@
        inkscape:collect="always"
        id="linearGradient1553">
       <stop
-         style="stop-color:#00ffff;stop-opacity:1"
+         style="stop-color:#00ff0f;stop-opacity:1;"
          offset="0"
          id="stop1549" />
       <stop
@@ -70,7 +68,7 @@
        inkscape:collect="always"
        id="linearGradient1543">
       <stop
-         style="stop-color:#000080;stop-opacity:1"
+         style="stop-color:#ff0000;stop-opacity:1;"
          offset="0"
          id="stop1539" />
       <stop
@@ -82,7 +80,7 @@
        inkscape:collect="always"
        id="linearGradient1529">
       <stop
-         style="stop-color:#0000ff;stop-opacity:1"
+         style="stop-color:#ffff1e;stop-opacity:1"
          offset="0"
          id="stop1525" />
       <stop
@@ -136,16 +134,15 @@
   <g
      id="g869"
      inkscape:label="Background"
-     style="display:inline"
-     transform="translate(2.5229458,2.5147652)">
+     style="display:inline">
     <rect
-       ry="9.3678493"
-       y="17.811653"
-       x="35.250946"
-       height="18.735699"
-       width="132.50159"
+       ry="9.4809952"
+       y="17.698507"
+       x="35.137798"
+       height="18.96199"
+       width="90.071663"
        id="rect858"
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.32684064;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:2;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers" />
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.10054886;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:2;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers" />
     <circle
        r="26.192415"
        cy="25.26515"
@@ -156,7 +153,7 @@
   <g
      id="g879"
      inkscape:label="spinner"
-     transform="rotate(-11.016227,39.09622,13.360887)"
+     transform="rotate(-11.016227,24.795683,25.184985)"
      style="display:inline">
     <g
        inkscape:label="green"
@@ -173,7 +170,7 @@
          sodipodi:cx="29.577255"
          sodipodi:type="arc"
          id="path1456"
-         style="opacity:1;fill:none;fill-opacity:1;stroke:#00ffff;stroke-width:2.64583325;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.99543379;paint-order:normal" />
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#00ff0f;stroke-width:2.64583325;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.99543379;paint-order:normal" />
       <path
          transform="rotate(78.804001)"
          style="opacity:1;fill:none;fill-opacity:1;stroke:url(#linearGradient1555);stroke-width:2.64583325;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.94117647;paint-order:normal"
@@ -193,7 +190,7 @@
        id="g864">
       <path
          transform="rotate(54.921108)"
-         style="opacity:1;fill:none;fill-opacity:1;stroke:#000080;stroke-width:2.64583325;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#ff0000;stroke-width:2.64583325;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
          id="path1537"
          sodipodi:type="arc"
          sodipodi:cx="34.987816"
@@ -234,7 +231,7 @@
          sodipodi:cx="32.390991"
          sodipodi:type="arc"
          id="path1456-5"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:2.64583325;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#ffff00;stroke-width:2.64583325;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
          inkscape:label="path1456-5" />
       <path
          transform="rotate(69.441266)"
@@ -255,39 +252,28 @@
      inkscape:export-ydpi="38.480049"
      inkscape:export-xdpi="38.480049"
      id="text4561"
-     y="33.798702"
-     x="22.573572"
+     y="31.283936"
+     x="20.050627"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.51595497px;line-height:125%;font-family:Play;-inkscape-font-specification:Play;letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.79374999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
      xml:space="preserve"
      inkscape:label="Timing71.org"><tspan
        id="tspan4563"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.51595497px;font-family:Play;-inkscape-font-specification:Play;fill:#ffffff;stroke:#000000;stroke-width:0.79374999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
-       y="33.798702"
-       x="22.573572"
+       y="31.283936"
+       x="20.050627"
        sodipodi:role="line">Timing<tspan
    id="tspan869"
-   style="fill:#00ffff;fill-opacity:1;stroke:#000000;stroke-width:0.79374999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers">71</tspan>.org</tspan></text>
+   style="fill:#00ff00;fill-opacity:1;stroke:#000000;stroke-width:0.79374999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers">71</tspan>.org</tspan></text>
   <text
      id="text929"
-     y="46.264091"
-     x="40.501938"
+     y="43.749325"
+     x="37.978992"
      style="font-style:normal;font-weight:normal;font-size:4.23333359px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.79374999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
      xml:space="preserve"
      inkscape:label="The live timing aggregator"><tspan
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666622px;font-family:Play;-inkscape-font-specification:Play;letter-spacing:0px;fill:#ffffff;stroke:#000000;stroke-width:0.79374999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
-       y="46.264091"
-       x="40.501938"
+       y="43.749325"
+       x="37.978992"
        id="tspan927"
        sodipodi:role="line">The live timing aggregator</tspan></text>
-  <text
-     xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:125%;font-family:'Proxima Nova';-inkscape-font-specification:'Proxima Nova, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458335px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     x="126.74983"
-     y="34.076733"
-     id="text1216"><tspan
-       sodipodi:role="line"
-       id="tspan1214"
-       x="126.74983"
-       y="34.076733"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14.11111164px;font-family:Play;-inkscape-font-specification:'Play, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#00ffff;stroke-width:0.26458335px">BETA</tspan></text>
 </svg>

@@ -26,8 +26,8 @@ function App() {
     <ThemeProvider theme={Theme}>
       <HelmetProvider>
         <Helmet
-          defaultTitle='Timing71 Beta'
-          titleTemplate='%s — Timing71 Beta'
+          defaultTitle='Timing71'
+          titleTemplate='%s — Timing71'
         />
         <BrowserRouter>
           <Switch>

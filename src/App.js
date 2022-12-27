@@ -16,6 +16,7 @@ import { Timing } from './pages/Timing';
 import { ThemeSettingsProvider } from './components/ThemeSettingsProvider';
 import { Theme } from './theme';
 import { LoadingScreen } from './components/LoadingScreen';
+import { AutobahnProvider } from './modules/autobahn';
 
 const Analysis = lazy(() => import('./pages/Analysis'));
 const FileAnalysis = lazy(() => import('./pages/FileAnalysis'));
@@ -29,59 +30,61 @@ function App() {
           defaultTitle='Timing71'
           titleTemplate='%s — Timing71'
         />
-        <BrowserRouter>
-          <Switch>
-            <Route
-              component={Home}
-              exact
-              path='/'
-            />
-            <Route
-              component={FAQ}
-              path='/faq'
-            />
-            <PluginDetector>
-              <SettingsProvider>
-                <ThemeSettingsProvider>
-                  <FileLoaderContextProvider>
-                    <Suspense fallback={<LoadingScreen />}>
-                      <Switch>
-                        <Route
-                          component={MainMenu}
-                          path='/menu'
-                        />
-                        <Route
-                          component={Services}
-                          path='/services'
-                        />
-                        <Route
-                          component={Start}
-                          path='/start'
-                        />
-                        <Route
-                          component={Timing}
-                          path='/timing/:serviceUUID'
-                        />
-                        <Route
-                          component={Analysis}
-                          path='/analysis/:serviceUUID'
-                        />
-                        <Route
-                          component={FileAnalysis}
-                          path='/file-analysis'
-                        />
-                        <Route
-                          component={Replay}
-                          path='/replay'
-                        />
-                      </Switch>
-                    </Suspense>
-                  </FileLoaderContextProvider>
-                </ThemeSettingsProvider>
-              </SettingsProvider>
-            </PluginDetector>
-          </Switch>
-        </BrowserRouter>
+        <AutobahnProvider>
+          <BrowserRouter>
+            <Switch>
+              <Route
+                component={Home}
+                exact
+                path='/'
+              />
+              <Route
+                component={FAQ}
+                path='/faq'
+              />
+              <PluginDetector>
+                <SettingsProvider>
+                  <ThemeSettingsProvider>
+                    <FileLoaderContextProvider>
+                      <Suspense fallback={<LoadingScreen />}>
+                        <Switch>
+                          <Route
+                            component={MainMenu}
+                            path='/menu'
+                          />
+                          <Route
+                            component={Services}
+                            path='/services'
+                          />
+                          <Route
+                            component={Start}
+                            path='/start'
+                          />
+                          <Route
+                            component={Timing}
+                            path='/timing/:serviceUUID'
+                          />
+                          <Route
+                            component={Analysis}
+                            path='/analysis/:serviceUUID'
+                          />
+                          <Route
+                            component={FileAnalysis}
+                            path='/file-analysis'
+                          />
+                          <Route
+                            component={Replay}
+                            path='/replay'
+                          />
+                        </Switch>
+                      </Suspense>
+                    </FileLoaderContextProvider>
+                  </ThemeSettingsProvider>
+                </SettingsProvider>
+              </PluginDetector>
+            </Switch>
+          </BrowserRouter>
+        </AutobahnProvider>
       </HelmetProvider>
     </ThemeProvider>
   );

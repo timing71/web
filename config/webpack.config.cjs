@@ -107,6 +107,9 @@ const commonConfig = {
   resolve: {
     alias: {
        process: "process/browser"
+    },
+    fallback: {
+      "stream": require.resolve("stream-browserify")
     }
   },
   target: ['browserslist']

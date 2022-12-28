@@ -4,7 +4,7 @@ import { getProperty, setProperty } from 'dot-prop';
 
 import { useConnectionService } from "../../ConnectionServiceProvider";
 
-const DEFAULT_SETTINGS = {
+export const DEFAULT_SETTINGS = {
   animation: true,
   backgrounds: true,
   delay: 0
@@ -57,7 +57,13 @@ export const SettingsProvider = ({ children }) => {
 export const useSettings = () => useContext(SettingsContext);
 
 export const useSetting = (key, defaultValue) => {
-  const { settings, updateSettings } = useSettings();
+  const settingsObj = useSettings();
+
+  if (!settingsObj) {
+    return [defaultValue, () => {}];
+  }
+
+  const { settings, updateSettings } = settingsObj;
 
   return [
     getProperty(settings, key, defaultValue),

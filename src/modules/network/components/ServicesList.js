@@ -1,3 +1,4 @@
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { ArrowForward } from "styled-icons/material";
 import { useSubscription } from "../../autobahn";
@@ -40,8 +41,12 @@ const ServiceInner = styled.button`
 `;
 
 const Service = ({ service }) => {
+  const history = useHistory();
+
   return (
-    <ServiceInner>
+    <ServiceInner
+      onClick={() => history.push(`/hosted/${service.uuid}`)}
+    >
       <h4>{service.name} <ArrowForward /></h4>
       <p>{service.description}</p>
     </ServiceInner>

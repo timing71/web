@@ -17,14 +17,21 @@ import { ThemeSettingsProvider } from './components/ThemeSettingsProvider';
 import { Theme } from './theme';
 import { LoadingScreen } from './components/LoadingScreen';
 import { AutobahnProvider } from './modules/autobahn';
+import { HostedTiming } from './pages/HostedTiming';
+import { DEFAULT_SETTINGS } from './modules/settings/context';
 
 const Analysis = lazy(() => import('./pages/Analysis'));
 const FileAnalysis = lazy(() => import('./pages/FileAnalysis'));
 const Replay = lazy(() => import('./pages/Replay'));
 
+const themeWithDefaultSettings = {
+  ...Theme,
+  settings: DEFAULT_SETTINGS
+};
+
 function App() {
   return (
-    <ThemeProvider theme={Theme}>
+    <ThemeProvider theme={themeWithDefaultSettings}>
       <HelmetProvider>
         <Helmet
           defaultTitle='Timing71'
@@ -41,6 +48,10 @@ function App() {
               <Route
                 component={FAQ}
                 path='/faq'
+              />
+              <Route
+                component={HostedTiming}
+                path='/hosted/:uuid'
               />
               <PluginDetector>
                 <SettingsProvider>

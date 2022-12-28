@@ -17,6 +17,7 @@ import { Footer } from '../components/Footer';
 import { Button } from '../components/Button';
 import { Logo as LogoComponent } from '../components/Logo';
 import { useConnectionService } from '../ConnectionServiceProvider';
+import { ServicesList } from '../modules/network/components/ServicesList';
 
 const HomeInner = styled.div`
   display: flex;
@@ -166,7 +167,7 @@ export const Home = () => (
       <Content>
         <Section>
           <h2>Hosted events</h2>
-          <p>None right now...</p>
+          <ServicesList />
         </Section>
         <PluginDetector
           beforeDetection={DefaultContent}

@@ -18,7 +18,7 @@ export const SettingsProvider = ({ children }) => {
   useEffect(
     () => {
       if (typeof(localStorage) !== 'undefined') {
-        const restoredSettings = localStorage.getItem(LOCAL_STORAGE_KEY);
+        const restoredSettings = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '{}');
         setSettings({ ...DEFAULT_SETTINGS, ...restoredSettings });
       }
     },
@@ -37,7 +37,7 @@ export const SettingsProvider = ({ children }) => {
             }
           );
 
-          localStorage.setItem(LOCAL_STORAGE_KEY, saveableSettings);
+          localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(saveableSettings));
           return saveableSettings;
         }
       );

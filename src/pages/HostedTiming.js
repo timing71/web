@@ -6,6 +6,8 @@ import { LoadingScreen } from "../components/LoadingScreen";
 import { ServiceManifestContext, ServiceStateContext } from "../components/ServiceContext";
 import { useSubscription } from "../modules/autobahn";
 import { DelayIndicator, DelaySetting, Menu, MenuBar, MenuSeparator, Spacer, SystemMessage, UpdateTime, ViewSettings, WallClock } from "../modules/menu";
+import { useDelayedState } from "../modules/network/hooks";
+import { useSetting } from "../modules/settings";
 import { TimingScreen } from "../modules/timingScreen";
 
 export const HostedTiming = () => {
@@ -26,12 +28,22 @@ export const HostedTiming = () => {
     [compressedServiceState]
   );
 
-  if (compressedServiceState && manifest) {
-    const serviceState = JSON.parse(LZString.decompressFromUTF16(compressedServiceState));
+  const serviceState = compressedServiceState && JSON.parse(LZString.decompressFromUTF16(compressedServiceState));
 
+  const state = {
+    lastUpdated,
+    ...(serviceState || {}),
+    manifest
+  };
+
+  const [ delay ] = useSetting('delay', 0);
+
+  const delayedState = useDelayedState(state, delay);
+
+  if (serviceState && manifest) {
     return (
       <ServiceManifestContext.Provider value={{ manifest }}>
-        <ServiceStateContext.Provider value={{ state: { lastUpdated, ...serviceState, manifest } }}>
+        <ServiceStateContext.Provider value={{ state: { ...delayedState, foo: 'bar' } }}>
           <TimingScreen>
             <MenuBar>
               <WallClock />

@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useState } from "rea
 
 import { getProperty, setProperty } from 'dot-prop';
 
-import { useConnectionService } from "../../ConnectionServiceProvider";
+const LOCAL_STORAGE_KEY = 'timing71Settings';
 
 export const DEFAULT_SETTINGS = {
   animation: true,
@@ -14,17 +14,15 @@ const SettingsContext = createContext();
 
 export const SettingsProvider = ({ children }) => {
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
-  const cs = useConnectionService();
 
   useEffect(
     () => {
-      cs.send({ type: 'RETRIEVE_SETTINGS' }).then(
-        ({ settings }) => {
-          setSettings({ ...DEFAULT_SETTINGS, ...settings });
-        }
-      );
+      if (typeof(localStorage) !== 'undefined') {
+        const restoredSettings = localStorage.getItem(LOCAL_STORAGE_KEY);
+        setSettings({ ...DEFAULT_SETTINGS, ...restoredSettings });
+      }
     },
-    [cs]
+    []
   );
 
   const updateSettings = useCallback(
@@ -39,12 +37,12 @@ export const SettingsProvider = ({ children }) => {
             }
           );
 
-          cs.send({ type: 'STORE_SETTINGS', settings: saveableSettings });
+          localStorage.setItem(LOCAL_STORAGE_KEY, saveableSettings);
           return saveableSettings;
         }
       );
     },
-    [cs]
+    []
   );
 
   return (

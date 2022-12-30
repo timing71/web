@@ -12,17 +12,17 @@ import { MainMenu } from './pages/MainMenu';
 import { Services } from './pages/Services';
 import { SettingsProvider } from './modules/settings';
 import { Start } from './pages/Start';
-import { Timing } from './pages/Timing';
 import { ThemeSettingsProvider } from './components/ThemeSettingsProvider';
 import { LoadingScreen } from './components/LoadingScreen';
 import { AutobahnProvider } from './modules/autobahn';
-import { HostedTiming } from './pages/HostedTiming';
-import { HostedAnalysis } from './pages/HostedAnalysis';
 
-const Archive = lazy(() => import('./pages/Archive'));
-const Analysis = lazy(() => import('./pages/Analysis'));
-const FileAnalysis = lazy(() => import('./pages/FileAnalysis'));
-const Replay = lazy(() => import('./pages/Replay'));
+const Archive = lazy(() => import(/* webpackChunkName: "archive" */ './pages/Archive'));
+const Analysis = lazy(() => import(/* webpackChunkName: "analysis" */ './pages/Analysis'));
+const FileAnalysis = lazy(() => import(/* webpackChunkName: "fileAnalysis" */ './pages/FileAnalysis'));
+const HostedAnalysis = lazy(() => import(/* webpackChunkName: "hostedAnalysis" */ './pages/HostedAnalysis'));
+const HostedTiming = lazy(() => import(/* webpackChunkName: "hostedTiming" */ './pages/HostedTiming'));
+const Replay = lazy(() => import(/* webpackChunkName: "replay" */ './pages/Replay'));
+const Timing = lazy(() => import(/* webpackChunkName: "timing" */ './pages/Timing'));
 
 const queryClient = new QueryClient();
 
@@ -48,14 +48,16 @@ function App() {
                     component={FAQ}
                     path='/faq'
                   />
-                  <Route
-                    component={HostedTiming}
-                    path='/hosted/:uuid'
-                  />
-                  <Route
-                    component={HostedAnalysis}
-                    path='/hosted-analysis/:uuid'
-                  />
+                  <Suspense fallback={<LoadingScreen />}>
+                    <Route
+                      component={HostedTiming}
+                      path='/hosted/:uuid'
+                    />
+                    <Route
+                      component={HostedAnalysis}
+                      path='/hosted-analysis/:uuid'
+                    />
+                  </Suspense>
                   <PluginDetector>
                     <FileLoaderContextProvider>
                       <Suspense fallback={<LoadingScreen />}>

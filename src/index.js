@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // Allow the import of @timing71/services to fail. This allows the web app to
 // be compiled and run without the (private) services.
-import('@timing71/services').finally(
+import(/* webpackChunkName: "services" */'@timing71/services').finally(
   () => {
     ReactDOM.render(
       <React.StrictMode>

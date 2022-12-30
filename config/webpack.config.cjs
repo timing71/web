@@ -28,6 +28,21 @@ const commonConfig = {
     filename: '[name].[contenthash].js',
     chunkFilename: isEnvProduction ? 'static/js/[name].[contenthash:8].chunk.js' : isEnvDevelopment && 'static/js/[name].chunk.js',
   },
+  optimization: {
+    splitChunks: {
+      name: (module, chunks, cacheGroupKey) => {
+        const allChunksNames = chunks.map((chunk) => chunk.name).join('-');
+        return allChunksNames;
+      },
+      cacheGroups: {
+        mobxVendor: {
+          test: /[\\/]node_modules[\\/](mobx.*)[\\/]/,
+          name: 'vendor-mobx',
+          chunks: 'all',
+        },
+      }
+    },
+  },
   module: {
     rules: [
       {

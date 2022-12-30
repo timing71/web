@@ -77,3 +77,8 @@ export const useSubscription = (topic, options={}) => {
 
   return value;
 };
+
+export const useSession = () => {
+  const { session } = useContext(AutobahnContext);
+  return session;
+};

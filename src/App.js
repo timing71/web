@@ -16,6 +16,7 @@ import { ThemeSettingsProvider } from './components/ThemeSettingsProvider';
 import { LoadingScreen } from './components/LoadingScreen';
 import { AutobahnProvider } from './modules/autobahn';
 import { HostedTiming } from './pages/HostedTiming';
+import { HostedAnalysis } from './pages/HostedAnalysis';
 
 const Analysis = lazy(() => import('./pages/Analysis'));
 const FileAnalysis = lazy(() => import('./pages/FileAnalysis'));
@@ -45,6 +46,10 @@ function App() {
                 <Route
                   component={HostedTiming}
                   path='/hosted/:uuid'
+                />
+                <Route
+                  component={HostedAnalysis}
+                  path='/hosted-analysis/:uuid'
                 />
                 <PluginDetector>
                   <FileLoaderContextProvider>

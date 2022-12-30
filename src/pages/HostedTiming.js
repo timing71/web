@@ -1,11 +1,13 @@
 import LZString from "lz-string";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useState } from "react";
 import { useRouteMatch } from "react-router-dom";
+import { StackedBarChart } from "styled-icons/material";
+
 import { LoadingScreen } from "../components/LoadingScreen";
 import { ServiceManifestContext, ServiceStateContext } from "../components/ServiceContext";
 import { useSubscription } from "../modules/autobahn";
-import { DelayIndicator, DelaySetting, Menu, MenuBar, MenuSeparator, Spacer, SystemMessage, UpdateTime, ViewSettings, WallClock } from "../modules/menu";
+import { DelayIndicator, DelaySetting, Menu, MenuBar, MenuSeparator, Spacer, SystemMessage, ToggleMenuItem, UpdateTime, ViewSettings, WallClock } from "../modules/menu";
 import { useDelayedState } from "../modules/network/hooks";
 import { useSetting } from "../modules/settings";
 import { TimingScreen } from "../modules/timingScreen";
@@ -40,6 +42,13 @@ export const HostedTiming = () => {
 
   const delayedState = useDelayedState(state, delay);
 
+  const openAnalysis = useCallback(
+    () => {
+      window.open(`/hosted-analysis/${uuid}`);
+    },
+    [uuid]
+  );
+
   if (serviceState && manifest) {
     return (
       <ServiceManifestContext.Provider value={{ manifest }}>
@@ -57,13 +66,13 @@ export const HostedTiming = () => {
               <Menu>
                 <DelaySetting />
                 <MenuSeparator />
-                {/* <ToggleMenuItem onClick={openAnalysis}>
+                <ToggleMenuItem onClick={openAnalysis}>
                   <span>
                     <StackedBarChart size={24} />
                   </span>
                   <label>Launch analysis</label>
                 </ToggleMenuItem>
-                <MenuSeparator /> */}
+                <MenuSeparator />
                 <ViewSettings />
                 {/* <MenuSeparator />
                 <DownloadReplay /> */}

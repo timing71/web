@@ -168,6 +168,11 @@ export const Home = () => (
         <Section>
           <h2>Hosted events</h2>
           <ServicesList />
+          <p style={{ fontSize: 'small' }}>
+            Hosted events are run on the Timing71 network by Timing71 or by
+            syndicated partners. Support for other timing providers is via the
+            { ' ' } <a href={CHROME_STORE_URL}>Chrome extension</a>.
+          </p>
         </Section>
         <PluginDetector
           beforeDetection={DefaultContent}

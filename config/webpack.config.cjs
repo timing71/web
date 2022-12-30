@@ -122,10 +122,6 @@ const commonConfig = {
           to: outputPath
         }
       ]
-    }),
-    new Workbox.GenerateSW({
-      clientsClaim: true,
-      skipWaiting: true
     })
   ],
   resolve: {
@@ -139,10 +135,23 @@ const commonConfig = {
   target: ['browserslist']
 };
 
+const devConfig = { ...commonConfig };
+
+const prodConfig = {
+  ...commonConfig,
+  plugins: [
+    ...commonConfig.plugins,
+    new Workbox.GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true
+    })
+  ]
+};
+
 module.exports = () => {
   return {
     mode: isEnvProduction ? 'production' : 'development',
     devtool: isEnvProduction ? 'source-map' : false,
-    ...commonConfig
+    ...(isEnvProduction ? prodConfig : devConfig)
   };
 };

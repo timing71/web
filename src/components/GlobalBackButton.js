@@ -21,12 +21,12 @@ const BBInner = styled(Button)`
 
 `;
 
-export const GlobalBackButton = () => {
+export const GlobalBackButton = ({ to=null }) => {
   const history = useHistory();
 
   return (
     <BBInner
-      onClick={history.goBack}
+      onClick={!!to ? () => history.push(to) : history.goBack}
     >
       <ArrowBack />
       Back

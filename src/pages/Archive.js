@@ -29,7 +29,7 @@ export const Archive = () => (
       <title>Timing71 Archive</title>
     </Helmet>
     <HomeInner>
-      <GlobalBackButton />
+      <GlobalBackButton to='/menu' />
 
       <FullHeightSection>
         <h2>Timing71 Archive</h2>

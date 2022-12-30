@@ -17,6 +17,18 @@ if (process.env.REACT_APP_SENTRY_DSN) {
   });
 }
 
+if (process.env.NODE_ENV === 'production') {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js').then(registration => {
+        console.info('Timing71 service worker registered: ', registration); // eslint-disable-line no-console
+      }).catch(registrationError => {
+        Sentry.captureException(registrationError);
+      });
+    });
+  }
+}
+
 // Allow the import of @timing71/services to fail. This allows the web app to
 // be compiled and run without the (private) services.
 import('@timing71/services').finally(

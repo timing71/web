@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
+const Workbox = require('workbox-webpack-plugin');
 
 const paths = require('./paths.cjs');
 
@@ -97,20 +98,24 @@ const commonConfig = {
       // because the `util` package expects there to be a global variable named `process`.
       // Thanks to https://stackoverflow.com/a/65018686/14239942
       process: 'process/browser'
-   }),
-   new CopyPlugin({
-     patterns: [
-       {
-         from: paths.appPublic,
-         filter: f => f !== paths.appHtml,
-         to: outputPath
-       }
-     ]
-   })
+    }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: paths.appPublic,
+          filter: f => f !== paths.appHtml,
+          to: outputPath
+        }
+      ]
+    }),
+    new Workbox.GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true
+    })
   ],
   resolve: {
     alias: {
-       process: "process/browser"
+      process: "process/browser"
     },
     fallback: {
       "stream": require.resolve("stream-browserify")

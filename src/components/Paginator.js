@@ -1,38 +1,6 @@
 import styled from "styled-components";
 import { PlayArrow, SkipNext, SkipPrevious } from "styled-icons/material";
-import { Button } from "./Button";
-
-const ButtonGroup = styled.div`
-
-  display: flex;
-  align-items: stretch;
-
-  & ${Button} {
-
-    padding: 0.25em;
-    min-width: 3em;
-
-    & svg {
-      height: 1.5em;
-    }
-
-    &:not(:first-child):not(:last-child) {
-      border-radius: 0;
-    }
-
-    &:first-child {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-
-    &:last-child {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-
-  }
-
-`;
+import { Button, ButtonGroup } from "./Button";
 
 const Inner = styled.div`
   display: flex;

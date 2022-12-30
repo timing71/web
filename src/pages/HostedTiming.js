@@ -1,8 +1,8 @@
 import LZString from "lz-string";
 import { useCallback, useEffect } from "react";
 import { useState } from "react";
-import { useRouteMatch } from "react-router-dom";
-import { StackedBarChart } from "styled-icons/material";
+import { useHistory, useRouteMatch } from "react-router-dom";
+import { ArrowBack, StackedBarChart } from "styled-icons/material";
 
 import { LoadingScreen } from "../components/LoadingScreen";
 import { ServiceManifestContext, ServiceStateContext } from "../components/ServiceContext";
@@ -49,6 +49,8 @@ export const HostedTiming = () => {
     [uuid]
   );
 
+  const history = useHistory();
+
   if (serviceState && manifest) {
     return (
       <ServiceManifestContext.Provider value={{ manifest }}>
@@ -74,8 +76,12 @@ export const HostedTiming = () => {
                 </ToggleMenuItem>
                 <MenuSeparator />
                 <ViewSettings />
-                {/* <MenuSeparator />
-                <DownloadReplay /> */}
+                <MenuSeparator />
+                <ToggleMenuItem onClick={() => history.push('/')}>
+                  <ArrowBack size={24} />
+                  Back to home screen
+                </ToggleMenuItem>
+                {/* <DownloadReplay /> */}
               </Menu>
             </MenuBar>
           </TimingScreen>

@@ -60,16 +60,22 @@ export const MainMenu = () => {
         Recent sessions
       </MenuButton>
       <MenuButton
+        onClick={() => history.push('/archive')}
+      >
+        <Archive />
+        Replay archive
+      </MenuButton>
+      <MenuButton
         onClick={loadReplay}
       >
         <OndemandVideo />
-        Load replay
+        Load replay file
       </MenuButton>
       <MenuButton
         onClick={loadAnalysis}
       >
         <StackedBarChart />
-        Load analysis
+        Load analysis file
       </MenuButton>
       <MenuButton
         onClick={() => history.push('faq')}
@@ -77,12 +83,7 @@ export const MainMenu = () => {
         <Quiz />
         FAQ
       </MenuButton>
-      <MenuButton
-        onClick={() => history.push('/archive')}
-      >
-        <Archive />
-        Replay archive
-      </MenuButton>
+
     </MenuContainer>
   );
 };

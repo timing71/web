@@ -61,7 +61,7 @@ export const FileLoaderContextProvider = ({ children }) => {
   );
 
   return (
-    <FileLoaderContext.Provider value={{ clearFile, file, loadFile }}>
+    <FileLoaderContext.Provider value={{ clearFile, file, loadFile, setFile }}>
       <input
         accept={acceptedTypes}
         onChange={handleFileChange}

@@ -1,3 +1,6 @@
+import { createContext, useContext } from "react";
+import { ArrowDropDown } from "@styled-icons/material";
+import { MenuButton as ReakitMenuButton, Menu, MenuItem } from "reakit/Menu";
 import styled, { css } from "styled-components";
 
 export const Button = styled.button`
@@ -31,7 +34,6 @@ export const Button = styled.button`
       color: ${ props => props.danger ? 'white' : 'black' };
     `
   }
-
 `;
 
 export const ButtonGroup = styled.div`
@@ -65,3 +67,107 @@ align-items: stretch;
 }
 
 `;
+
+const MenuButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  margin: 0.25em;
+
+  & > ${Button} {
+    flex-grow: 1;
+
+    &:first-child {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+
+      & > svg {
+        margin-right: 0.25em;
+      }
+    }
+
+    &:last-child {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-left: 0;
+      margin: 0;
+      padding: 0;
+    }
+  }
+`;
+
+const MenuWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const MenuContext = createContext();
+
+export const MenuButton = ({ caption, children, disabled, icon, menuState, onClick }) => {
+  return (
+    <MenuContext.Provider value={menuState}>
+      <MenuButtonWrapper>
+        <Button
+          disabled={disabled}
+          onClick={onClick}
+        >
+          {icon}
+          {caption}
+        </Button>
+        <ReakitMenuButton
+          as={Button}
+          disabled={disabled}
+          {...menuState}
+        >
+          <ArrowDropDown size={32} />
+        </ReakitMenuButton>
+      </MenuButtonWrapper>
+      <Menu
+        aria-label={`${caption} menu`}
+        {...menuState}
+      >
+        <MenuWrapper>
+          {children}
+        </MenuWrapper>
+      </Menu>
+    </MenuContext.Provider>
+  );
+};
+
+const MenuButtonItemInner = styled(Button)`
+
+  font-size: small;
+
+  & > svg {
+      margin-right: 0.5em;
+    }
+
+  &:not(:first-child) {
+    border-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  &:not(:last-child) {
+    border-bottom: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &:disabled {
+    background-color: #202020;
+  }
+`;
+
+export const MenuButtonItem = ({ onClick, ...props }) => {
+
+  const { hide } = useContext(MenuContext);
+
+  return (
+    <MenuItem
+      as={MenuButtonItemInner}
+      onClick={() => { onClick(); hide(); }}
+      {...props}
+    />
+  );
+};

@@ -1,9 +1,14 @@
 import styled from "styled-components";
 import { dayjs, timeWithHours } from '@timing71/common';
-import { Download, Podcasts } from "styled-icons/material";
+import { useMenuState } from "reakit/Menu";
+import { Download, OndemandVideo, Podcasts, StackedBarChart } from "styled-icons/material";
 
-import { Button } from '../../../components/Button';
+import { Button, MenuButton, MenuButtonItem } from '../../../components/Button';
 import { API_ROOT } from "../api";
+import { useCallback, useState } from "react";
+import { Logo } from "../../../components/Logo";
+import { useFileContext } from "../../../components/FileLoaderContext";
+import { useHistory } from "react-router";
 
 const Series = styled.div`
   font-family: ${ props => props.theme.site.headingFont };
@@ -109,9 +114,10 @@ const Inner = styled.div`
     background-color: ${ props => props.syndicated ? props.theme.replay.syndicatedColor : props.theme.replay.color };
   }
 
-  & ${DownloadButton}:not(:disabled) {
+  & ${DownloadButton}:not(:disabled), & ${Button}:not(:disabled) {
     border-color: ${ props => props.syndicated ? props.theme.replay.syndicatedButtonColor : props.theme.replay.buttonColor };
     color: ${ props => props.syndicated ? props.theme.replay.syndicatedButtonColor : props.theme.replay.buttonColor };
+    background-color: black;
 
     &:hover {
       background-color: ${ props => props.syndicated ? props.theme.replay.syndicatedButtonColor : props.theme.replay.buttonColor };
@@ -148,12 +154,89 @@ const Syndicate = ({ replay }) => {
   );
 };
 
-const loadReplay = (id) => {
+const downloadReplay = (id) => {
   window.location.href = `${API_ROOT}/download/${id}`;
 };
 
 const loadAnalysis = (id) => {
   window.location.href = `${API_ROOT}/analysis/${id}`;
+};
+
+const Loading = () => (
+  <Logo
+    $spin
+    size='1.2em'
+  />
+);
+
+const ReplayButton = ({ id }) => {
+  const menuState = useMenuState({
+    placement: 'bottom-start'
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  const { setFile } = useFileContext();
+  const history = useHistory();
+
+  const viewNow = useCallback(
+    () => {
+      setLoading(true);
+      fetch(`${API_ROOT}/download/${id}`).then(
+        (response) => {
+          response.blob().then(
+            blob => {
+              setFile(blob);
+              history.push('/replay');
+            }
+          );
+        }
+      );
+    },
+    [history, id, setFile]
+  );
+
+  return (
+    <MenuButton
+      caption={loading ? '' : 'Replay'}
+      disabled={loading}
+      icon={ loading ? <Loading /> : null }
+      menuState={menuState}
+      onClick={viewNow}
+    >
+      <MenuButtonItem onClick={viewNow}>
+        <OndemandVideo size={24} />
+        View now
+      </MenuButtonItem>
+      <MenuButtonItem onClick={() => downloadReplay(id)}>
+        <Download size={24} />
+        Download
+      </MenuButtonItem>
+    </MenuButton>
+  );
+};
+
+const AnalysisButton = ({ disabled, id }) => {
+  const menuState = useMenuState({
+    placement: 'bottom-start'
+  });
+
+  return (
+    <MenuButton
+      caption='Analysis'
+      disabled={disabled}
+      menuState={menuState}
+    >
+      <MenuButtonItem disabled>
+        <StackedBarChart size={24} />
+        View now
+      </MenuButtonItem>
+      <MenuButtonItem onClick={() => loadAnalysis(id)}>
+        <Download size={24} />
+        Download
+      </MenuButtonItem>
+    </MenuButton>
+  );
 };
 
 export const Replay = ({ replay }) => {
@@ -177,17 +260,11 @@ export const Replay = ({ replay }) => {
         <Duration>
           {dayjs(replay.startTime * 1000).format('D MMM YYYY')}
         </Duration>
-        <DownloadButton onClick={() => loadReplay(replay.id)}>
-          <Download />
-          Replay
-        </DownloadButton>
-        <DownloadButton
+        <ReplayButton id={replay.id} />
+        <AnalysisButton
           disabled={!replay.analysisFilename}
-          onClick={() => loadAnalysis(replay.id)}
-        >
-          <Download />
-          Analysis
-        </DownloadButton>
+          id={replay.id}
+        />
         <Duration>
           { timeWithHours(replay.duration) }
         </Duration>

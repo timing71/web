@@ -38,17 +38,17 @@ function App() {
             />
             <AutobahnProvider>
               <BrowserRouter>
-                <Switch>
-                  <Route
-                    component={Home}
-                    exact
-                    path='/'
-                  />
-                  <Route
-                    component={FAQ}
-                    path='/faq'
-                  />
-                  <Suspense fallback={<LoadingScreen />}>
+                <Suspense fallback={<LoadingScreen />}>
+                  <Switch>
+                    <Route
+                      component={Home}
+                      exact
+                      path='/'
+                    />
+                    <Route
+                      component={FAQ}
+                      path='/faq'
+                    />
                     <Route
                       component={HostedTiming}
                       path='/hosted/:uuid'
@@ -57,10 +57,8 @@ function App() {
                       component={HostedAnalysis}
                       path='/hosted-analysis/:uuid'
                     />
-                  </Suspense>
-                  <PluginDetector>
-                    <FileLoaderContextProvider>
-                      <Suspense fallback={<LoadingScreen />}>
+                    <PluginDetector>
+                      <FileLoaderContextProvider>
                         <Switch>
                           <Route
                             component={MainMenu}
@@ -95,10 +93,10 @@ function App() {
                             path='/replay'
                           />
                         </Switch>
-                      </Suspense>
-                    </FileLoaderContextProvider>
-                  </PluginDetector>
-                </Switch>
+                      </FileLoaderContextProvider>
+                    </PluginDetector>
+                  </Switch>
+                </Suspense>
               </BrowserRouter>
             </AutobahnProvider>
           </HelmetProvider>

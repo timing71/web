@@ -64,12 +64,12 @@ jobs:
 
       - name: Publish to Netlify
         if: github.ref == 'refs/heads/master'
-        uses: netlify/actions/cli@master
+        uses: South-Paw/action-netlify-cli@v1
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         with:
-          args: deploy --dir=build --prod
+          args: deploy --json --dir=build --prod
 
       - name: Create Sentry release
         if: github.ref == 'refs/heads/master'

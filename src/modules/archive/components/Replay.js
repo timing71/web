@@ -161,7 +161,7 @@ const Loading = () => (
   />
 );
 
-const FileButton = ({ caption, downloadURL, viewIcon, viewPath }) => {
+const FileButton = ({ caption, disabled, downloadURL, viewIcon, viewPath }) => {
   const menuState = useMenuState({
     placement: 'bottom-start'
   });
@@ -200,7 +200,7 @@ const FileButton = ({ caption, downloadURL, viewIcon, viewPath }) => {
   return (
     <MenuButton
       caption={loading ? '' : caption}
-      disabled={loading}
+      disabled={loading || disabled}
       icon={ loading ? <Loading /> : null }
       menuState={menuState}
       onClick={viewNow}
@@ -226,9 +226,10 @@ const ReplayButton = ({ id }) => (
   />
 );
 
-const AnalysisButton = ({ id }) => (
+const AnalysisButton = ({ disabled, id }) => (
   <FileButton
     caption='Analysis'
+    disabled={disabled}
     downloadURL={`${API_ROOT}/download/${id}`}
     viewIcon={StackedBarChart}
     viewPath='/replay'

@@ -154,14 +154,6 @@ const Syndicate = ({ replay }) => {
   );
 };
 
-const downloadReplay = (id) => {
-  window.location.href = `${API_ROOT}/download/${id}`;
-};
-
-const loadAnalysis = (id) => {
-  window.location.href = `${API_ROOT}/analysis/${id}`;
-};
-
 const Loading = () => (
   <Logo
     $spin
@@ -169,10 +161,12 @@ const Loading = () => (
   />
 );
 
-const ReplayButton = ({ id }) => {
+const FileButton = ({ caption, downloadURL, viewIcon, viewPath }) => {
   const menuState = useMenuState({
     placement: 'bottom-start'
   });
+
+  const ViewIcon = viewIcon;
 
   const [loading, setLoading] = useState(false);
 
@@ -182,33 +176,40 @@ const ReplayButton = ({ id }) => {
   const viewNow = useCallback(
     () => {
       setLoading(true);
-      fetch(`${API_ROOT}/download/${id}`).then(
+      fetch(downloadURL).then(
         (response) => {
           response.blob().then(
             blob => {
               setFile(blob);
-              history.push('/replay');
+              history.push(viewPath);
             }
           );
         }
       );
     },
-    [history, id, setFile]
+    [downloadURL, history, setFile, viewPath]
+  );
+
+  const download = useCallback(
+    () => {
+      window.location.href = downloadURL;
+    },
+    [downloadURL]
   );
 
   return (
     <MenuButton
-      caption={loading ? '' : 'Replay'}
+      caption={loading ? '' : caption}
       disabled={loading}
       icon={ loading ? <Loading /> : null }
       menuState={menuState}
       onClick={viewNow}
     >
       <MenuButtonItem onClick={viewNow}>
-        <OndemandVideo size={24} />
+        <ViewIcon size={24} />
         View now
       </MenuButtonItem>
-      <MenuButtonItem onClick={() => downloadReplay(id)}>
+      <MenuButtonItem onClick={download}>
         <Download size={24} />
         Download
       </MenuButtonItem>
@@ -216,28 +217,23 @@ const ReplayButton = ({ id }) => {
   );
 };
 
-const AnalysisButton = ({ disabled, id }) => {
-  const menuState = useMenuState({
-    placement: 'bottom-start'
-  });
+const ReplayButton = ({ id }) => (
+  <FileButton
+    caption='Replay'
+    downloadURL={`${API_ROOT}/download/${id}`}
+    viewIcon={OndemandVideo}
+    viewPath='/replay'
+  />
+);
 
-  return (
-    <MenuButton
-      caption='Analysis'
-      disabled={disabled}
-      menuState={menuState}
-    >
-      <MenuButtonItem disabled>
-        <StackedBarChart size={24} />
-        View now
-      </MenuButtonItem>
-      <MenuButtonItem onClick={() => loadAnalysis(id)}>
-        <Download size={24} />
-        Download
-      </MenuButtonItem>
-    </MenuButton>
-  );
-};
+const AnalysisButton = ({ id }) => (
+  <FileButton
+    caption='Analysis'
+    downloadURL={`${API_ROOT}/download/${id}`}
+    viewIcon={StackedBarChart}
+    viewPath='/replay'
+  />
+);
 
 export const Replay = ({ replay }) => {
   return (

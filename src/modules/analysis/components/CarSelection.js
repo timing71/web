@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 
 import { useAnalysis } from './context';
-import { Select } from '../../../components/Select';
+import { Select } from '../../../components/Forms';
 import { CarOption } from './CarOption';
 
 export const CarSelection = observer(

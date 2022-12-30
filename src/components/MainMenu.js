@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
-import { History, OndemandVideo, Quiz, StackedBarChart } from '@styled-icons/material';
+import { Archive, History, OndemandVideo, Quiz, StackedBarChart } from '@styled-icons/material';
 
 import { Button } from "./Button";
 import { useFileContext } from "./FileLoaderContext";
@@ -11,7 +11,9 @@ import { URLBox } from "./URLBox";
 const MenuButton = styled(Button)`
 
   background-color: black;
-  flex-basis: 20%;
+  flex-basis: 21%;
+
+  margin-bottom: 1em;
 
 `;
 
@@ -74,6 +76,12 @@ export const MainMenu = () => {
       >
         <Quiz />
         FAQ
+      </MenuButton>
+      <MenuButton
+        onClick={() => history.push('/archive')}
+      >
+        <Archive />
+        Replay archive
       </MenuButton>
     </MenuContainer>
   );

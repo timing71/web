@@ -87,7 +87,10 @@ const commonConfig = {
       template: paths.appHtml
     }),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+      'process.env': {
+        'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+        'ARCHIVE_API_ROOT': JSON.stringify(process.env.ARCHIVE_API_ROOT),
+      }
     }),
     new webpack.ProvidePlugin({
       // Make a global `process` variable that points to the `process` package,

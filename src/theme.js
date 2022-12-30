@@ -266,5 +266,13 @@ export const Theme = {
     highlightColor: '#54FFFF',
     headingFont: 'Play, Arial, Verdana, sans-serif',
     textFont: 'Verdana, Arial, Helvetica, sans-serif'
+  },
+  replay: {
+    color: 'green',
+    hoverColor: '#404040',
+    buttonColor: '#00FF00',
+    syndicatedColor: '#000099',
+    syndicatedHoverColor: '#000066',
+    syndicatedButtonColor: '#2090FF',
   }
 };

@@ -25,4 +25,11 @@ export const Button = styled.button`
     }`
   }
 
+  ${
+    props => !props.disabled && props.active && css`
+      background-color: ${ props => props.danger ? 'red' : props.theme.site.highlightColor };
+      color: ${ props => props.danger ? 'white' : 'black' };
+    `
+  }
+
 `;

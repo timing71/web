@@ -16,6 +16,9 @@ const Series = styled.div`
 
   border-top-left-radius: 0.25em;
   border-bottom-right-radius: 0.25em;
+
+  min-width: 40%;
+  margin-right: 1em;
 `;
 
 const SyndicateInner = styled.div`
@@ -26,6 +29,8 @@ const SyndicateInner = styled.div`
   border-bottom-left-radius: 0.25em;
 
   font-size: small;
+
+  text-align: right;
 
   & svg {
     width: 1.5em;

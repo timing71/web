@@ -63,6 +63,14 @@ export const HostedTiming = () => {
               <SystemMessage />
               <DelayIndicator />
               {
+                manifest.source && (
+                  <a
+                    dangerouslySetInnerHTML={{ __html: manifest.source[0] }}
+                    href={manifest.source[1]}
+                  />
+                )
+              }
+              {
                 process.env.NODE_ENV === 'development' && <span>[DEV]</span>
               }
               <Menu>

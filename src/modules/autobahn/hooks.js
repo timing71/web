@@ -27,10 +27,23 @@ export const useRelayList = () => {
   return [relays, loadingState];
 };
 
+export const useSession = () => {
+  const { session, start, stop } = useContext(AutobahnContext);
+
+  useEffect(
+    () => {
+      start();
+      return stop;
+    }
+  );
+
+  return session;
+};
+
 export const useSubscription = (topic, options={}) => {
   const [value, setValue] = useState(null);
   const [subscription, setSubscription] = useState(null);
-  const { session } = useContext(AutobahnContext);
+  const session = useSession();
 
   useEffect(
     () => {
@@ -76,9 +89,4 @@ export const useSubscription = (topic, options={}) => {
   );
 
   return value;
-};
-
-export const useSession = () => {
-  const { session } = useContext(AutobahnContext);
-  return session;
 };

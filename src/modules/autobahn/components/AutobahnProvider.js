@@ -14,6 +14,7 @@ export const AutobahnProvider = ({ children }) => {
   const [relays, loadingState] = useRelayList();
 
   const connection = useRef();
+  const [liveClients, setLiveClients] = useState(0);
 
   useEffect(
     () => {
@@ -36,7 +37,7 @@ export const AutobahnProvider = ({ children }) => {
 
   useEffect(
     () => {
-      if (state === ConnectionState.RELAYS_LOADED && relays.length > 0) {
+      if (state === ConnectionState.RELAYS_LOADED && relays.length > 0 && liveClients > 0) {
         connection.current = new autobahn.Connection({
           transports: [{
             type: 'websocket',
@@ -64,7 +65,27 @@ export const AutobahnProvider = ({ children }) => {
 
       }
     },
-    [relays, state]
+    [liveClients, relays, state]
+  );
+
+  useEffect(
+    () => {
+      const closeIfUnused = () => {
+        if (liveClients === 0 && providerState.state === ConnectionState.CONNECTED) {
+          connection.current?.close();
+          setProviderState({
+            session: null,
+            state: ConnectionState.RELAYS_LOADED
+          });
+        }
+      };
+
+      const timeout = setTimeout(closeIfUnused, 10 * 1000);
+
+      return () => {
+        timeout && clearTimeout(timeout);
+      };
+    }
   );
 
   useEffect(
@@ -78,7 +99,14 @@ export const AutobahnProvider = ({ children }) => {
   );
 
   return (
-    <AutobahnContext.Provider value={providerState}>
+    <AutobahnContext.Provider
+      value={{
+        ...providerState,
+        liveClients,
+        start: () => setLiveClients(c => c + 1),
+        stop: () => setLiveClients(c => c - 1)
+      }}
+    >
       { children }
     </AutobahnContext.Provider>
   );

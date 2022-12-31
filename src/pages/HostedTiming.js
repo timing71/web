@@ -94,3 +94,5 @@ export const HostedTiming = () => {
     return <LoadingScreen message='Loading timing data...' />;
   }
 };
+
+export default HostedTiming;

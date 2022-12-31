@@ -95,3 +95,5 @@ export const HostedAnalysis = () => {
     );
   }
 };
+
+export default HostedAnalysis;

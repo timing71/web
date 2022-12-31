@@ -158,3 +158,5 @@ const TimingInner = ({ match: { params } }) => {
 };
 
 export const Timing = withGracefulUnmount(TimingInner);
+
+export default Timing;

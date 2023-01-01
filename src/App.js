@@ -20,6 +20,7 @@ const Archive = lazy(() => import(/* webpackChunkName: "archive" */ './pages/Arc
 const Analysis = lazy(() => import(/* webpackChunkName: "analysis" */ './pages/Analysis'));
 const FileAnalysis = lazy(() => import(/* webpackChunkName: "fileAnalysis" */ './pages/FileAnalysis'));
 const HostedAnalysis = lazy(() => import(/* webpackChunkName: "hostedAnalysis" */ './pages/HostedAnalysis'));
+const HostedServices = lazy(() => import(/* webpackChunkName: "hostedServices" */ './pages/HostedServices'));
 const HostedTiming = lazy(() => import(/* webpackChunkName: "hostedTiming" */ './pages/HostedTiming'));
 const Replay = lazy(() => import(/* webpackChunkName: "replay" */ './pages/Replay'));
 const Timing = lazy(() => import(/* webpackChunkName: "timing" */ './pages/Timing'));
@@ -52,6 +53,10 @@ function App() {
                     <Route
                       component={HostedTiming}
                       path='/hosted/:uuid'
+                    />
+                    <Route
+                      component={HostedServices}
+                      path='/hosted/'
                     />
                     <Route
                       component={HostedAnalysis}

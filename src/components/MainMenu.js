@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
-import { Archive, History, OndemandVideo, Quiz, StackedBarChart } from '@styled-icons/material';
+import { Archive, History, OndemandVideo, Podcasts, Quiz, StackedBarChart } from '@styled-icons/material';
 
 import { Button } from "./Button";
 import { useFileContext } from "./FileLoaderContext";
@@ -54,6 +54,12 @@ export const MainMenu = () => {
     <MenuContainer>
       <URLBox />
       <MenuButton
+        onClick={() => history.push('/hosted')}
+      >
+        <Podcasts />
+        Hosted events
+      </MenuButton>
+      <MenuButton
         onClick={() => history.push('/services')}
       >
         <History />
@@ -66,6 +72,12 @@ export const MainMenu = () => {
         Replay archive
       </MenuButton>
       <MenuButton
+        onClick={() => history.push('faq')}
+      >
+        <Quiz />
+        FAQ
+      </MenuButton>
+      <MenuButton
         onClick={loadReplay}
       >
         <OndemandVideo />
@@ -76,12 +88,6 @@ export const MainMenu = () => {
       >
         <StackedBarChart />
         Load analysis file
-      </MenuButton>
-      <MenuButton
-        onClick={() => history.push('faq')}
-      >
-        <Quiz />
-        FAQ
       </MenuButton>
 
     </MenuContainer>

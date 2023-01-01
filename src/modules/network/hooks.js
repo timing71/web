@@ -24,18 +24,23 @@ export const useDelayedState = (currentState, delay) => {
     // every second to make sure we're showing the most recent state up to the
     // delay limit.
     () => {
-      setTargetTime(Date.now() - (1000 * delay));
+      Promise.resolve().then(
+        () => setTargetTime(Date.now() - (1000 * delay))
+      );
     },
     [delay]
   );
 
   useEffect(
     () => {
-      const interval = setInterval(updateTargetTime, 1000);
-      return () => {
-        interval && clearInterval(interval);
-      };
-    }
+      if (delay > 0) {
+        const interval = setInterval(updateTargetTime, 1000);
+        return () => {
+          interval && clearInterval(interval);
+        };
+      }
+    },
+    [delay, updateTargetTime]
   );
 
   if (delay === 0) {

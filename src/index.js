@@ -29,6 +29,23 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
+if (process.env.GA_TRACKING_ID) {
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${process.env.GA_TRACKING_ID}`;
+  document.body.appendChild(script);
+
+  window.dataLayer = window.dataLayer || [];
+  const gtag = function gtag() {
+    window.dataLayer.push(arguments);
+  };
+
+  window.gtag = gtag;
+
+  gtag('js', new Date());
+  gtag('config', process.env.GA_TRACKING_ID, { debug_mode: process.env.NODE_ENV !== 'production' });
+}
+
 // Allow the import of @timing71/services to fail. This allows the web app to
 // be compiled and run without the (private) services.
 import(/* webpackChunkName: "services" */'@timing71/services').finally(

@@ -51,6 +51,7 @@ jobs:
         env:
           COMMIT_REF: ${{ github.sha }}
           REACT_APP_SENTRY_DSN: ${{ secrets.REACT_APP_SENTRY_DSN }}
+          GA_TRACKING_ID: ${{ secrets.GA_TRACKING_ID }}
 
       - name: Run tests
         run: yarn run test

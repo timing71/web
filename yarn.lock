@@ -3793,12 +3793,12 @@
     deep-equal "^2.1.0"
 
 "@timing71/services@^0.3.0":
-  version "0.3.3"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.3.3/7f627ff149a58c129807c997797f2ed80e642507#7f627ff149a58c129807c997797f2ed80e642507"
-  integrity sha512-snBvTKWazDpzNyAW1FKOljvKJQ5w84rlfcLERfb+95qtePXHa01EL5uc7rSLs9GJSXzFB+H438/6jaYDiqNTTw==
+  version "0.3.4"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.3.4/2a7fa18c747eeb5b47cdeb05ed04b46c3ebaab52#2a7fa18c747eeb5b47cdeb05ed04b46c3ebaab52"
+  integrity sha512-Elx65JtIyurmY7GelTBu+MKFzjpSAX1MxHdLaUMkF3eaWCYNDSe8l+2F7J2PTcJkQIdsraM/smMkBk4NoA91uw==
   dependencies:
     cookie "^0.5.0"
-    ddp-client "0.1.1"
+    ddp-client "https://github.com/hharnisc/node-ddp-client.git#master"
     ejson "^2.2.3"
     lodash.throttle "^4.1.1"
     lz-string "^1.4.4"
@@ -7072,7 +7072,7 @@ dayjs@^1.11.6:
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.6.tgz#2e79a226314ec3ec904e3ee1dd5a4f5e5b1c7afb"
   integrity sha512-zZbY5giJAinCG+7AGaw0wIhNZ6J8AhWuSXKvuc1KAyMiRsvGQWqh4L+MomvhdAYjN+lqvVCMq1I41e3YHvXkyQ==
 
-ddp-client@0.1.1:
+"ddp-client@https://github.com/hharnisc/node-ddp-client.git#master":
   version "0.1.1"
   resolved "https://github.com/hharnisc/node-ddp-client.git#93be152461b3ef19d32f06a4f6f5fddd0cbf5743"
   dependencies:

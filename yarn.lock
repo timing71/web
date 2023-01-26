@@ -3793,9 +3793,9 @@
     deep-equal "^2.1.0"
 
 "@timing71/services@^0.3.0":
-  version "0.3.5"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.3.5/aacfbfe4ec0aa17907f7e2d77dddaa8b759075e0#aacfbfe4ec0aa17907f7e2d77dddaa8b759075e0"
-  integrity sha512-nhquFI36wZkVWzsgzqjtHMiKWLhtQ/gaI5OJn8QhVoCF7n+fw2nTOvXjKFYbwTGF7sMFOXonFTd3Av2XIq8vRg==
+  version "0.3.6"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.3.6/44c32eee675705e3d3728a71d96c4e4f2b1691fa#44c32eee675705e3d3728a71d96c4e4f2b1691fa"
+  integrity sha512-uPP8xJwrEzFNpu+QETIyTvJAclIFr7YuHQaxVrxGB5QYJXimGUDuCpy2dhu0O8eWw4yIO1S6DopxZXcEb/1K/w==
   dependencies:
     cookie "^0.5.0"
     ddp-client "https://github.com/hharnisc/node-ddp-client.git#master"

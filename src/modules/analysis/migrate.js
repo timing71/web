@@ -39,7 +39,7 @@ const MIGRATIONS = {
         const stints =
           [
             ...oldState.stint[raceNum],
-            oldState.lap[raceNum][0]
+            oldState.lap[raceNum]?.[0]
           ].filter(
             s => !!s
           ).map(

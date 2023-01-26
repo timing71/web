@@ -86,9 +86,9 @@ const AnalysisButton = ({ disabled, id }) => (
   <FileButton
     caption='Analysis'
     disabled={disabled}
-    downloadURL={`${API_ROOT}/download/${id}`}
+    downloadURL={`${API_ROOT}/analysis/${id}`}
     viewIcon={StackedBarChart}
-    viewPath='/replay'
+    viewPath='/file-analysis'
   />
 );
 

@@ -33,6 +33,10 @@ const TimingTableRowInner = styled.tr`
       & td {
         color: black;
       }
+
+      & td[value='FIN'] {
+        color: transparent;
+      }
     `
   }
 

@@ -133,7 +133,7 @@ export const Autocomplete = ({ inputProps={}, items, onChange, onSelect, renderI
     <div className={showList ? 'open' : undefined}>
       <input
         autoComplete='false'
-        onBlur={() => setTimeout(handleBlur, 100)}
+        onBlur={() => setTimeout(handleBlur, 250)}
         onChange={onChange}
         onClick={handleClick}
         onKeyDown={handleKeyDown}

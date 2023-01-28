@@ -36,7 +36,6 @@
     "dot-prop": "^7.2.0",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
-    "ejson": "^2.2.2",
     "fs-extra": "^9.0.1",
     "identity-obj-proxy": "3.0.0",
     "lodash.throttle": "^4.1.1",
@@ -177,7 +176,7 @@
     "//": "See https://github.com/facebook/create-react-app/issues/11773",
     "react-error-overlay": "6.0.9",
     "//ejson": "ddp-client uses an old and broken version",
-    "ejson": "2.2.2"
+    "ejson": "2.2.3"
   },
   "jest": {
     "roots": [

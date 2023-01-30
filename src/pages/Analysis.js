@@ -1,11 +1,11 @@
+import { createAnalyser } from '@timing71/common/analysis';
 import { applyPatch, applySnapshot } from 'mobx-state-tree';
 import { useEffect, useRef, useState } from 'react';
 import { useBroadcastChannel } from '../broadcastChannel';
 import { AnalysisButton } from '../components/GeneratorButton';
 import { LoadingScreen } from '../components/LoadingScreen';
 import { useConnectionService } from '../ConnectionServiceProvider';
-import { createAnalyser } from '../modules/analysis';
-import { AnalysisScreen } from '../modules/analysis/components/AnalysisScreen';
+import { AnalysisScreen } from '../modules/analysis';
 
 export const Analysis = ({ match: { params: { serviceUUID } } }) => {
   const cs = useConnectionService();

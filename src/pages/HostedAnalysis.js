@@ -1,13 +1,12 @@
+import { createAnalyser, migrateAnalysisState } from "@timing71/common/analysis";
+import LZString from "lz-string";
+import { applySnapshot } from "mobx-state-tree";
 import { useEffect, useRef, useState } from "react";
 import { useRouteMatch } from "react-router-dom";
 
 import { LoadingScreen } from "../components/LoadingScreen";
-import { createAnalyser } from "../modules/analysis";
-import { migrateAnalysisState } from "../modules/analysis/migrate";
-import { AnalysisScreen } from "../modules/analysis/components/AnalysisScreen";
+import { AnalysisScreen } from "../modules/analysis";
 import { useSession, useSubscription } from "../modules/autobahn";
-import LZString from "lz-string";
-import { applySnapshot } from "mobx-state-tree";
 
 export const HostedAnalysis = () => {
 

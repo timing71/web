@@ -1,13 +1,14 @@
+import { createAnalyser } from '@timing71/common/analysis';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { ArrowBack } from 'styled-icons/material';
 
 import { LoadingScreen } from '../components/LoadingScreen';
-import { createAnalyser } from '../modules/analysis';
-import { AnalysisScreen } from '../modules/analysis/components/AnalysisScreen';
+import { AnalysisScreen } from '../modules/analysis';
 import { useFileContext } from '../components/FileLoaderContext';
-import { useHistory } from 'react-router-dom';
 import { Button } from '../components/Button';
-import { ArrowBack } from 'styled-icons/material';
-import styled from 'styled-components';
 
 const LoadState = {
   UNLOADED: 1,

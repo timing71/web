@@ -78,7 +78,7 @@
     "cli:build:dev": "NODE_ENV=development webpack --config config/webpack.config.cli.js",
     "postbuild": "yarn run generateConfig",
     "lint": "eslint src/",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --passWithNoTests",
     "generateConfig": "node --experimental-vm-modules bin/generateConfigFile.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"

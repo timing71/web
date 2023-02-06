@@ -144,6 +144,7 @@ const prodConfig = {
     ...commonConfig.plugins,
     new Workbox.GenerateSW({
       clientsClaim: true,
+      dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
       exclude: [/\.map$/, /^manifest.*\.js$/, /^_redirects$/],
       skipWaiting: true
     })

@@ -70,8 +70,9 @@ export const Theme = {
     'sp7': '#00FF00',
     'sp8': '#CC88CC',
     'sp8t': '#FF8888',
-    'sp9': '#FFFF00', // "FIA GT3"
-    'sp10': '#FF4F00', // "SRO GT4"
+    'sp9pro': '#66FF66',
+    'sp9pro-am': '#FFFF66',
+    'sp10': '#FF4F00',
     'v2t': '#FFF0A0',
     'v3t': '#FFDD00',
     'v4': '#DDD0DD',

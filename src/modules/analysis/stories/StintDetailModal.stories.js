@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 
 import { useState } from "react";
-import { createAnalyser } from "..";
+import { createAnalyser } from "@timing71/common/analysis";
 import { HelmetDecorator, ThemeDecorator } from "../../../stories/decorators";
 import { StintDetailModal as SDM } from "../components/strategy/components/StintDetailModal";
 

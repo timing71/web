@@ -1,6 +1,6 @@
+import { createAnalyser } from '@timing71/common/analysis';
 import { AnalysisProvider } from '../components/context';
-import { createAnalyser } from '..';
-import data from '../__tests__/2021_lm24.json';
+import data from './elms-portimao.json';
 
 const analyser = createAnalyser(data);
 

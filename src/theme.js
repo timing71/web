@@ -9,7 +9,7 @@ const flashyKeyframes = keyframes`
   to { opacity: 0; }
 `;
 
-const redAnim = keyframes`
+const blinkingAnim = keyframes`
   0% { background-color: #990000 }
   50% { background-color: black }
   100% { background-color: #990000 }
@@ -207,33 +207,31 @@ export const Theme = {
     [FlagState.RED]: {
       background: '#990000',
       color: 'white',
-      altColor: 'white',
-      animation: css`${redAnim} 1s step-end alternate infinite`
+      animation: css`${blinkingAnim} 1s step-end alternate infinite`
     },
     [FlagState.SC]: {
       background: '#DDDD00',
-      color: 'white',
+      color: 'black',
       animation: flashyAnim
     },
     [FlagState.SLOW_ZONE]: {
       background: 'linear-gradient(0deg, black, #DDDD00, black) top/400% 400%',
       color: 'white',
-      altColor: 'white',
       fill: 'url(#slow_zone)'
     },
     [FlagState.CAUTION]: {
       background: '#DDDD00',
-      color: 'white',
+      color: 'black',
       animation: flashyAnim
     },
     [FlagState.FCY]: {
       background: '#DDDD00',
-      color: 'white',
+      color: 'black',
       animation: flashyAnim
     },
     [FlagState.VSC]: {
       background: '#DDDD00',
-      color: 'white',
+      color: 'black',
       animation: flashyAnim
     },
     [FlagState.CODE_60]: {
@@ -244,7 +242,6 @@ export const Theme = {
     [FlagState.CODE_60_ZONE]: {
       background: 'linear-gradient(0deg, black, #ff53e3, black) top/400% 400%',
       color: 'white',
-      altColor: 'white',
       fill: 'url(#code_60_zone)'
     },
     [FlagState.CHEQUERED]: {

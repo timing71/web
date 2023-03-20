@@ -7,6 +7,7 @@ export const FlagPanel = styled.div.attrs(
 )`
   position: relative;
   background-color: black;
+  color: white;
   grid-area: flag;
   font-family: Verdana, monospace;
   text-align: center;
@@ -30,10 +31,8 @@ export const FlagPanel = styled.div.attrs(
 
     background: ${ props => props.theme.flagStates[props.flag]?.background || 'black' };
     animation: ${ props => props.theme.flagStates[props.flag]?.animation || 'none' };
-    color: ${ props => (!!props.theme.flagStates[props.flag]?.animation ? props.theme.flagStates[props.flag]?.altColor : props.theme.flagStates[props.flag]?.color) || 'black' };
+    color: ${ props => (props.theme.flagStates[props.flag]?.color) || 'white' };
 
     content: "${ props => props.text.replaceAll('"', '\\"')}";
   }
-
-  color: ${ props => props.theme.flagStates[props.flag]?.color || 'white' };
 `;

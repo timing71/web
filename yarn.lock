@@ -3725,10 +3725,10 @@
     mobx "^6.7.0"
     mobx-state-tree "^5.1.7"
 
-"@timing71/services@^0.3.0":
-  version "0.3.10"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.3.10/ae361281ed05f865e69bb568419e5a3d88ff8240#ae361281ed05f865e69bb568419e5a3d88ff8240"
-  integrity sha512-8HIU8flteTLfmbGSBob1/j7KaenSKjCH0ETkft4eFT6ILR7/fNeHE1ZfFddisZCqLMvs5gcvgdpNMi7py/mEKg==
+"@timing71/services@^0.4.0":
+  version "0.4.1"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.4.1/688217d587b1563e63ed71124e15f9f09c9bf127#688217d587b1563e63ed71124e15f9f09c9bf127"
+  integrity sha512-5WCiQfWjdvsMV4PSFXjETJaaVuQo33ugdvJvEuKzBTx7dl7rziWdnY8BBQB4/sTpaNncfev1YnoDGSkpH6UAhA==
   dependencies:
     cookie "^0.5.0"
     ejson "^2.2.3"

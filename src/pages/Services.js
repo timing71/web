@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Delete, OpenInBrowser, StackedBarChart } from '@styled-icons/material';
+import { AccountTree, Delete, OpenInBrowser, StackedBarChart } from '@styled-icons/material';
 import { dasherizeParts, dayjs } from '@timing71/common';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -78,7 +78,7 @@ const DeleteButton = ({ reload, uuid }) => {
       onClick={doDelete}
       title='Delete'
     >
-      <Delete size={24} />
+      <Delete size={24} /> Delete
     </Button>
   );
 
@@ -93,42 +93,93 @@ const WrappingCell = styled.td`
   word-break: break-all;
 `;
 
-const ServiceEntry = ({ openAnalysis, reload, service }) => {
+const SessionRow = styled.tr`
+  border-left: 2px solid ${props => props.theme.site.highlightColor};
+`;
 
-  const name = service.state?.manifest?.name ? dasherizeParts(service.state.manifest.name, service.state.manifest.description) : service.source;
+const SessionEntry = ({ index, service, session }) => {
+  const name = session?.manifest?.name ? dasherizeParts(session.manifest.name, session.manifest.description) : service.source;
 
-  const duration = service.state?.manifest?.startTime && service.state?.lastUpdated ?
-  dayjs.duration(service.state.lastUpdated - service.state.manifest.startTime).format('HH:mm:ss') :
+  const duration = session?.manifest?.startTime && session?.lastUpdated ?
+  dayjs.duration(session.lastUpdated - session.manifest.startTime).format('HH:mm:ss') :
   '-';
 
   return (
-    <tr>
+    <SessionRow>
+      <td>
+        <AccountTree size={24} />
+      </td>
       <UnwrappingCell>
-        { dayjs(service.startTime).format("YYYY-MM-DD HH:mm:ss") }
+        { dayjs(session.manifest.startTime).format('YYYY-MM-DD HH:mm:ss') }
       </UnwrappingCell>
-      <WrappingCell>{name}</WrappingCell>
+      <WrappingCell>
+        {name}
+      </WrappingCell>
       <UnwrappingCell>{duration}</UnwrappingCell>
       <UnwrappingCell>
-        <RouteryButton
-          title='Open'
-          to={`/timing/${service.uuid}`}
-        >
-          <OpenInBrowser size={24} />
-        </RouteryButton>
-        <Button
-          onClick={() => openAnalysis(service.uuid)}
-          title='Launch analysis'
-        >
-          <StackedBarChart size={24} />
-        </Button>
-        <ReplayButton uuid={service.uuid} />
-        <AnalysisButton uuid={service.uuid} />
-        <DeleteButton
-          reload={reload}
+        <ReplayButton
+          sessionIndex={index}
+          uuid={service.uuid}
+        />
+        <AnalysisButton
+          sessionIndex={index}
           uuid={service.uuid}
         />
       </UnwrappingCell>
-    </tr>
+    </SessionRow>
+  );
+};
+
+const ServiceEntry = ({ openAnalysis, reload, service }) => {
+  const finalState = service.sessions ? service.sessions[service.sessions.length - 1] : null;
+
+  const duration = service.startTime && finalState?.lastUpdated ?
+  dayjs.duration(finalState.lastUpdated - service.startTime).format('HH:mm:ss') :
+  '-';
+
+  return (
+    <>
+      <tr>
+        <UnwrappingCell
+          colSpan="2"
+          style={{ fontWeight: 'bold' }}
+        >
+          { dayjs(service.startTime).format("YYYY-MM-DD HH:mm:ss") }
+        </UnwrappingCell>
+        <WrappingCell>{service.source}</WrappingCell>
+        <UnwrappingCell>{duration}</UnwrappingCell>
+        <UnwrappingCell>
+          <RouteryButton
+            title='Open'
+            to={`/timing/${service.uuid}`}
+          >
+            <OpenInBrowser size={24} /> Open
+          </RouteryButton>
+          <Button
+            onClick={() => openAnalysis(service.uuid)}
+            title='Launch analysis'
+          >
+            <StackedBarChart size={24} /> Analysis
+          </Button>
+          <DeleteButton
+            reload={reload}
+            uuid={service.uuid}
+          />
+        </UnwrappingCell>
+      </tr>
+      {
+        (service.sessions || (service.state ? [service.state] : [])).map(
+          (session, idx) => (
+            <SessionEntry
+              index={idx}
+              key={idx}
+              service={service}
+              session={session}
+            />
+          )
+        )
+      }
+    </>
   );
 };
 
@@ -189,7 +240,7 @@ export const Services = () => {
             <ServiceTable>
               <thead>
                 <tr>
-                  <th>
+                  <th colSpan="2">
                     Started at
                   </th>
                   <th>

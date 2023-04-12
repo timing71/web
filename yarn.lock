@@ -12813,6 +12813,11 @@ react-router@5.3.4:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
+react-screen-wake-lock@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/react-screen-wake-lock/-/react-screen-wake-lock-3.0.1.tgz#53132b28384bb66fc6838b846ffeced25b42c8d3"
+  integrity sha512-7igtGC2btjFiPqn7JoqRqrUvSV9wX7ZB8uCtP6LA9qYcTfY5i7VqelfjZ/b57jnGR9Q5TykAaX4Lkeok4j06jA==
+
 react-sparklines@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/react-sparklines/-/react-sparklines-1.7.0.tgz#9b1d97e8c8610095eeb2ad658d2e1fcf91f91a60"

@@ -27,6 +27,8 @@ const Timing = lazy(() => import(/* webpackChunkName: "timing" */ './pages/Timin
 
 const queryClient = new QueryClient();
 
+const devTag = process.env.NODE_ENV === 'development' ? ' (Dev)' : '';
+
 function App() {
   return (
     <SettingsProvider>
@@ -34,8 +36,8 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <HelmetProvider>
             <Helmet
-              defaultTitle='Timing71'
-              titleTemplate='%s — Timing71'
+              defaultTitle={`Timing71${devTag}`}
+              titleTemplate={`%s — Timing71${devTag}`}
             />
             <AutobahnProvider>
               <BrowserRouter>

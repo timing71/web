@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useConnectionService } from "../ConnectionServiceProvider";
 import { useServiceState } from "./ServiceContext";
 
-export const StateStorer = ({ serviceUUID }) => {
+export const StateStorer = ({ serviceUUID, sessionIndex }) => {
 
   const cs = useConnectionService();
   const { state } = useServiceState();
@@ -17,6 +17,7 @@ export const StateStorer = ({ serviceUUID }) => {
         try {
           cs.send({
             type: 'UPDATE_SERVICE_STATE',
+            sessionIndex,
             state,
             uuid: serviceUUID,
             timestamp: state.lastUpdated
@@ -28,7 +29,7 @@ export const StateStorer = ({ serviceUUID }) => {
         lastStoreTime.current = now;
       }
     },
-    [cs, serviceUUID, state]
+    [cs, serviceUUID, sessionIndex, state]
   );
 
   return null;

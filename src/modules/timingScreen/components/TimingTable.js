@@ -63,12 +63,17 @@ export const TimingTable = () => {
             (state.cars || []).map(
               (car, idx) => {
                 const carNum = statExtractor.get(car, Stat.NUM, idx);
+                const ident = [
+                  carNum,
+                  statExtractor.get(car, Stat.CAR, idx),
+                  statExtractor.get(car, Stat.CLASS, idx),
+                ];
                 return (
                   <TimingTableRow
                     car={car}
                     hiddenCols={hiddenCols}
                     highlight={doHighlight && ((state.highlight || []).includes(carNum) || (highlights.current[carNum] || 0) > now)}
-                    key={carNum}
+                    key={ident.join(',')}
                     manifest={manifest}
                     position={idx + 1}
                     statExtractor={statExtractor}

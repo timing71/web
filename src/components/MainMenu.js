@@ -20,11 +20,13 @@ const MenuButton = styled(Button)`
 const MenuContainer = styled.div`
 
   align-self: start;
-  margin: 0 25%;
+  margin: 0 25vw;
+
+  min-width: 600px;
 
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-gap: 3em;
+  grid-gap: 3vw;
 `;
 
 export const MainMenu = () => {

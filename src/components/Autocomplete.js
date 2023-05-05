@@ -1,158 +1,65 @@
-import { cloneElement, useCallback, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
+import { useCombobox } from 'downshift';
+import { useEffect, useState } from "react";
 
 const List = styled.div.attrs({ className: 'autocomplete-list' })`
 
-  position: fixed;
+  position: absolute;
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 50%;
+  max-height: 50vh;
+
+  top: 100%;
+  width: 100%;
+
+  margin-left: -2px;
+  margin-right: -2px;
 `;
 
-export const Autocomplete = ({ inputProps={}, items, onChange, onSelect, renderItem, shouldItemRender, value }) => {
+export const Autocomplete = ({ inputProps={}, items, onChange, onSelect, renderItem, shouldItemRender }) => {
 
-  const [showList, setShowList] = useState(false);
-  const [highlightedIndex, setHighlightedIndex] = useState(null);
+  const [inputItems, setInputItems] = useState([]);
 
-  const inputRef = useRef();
-  const [listStyle, setListStyle] = useState({});
-
-  const filteredItems = useMemo(
-    () => items.filter(i => shouldItemRender(i, value)),
-    [items, shouldItemRender, value]
+  useEffect(
+    () => setInputItems(items),
+    [items]
   );
 
-  const open = useCallback(
-    () => {
-      setShowList(true);
-      if (inputRef.current) {
-        const rect = inputRef.current.getBoundingClientRect();
-        const computedStyle = window.getComputedStyle(inputRef.current);
-        const marginBottom = parseInt(computedStyle.marginBottom, 10) || 0;
-        const marginLeft = parseInt(computedStyle.marginLeft, 10) || 0;
-        const marginRight = parseInt(computedStyle.marginRight, 10) || 0;
-        setListStyle({
-          top: rect.bottom + marginBottom,
-          left: rect.left + marginLeft - 2,
-          minWidth: rect.width + marginLeft + marginRight
-        });
-      }
-    },
-    []
-  );
-
-  const handleClick = useCallback(
-    () => {
-      const isInputFocused = inputRef.current && inputRef.current.ownerDocument && inputRef.current === inputRef.current.ownerDocument.activeElement;
-      if (isInputFocused) {
-        open();
-      }
-    },
-    [open]
-  );
-
-  const handleBlur = useCallback(
-    () => {
-      setShowList(false);
-      setHighlightedIndex(null);
-    },
-    []
-  );
-
-  const handleItemClick = useCallback(
-    (item) => (event) => {
-      onSelect(item);
-      event.preventDefault();
-    },
-    [onSelect]
-  );
-
-  const handleKeyDown = useCallback(
-    (event) => {
-      switch(event.key) {
-        case 'ArrowDown':
-          event.preventDefault();
-          setHighlightedIndex(
-            prevIndex => Math.min(
-              filteredItems.length,
-              (prevIndex === null ? -1 : prevIndex) + 1
-            )
-          );
-          break;
-
-          case 'ArrowUp':
-            event.preventDefault();
-            setHighlightedIndex(
-              prevIndex => Math.max(
-                0,
-                (prevIndex === null ? filteredItems.length : prevIndex) - 1
-              )
-            );
-            break;
-
-          case 'Enter':
-            if (event.keyCode === 13 && showList) {
-              setShowList(false);
-
-              if (highlightedIndex === null) {
-                inputRef.current?.select();
-              }
-              else {
-                event.preventDefault();
-                const selectedItem = filteredItems[highlightedIndex];
-                onSelect(selectedItem);
-              }
-            }
-            break;
-
-          case 'Escape':
-            setShowList(false);
-            setHighlightedIndex(null);
-            break;
-
-        default:
-      }
-    },
-    [filteredItems, highlightedIndex, onSelect, showList]
-  );
-
-  const renderItemWithHandler = useCallback(
-    (item, isHighlighted) => {
-      const rendered = renderItem(item, isHighlighted);
-      return cloneElement(
-        rendered,
-        {
-          onMouseUp: handleItemClick(item)
-        }
+  const {
+    isOpen,
+    getMenuProps,
+    getInputProps,
+    highlightedIndex,
+    getItemProps,
+  } = useCombobox({
+    items: inputItems,
+    onInputValueChange: ({ inputValue }) => {
+      setInputItems(
+        items.filter(i => shouldItemRender(i, inputValue))
       );
+      onChange(inputValue);
     },
-    [handleItemClick, renderItem]
-  );
+    onSelectedItemChange: ({ selectedItem }) => {
+      onSelect(selectedItem);
+    }
+  });
 
   return (
-    <div className={showList ? 'open' : undefined}>
+    <div
+      className={isOpen ? 'open' : undefined}
+      style={{ position: 'relative' }}
+    >
       <input
-        autoComplete='false'
-        onBlur={() => setTimeout(handleBlur, 250)}
-        onChange={onChange}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
-        ref={inputRef}
-        type='text'
-        value={value}
+        {...getInputProps()}
         {...inputProps}
       />
-      {
-        showList && (
-          <List style={listStyle}>
-            {
-              filteredItems.map(
-                (item, index) => renderItemWithHandler(item, index === highlightedIndex)
-              )
-            }
-          </List>
-        )
-      }
+      <List {...getMenuProps()}>
+        {
+          isOpen && inputItems.map(
+            (item, index) => renderItem(item, index === highlightedIndex, getItemProps({ item, index }))
+          )
+        }
+      </List>
     </div>
   );
 };

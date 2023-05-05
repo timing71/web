@@ -24,12 +24,12 @@ const Wrapper = styled.div`
     width: 100%;
     display: flex;
 
-    .autocomplete-list {
+    &.open .autocomplete-list {
       border: 1px solid ${ props => props.theme.site.highlightColor };
       border-top: none;
       border-radius: 0 0 0.25em 0.25em;
 
-      max-width: calc(50vw - 4em);
+      //max-width: calc(50vw - 4em);
     }
 
     & input {
@@ -94,10 +94,11 @@ const URLEntry = styled.div`
   }
 `;
 
-const renderItem = (item, highlighted) => (
+const renderItem = (item, highlighted, props) => (
   <URLEntry
     highlighted={highlighted}
     key={item}
+    {...props}
   >
     {item}
   </URLEntry>
@@ -145,11 +146,10 @@ export const URLBox = () => {
           spellCheck: false
         }}
         items={sources}
-        onChange={e => handleUrlChange(e.target.value)}
+        onChange={e => handleUrlChange(e)}
         onSelect={(selectedUrl) => handleUrlChange(selectedUrl, true)}
         renderItem={renderItem}
         shouldItemRender={shouldItemRender}
-        value={url}
         wrapperStyle={null}
       />
       <Button

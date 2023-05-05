@@ -1,4 +1,3 @@
-import { processManifestUpdate, processStateUpdate } from "@timing71/common";
 import { useCallback, useEffect, useState } from "react";
 import { StackedBarChart } from '@styled-icons/material';
 
@@ -28,6 +27,8 @@ import {
   WallClock,
 } from "../modules/menu";
 
+const doNothing = () => {};
+
 const TimingInner = ({ match: { params } }) => {
 
   // FSR useParams() is now broken here; it uses the params from too high up
@@ -35,6 +36,7 @@ const TimingInner = ({ match: { params } }) => {
   // directly to us as a direct descendent of a <Route> (in App.js).
   const { serviceUUID } = params;
   const [service, setService] = useState(null);
+  const [sessionIndex, setSessionIndex] = useState(0);
   const [state, setState] = useState(null);
   const [initialAnalysisState, setInitialAnalysisState] = useState(null);
   const cs = useConnectionService();
@@ -47,8 +49,8 @@ const TimingInner = ({ match: { params } }) => {
         uuid: serviceUUID
       }).then(
         msg => {
-          setService(msg.service);
           setState(msg.state);
+          setService(msg.service);
           if (!!msg.analysis) {
             setInitialAnalysisState(msg.analysis.state);
           }
@@ -62,21 +64,17 @@ const TimingInner = ({ match: { params } }) => {
   const updateState = useCallback(
     (updatedState) => {
       setState(
-        oldState => processStateUpdate(oldState, updatedState)
+        oldState => ({ ...oldState, ...updatedState })
       );
     },
     []
   );
 
-  const updateManifest = useCallback(
-    (newManifest) => processManifestUpdate(
-      state?.manifest,
-      newManifest,
-      service.startTime,
-      serviceUUID,
-      (m) => updateState({ manifest: m })
-    ),
-    [service?.startTime, serviceUUID, state?.manifest, updateState]
+  const onSessionChange = useCallback(
+    (newIndex) => {
+      setSessionIndex(newIndex || 0);
+    },
+    []
   );
 
   const [ delay ] = useSetting('delay');
@@ -98,10 +96,12 @@ const TimingInner = ({ match: { params } }) => {
   if (service) {
 
     return (
-      <ServiceManifestContext.Provider value={{ manifest: state?.manifest, updateManifest }}>
+      <ServiceManifestContext.Provider value={{ manifest: state?.manifest, updateManifest: doNothing }}>
         <ServiceStateContext.Provider value={{ state, updateState }}>
           <ServiceProvider
+            initialState={state}
             onReady={setReady}
+            onSessionChange={onSessionChange}
             service={service}
           />
           {
@@ -111,8 +111,12 @@ const TimingInner = ({ match: { params } }) => {
                   analysisState={initialAnalysisState}
                   live
                   serviceUUID={serviceUUID}
+                  sessionIndex={sessionIndex}
                 />
-                <StateStorer serviceUUID={serviceUUID} />
+                <StateStorer
+                  serviceUUID={serviceUUID}
+                  sessionIndex={sessionIndex}
+                  />
                 <StateRetriever
                   delay={delay * 1000}
                   serviceUUID={serviceUUID}

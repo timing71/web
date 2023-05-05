@@ -1,11 +1,11 @@
-import { mapServiceProvider } from '@timing71/common';
+import { Events, mapServiceProvider } from '@timing71/common';
 import { useEffect, useState, useRef } from "react";
 import * as Sentry from "@sentry/react";
 
 import { useServiceManifest, useServiceState } from "../../components/ServiceContext";
 import { useConnectionService } from "../../ConnectionServiceProvider";
 
-export const ServiceProvider = ({ onReady, service }) => {
+export const ServiceProvider = ({ initialState, onSessionChange, onReady, service }) => {
   const cs = useConnectionService();
 
   const { updateManifest } = useServiceManifest();
@@ -25,7 +25,12 @@ export const ServiceProvider = ({ onReady, service }) => {
           source: service.source
         });
 
-        serviceInstance.current = new serviceClass(updateState, updateManifest, service);
+        serviceInstance.current = new serviceClass(service, initialState);
+
+        serviceInstance.current.on(Events.STATE_CHANGE, updateState);
+        serviceInstance.current.on(Events.MANIFEST_CHANGE, updateManifest);
+        serviceInstance.current.on(Events.SESSION_CHANGE, onSessionChange);
+
         serviceInstance.current.start(cs);
         setHasService(true);
         onReady();
@@ -34,7 +39,7 @@ export const ServiceProvider = ({ onReady, service }) => {
         setHasService(false);
       }
     },
-    [cs, onReady, service, updateManifest, updateState]
+    [cs, initialState, onSessionChange, onReady, service, updateManifest, updateState]
   );
 
   useEffect(

@@ -6,7 +6,7 @@ import { useConnectionService } from '../../../ConnectionServiceProvider';
 import { useServiceState } from '../../../components/ServiceContext';
 import { useBroadcastChannel } from '../../../broadcastChannel';
 
-export const Analysis = ({ analysisState, live=false, serviceUUID }) => {
+export const Analysis = ({ analysisState, live=false, serviceUUID, sessionIndex }) => {
 
   const cs = useConnectionService();
   const { state } = useServiceState();
@@ -31,6 +31,7 @@ export const Analysis = ({ analysisState, live=false, serviceUUID }) => {
               cs.send({
                 type: 'UPDATE_SERVICE_ANALYSIS',
                 analysis: state,
+                sessionIndex,
                 uuid: serviceUUID,
                 timestamp: state.lastUpdated
               });
@@ -49,7 +50,15 @@ export const Analysis = ({ analysisState, live=false, serviceUUID }) => {
         );
       }
     },
-    [cs, emit, serviceUUID]
+    [cs, emit, serviceUUID, sessionIndex]
+  );
+
+  useEffect(
+    () => {
+      console.log(`Session index changed to ${sessionIndex}`); // eslint-disable-line no-console
+      analyser.current?.reset();
+    },
+    [sessionIndex]
   );
 
   useEffect(

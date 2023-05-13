@@ -3824,9 +3824,9 @@
     mobx-state-tree "^5.1.7"
 
 "@timing71/services@^0.4.0":
-  version "0.4.5"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.4.5/5b7451e8a2cb6292fe8bbce4e991d8496cae2430#5b7451e8a2cb6292fe8bbce4e991d8496cae2430"
-  integrity sha512-GF/9qs0mOfd5KWj/vogIAQ51JcxFRRZ9S16ScSJkmNw7q89ybw70K9xrQD5b2p9aidJz1ubbBeUPi1h3IC7jBA==
+  version "0.4.6"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.4.6/094e1d18065063e1ebd0511f10911954e44cab0b#094e1d18065063e1ebd0511f10911954e44cab0b"
+  integrity sha512-SA8N8cnvDIz/Ne+NMQt3nsKrAk2zK8sUEhM9VtTDFHogFuWFPMFl1mPaqDxQxABdkoiH8O3pttJ1J5CX49nMFg==
   dependencies:
     "@microsoft/signalr" "^7.0.4"
     cookie "^0.5.0"
@@ -11546,10 +11546,17 @@ node-fetch@2.6.7:
   dependencies:
     whatwg-url "^5.0.0"
 
-node-fetch@^2.6.1, node-fetch@^2.6.7:
+node-fetch@^2.6.1:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.9.tgz#7c7f744b5cc6eb5fd404e0c7a9fec630a55657e6"
   integrity sha512-DJm/CJkZkRjKKj4Zi4BsKVZh3ValV5IR5s7LVZnW+6YMh0W1BfNA8XSs6DLMGYlId5F3KnA70uu2qepcR08Qqg==
+  dependencies:
+    whatwg-url "^5.0.0"
+
+node-fetch@^2.6.7:
+  version "2.6.11"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.11.tgz#cde7fc71deef3131ef80a738919f999e6edfff25"
+  integrity sha512-4I6pdBY1EthSqDmJkiNk3JIT8cswwR9nfeW/cPdUagJYEQG7R95WRH74wpz7ma8Gh/9dI9FP+OU+0E4FvtA55w==
   dependencies:
     whatwg-url "^5.0.0"
 

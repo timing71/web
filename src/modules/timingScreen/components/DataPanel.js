@@ -18,13 +18,16 @@ const DataTable = styled.table`
   & th {
     color: ${ props => props.theme.site.highlightColor };
     text-align: right;
+    vertical-align: top;
     font-weight: normal;
     font-family: ${ props => props.theme.site.headingFont };
     padding: 0.25em;
+    white-space: nowrap;
   }
 
   & td {
     padding: 0.25em;
+    vertical-align: top;
   }
 `;
 
@@ -58,6 +61,12 @@ export const DataPanel = () => {
   return (
     <Inner>
       <DataTable>
+        <colgroup>
+          <col style={{ width: '20%' }} />
+          <col style={{ width: '30%' }} />
+          <col style={{ width: '20%' }} />
+          <col style={{ width: '30%' }} />
+        </colgroup>
         <tbody>
           {
             values

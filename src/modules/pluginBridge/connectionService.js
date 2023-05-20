@@ -57,7 +57,7 @@ export class WebConnectionService extends EventEmitter {
 
   createWebsocket(url, { tag=undefined, autoReconnect=true }={}) {
 
-    if (url.slice(0, 5) === 'ws://') {
+    if (url.slice(0, 5) === 'ws://' && !url.startsWith('ws://localhost') && process.env.NODE_ENV !== 'development') {
       console.warn(`Attempting to connect to an insecure WebSocket: ${url}. In order to connect, the connection will be proxied via Timing71 servers.`); // eslint-disable-line no-console
 
       const hasQueryString = url.indexOf('?') > -1;

@@ -80,6 +80,11 @@ const TimingInner = ({ match: { params } }) => {
     []
   );
 
+  const onAnalysisData = useCallback(
+    (data) => setInitialAnalysisState(data),
+    []
+  );
+
   const [ delay ] = useSetting('delay');
 
   const [serviceProviderReady, setSPReady] = useState(false);
@@ -104,6 +109,7 @@ const TimingInner = ({ match: { params } }) => {
           <SystemMessagesProvider>
             <ServiceProvider
               initialState={state}
+              onAnalysisState={onAnalysisData}
               onReady={setReady}
               onSessionChange={onSessionChange}
               service={service}
@@ -120,7 +126,7 @@ const TimingInner = ({ match: { params } }) => {
                   <StateStorer
                     serviceUUID={serviceUUID}
                     sessionIndex={sessionIndex}
-                    />
+                      />
                   <StateRetriever
                     delay={delay * 1000}
                     serviceUUID={serviceUUID}

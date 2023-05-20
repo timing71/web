@@ -6,7 +6,7 @@ import { useServiceManifest, useServiceState } from "../../components/ServiceCon
 import { useConnectionService } from "../../ConnectionServiceProvider";
 import { useSystemMessagesContext } from '../systemMessages';
 
-export const ServiceProvider = ({ initialState, onReady, onSessionChange, service }) => {
+export const ServiceProvider = ({ initialState, onAnalysisState, onReady, onSessionChange, service }) => {
   const cs = useConnectionService();
 
   const { updateManifest } = useServiceManifest();
@@ -32,6 +32,8 @@ export const ServiceProvider = ({ initialState, onReady, onSessionChange, servic
         serviceInstance.current.on(Events.STATE_CHANGE, updateState);
         serviceInstance.current.on(Events.MANIFEST_CHANGE, updateManifest);
         serviceInstance.current.on(Events.SESSION_CHANGE, onSessionChange);
+        serviceInstance.current.on(Events.ANALYSIS_STATE, onAnalysisState);
+
         serviceInstance.current.on(
           Events.SYSTEM_MESSAGE,
           (msg) => {
@@ -55,7 +57,7 @@ export const ServiceProvider = ({ initialState, onReady, onSessionChange, servic
         setHasService(false);
       }
     },
-    [addMessage, cs, initialState, onSessionChange, onReady, removeMessage, service, updateManifest, updateState]
+    [addMessage, cs, initialState, onAnalysisState, onSessionChange, onReady, removeMessage, service, updateManifest, updateState]
   );
 
   useEffect(

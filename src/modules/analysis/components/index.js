@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { createAnalyser } from '@timing71/common/analysis';
-import { onPatch, onSnapshot } from 'mobx-state-tree';
+import { applySnapshot, onPatch, onSnapshot } from 'mobx-state-tree';
 
 import { useConnectionService } from '../../../ConnectionServiceProvider';
 import { useServiceState } from '../../../components/ServiceContext';
@@ -87,6 +87,15 @@ export const Analysis = ({ analysisState, live=false, serviceUUID, sessionIndex 
       prevState.current = state;
     },
     [cs, serviceUUID, state]
+  );
+
+  useEffect(
+    () => {
+      if (analyser.current) {
+        applySnapshot(analyser.current, analysisState);
+      }
+    },
+    [analysisState, live]
   );
 
   return null;

@@ -110,7 +110,7 @@ const SessionEntry = ({ index, service, session }) => {
         <AccountTree size={24} />
       </td>
       <UnwrappingCell>
-        { dayjs(session.manifest.startTime).format('YYYY-MM-DD HH:mm:ss') }
+        { session.manifest ? dayjs(session.manifest.startTime).format('YYYY-MM-DD HH:mm:ss') : '-' }
       </UnwrappingCell>
       <WrappingCell>
         {name}

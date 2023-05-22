@@ -3,7 +3,7 @@ import { Download } from "styled-icons/material";
 import { useConnectionService } from "../ConnectionServiceProvider";
 import { Button } from "./Button";
 
-const GeneratorButton = ({ children, finishMessage, progressMessage, startMessage, uuid }) => {
+const GeneratorButton = ({ children, finishMessage, progressMessage, sessionIndex, startMessage, uuid }) => {
 
   const [isGenerating, setGenerating] = useState(false);
   const cs = useConnectionService();
@@ -33,11 +33,11 @@ const GeneratorButton = ({ children, finishMessage, progressMessage, startMessag
 
   const startGeneration = useCallback(
     () => {
-      cs.send({ type: startMessage, uuid }).then(
+      cs.send({ type: startMessage, sessionIndex, uuid }).then(
         () => setGenerating(true)
       );
     },
-    [cs, startMessage, uuid]
+    [cs, sessionIndex, startMessage, uuid]
   );
 
 
@@ -56,10 +56,11 @@ const GeneratorButton = ({ children, finishMessage, progressMessage, startMessag
   );
 };
 
-export const ReplayButton = ({ uuid }) => (
+export const ReplayButton = ({ sessionIndex, uuid }) => (
   <GeneratorButton
     finishMessage='REPLAY_GENERATION_FINISHED'
     progressMessage='REPLAY_GENERATION_PROGRESS'
+    sessionIndex={sessionIndex}
     startMessage='GENERATE_SERVICE_REPLAY'
     uuid={uuid}
   >
@@ -67,9 +68,10 @@ export const ReplayButton = ({ uuid }) => (
   </GeneratorButton>
 );
 
-export const AnalysisButton = ({ label='Analysis', uuid }) => (
+export const AnalysisButton = ({ label='Analysis', sessionIndex, uuid }) => (
   <GeneratorButton
     finishMessage='ANALYSIS_GENERATION_FINISHED'
+    sessionIndex={sessionIndex}
     startMessage='GENERATE_ANALYSIS_DOWNLOAD'
     uuid={uuid}
   >

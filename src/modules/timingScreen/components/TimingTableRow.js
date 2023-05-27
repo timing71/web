@@ -61,6 +61,7 @@ export const TimingTableRow = ({ car, hiddenCols, highlight, manifest, position,
         (stat, idx) => (
           <TimingTableCell
             key={idx}
+            manifest={manifest}
             stat={stat}
             value={statExtractor.get(car, stat)}
           />

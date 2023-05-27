@@ -17,6 +17,8 @@ export const FlagPanel = styled.div.attrs(
   white-space: nowrap;
   align-self: stretch;
 
+  user-select: none;
+
   z-index: -1;
 
   &::after {

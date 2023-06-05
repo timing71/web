@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import { StyledIconBase } from '@styled-icons/styled-icon';
 
-import { SystemMessageProvider } from './SystemMessage';
-
 const Inner = styled.div`
 
   background-color: rgba(32, 32, 32, 0.9);
@@ -37,9 +35,7 @@ const Inner = styled.div`
 export const MenuBar = ({ children }) => {
   return (
     <Inner>
-      <SystemMessageProvider>
-        { children }
-      </SystemMessageProvider>
+      { children }
     </Inner>
   );
 };

@@ -7,10 +7,23 @@ import { ArrowBack, StackedBarChart } from "styled-icons/material";
 import { LoadingScreen } from "../components/LoadingScreen";
 import { ServiceManifestContext, ServiceStateContext } from "../components/ServiceContext";
 import { useSubscription } from "../modules/autobahn";
-import { DelayIndicator, DelaySetting, Menu, MenuBar, MenuSeparator, Spacer, SystemMessage, ToggleMenuItem, UpdateTime, ViewSettings, WallClock } from "../modules/menu";
+import {
+  DelayIndicator,
+  DelaySetting,
+  Menu,
+  MenuBar,
+  MenuSeparator,
+  Spacer,
+  SystemMessages,
+  ToggleMenuItem,
+  UpdateTime,
+  ViewSettings,
+  WallClock
+} from "../modules/menu";
 import { useDelayedState } from "../modules/network/hooks";
 import { useSetting } from "../modules/settings";
 import { TimingScreen } from "../modules/timingScreen";
+import { SystemMessagesProvider } from "../modules/systemMessages";
 
 export const HostedTiming = () => {
   const { params: { uuid } } = useRouteMatch();
@@ -55,44 +68,46 @@ export const HostedTiming = () => {
     return (
       <ServiceManifestContext.Provider value={{ manifest }}>
         <ServiceStateContext.Provider value={{ state: { ...delayedState, foo: 'bar' } }}>
-          <TimingScreen>
-            <MenuBar>
-              <WallClock />
-              <UpdateTime />
-              <Spacer />
-              <SystemMessage />
-              <DelayIndicator />
-              {
-                manifest.source && (
-                  <a
-                    dangerouslySetInnerHTML={{ __html: manifest.source[0] }}
-                    href={manifest.source[1]}
-                  />
-                )
-              }
-              {
-                process.env.NODE_ENV === 'development' && <span>[DEV]</span>
-              }
-              <Menu>
-                <DelaySetting />
-                <MenuSeparator />
-                <ToggleMenuItem onClick={openAnalysis}>
-                  <span>
-                    <StackedBarChart size={24} />
-                  </span>
-                  <label>Launch analysis</label>
-                </ToggleMenuItem>
-                <MenuSeparator />
-                <ViewSettings />
-                <MenuSeparator />
-                <ToggleMenuItem onClick={() => history.push('/')}>
-                  <ArrowBack size={24} />
-                  Back to home screen
-                </ToggleMenuItem>
-                {/* <DownloadReplay /> */}
-              </Menu>
-            </MenuBar>
-          </TimingScreen>
+          <SystemMessagesProvider>
+            <TimingScreen>
+              <MenuBar>
+                <WallClock />
+                <UpdateTime />
+                <Spacer />
+                <SystemMessages />
+                <DelayIndicator />
+                {
+                  manifest.source && (
+                    <a
+                      dangerouslySetInnerHTML={{ __html: manifest.source[0] }}
+                      href={manifest.source[1]}
+                    />
+                  )
+                }
+                {
+                  process.env.NODE_ENV === 'development' && <span>[DEV]</span>
+                }
+                <Menu>
+                  <DelaySetting />
+                  <MenuSeparator />
+                  <ToggleMenuItem onClick={openAnalysis}>
+                    <span>
+                      <StackedBarChart size={24} />
+                    </span>
+                    <label>Launch analysis</label>
+                  </ToggleMenuItem>
+                  <MenuSeparator />
+                  <ViewSettings />
+                  <MenuSeparator />
+                  <ToggleMenuItem onClick={() => history.push('/')}>
+                    <ArrowBack size={24} />
+                    Back to home screen
+                  </ToggleMenuItem>
+                  {/* <DownloadReplay /> */}
+                </Menu>
+              </MenuBar>
+            </TimingScreen>
+          </SystemMessagesProvider>
         </ServiceStateContext.Provider>
       </ServiceManifestContext.Provider>
     );

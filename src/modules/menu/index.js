@@ -6,7 +6,7 @@ export { MenuBar } from './components/MenuBar';
 export { MenuItem, ToggleMenuItem } from './components/MenuItem';
 export { MenuSeparator } from 'reakit/Menu';
 export { Spacer } from './components/Spacer';
-export { SystemMessage, SystemMessageProvider } from './components/SystemMessage';
+export { SystemMessages } from './components/SystemMessages';
 export { UpdateTime } from './components/UpdateTime';
 export { ViewSettings } from './components/ViewSettings';
 export { WallClock } from './components/WallClock';

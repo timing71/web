@@ -12,6 +12,7 @@ import { useSetting } from '../modules/settings';
 import { Analysis } from "../modules/analysis/components";
 import { LoadingScreen } from "../components/LoadingScreen";
 import { ServiceProvider } from "../modules/serviceHost";
+import { SystemMessagesProvider } from "../modules/systemMessages";
 import {
   DelayIndicator,
   DelaySetting,
@@ -20,12 +21,13 @@ import {
   MenuBar,
   MenuSeparator,
   Spacer,
-  SystemMessage,
+  SystemMessages,
   ToggleMenuItem,
   UpdateTime,
   ViewSettings,
   WallClock,
 } from "../modules/menu";
+
 
 const doNothing = () => {};
 
@@ -39,6 +41,7 @@ const TimingInner = ({ match: { params } }) => {
   const [sessionIndex, setSessionIndex] = useState(0);
   const [state, setState] = useState(null);
   const [initialAnalysisState, setInitialAnalysisState] = useState(null);
+
   const cs = useConnectionService();
 
   useEffect(
@@ -98,59 +101,61 @@ const TimingInner = ({ match: { params } }) => {
     return (
       <ServiceManifestContext.Provider value={{ manifest: state?.manifest, updateManifest: doNothing }}>
         <ServiceStateContext.Provider value={{ state, updateState }}>
-          <ServiceProvider
-            initialState={state}
-            onReady={setReady}
-            onSessionChange={onSessionChange}
-            service={service}
-          />
-          {
-            serviceProviderReady && (
-              <Debouncer>
-                <Analysis
-                  analysisState={initialAnalysisState}
-                  live
-                  serviceUUID={serviceUUID}
-                  sessionIndex={sessionIndex}
-                />
-                <StateStorer
-                  serviceUUID={serviceUUID}
-                  sessionIndex={sessionIndex}
+          <SystemMessagesProvider>
+            <ServiceProvider
+              initialState={state}
+              onReady={setReady}
+              onSessionChange={onSessionChange}
+              service={service}
+            />
+            {
+              serviceProviderReady && (
+                <Debouncer>
+                  <Analysis
+                    analysisState={initialAnalysisState}
+                    live
+                    serviceUUID={serviceUUID}
+                    sessionIndex={sessionIndex}
                   />
-                <StateRetriever
-                  delay={delay * 1000}
-                  serviceUUID={serviceUUID}
-                >
-                  <TimingScreen>
-                    <MenuBar>
-                      <WallClock />
-                      <UpdateTime />
-                      <Spacer />
-                      <SystemMessage />
-                      <DelayIndicator />
-                      {
-                        process.env.NODE_ENV === 'development' && <span>[DEV]</span>
-                      }
-                      <Menu>
-                        <DelaySetting />
-                        <MenuSeparator />
-                        <ToggleMenuItem onClick={openAnalysis}>
-                          <span>
-                            <StackedBarChart size={24} />
-                          </span>
-                          <label>Launch analysis</label>
-                        </ToggleMenuItem>
-                        <MenuSeparator />
-                        <ViewSettings />
-                        <MenuSeparator />
-                        <DownloadReplay />
-                      </Menu>
-                    </MenuBar>
-                  </TimingScreen>
-                </StateRetriever>
-              </Debouncer>
-            )
-          }
+                  <StateStorer
+                    serviceUUID={serviceUUID}
+                    sessionIndex={sessionIndex}
+                    />
+                  <StateRetriever
+                    delay={delay * 1000}
+                    serviceUUID={serviceUUID}
+                  >
+                    <TimingScreen>
+                      <MenuBar>
+                        <WallClock />
+                        <UpdateTime />
+                        <Spacer />
+                        <SystemMessages />
+                        <DelayIndicator />
+                        {
+                          process.env.NODE_ENV === 'development' && <span>[DEV]</span>
+                        }
+                        <Menu>
+                          <DelaySetting />
+                          <MenuSeparator />
+                          <ToggleMenuItem onClick={openAnalysis}>
+                            <span>
+                              <StackedBarChart size={24} />
+                            </span>
+                            <label>Launch analysis</label>
+                          </ToggleMenuItem>
+                          <MenuSeparator />
+                          <ViewSettings />
+                          <MenuSeparator />
+                          <DownloadReplay />
+                        </Menu>
+                      </MenuBar>
+                    </TimingScreen>
+                  </StateRetriever>
+                </Debouncer>
+              )
+            }
+          </SystemMessagesProvider>
         </ServiceStateContext.Provider>
       </ServiceManifestContext.Provider>
     );

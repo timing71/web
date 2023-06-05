@@ -1,15 +1,17 @@
-import { Events, mapServiceProvider } from '@timing71/common';
+import { Events, Severity, mapServiceProvider } from '@timing71/common';
 import { useEffect, useState, useRef } from "react";
 import * as Sentry from "@sentry/react";
 
 import { useServiceManifest, useServiceState } from "../../components/ServiceContext";
 import { useConnectionService } from "../../ConnectionServiceProvider";
+import { useSystemMessagesContext } from '../systemMessages';
 
-export const ServiceProvider = ({ initialState, onSessionChange, onReady, service }) => {
+export const ServiceProvider = ({ initialState, onReady, onSessionChange, service }) => {
   const cs = useConnectionService();
 
   const { updateManifest } = useServiceManifest();
   const { updateState } = useServiceState();
+  const { addMessage } = useSystemMessagesContext();
 
   const [hasService, setHasService] = useState(false);
 
@@ -30,6 +32,16 @@ export const ServiceProvider = ({ initialState, onSessionChange, onReady, servic
         serviceInstance.current.on(Events.STATE_CHANGE, updateState);
         serviceInstance.current.on(Events.MANIFEST_CHANGE, updateManifest);
         serviceInstance.current.on(Events.SESSION_CHANGE, onSessionChange);
+        serviceInstance.current.on(
+          Events.SYSTEM_MESSAGE,
+          (msg) => {
+            logSystemMessageToConsole(msg);
+
+            if (addMessage) {
+              addMessage(msg);
+            }
+          }
+        );
 
         serviceInstance.current.start(cs);
         setHasService(true);
@@ -39,7 +51,7 @@ export const ServiceProvider = ({ initialState, onSessionChange, onReady, servic
         setHasService(false);
       }
     },
-    [cs, initialState, onSessionChange, onReady, service, updateManifest, updateState]
+    [addMessage, cs, initialState, onSessionChange, onReady, service, updateManifest, updateState]
   );
 
   useEffect(
@@ -57,3 +69,24 @@ export const ServiceProvider = ({ initialState, onSessionChange, onReady, servic
 
   return null;
 };
+
+function logSystemMessageToConsole(msg) {
+  let consoleMethod = 'log';
+  switch (msg.severity) {
+    case Severity.DEBUG:
+      consoleMethod = 'debug';
+      break;
+    case Severity.INFO:
+      consoleMethod = 'info';
+      break;
+    case Severity.WARNING:
+      consoleMethod = 'warn';
+      break;
+    case Severity.ERROR:
+      consoleMethod = 'error';
+      break;
+    default:
+      consoleMethod = 'log';
+  }
+  console[consoleMethod](msg.message); // eslint-disable-line no-console
+}

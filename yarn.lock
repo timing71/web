@@ -3947,10 +3947,10 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
 
-"@timing71/common@^0.3.0":
-  version "0.3.1"
-  resolved "https://npm.pkg.github.com/download/@timing71/common/0.3.1/4c49ab48ec3ea859a3504c3067a57c4628db5da3#4c49ab48ec3ea859a3504c3067a57c4628db5da3"
-  integrity sha512-czwt2iY6L30qDT/qH2SvbigAOGlo4ZdeRgDs1tY6mhezIoTwcr4krZ2tg9qKtIuYTL8pSOIktYMiWe2rjnwBQA==
+"@timing71/common@^0.4.0":
+  version "0.4.0"
+  resolved "https://npm.pkg.github.com/download/@timing71/common/0.4.0/ee3d686f0972ecb75df621a5153b8cf134fd90c7#ee3d686f0972ecb75df621a5153b8cf134fd90c7"
+  integrity sha512-WFnf0iMs5X526capqxU+NE4S2WPCuY1IZbdo9+MSPsm1QTPP7pkVtHtwvAlpPiTUjAVv3GQwTdGYX3fG398amA==
   dependencies:
     "@zip.js/zip.js" "^2.4.26"
     dayjs "^1.11.6"

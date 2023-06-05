@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { v4 } from 'uuid';
 
 export const SystemMessagesContext = createContext({
@@ -10,6 +10,7 @@ export const SystemMessagesContext = createContext({
 export const SystemMessagesProvider = ({ children }) => {
 
   const [systemMessages, setSystemMessages] = useState([]);
+  const timeouts = useRef({});
 
   const addSystemMessage = (msg) => {
 
@@ -20,10 +21,14 @@ export const SystemMessagesProvider = ({ children }) => {
     setSystemMessages(prev => [...prev, msg]);
 
     if (msg.timeout) {
-      setTimeout(
-        () => removeSystemMessage(msg.uuid),
+      const timeout = setTimeout(
+        () => {
+          removeSystemMessage(msg.uuid);
+          delete timeouts.current[msg.uuid];
+        },
         msg.timeout
       );
+      timeouts.current[msg.uuid] = timeout;
     }
 
     return msg.uuid;
@@ -32,6 +37,15 @@ export const SystemMessagesProvider = ({ children }) => {
   const removeSystemMessage = (uuid) => {
     setSystemMessages(prev => prev.filter(m => m.uuid !== uuid));
   };
+
+  useEffect(
+    () => () => {
+      Object.values(timeouts.current).forEach(
+        t => clearTimeout(t)
+      );
+    },
+    []
+  );
 
   return (
     <SystemMessagesContext.Provider

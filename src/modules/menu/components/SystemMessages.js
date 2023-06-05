@@ -37,7 +37,7 @@ const MessageInner = styled(animated.div)`
   border: 1px solid;
   border-radius: 0.25em;
 
-  background: rgba(64, 64, 64, 0.7);
+  background: rgba(32, 32, 32, 0.9);
   color: ${props => COLOURS_BY_SEVERITY[props.$severity] || props.theme.site.highlightColor};
   border-color: ${props => COLOURS_BY_SEVERITY[props.$severity] || props.theme.site.highlightColor};
 
@@ -46,13 +46,29 @@ const MessageInner = styled(animated.div)`
 
   max-width: 30vw;
 
-  text-align: right;
-
   user-select: none;
   cursor: pointer;
 
   &:hover {
-    background-color: #404040;
+    background-color: #202020;
+  }
+
+  display: grid;
+  grid-template-columns: auto 1fr;
+
+  & > h4 {
+    margin-top: 0;
+    margin-bottom: 0.25em;
+    grid-column: 2;
+  }
+
+  & > p {
+    margin: 0;
+    grid-column: 2;
+  }
+
+  & > div, & > svg {
+    align-self: center;
   }
 `;
 
@@ -63,7 +79,10 @@ const Message = ({ message, ...props }) => {
       {...props}
     >
       <Icon severity={message.severity} />
-      { message.message }
+      { message.title && ( <h4>{message.title}</h4> ) }
+      <p>
+        { message.message }
+      </p>
     </MessageInner>
   );
 };

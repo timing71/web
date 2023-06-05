@@ -11,7 +11,7 @@ export const ServiceProvider = ({ initialState, onReady, onSessionChange, servic
 
   const { updateManifest } = useServiceManifest();
   const { updateState } = useServiceState();
-  const { addMessage } = useSystemMessagesContext();
+  const { addMessage, removeMessage } = useSystemMessagesContext();
 
   const [hasService, setHasService] = useState(false);
 
@@ -42,6 +42,10 @@ export const ServiceProvider = ({ initialState, onReady, onSessionChange, servic
             }
           }
         );
+        serviceInstance.current.on(
+          Events.RETRACT_SYSTEM_MESSAGE,
+          ({ uuid }) => removeMessage(uuid)
+        );
 
         serviceInstance.current.start(cs);
         setHasService(true);
@@ -51,7 +55,7 @@ export const ServiceProvider = ({ initialState, onReady, onSessionChange, servic
         setHasService(false);
       }
     },
-    [addMessage, cs, initialState, onSessionChange, onReady, service, updateManifest, updateState]
+    [addMessage, cs, initialState, onSessionChange, onReady, removeMessage, service, updateManifest, updateState]
   );
 
   useEffect(

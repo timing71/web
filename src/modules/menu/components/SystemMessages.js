@@ -1,10 +1,34 @@
-import styled from 'styled-components';
 import { Severity } from '@timing71/common';
+import styled from 'styled-components';
+import { ChevronRight, Info, Warning } from 'styled-icons/material';
 import { useSystemMessagesContext } from '../../systemMessages';
+import { Logo } from '../../../components/Logo';
 
 const COLOURS_BY_SEVERITY = {
   [Severity.DEBUG]: 'grey',
   [Severity.WARNING]: 'yellow'
+};
+
+const ICONS_BY_SEVERITY = {
+  [Severity.DEBUG]: ChevronRight,
+  [Severity.INFO]: Info,
+  [Severity.WARNING]: Warning
+};
+
+const DefaultIcon = (props) => (
+  <Logo
+    $spin
+    {...props}
+  />
+);
+
+const Icon = ({ severity }) => {
+  const Inner = ICONS_BY_SEVERITY[severity] || DefaultIcon;
+  return (
+    <Inner
+      size='1em'
+    />
+  );
 };
 
 const Message = styled.div`
@@ -33,6 +57,9 @@ const Message = styled.div`
 const MessagesContainer = styled.div`
   display: flex;
   flex-direction: column;
+
+  align-items: flex-end;
+
   position: absolute;
   right: 0;
   bottom: 2.5em;
@@ -57,6 +84,7 @@ export const SystemMessages = () => {
                 key={m.uuid}
                 onClick={() => removeMessage(m.uuid)}
               >
+                <Icon severity={m.severity} />
                 { m.message }
               </Message>
             )

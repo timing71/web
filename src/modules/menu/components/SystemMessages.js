@@ -1,6 +1,8 @@
+import { useTransition, animated } from '@react-spring/web';
 import { Severity } from '@timing71/common';
 import styled from 'styled-components';
 import { ChevronRight, Info, Warning } from 'styled-icons/material';
+
 import { useSystemMessagesContext } from '../../systemMessages';
 import { Logo } from '../../../components/Logo';
 
@@ -31,11 +33,11 @@ const Icon = ({ severity }) => {
   );
 };
 
-const Message = styled.div`
+const MessageInner = styled(animated.div)`
   border: 1px solid;
   border-radius: 0.25em;
 
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(64, 64, 64, 0.7);
   color: ${props => COLOURS_BY_SEVERITY[props.$severity] || props.theme.site.highlightColor};
   border-color: ${props => COLOURS_BY_SEVERITY[props.$severity] || props.theme.site.highlightColor};
 
@@ -50,9 +52,21 @@ const Message = styled.div`
   cursor: pointer;
 
   &:hover {
-    background-color: black;
+    background-color: #404040;
   }
 `;
+
+const Message = ({ message, ...props }) => {
+  return (
+    <MessageInner
+      $severity={message.severity}
+      {...props}
+    >
+      <Icon severity={message.severity} />
+      { message.message }
+    </MessageInner>
+  );
+};
 
 const MessagesContainer = styled.div`
   display: flex;
@@ -73,26 +87,26 @@ export const SystemMessages = () => {
 
   const visibleMessages = messages.filter(m => m.severity >= MIN_SEVERITY_TO_SHOW);
 
-  if (visibleMessages.length > 0) {
-    return (
-      <MessagesContainer>
-        {
-          visibleMessages.map(
-            m => (
-              <Message
-                $severity={m.severity}
-                key={m.uuid}
-                onClick={() => removeMessage(m.uuid)}
-              >
-                <Icon severity={m.severity} />
-                { m.message }
-              </Message>
-            )
+  const transitions = useTransition(visibleMessages, {
+    from: { opacity: 0, x: 250 },
+    enter: { opacity: 1, x: 0 },
+    leave: { opacity: 0, x: 0 }
+  });
+
+  return (
+    <MessagesContainer>
+      {
+        transitions(
+          (style, m) => (
+            <Message
+              message={m}
+              onClick={() => removeMessage(m.uuid)}
+              style={style}
+            />
           )
-        }
-      </MessagesContainer>
-    );
-  }
-  return null;
+        )
+      }
+    </MessagesContainer>
+  );
 
 };

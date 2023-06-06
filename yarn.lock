@@ -3959,9 +3959,9 @@
     mobx-state-tree "^5.1.7"
 
 "@timing71/services@^0.5.0":
-  version "0.5.0"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.5.0/a487577f291be5857efc726226f64c08a1e50dd2#a487577f291be5857efc726226f64c08a1e50dd2"
-  integrity sha512-VRqS6tQ6dbeq2mAzkMCjY0KDrQVOhxSgiZezDMJlSTrlpSmZkr9g380wMDflHU5swYGEqkUYPljwmI2aLFKWXw==
+  version "0.5.1"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.5.1/f19ced9192192c6c6a1c886bc6c13da7caea191e#f19ced9192192c6c6a1c886bc6c13da7caea191e"
+  integrity sha512-0KI7vcIrbc0G99s9/w9JsB2AD6i46zFAK3ScobscFYGdZ1Z9up8ut/CU+jh26DECHFjs1MkOWIHUV2hnRXl7CA==
   dependencies:
     "@microsoft/signalr" "^7.0.4"
     cookie "^0.5.0"
@@ -3972,7 +3972,7 @@
     mobx-state-tree "^5.1.6"
     query-string "^7.1.1"
     simpleddp "^2.2.4"
-    socket.io-parser "^4.2.1"
+    socket.io-parser "4.2.3"
     uuid "^9.0.0"
 
 "@tootallnate/once@2":
@@ -14127,10 +14127,10 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
-socket.io-parser@^4.2.1:
-  version "4.2.4"
-  resolved "https://registry.yarnpkg.com/socket.io-parser/-/socket.io-parser-4.2.4.tgz#c806966cf7270601e47469ddeec30fbdfda44c83"
-  integrity sha512-/GbIKmo8ioc+NIWIhwdecY0ge+qVBSMdgxGygevmdHj24bsfgtCmcUUcQ5ZzcylGFHsN3k4HB4Cgkl96KVnuew==
+socket.io-parser@4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/socket.io-parser/-/socket.io-parser-4.2.3.tgz#926bcc6658e2ae0883dc9dee69acbdc76e4e3667"
+  integrity sha512-JMafRntWVO2DCJimKsRTh/wnqVvO4hrfwOqtO7f+uzwsQMuxO6VwImtYxaQ+ieoyshWOTJyV0fA21lccEXRPpQ==
   dependencies:
     "@socket.io/component-emitter" "~3.1.0"
     debug "~4.3.1"

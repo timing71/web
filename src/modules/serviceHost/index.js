@@ -6,7 +6,7 @@ import { useServiceManifest, useServiceState } from "../../components/ServiceCon
 import { useConnectionService } from "../../ConnectionServiceProvider";
 import { useSystemMessagesContext } from '../systemMessages';
 
-export const ServiceProvider = ({ initialState, onAnalysisState, onReady, onSessionChange, service }) => {
+export const ServiceProvider = ({ initialState, onAnalysisState, onReady, onSessionChange, storeTransientState, service, transientState }) => {
   const cs = useConnectionService();
 
   const { updateManifest } = useServiceManifest();
@@ -49,6 +49,10 @@ export const ServiceProvider = ({ initialState, onAnalysisState, onReady, onSess
           ({ uuid }) => removeMessage(uuid)
         );
 
+        if (transientState) {
+          serviceInstance.current.restoreTransientState(transientState);
+        }
+
         serviceInstance.current.start(cs);
         setHasService(true);
         onReady();
@@ -57,14 +61,17 @@ export const ServiceProvider = ({ initialState, onAnalysisState, onReady, onSess
         setHasService(false);
       }
     },
-    [addMessage, cs, initialState, onAnalysisState, onSessionChange, onReady, removeMessage, service, updateManifest, updateState]
+    [addMessage, cs, initialState, onAnalysisState, onSessionChange, onReady, removeMessage, service, transientState, updateManifest, updateState]
   );
 
   useEffect(
     () => () => {
-      serviceInstance.current?.stop();
+      if (serviceInstance.current) {
+        serviceInstance.current.stop();
+        storeTransientState?.(serviceInstance.current.getTransientStateForSaving());
+      }
     },
-    []
+    [storeTransientState]
   );
 
   if (!hasService) {

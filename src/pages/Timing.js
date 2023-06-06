@@ -41,6 +41,7 @@ const TimingInner = ({ match: { params } }) => {
   const [sessionIndex, setSessionIndex] = useState(0);
   const [state, setState] = useState(null);
   const [initialAnalysisState, setInitialAnalysisState] = useState(null);
+  const [transientState, setTransientState] = useState(null);
 
   const cs = useConnectionService();
 
@@ -52,6 +53,7 @@ const TimingInner = ({ match: { params } }) => {
         uuid: serviceUUID
       }).then(
         msg => {
+          setTransientState(msg.transient_data?.data);
           setState(msg.state);
           setService(msg.service);
           if (!!msg.analysis) {
@@ -71,6 +73,17 @@ const TimingInner = ({ match: { params } }) => {
       );
     },
     []
+  );
+
+  const storeTransientState = useCallback(
+    (data) => {
+      cs.send({
+        type: 'SAVE_TRANSIENT_DATA',
+        uuid: serviceUUID,
+        data
+      });
+    },
+    [cs, serviceUUID]
   );
 
   const onSessionChange = useCallback(
@@ -113,6 +126,8 @@ const TimingInner = ({ match: { params } }) => {
               onReady={setReady}
               onSessionChange={onSessionChange}
               service={service}
+              storeTransientState={storeTransientState}
+              transientState={transientState}
             />
             {
               serviceProviderReady && (

@@ -44,13 +44,20 @@ export const Autocomplete = ({ inputProps={}, items, onChange, onSelect, renderI
     }
   });
 
+  const iProps = getInputProps();
+
   return (
     <div
       className={isOpen ? 'open' : undefined}
       style={{ position: 'relative' }}
     >
       <input
-        {...getInputProps()}
+        {...iProps}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            onSelect(iProps.value);
+          }
+        }}
         {...inputProps}
       />
       <List {...getMenuProps()}>

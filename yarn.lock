@@ -3959,9 +3959,9 @@
     mobx-state-tree "^5.1.7"
 
 "@timing71/services@^0.5.0":
-  version "0.5.2"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.5.2/b210915a4d8d8f5e262b5ea46ce58d5ee1715182#b210915a4d8d8f5e262b5ea46ce58d5ee1715182"
-  integrity sha512-WfmnVtLVXr7QQOWfQrdrB0ldc2gmxA92PItWxB6G/bhhgbgg3BWMUE57T3deAMvxZXzDrxzZLD/Z0LSpaoTHpw==
+  version "0.5.3"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.5.3/352afd73f6bfe3db9407b7c89081a272f98dd55e#352afd73f6bfe3db9407b7c89081a272f98dd55e"
+  integrity sha512-cP63hfi+Vhx6nMJTXeBxbr50VysfNOq83puLs5eWF2dcb4MPEt/bpwy6WHDnmrGYFdJaQ4tEM8z6v/tNTj1SAA==
   dependencies:
     "@microsoft/signalr" "^7.0.4"
     cookie "^0.5.0"

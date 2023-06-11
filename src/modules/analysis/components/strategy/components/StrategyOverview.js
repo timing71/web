@@ -11,9 +11,10 @@ import { LapsChart } from './LapsChart';
 import { TimeChart } from './TimeChart';
 import { StintDetailModal } from './StintDetailModal';
 import throttle from 'lodash.throttle';
-import { CarOption } from '../../CarOption';
-import { useAnalysis } from '../../context';
 import { observer } from 'mobx-react-lite';
+import { Control, Controls } from '../../Controls';
+import { ClassFilter } from '../../ClassFilter';
+import { TypeSelector } from '../../TypeSelector';
 
 const Container = styled.div`
   position: relative;
@@ -103,57 +104,8 @@ const chartType = {
   [DisplayMode.TIME]: TimeChart
 };
 
-const TypeSelector = styled.select`
-  font-family: ${ props => props.theme.site.textFont };
-
-  background-color: black;
-  color: white;
-
-  padding: 0.5em;
-
-  border: 1px solid ${ props => props.theme.site.highlightColor };
-  border-radius: 0.25em;
-
-  &:focus-visible {
-    outline: none;
-  }
-`;
-
-const Controls = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-
-  & div {
-    flex-grow: 1;
-  }
-
-  label {
-    margin: 0 0.5em;
-  }
-`;
-
-const Control = styled.div`
-  display: flex;
-  align-items: center;
-
-  .rc-slider-track {
-    background-color: ${ props => props.theme.site.highlightColor };
-  }
-
-  .rc-slider-rail {
-    background-color: #808080;
-  }
-
-  .rc-slider-handle {
-    border-color: ${ props => props.theme.site.highlightColor };
-    background-color: ${ props => props.theme.site.highlightColor };
-  }
-`;
-
 export const StrategyOverview = observer(
   () => {
-
-    const analysis = useAnalysis();
 
     const [displayMode, setDisplayMode] = useSetting('analysis.strategy.displayMode', DisplayMode.LAPS);
     const [scale, setScale] = useState(32);
@@ -227,34 +179,10 @@ export const StrategyOverview = observer(
               </TypeSelector>
             </Control>
 
-            <Control>
-              <label htmlFor='class-filter'>
-                Show class:
-              </label>
-              <TypeSelector
-                id='class-filter'
-                onChange={(e) => setClassFilter(e.target.value)}
-                value={classFilter}
-              >
-                <option value=''>All</option>
-                {
-                  analysis.knownCarClasses.map(
-                    klass => (
-                      <CarOption
-                        car={{
-                          classColorString: klass.toLowerCase().replace(/[-/ ]/, '')
-                        }}
-                        key={klass}
-                        value={klass.toLowerCase().replace(/[-/ ]/, '')}
-                      >
-                        {klass}
-                      </CarOption>
-                    )
-                  )
-                }
-              </TypeSelector>
-
-            </Control>
+            <ClassFilter
+              onChange={(e) => setClassFilter(e.target.value)}
+              value={classFilter}
+            />
 
             <Control>
               <label>

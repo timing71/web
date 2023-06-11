@@ -1,5 +1,6 @@
 import { CarMessages } from './CarMessages';
 import { Classification } from './Classification';
+import { DriverComparison } from './driverComparison';
 import { DriverStints } from './driverStints';
 import { DriveTime } from './driveTime';
 import { LapHistory } from './lapHistory';
@@ -28,6 +29,11 @@ export const routes = [
     path: '/messages',
     name: 'Messages',
     component: Messages
+  },
+  {
+    path: '/driver-comparison',
+    name: 'Driver comparison',
+    component: DriverComparison
   },
   {
     path: '/drive-time',

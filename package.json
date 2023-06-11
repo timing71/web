@@ -6,9 +6,10 @@
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "dependencies": {
-    "@nivo/bar": "^0.79.0",
-    "@nivo/core": "^0.79.0",
-    "@nivo/pie": "^0.79.0",
+    "@nivo/bar": "^0.83.0",
+    "@nivo/boxplot": "^0.83.0",
+    "@nivo/core": "^0.83.0",
+    "@nivo/pie": "^0.83.0",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
     "@react-spring/web": "^9.4.0",
     "@sentry/react": "^7.0.0",

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { AccountTree, Delete, OpenInBrowser, StackedBarChart } from '@styled-icons/material';
-import { dasherizeParts, dayjs } from '@timing71/common';
+import { dasherizeParts, dayjs, timeWithHours } from '@timing71/common';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -101,8 +101,8 @@ const SessionEntry = ({ index, service, session }) => {
   const name = session?.manifest?.name ? dasherizeParts(session.manifest.name, session.manifest.description) : service.source;
 
   const duration = session?.manifest?.startTime && session?.lastUpdated ?
-  dayjs.duration(session.lastUpdated - session.manifest.startTime).format('HH:mm:ss') :
-  '-';
+  dayjs.duration(session.lastUpdated - session.manifest.startTime).asSeconds() :
+  null;
 
   return (
     <SessionRow>
@@ -115,7 +115,7 @@ const SessionEntry = ({ index, service, session }) => {
       <WrappingCell>
         {name}
       </WrappingCell>
-      <UnwrappingCell>{duration}</UnwrappingCell>
+      <UnwrappingCell>{ timeWithHours(duration) || null }</UnwrappingCell>
       <UnwrappingCell>
         <ReplayButton
           sessionIndex={index}

@@ -53,8 +53,12 @@ export const FileAnalysis = () => {
           setLoadState(LoadState.ERROR);
         }
       }
+      else {
+        clearFile();
+        history.push('/menu');
+      }
     },
-    [file]
+    [clearFile, file, history]
   );
 
   useEffect(

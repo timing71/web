@@ -1,4 +1,5 @@
 import { EventEmitter } from "../../eventEmitter";
+import { WrappedEventSource } from './eventSource';
 import { WrappedWebsocket } from './websocket';
 
 export class WebConnectionService extends EventEmitter {
@@ -66,6 +67,10 @@ export class WebConnectionService extends EventEmitter {
     }
 
     return new WrappedWebsocket(url, this, tag, autoReconnect);
+  }
+
+  createEventSource(url, { tag=undefined, autoReconnect=true }={}) {
+    return new WrappedEventSource(url, this, tag, autoReconnect);
   }
 
   createDOMParser() {

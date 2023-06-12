@@ -1,5 +1,4 @@
 import { BarCanvas } from '@nivo/bar';
-import { useMeasure } from '@nivo/core';
 import { dayjs } from '@timing71/common';
 import { observer } from "mobx-react-lite";
 import { Helmet } from "react-helmet-async";
@@ -7,6 +6,7 @@ import styled from 'styled-components';
 
 import { useAnalysis } from "../context";
 import { theme } from "../../charts";
+import { WidthResponsiveWrapper } from '../WidthResponsiveWrapper';
 
 const Container = styled.div`
   display: flex;
@@ -19,20 +19,6 @@ const ChartContainer = styled.div`
   min-height: 0;
   overflow-y: auto;
 `;
-
-const WidthResponsiveWrapper = ({ children, height }) => {
-  const [measureRef, bounds] = useMeasure();
-  const shouldRender = bounds.width > 0;
-
-  return (
-    <div
-      ref={measureRef}
-      style={{ width: '100%', height: '100%' }}
-    >
-      {shouldRender && children({ width: bounds.width, height })}
-    </div>
-  );
-};
 
 const TooltipWrapper = styled.div`
   background-color: rgba(0, 0, 0, 0.7);

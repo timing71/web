@@ -2010,9 +2010,9 @@
   integrity sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==
 
 "@microsoft/signalr@^7.0.4":
-  version "7.0.5"
-  resolved "https://registry.yarnpkg.com/@microsoft/signalr/-/signalr-7.0.5.tgz#e7a984ac1f1b6a488170e9cb2f2f46a5d97d5f80"
-  integrity sha512-j84syCKlXkQAOQhyrzRmW7w/M2UXQ6OKcXXFIVNjmiiZbEGIvSvJDRAuyMFjArdQOXz+etJgd58H/prTbyTCrA==
+  version "7.0.7"
+  resolved "https://registry.yarnpkg.com/@microsoft/signalr/-/signalr-7.0.7.tgz#4d89bb4f0a0902c05d9dc434375c669b9d183bc8"
+  integrity sha512-RMWZLTxnjWPSaS9PYZxXAttql2JDM/+IsSJk0nACFhpLjnSw8UWfvUxOv/QjZSqLxhuksXxzBJ/91xUP6Y7Nvg==
   dependencies:
     abort-controller "^3.0.0"
     eventsource "^2.0.2"
@@ -3959,9 +3959,9 @@
     mobx-state-tree "^5.1.7"
 
 "@timing71/services@^0.5.0":
-  version "0.5.3"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.5.3/352afd73f6bfe3db9407b7c89081a272f98dd55e#352afd73f6bfe3db9407b7c89081a272f98dd55e"
-  integrity sha512-cP63hfi+Vhx6nMJTXeBxbr50VysfNOq83puLs5eWF2dcb4MPEt/bpwy6WHDnmrGYFdJaQ4tEM8z6v/tNTj1SAA==
+  version "0.5.4"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.5.4/7b943488563c43d00bbb227b7d06f628d5b40082#7b943488563c43d00bbb227b7d06f628d5b40082"
+  integrity sha512-Bc12A+6O3rfWqHQzfgswbWlPs58NJFh/2NOk4/qsNEanX0NVANDfaUaoGxk9kZ0MnLq+gtWIdMKD6G6QxuENag==
   dependencies:
     "@microsoft/signalr" "^7.0.4"
     cookie "^0.5.0"

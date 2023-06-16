@@ -17,6 +17,7 @@ const ChartContainer = styled.div`
   flex-grow: 1;
   min-height: 0;
   overflow-y: auto;
+  color: black; // FSR this is picked up by the default @nico/boxplot tooltip
 `;
 
 export const DriverComparison = observer(

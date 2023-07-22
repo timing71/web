@@ -2010,9 +2010,9 @@
   integrity sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==
 
 "@microsoft/signalr@^7.0.4":
-  version "7.0.7"
-  resolved "https://registry.yarnpkg.com/@microsoft/signalr/-/signalr-7.0.7.tgz#4d89bb4f0a0902c05d9dc434375c669b9d183bc8"
-  integrity sha512-RMWZLTxnjWPSaS9PYZxXAttql2JDM/+IsSJk0nACFhpLjnSw8UWfvUxOv/QjZSqLxhuksXxzBJ/91xUP6Y7Nvg==
+  version "7.0.9"
+  resolved "https://registry.yarnpkg.com/@microsoft/signalr/-/signalr-7.0.9.tgz#bc0ba8f38b0cb3621c5f18b56d8096190689a3ca"
+  integrity sha512-aGfBLAYTh+6ydYvLXV/jcocWr8KKmTOgWyl/mDx5Hzrii1aAfrn+bpBNzrl5sto5ehsHCdTIzTCuOCT3baIjOw==
   dependencies:
     abort-controller "^3.0.0"
     eventsource "^2.0.2"
@@ -3959,9 +3959,9 @@
     mobx-state-tree "^5.1.7"
 
 "@timing71/services@^0.5.0":
-  version "0.5.6"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.5.6/4531d2198aefb978cfbd3dea01e8968807aea420#4531d2198aefb978cfbd3dea01e8968807aea420"
-  integrity sha512-hd8KynPHYO/pJnk71I1hADGJnXHVrNFqUDlQKubL9UbIrtO6pSOGPWDqI3bLam3Fgvt0cSNT9h6xhUUlqVlAXA==
+  version "0.5.7"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.5.7/18d05b94c673c619ba863d62859129e2f686bb80#18d05b94c673c619ba863d62859129e2f686bb80"
+  integrity sha512-9vEPou9PLEg6oIja4WgNLjxKf3fI9/QfBGFsbvE9EqcGAAk9ZqtF6vuHBFlvcEKtuz8TAYXMEDgg4IO6RKIB1w==
   dependencies:
     "@microsoft/signalr" "^7.0.4"
     cookie "^0.5.0"
@@ -11542,10 +11542,15 @@ mobx-state-tree@^5.0.5, mobx-state-tree@^5.1.6, mobx-state-tree@^5.1.7:
   resolved "https://registry.yarnpkg.com/mobx-state-tree/-/mobx-state-tree-5.1.8.tgz#d42b07db510e8819386e390a7e2ae0c4d6706821"
   integrity sha512-oe82BNgMr408e6DxMDNat8msXQTuyuqzJ97DPupbhchEfjjHyjsmPSwtXHl+nXiW3tybpb/cr5siUClBqKqv+Q==
 
-mobx@^6.3.7, mobx@^6.7.0:
+mobx@^6.3.7:
   version "6.9.0"
   resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.9.0.tgz#8a894c26417c05bed2cf7499322e589ee9787397"
   integrity sha512-HdKewQEREEJgsWnErClfbFoVebze6rGazxFLU/XUyrII8dORfVszN1V0BMRnQSzcgsNNtkX8DHj3nC6cdWE9YQ==
+
+mobx@^6.7.0:
+  version "6.10.0"
+  resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.10.0.tgz#3537680fe98d45232cc19cc8f76280bd8bb6b0b7"
+  integrity sha512-WMbVpCMFtolbB8swQ5E2YRrU+Yu8iLozCVx3CdGjbBKlP7dFiCSuiG06uea3JCFN5DnvtAX7+G5Bp82e2xu0ww==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
@@ -11696,10 +11701,17 @@ node-environment-flags@^1.0.5:
     object.getownpropertydescriptors "^2.0.3"
     semver "^5.7.0"
 
-node-fetch@^2.6.1, node-fetch@^2.6.11, node-fetch@^2.6.7:
+node-fetch@^2.6.1, node-fetch@^2.6.11:
   version "2.6.11"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.11.tgz#cde7fc71deef3131ef80a738919f999e6edfff25"
   integrity sha512-4I6pdBY1EthSqDmJkiNk3JIT8cswwR9nfeW/cPdUagJYEQG7R95WRH74wpz7ma8Gh/9dI9FP+OU+0E4FvtA55w==
+  dependencies:
+    whatwg-url "^5.0.0"
+
+node-fetch@^2.6.7:
+  version "2.6.12"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.12.tgz#02eb8e22074018e3d5a83016649d04df0e348fba"
+  integrity sha512-C/fGU2E8ToujUivIO0H+tpQ6HWo4eEmchoPIoXtxCrVghxdKq+QOHqEZW7tuP3KlV3bC8FRMO5nMCC7Zm1VP6g==
   dependencies:
     whatwg-url "^5.0.0"
 

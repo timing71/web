@@ -55,6 +55,7 @@ export const Theme = {
     'gt4s': '#ffc0cb',
     'gt4pa': '#ff00ff',
     'gs': '#2fabff',
+    'gsx': '#2fabff',
     'tcr': '#FFFF00',
     'gt3pro': '#dbb700',
     'gt3am': '#CCCCCC',

@@ -29,6 +29,7 @@ export const Theme = {
     'p2': '#77AAFF',
     'lmp2pa': '#57FFFF',
     'lmp2p/a': '#57FFFF',
+    'lmp2pro/am': '#57FFFF',
     'lmp3': '#DD00DD',
     'p3': '#DD00DD',
     'p31': '#FF661C',

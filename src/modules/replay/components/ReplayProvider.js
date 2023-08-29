@@ -61,7 +61,14 @@ export const ReplayProvider = ({ children, replayFile, replayState: { setDuratio
         const seek = cancellable(replay.getStateAtRelative(position));
         prevSeek.current = seek;
         seek.then(
-          f => setCurrentFrame({ ...f, manifest: replay.manifest })
+          f => setCurrentFrame({
+            ...f,
+            manifest: replay.manifest,
+            session: {
+              ...f.session,
+              pauseClocks: f.session?.pauseClocks || !state.playing
+            }
+          })
         ).catch(
           e => {
             if (!e.cancelled) {
@@ -71,7 +78,7 @@ export const ReplayProvider = ({ children, replayFile, replayState: { setDuratio
         );
       }
     },
-    [replay, position]
+    [replay, position, state.playing]
   );
 
   useEffect(

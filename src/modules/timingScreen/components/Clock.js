@@ -18,6 +18,7 @@ export const ClockInner = styled.div`
 export const Clock = ({ caption, className, countdown, pause, seconds }) => {
 
   const refTime = useRef(Date.now());
+  const pauseTime = useRef(0);
 
   const [ actualSeconds, setActualSeconds ] = useState(seconds);
 
@@ -39,14 +40,22 @@ export const Clock = ({ caption, className, countdown, pause, seconds }) => {
   useEffect(
     () => {
       if (!pause) {
+        if (pauseTime.current > 0) {
+          const pauseDelta = (countdown ? 1 : -1) * (Date.now() - pauseTime.current);
+          refTime.current += pauseDelta;
+          pauseTime.current = 0;
+        }
         const interval = window.setInterval(tick, 100);
-
         return () => {
           window.clearInterval(interval);
         };
       }
+      else {
+        pauseTime.current = Date.now();
+        tick();
+      }
     },
-    [pause, tick]
+    [countdown, pause, tick]
   );
 
   return (

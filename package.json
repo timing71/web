@@ -74,8 +74,6 @@
     "start": "NODE_ENV=development webpack-dev-server --config config/webpack.config.cjs",
     "build": "NODE_ENV=production REACT_APP_COMMIT_REF=${COMMIT_REF} webpack --config config/webpack.config.cjs",
     "clean": "rm -rf ./build && rm -rf ./cli",
-    "cli:build": "NODE_ENV=production webpack --config config/webpack.config.cli.js",
-    "cli:build:dev": "NODE_ENV=development webpack --config config/webpack.config.cli.js",
     "postbuild": "yarn run generateConfig",
     "lint": "eslint src/",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --passWithNoTests",

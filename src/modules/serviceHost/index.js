@@ -6,7 +6,16 @@ import { useServiceManifest, useServiceState } from "../../components/ServiceCon
 import { useConnectionService } from "../../ConnectionServiceProvider";
 import { useSystemMessagesContext } from '../systemMessages';
 
-export const ServiceProvider = ({ initialState, onAnalysisState, onReady, onSessionChange, storeTransientState, service, transientState }) => {
+export const ServiceProvider = ({
+  initialState,
+  onAnalysisState,
+  onReady,
+  onSessionChange,
+  storeTransientState,
+  service,
+  serviceParameters,
+  transientState
+}) => {
   const cs = useConnectionService();
 
   const { updateManifest } = useServiceManifest();
@@ -62,6 +71,15 @@ export const ServiceProvider = ({ initialState, onAnalysisState, onReady, onSess
       }
     },
     [addMessage, cs, initialState, onAnalysisState, onSessionChange, onReady, removeMessage, service, transientState, updateManifest, updateState]
+  );
+
+  useEffect(
+    () => {
+      if (serviceInstance.current && Object.keys(serviceParameters).length > 0) {
+        serviceInstance.current.parameters = { ...serviceParameters };
+      }
+    },
+    [serviceParameters]
   );
 
   useEffect(

@@ -42,6 +42,7 @@ const TimingInner = ({ match: { params } }) => {
   const [state, setState] = useState(null);
   const [initialAnalysisState, setInitialAnalysisState] = useState(null);
   const [transientState, setTransientState] = useState(null);
+  const [serviceParameters, setServiceParameters] = useState({});
 
   const cs = useConnectionService();
 
@@ -117,7 +118,7 @@ const TimingInner = ({ match: { params } }) => {
   if (service) {
 
     return (
-      <ServiceManifestContext.Provider value={{ manifest: state?.manifest, updateManifest: doNothing }}>
+      <ServiceManifestContext.Provider value={{ manifest: state?.manifest, updateManifest: doNothing, setServiceParameters }}>
         <ServiceStateContext.Provider value={{ state, updateState }}>
           <SystemMessagesProvider>
             <ServiceProvider
@@ -126,6 +127,7 @@ const TimingInner = ({ match: { params } }) => {
               onReady={setReady}
               onSessionChange={onSessionChange}
               service={service}
+              serviceParameters={serviceParameters}
               storeTransientState={storeTransientState}
               transientState={transientState}
             />

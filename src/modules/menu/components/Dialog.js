@@ -32,7 +32,7 @@ export const Dialog = styled(RDialog)`
   align-items: center;
   overflow-y: auto;
 
-  & > table {
+  & table {
     min-width: 75%;
     border-collapse: collapse;
     font-family: ${ props => props.theme.site.headingFont };

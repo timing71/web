@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { Fragment, useCallback, useState } from "react";
 import { useDialogState } from "reakit";
 import styled from "styled-components";
 import { SettingsInputComponent } from "styled-icons/material";
@@ -9,6 +9,29 @@ import { Dialog, DialogBackdrop } from "../../menu/components/Dialog";
 import { stopEventBubble } from "../../../utils";
 import { Input } from "../../../components/Forms";
 import { Button } from "../../../components/Button";
+
+const ParamLabel = styled.th`
+  text-align: left;
+`;
+
+const HelpText = styled.td`
+  display: block;
+  font-weight: normal;
+  font-size: small;
+  color: white;
+
+  && {
+    padding-top: 0;
+  }
+`;
+
+const ValueInputTd = styled.td.attrs({ rowSpan: 2 })`
+  white-space: nowrap;
+`;
+
+const TableWrapper = styled.div`
+  flex-grow: 1;
+`;
 
 const ParamsDialog = ({ dialog }) => {
   const { manifest, setServiceParameters } = useServiceManifest();
@@ -36,27 +59,36 @@ const ParamsDialog = ({ dialog }) => {
         {...dialog}
       >
         <h3>Set service parameters</h3>
-        <table>
-          <tbody>
-            {
-              Object.entries(spec).map(
-                ([key, pspec]) => (
-                  <tr key={key}>
-                    <th>{pspec.label}</th>
-                    <td>
-                      <Input
-                        onChange={e => changeParam(key, pspec.type === 'number' ? e.target.valueAsNumber : e.target.value)}
-                        type={pspec.type}
-                        value={workingParams[key] || ''}
-                      />
-                      {pspec.unit}
-                    </td>
-                  </tr>
+        <TableWrapper>
+          <table>
+            <tbody>
+              {
+                Object.entries(spec).map(
+                  ([key, pspec]) => (
+                    <Fragment key={key}>
+                      <tr>
+                        <ParamLabel>
+                          {pspec.label}
+                        </ParamLabel>
+                        <ValueInputTd>
+                          <Input
+                            onChange={e => changeParam(key, pspec.type === 'number' ? e.target.valueAsNumber : e.target.value)}
+                            type={pspec.type}
+                            value={workingParams[key] || ''}
+                          />
+                          {pspec.unit}
+                        </ValueInputTd>
+                      </tr>
+                      <tr>
+                        <HelpText>{pspec.description}</HelpText>
+                      </tr>
+                    </Fragment>
+                  )
                 )
-              )
-            }
-          </tbody>
-        </table>
+              }
+            </tbody>
+          </table>
+        </TableWrapper>
 
         <Button
           onClick={() => { setServiceParameters(workingParams); dialog.toggle(); }}

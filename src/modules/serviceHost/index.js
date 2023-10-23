@@ -26,6 +26,8 @@ export const ServiceProvider = ({
 
   const serviceInstance = useRef();
 
+  const hasSetParameters = Object.keys(serviceParameters).length > 0;
+
   useEffect(
     () => {
       const serviceClass = mapServiceProvider(service.source);
@@ -62,6 +64,16 @@ export const ServiceProvider = ({
           serviceInstance.current.restoreTransientState(transientState);
         }
 
+        if (serviceInstance.current?.parameters) {
+          addMessage({
+            severity: Severity.INFO,
+            title: 'Additional configuration',
+            message: 'This service supports additional configuration parameters. Click the button below to see and set these.',
+            timeout: 15000,
+            uuid: `${service.uuid}-params`
+          });
+        }
+
         serviceInstance.current.start(cs);
         setHasService(true);
         onReady();
@@ -75,11 +87,12 @@ export const ServiceProvider = ({
 
   useEffect(
     () => {
-      if (serviceInstance.current && Object.keys(serviceParameters).length > 0) {
+      if (serviceInstance.current && hasSetParameters) {
         serviceInstance.current.parameters = { ...serviceParameters };
+        removeMessage(`${service.uuid}-params`);
       }
     },
-    [serviceParameters]
+    [hasSetParameters, removeMessage, service.uuid, serviceParameters]
   );
 
   useEffect(

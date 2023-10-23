@@ -49,6 +49,7 @@ const ParamsDialog = ({ dialog }) => {
                         type={pspec.type}
                         value={workingParams[key] || ''}
                       />
+                      {pspec.unit}
                     </td>
                   </tr>
                 )

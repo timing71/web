@@ -81,6 +81,7 @@ export const DataPanel = () => {
                   <th>{spec.label}</th>
                   <td>
                     {(state.meta?.parameters || {})[key]}
+                    {spec.unit}
                   </td>
                 </tr>
               )

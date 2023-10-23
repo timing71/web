@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
-import { ServiceParameters } from "./ServiceParameters";
 
 const Inner = styled.div`
   grid-area: data;
@@ -75,6 +74,7 @@ export const DataPanel = () => {
         </tbody>
         <tbody>
           {
+            Object.keys(state.meta?.parameters || {}).length > 0 &&
             Object.entries(manifest.parameters || {}).map(
               ([key, spec]) => (
                 <tr key={key}>
@@ -88,11 +88,6 @@ export const DataPanel = () => {
           }
         </tbody>
       </DataTable>
-      {
-        manifest.parameters && (
-          <ServiceParameters />
-        )
-      }
     </Inner>
   );
 };

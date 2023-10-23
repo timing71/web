@@ -3,7 +3,7 @@ import { StackedBarChart } from '@styled-icons/material';
 
 import withGracefulUnmount from "../components/withGracefulUnmount";
 import { useConnectionService } from "../ConnectionServiceProvider";
-import { TimingScreen } from "../modules/timingScreen";
+import { ServiceParameters, TimingScreen } from "../modules/timingScreen";
 import { ServiceManifestContext, ServiceStateContext } from "../components/ServiceContext";
 import { StateStorer } from "../components/StateStorer";
 import { Debouncer } from "../components/Debouncer";
@@ -157,6 +157,11 @@ const TimingInner = ({ match: { params } }) => {
                         <DelayIndicator />
                         {
                           process.env.NODE_ENV === 'development' && <span>[DEV]</span>
+                        }
+                        {
+                          state?.manifest?.parameters && (
+                            <ServiceParameters />
+                          )
                         }
                         <Menu>
                           <DelaySetting />

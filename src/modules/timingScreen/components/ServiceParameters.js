@@ -1,5 +1,8 @@
 import { useCallback, useState } from "react";
 import { useDialogState } from "reakit";
+import styled from "styled-components";
+import { SettingsInputComponent } from "styled-icons/material";
+
 import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
 import { useFullscreenContext } from "../../../components/FullscreenContext";
 import { Dialog, DialogBackdrop } from "../../menu/components/Dialog";
@@ -66,6 +69,37 @@ const ParamsDialog = ({ dialog }) => {
 
 };
 
+const SettingsIcon = styled(SettingsInputComponent)`
+  fill: ${ props => props.theme.site.highlightColor };
+
+  width: 32px;
+  height: 32px;
+
+  &:hover {
+    cursor: pointer;
+    fill: white;
+  }
+`;
+
+const MyButton = styled(Button)`
+  background-color: transparent;
+  padding: 0;
+  border: 0;
+  margin-left: 0.5em;
+
+  & svg {
+    fill: ${ props => props.theme.site.highlightColor };
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    background-color: transparent;
+  }
+`;
+
 export const ServiceParameters = () => {
   const dialog = useDialogState();
 
@@ -84,9 +118,12 @@ export const ServiceParameters = () => {
 
   return (
     <>
-      <button onClick={show}>
-        Set
-      </button>
+      <MyButton
+        onClick={show}
+        title='Set session parameters'
+      >
+        <SettingsIcon />
+      </MyButton>
       <ParamsDialog
         dialog={dialog}
       />

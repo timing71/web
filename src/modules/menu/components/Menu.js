@@ -1,16 +1,15 @@
 import {
   useMenuState,
   Menu as RkMenu,
-  MenuButton,
 } from "reakit/Menu";
 
 import { Settings } from '@styled-icons/material';
 
 import styled from "styled-components";
-import { lighten } from "polished";
 
 import { stopEventBubble } from '../../../utils';
 import { MenuContextProvider } from "./context";
+import { MenuButton } from "./MenuButton";
 
 
 const SettingsIcon = styled(Settings)`
@@ -50,31 +49,14 @@ const MenuInner = styled.div`
 
 `;
 
-const MyMenuButton = styled(MenuButton)`
-  background-color: transparent;
-  padding: 0;
-  border: 0;
-  margin-left: 0.5em;
-
-  & svg {
-    fill: ${ props => props.visible ? lighten(0.2, props.theme.site.highlightColor) : props.theme.site.highlightColor };
-    transition: transform 100ms ease-in-out;
-    transform: ${ props => props.visible ? 'rotateZ(45deg)' : 'rotateZ(0)'};
-  }
-
-  &:focus {
-    outline: none;
-  }
-`;
-
 export const Menu = ({ children }) => {
   const menuState = useMenuState({ animated: 100, gutter: 6 });
 
   return (
     <MenuContextProvider value={menuState}>
-      <MyMenuButton {...menuState}>
+      <MenuButton {...menuState}>
         <SettingsIcon />
-      </MyMenuButton>
+      </MenuButton>
       <RkMenu
         aria-label='Settings'
         tabIndex={0}

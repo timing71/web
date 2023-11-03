@@ -2027,68 +2027,89 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@nivo/annotations@0.79.1":
-  version "0.79.1"
-  resolved "https://registry.yarnpkg.com/@nivo/annotations/-/annotations-0.79.1.tgz#c1b93a1facf55e3f32e2af1b8fb0ba1bebc01910"
-  integrity sha512-lYso9Luu0maSDtIufwvyVt2+Wue7R9Fh3CIjuRDmNR72UjAgAVEcCar27Fy865UXGsj2hRJZ7KY/1s6kT3gu/w==
+"@nivo/annotations@0.83.0":
+  version "0.83.0"
+  resolved "https://registry.yarnpkg.com/@nivo/annotations/-/annotations-0.83.0.tgz#d37bfc9d0cfcef53086ef88ff11dc7057bb130e3"
+  integrity sha512-FkfCprk1a3WCCNcQOfI2+Ww7vqTP/nJjQDVhFYf1YAaEGwXi4+OO4uJAtKtNcGE5cJWdOp+f0Gt4aNPGx7RtEw==
   dependencies:
-    "@nivo/colors" "0.79.1"
-    "@react-spring/web" "9.3.1"
+    "@nivo/colors" "0.83.0"
+    "@nivo/core" "0.83.0"
+    "@react-spring/web" "9.4.5 || ^9.7.2"
+    "@types/prop-types" "^15.7.2"
     lodash "^4.17.21"
+    prop-types "^15.7.2"
 
-"@nivo/arcs@0.79.1":
-  version "0.79.1"
-  resolved "https://registry.yarnpkg.com/@nivo/arcs/-/arcs-0.79.1.tgz#768d5e91356e94199377fbd0ca762bc364353414"
-  integrity sha512-owScoElMv5EwDbZKJhns282MnXVM4rq9jYwBnFBx872Igi2r6HwKk1m4jDWGfDktJ7MyECvuVzxRaUImWQdufA==
+"@nivo/arcs@0.83.0":
+  version "0.83.0"
+  resolved "https://registry.yarnpkg.com/@nivo/arcs/-/arcs-0.83.0.tgz#57062df79556d7dc42101fa5143586d56e7bd1b8"
+  integrity sha512-UcbNbtp28lbI5V/Sm6TIgYzZmtuhSxW3eTma+YBsgXi1AN/THSwEg0gSV8owyDT/8kaL+jcBQ6c54gzSLClhkw==
   dependencies:
-    "@nivo/colors" "0.79.1"
-    "@react-spring/web" "9.3.1"
+    "@nivo/colors" "0.83.0"
+    "@nivo/core" "0.83.0"
+    "@react-spring/web" "9.4.5 || ^9.7.2"
+    "@types/d3-shape" "^2.0.0"
     d3-shape "^1.3.5"
 
-"@nivo/axes@0.79.0":
-  version "0.79.0"
-  resolved "https://registry.yarnpkg.com/@nivo/axes/-/axes-0.79.0.tgz#6f009819b26f93a4126697152aeab5f979f1ab6c"
-  integrity sha512-EhSeCPxtWEuxqnifeyF/pIJEzL7pRM3rfygL+MpfT5ypu5NcXYRGQo/Bw0Vh+GF1ML+tNAE0rRvCu2jgLSdVNQ==
+"@nivo/axes@0.83.0":
+  version "0.83.0"
+  resolved "https://registry.yarnpkg.com/@nivo/axes/-/axes-0.83.0.tgz#480026f46b837d710f17e14ebd501286ef8b0b20"
+  integrity sha512-rHMl+DdXQlY2wl7VCSQNcJi4QNISUWOkcWzJeJeVaYR73Z13SVGgiC7kW0czJuogDTSnDAJ/EcFCGmyGVuznGQ==
   dependencies:
-    "@nivo/scales" "0.79.0"
-    "@react-spring/web" "9.3.1"
+    "@nivo/core" "0.83.0"
+    "@nivo/scales" "0.83.0"
+    "@react-spring/web" "9.4.5 || ^9.7.2"
+    "@types/d3-format" "^1.4.1"
+    "@types/d3-time-format" "^2.3.1"
+    "@types/prop-types" "^15.7.2"
     d3-format "^1.4.4"
     d3-time-format "^3.0.0"
+    prop-types "^15.7.2"
 
-"@nivo/bar@^0.79.0":
-  version "0.79.1"
-  resolved "https://registry.yarnpkg.com/@nivo/bar/-/bar-0.79.1.tgz#42d28169307e735cb84e57b4b6915195ef1c97fb"
-  integrity sha512-swJ2FtFeRPWJK9O6aZiqTDi2J6GrU2Z6kIHBBCXBlFmq6+vfd5AqOHytdXPTaN80JsKDBBdtY7tqRjpRPlDZwQ==
+"@nivo/bar@^0.83.0":
+  version "0.83.0"
+  resolved "https://registry.yarnpkg.com/@nivo/bar/-/bar-0.83.0.tgz#6fa08ad2e198347bb05f55d216a3a141a2d1512f"
+  integrity sha512-QXN6BcT1PiT/YViyoDU4G5mytbOUP1jYbuQmJhDDxKPMLNcZ/pHfThedRGVfDoD1poHBRJtV6mbgeCpAVmlTtw==
   dependencies:
-    "@nivo/annotations" "0.79.1"
-    "@nivo/axes" "0.79.0"
-    "@nivo/colors" "0.79.1"
-    "@nivo/legends" "0.79.1"
-    "@nivo/scales" "0.79.0"
-    "@nivo/tooltip" "0.79.0"
-    "@react-spring/web" "9.3.1"
+    "@nivo/annotations" "0.83.0"
+    "@nivo/axes" "0.83.0"
+    "@nivo/colors" "0.83.0"
+    "@nivo/core" "0.83.0"
+    "@nivo/legends" "0.83.0"
+    "@nivo/scales" "0.83.0"
+    "@nivo/tooltip" "0.83.0"
+    "@react-spring/web" "9.4.5 || ^9.7.2"
+    "@types/d3-scale" "^3.2.3"
+    "@types/d3-shape" "^2.0.0"
     d3-scale "^3.2.3"
-    d3-shape "^1.2.2"
+    d3-shape "^1.3.5"
     lodash "^4.17.21"
 
-"@nivo/colors@0.79.1":
-  version "0.79.1"
-  resolved "https://registry.yarnpkg.com/@nivo/colors/-/colors-0.79.1.tgz#0504c08b6a598bc5cb5a8b823d332a73fdc6ef43"
-  integrity sha512-45huBmz46OoQtfqzHrnqDJ9msebOBX84fTijyOBi8mn8iTDOK2xWgzT7cCYP3hKE58IclkibkzVyWCeJ+rUlqg==
+"@nivo/colors@0.83.0":
+  version "0.83.0"
+  resolved "https://registry.yarnpkg.com/@nivo/colors/-/colors-0.83.0.tgz#e8afb2ec10ceb2c0d2b2407f01e11c197c57f78d"
+  integrity sha512-n34LWYtE2hbd1fdCDP7TCHNZdbiO1PwcvXLo0VsKK5lNPY/FA5SXA7Z9Ubl/ChSwBwbzAsaAhjTy8KzKzSjDcA==
   dependencies:
-    d3-color "^2.0.0"
+    "@nivo/core" "0.83.0"
+    "@types/d3-color" "^2.0.0"
+    "@types/d3-scale" "^3.2.3"
+    "@types/d3-scale-chromatic" "^2.0.0"
+    "@types/prop-types" "^15.7.2"
+    d3-color "^3.1.0"
     d3-scale "^3.2.3"
     d3-scale-chromatic "^2.0.0"
     lodash "^4.17.21"
+    prop-types "^15.7.2"
 
-"@nivo/core@^0.79.0":
-  version "0.79.0"
-  resolved "https://registry.yarnpkg.com/@nivo/core/-/core-0.79.0.tgz#5755212c2058c20899990e7c8ec0e918ac00e5f5"
-  integrity sha512-e1iGodmGuXkF+QWAjhHVFc+lUnfBoUwaWqVcBXBfebzNc50tTJrTTMHyQczjgOIfTc8gEu23lAY4mVZCDKscig==
+"@nivo/core@0.83.0", "@nivo/core@^0.83.0":
+  version "0.83.0"
+  resolved "https://registry.yarnpkg.com/@nivo/core/-/core-0.83.0.tgz#d69a7516b5274b6664ca0fa89f1873e749698c1b"
+  integrity sha512-I9fjZAbIPz41JA2WP8Avsud/xk0iiM1nWUzcvZBDebBGFDB5Y1lrldUt9l5kvOeMth3Qj/1lVFTiJxQuojxH4Q==
   dependencies:
-    "@nivo/recompose" "0.79.0"
-    "@react-spring/web" "9.3.1"
-    d3-color "^2.0.0"
+    "@nivo/recompose" "0.83.0"
+    "@nivo/tooltip" "0.83.0"
+    "@react-spring/web" "9.4.5 || ^9.7.2"
+    "@types/d3-shape" "^2.0.0"
+    d3-color "^3.1.0"
     d3-format "^1.4.4"
     d3-interpolate "^2.0.1"
     d3-scale "^3.2.3"
@@ -2097,45 +2118,61 @@
     d3-time-format "^3.0.0"
     lodash "^4.17.21"
 
-"@nivo/legends@0.79.1":
-  version "0.79.1"
-  resolved "https://registry.yarnpkg.com/@nivo/legends/-/legends-0.79.1.tgz#60b1806bba547f796e6e5b66943d65153de60c79"
-  integrity sha512-AoabiLherOAk3/HR/N791fONxNdwNk/gCTJC/6BKUo2nX+JngEYm3nVFmTC1R6RdjwJTeCb9Vtuc4MHA+mcgig==
-
-"@nivo/pie@^0.79.0":
-  version "0.79.1"
-  resolved "https://registry.yarnpkg.com/@nivo/pie/-/pie-0.79.1.tgz#4461e5273adabd0ef52bfcb54fbf6604f676d5a5"
-  integrity sha512-Cm8I6/nrmcpJLwziUhZ3TtwRV6K/7qWJ6alN6bUh8z7w2nScSnD/PhmAPS89p3jzSUEBPOvCViKwdvyThJ8KCg==
+"@nivo/legends@0.83.0":
+  version "0.83.0"
+  resolved "https://registry.yarnpkg.com/@nivo/legends/-/legends-0.83.0.tgz#90f40c9dea6b4f49f07286d0c5429e0ed4eedcec"
+  integrity sha512-WWl3/hTpFJ7/2L0RG53Gbr9KQk+ZjD71a/RIPMJ5ArEvAvKKfWuWQCtEm3FpqAazX8eYMnsQ3Pi17c8ohEIXRg==
   dependencies:
-    "@nivo/arcs" "0.79.1"
-    "@nivo/colors" "0.79.1"
-    "@nivo/legends" "0.79.1"
-    "@nivo/tooltip" "0.79.0"
+    "@nivo/colors" "0.83.0"
+    "@nivo/core" "0.83.0"
+    "@types/d3-scale" "^3.2.3"
+    "@types/prop-types" "^15.7.2"
+    d3-scale "^3.2.3"
+    prop-types "^15.7.2"
+
+"@nivo/pie@^0.83.0":
+  version "0.83.0"
+  resolved "https://registry.yarnpkg.com/@nivo/pie/-/pie-0.83.0.tgz#4d58c689533cd62cb656632a1fd740f5b36e2bac"
+  integrity sha512-98j/h4T/QmQ10gFh1cMh6uLfcGurFcYZN97Lu3ig3D9bbsLuLgpUED/d5O+8w7qLJtnlg3zptqy+N9UgRAqbOg==
+  dependencies:
+    "@nivo/arcs" "0.83.0"
+    "@nivo/colors" "0.83.0"
+    "@nivo/core" "0.83.0"
+    "@nivo/legends" "0.83.0"
+    "@nivo/tooltip" "0.83.0"
+    "@types/d3-shape" "^2.0.0"
     d3-shape "^1.3.5"
 
-"@nivo/recompose@0.79.0":
-  version "0.79.0"
-  resolved "https://registry.yarnpkg.com/@nivo/recompose/-/recompose-0.79.0.tgz#c0c54ecabb2300ce672f3c3199f74629df33cc08"
-  integrity sha512-2GFnOHfA2jzTOA5mdKMwJ6myCRGoXQQbQvFFQ7B/+hnHfU/yrOVpiGt6TPAn3qReC4dyDYrzy1hr9UeQh677ig==
+"@nivo/recompose@0.83.0":
+  version "0.83.0"
+  resolved "https://registry.yarnpkg.com/@nivo/recompose/-/recompose-0.83.0.tgz#5ea1f638e4a376b0266b8d0761b5ccf27d1db890"
+  integrity sha512-3cLEoi9ZoE4LTn6B98oUVd0MRAy5bWK7W3yb0u4EkjLoXXCRvUAI08Wr2AAagOzVOg5PmvghIDgvkz1tlFZTGQ==
   dependencies:
+    "@types/prop-types" "^15.7.2"
+    "@types/react-lifecycles-compat" "^3.0.1"
+    prop-types "^15.7.2"
     react-lifecycles-compat "^3.0.4"
 
-"@nivo/scales@0.79.0":
-  version "0.79.0"
-  resolved "https://registry.yarnpkg.com/@nivo/scales/-/scales-0.79.0.tgz#553b6910288080fbfbbe4d2aab1dd80e2d172e6e"
-  integrity sha512-5fAt5Wejp8yzAk6qmA3KU+celCxNYrrBhfvOi2ECDG8KQi+orbDnrO6qjVF6+ebfOn9az8ZVukcSeGA5HceiMg==
+"@nivo/scales@0.83.0":
+  version "0.83.0"
+  resolved "https://registry.yarnpkg.com/@nivo/scales/-/scales-0.83.0.tgz#82a0ab9df0f3ee487e57ee15ac372d9c6daa21e8"
+  integrity sha512-DZn5IcMJErCURDuQPmYltu6GTPphTDVLMvbeN/Id/VSVbD1uYKvdXPKUNOe/N2IvnE8wjjCPv88DLcRhw6VTVg==
   dependencies:
+    "@types/d3-scale" "^3.2.3"
+    "@types/d3-time" "^1.1.1"
+    "@types/d3-time-format" "^3.0.0"
     d3-scale "^3.2.3"
     d3-time "^1.0.11"
     d3-time-format "^3.0.0"
     lodash "^4.17.21"
 
-"@nivo/tooltip@0.79.0":
-  version "0.79.0"
-  resolved "https://registry.yarnpkg.com/@nivo/tooltip/-/tooltip-0.79.0.tgz#3d46be8734e5d30e5387515db0c83bd1c795f442"
-  integrity sha512-hsJsvhDVR9P/QqIEDIttaA6aslR3tU9So1s/k2jMdppL7J9ZH/IrVx9TbIP7jDKmnU5AMIP5uSstXj9JiKLhQA==
+"@nivo/tooltip@0.83.0":
+  version "0.83.0"
+  resolved "https://registry.yarnpkg.com/@nivo/tooltip/-/tooltip-0.83.0.tgz#aae44c163a6f3bfefcde3491d050cd118af59857"
+  integrity sha512-HewujRqZNmcVnAv/LPLVyYwViad+rYTsFMdzLRzuTPq2hju1R+cfxokTomunG8e1SDtUPtULEVXtPg2ATIzNYg==
   dependencies:
-    "@react-spring/web" "9.3.1"
+    "@nivo/core" "0.83.0"
+    "@react-spring/web" "9.4.5 || ^9.7.2"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -2216,14 +2253,6 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.8.tgz#6b79032e760a0899cd4204710beede972a3a185f"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
-"@react-spring/animated@~9.3.0":
-  version "9.3.2"
-  resolved "https://registry.yarnpkg.com/@react-spring/animated/-/animated-9.3.2.tgz#bda85e92e9e9b6861c259f2dacb54270a37b0f39"
-  integrity sha512-pBvKydRHbTzuyaeHtxGIOvnskZxGo/S5/YK1rtYm88b9NQZuZa95Rgd3O0muFL+99nvBMBL8cvQGD0UJmsqQsg==
-  dependencies:
-    "@react-spring/shared" "~9.3.0"
-    "@react-spring/types" "~9.3.0"
-
 "@react-spring/animated@~9.7.3":
   version "9.7.3"
   resolved "https://registry.yarnpkg.com/@react-spring/animated/-/animated-9.7.3.tgz#4211b1a6d48da0ff474a125e93c0f460ff816e0f"
@@ -2231,15 +2260,6 @@
   dependencies:
     "@react-spring/shared" "~9.7.3"
     "@react-spring/types" "~9.7.3"
-
-"@react-spring/core@~9.3.0":
-  version "9.3.2"
-  resolved "https://registry.yarnpkg.com/@react-spring/core/-/core-9.3.2.tgz#d1dc5810666ac18550db89c58567f28fbe04fb07"
-  integrity sha512-kMRjkgdQ6LJ0lmb/wQlONpghaMT83UxglXHJC6m9kZS/GKVmN//TYMEK85xN1rC5Gg+BmjG61DtLCSkkLDTfNw==
-  dependencies:
-    "@react-spring/animated" "~9.3.0"
-    "@react-spring/shared" "~9.3.0"
-    "@react-spring/types" "~9.3.0"
 
 "@react-spring/core@~9.7.3":
   version "9.7.3"
@@ -2250,19 +2270,6 @@
     "@react-spring/shared" "~9.7.3"
     "@react-spring/types" "~9.7.3"
 
-"@react-spring/rafz@~9.3.0":
-  version "9.3.2"
-  resolved "https://registry.yarnpkg.com/@react-spring/rafz/-/rafz-9.3.2.tgz#0cbd296cd17bbf1e7e49d3b3616884e026d5fb67"
-  integrity sha512-YtqNnAYp5bl6NdnDOD5TcYS40VJmB+Civ4LPtcWuRPKDAOa/XAf3nep48r0wPTmkK936mpX8aIm7h+luW59u5A==
-
-"@react-spring/shared@~9.3.0":
-  version "9.3.2"
-  resolved "https://registry.yarnpkg.com/@react-spring/shared/-/shared-9.3.2.tgz#967ce1d8a16d820a99e6eeb2a8f7ca9311d9dfa0"
-  integrity sha512-ypGQQ8w7mWnrELLon4h6mBCBxdd8j1pgLzmHXLpTC/f4ya2wdP+0WIKBWXJymIf+5NiTsXgSJra5SnHP5FBY+A==
-  dependencies:
-    "@react-spring/rafz" "~9.3.0"
-    "@react-spring/types" "~9.3.0"
-
 "@react-spring/shared@~9.7.3":
   version "9.7.3"
   resolved "https://registry.yarnpkg.com/@react-spring/shared/-/shared-9.7.3.tgz#4cf29797847c689912aec4e62e34c99a4d5d9e53"
@@ -2270,27 +2277,12 @@
   dependencies:
     "@react-spring/types" "~9.7.3"
 
-"@react-spring/types@~9.3.0":
-  version "9.3.2"
-  resolved "https://registry.yarnpkg.com/@react-spring/types/-/types-9.3.2.tgz#0277d436e50d7a824897dd7bb880f4842fbcd0fe"
-  integrity sha512-u+IK9z9Re4hjNkBYKebZr7xVDYTai2RNBsI4UPL/k0B6lCNSwuqWIXfKZUDVlMOeZHtDqayJn4xz6HcSkTj3FQ==
-
 "@react-spring/types@~9.7.3":
   version "9.7.3"
   resolved "https://registry.yarnpkg.com/@react-spring/types/-/types-9.7.3.tgz#ea78fd447cbc2612c1f5d55852e3c331e8172a0b"
   integrity sha512-Kpx/fQ/ZFX31OtlqVEFfgaD1ACzul4NksrvIgYfIFq9JpDHFwQkMVZ10tbo0FU/grje4rcL4EIrjekl3kYwgWw==
 
-"@react-spring/web@9.3.1":
-  version "9.3.1"
-  resolved "https://registry.yarnpkg.com/@react-spring/web/-/web-9.3.1.tgz#5b377ba7ad52e746c2b59e2738c021de3f219d0b"
-  integrity sha512-sisZIgFGva/Z+xKWPSfXpukF0AP3kR9ALTxlHL87fVotMUCJX5vtH/YlVcywToEFwTHKt3MpI5Wy2M+vgVEeaw==
-  dependencies:
-    "@react-spring/animated" "~9.3.0"
-    "@react-spring/core" "~9.3.0"
-    "@react-spring/shared" "~9.3.0"
-    "@react-spring/types" "~9.3.0"
-
-"@react-spring/web@^9.4.0":
+"@react-spring/web@9.4.5 || ^9.7.2", "@react-spring/web@^9.4.0":
   version "9.7.3"
   resolved "https://registry.yarnpkg.com/@react-spring/web/-/web-9.7.3.tgz#d9f4e17fec259f1d65495a19502ada4f5b57fa3d"
   integrity sha512-BXt6BpS9aJL/QdVqEIX9YoUy8CE6TJrU0mNCqSoxdXlIeNcEBWOfIyE6B14ENNsyQKS3wOWkiJfco0tCr/9tUg==
@@ -4037,6 +4029,60 @@
   dependencies:
     "@types/node" "*"
 
+"@types/d3-color@^2.0.0":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@types/d3-color/-/d3-color-2.0.5.tgz#14e1730d13fe927c94e9cf249b6ee62d42f0b190"
+  integrity sha512-CThiNwBcCwK87B2s2s0BJqJz/hbL2KcZvFhwhhXWGDQ6ofM1D1pTqOQeLPLwF0zGC2C/STXjLkPn9js8lniEwA==
+
+"@types/d3-format@^1.4.1":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@types/d3-format/-/d3-format-1.4.4.tgz#bb8591bccf830e716e74aa995c6a351cf4c35bd9"
+  integrity sha512-G6vVfUjgOV9rmcXFAImxgprSpWF5UHxGrOmLP6HPaNMVkN1gyIQ+UWphIzYQIakLsmMUWMw+ydHyn+HNqlbTBA==
+
+"@types/d3-path@^2":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@types/d3-path/-/d3-path-2.0.3.tgz#77a6fb8acc8a11c8c936a8c6340f7a34395da51a"
+  integrity sha512-XadGkmL3/PJI1H79UN7T3EizDG1AKRVVn9wT6g+B734UHdvLmjjdlWIvv+cjHoYRb4WOF5HAEITSKwQGN9FW/A==
+
+"@types/d3-scale-chromatic@^2.0.0":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@types/d3-scale-chromatic/-/d3-scale-chromatic-2.0.2.tgz#8035f0f926d5bf65da711781c8a4c6cc622b79f9"
+  integrity sha512-RHRF5+LYF6zi8cDf1N79WcMoJuo4ImRexn1PF1FztPVcVSCvAu2+PomSE4uHcfgUCTQYwojvEyYfdqBo4bnzsg==
+
+"@types/d3-scale@^3.2.3":
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/@types/d3-scale/-/d3-scale-3.3.4.tgz#e7619bd81de867cc0c8bc4760494547baf4cd571"
+  integrity sha512-1pZJ6SaqJHQi7LS7PufEPAaHEvj4cn0yUq9T7Dw0yGmGSAahALCdthNcXJLeyTNRenfgMOShAFdr2+lU2kETLw==
+  dependencies:
+    "@types/d3-time" "^2"
+
+"@types/d3-shape@^2.0.0":
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/@types/d3-shape/-/d3-shape-2.1.5.tgz#54afe425707f6a2a71eec6a42e5fde386d4cfe26"
+  integrity sha512-a2CxClGz1EI7oMs/8D5unViUdf0qFSEQRDZ4OEkoUsY8o16zyJ1qcDdwSH8qqXNaaa0w0Z5O6ZKsrzdQDSrwRw==
+  dependencies:
+    "@types/d3-path" "^2"
+
+"@types/d3-time-format@^2.3.1":
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/@types/d3-time-format/-/d3-time-format-2.3.3.tgz#8948ed6bc25e9d97effecf4e185e80e68a3c01f3"
+  integrity sha512-JBB5IrUssu6ot2GN3VtwXCeYJ6XwwW1UX6D/W808r6wbVPyUTXoEK5yup66yb+0zWt+ocnOnLJA3vGk/nWxTlw==
+
+"@types/d3-time-format@^3.0.0":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@types/d3-time-format/-/d3-time-format-3.0.3.tgz#aa3ccb2c6ee9746bc2c917cee804a75b3a7fced7"
+  integrity sha512-y1rSSnpIOt50zxP/IjISZxqV7c9dzjLZJJLhQD2+xdQDbk28GC2Aj7PkPLqAfRhbDwxOyDLtNj4LSr5wfb83Iw==
+
+"@types/d3-time@^1.1.1":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@types/d3-time/-/d3-time-1.1.3.tgz#93a17f414d5c29c554c9500026fb2cb4e4605f92"
+  integrity sha512-2Fp6Cad2yRJSNHDvE9TWwYEF2DQABh8zbW9f+QDihq+2Fe7jkUVWZDDGCAhU4H87BSKWfOJnohXjAINuDrxRew==
+
+"@types/d3-time@^2":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@types/d3-time/-/d3-time-2.1.3.tgz#af73575e35eb72cc26d57b4538bf2d60c320fd4b"
+  integrity sha512-9EOa1kDZ1f8v6C5Mepz5YpWrVikrywGTQQ6QaYiVonrN6Chmmji2/XEVF38gn4uId3f2j85Uod14OKsv7ITOhw==
+
 "@types/eslint-scope@^3.7.3":
   version "3.7.6"
   resolved "https://registry.yarnpkg.com/@types/eslint-scope/-/eslint-scope-3.7.6.tgz#585578b368ed170e67de8aae7b93f54a1b2fdc26"
@@ -4280,7 +4326,7 @@
   resolved "https://registry.yarnpkg.com/@types/pretty-hrtime/-/pretty-hrtime-1.0.2.tgz#9b6e102bc2e1eea1c1c7fadf144483ce2687f233"
   integrity sha512-vyv9knII8XeW8TnXDcGH7HqG6FeR56ESN6ExM34d/U8Zvs3xuG34euV6CVyB7KEYI7Ts4lQM8b4NL72e7UadnA==
 
-"@types/prop-types@*":
+"@types/prop-types@*", "@types/prop-types@^15.7.2":
   version "15.7.9"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.9.tgz#b6f785caa7ea1fe4414d9df42ee0ab67f23d8a6d"
   integrity sha512-n1yyPsugYNSmHgxDFjicaI2+gCNjsBck8UX9kuofAKlc0h1bL+20oSF72KeNaW2DUlesbEVCFgyV2dPGTiY42g==
@@ -4299,6 +4345,13 @@
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.6.tgz#7cb33992049fd7340d5b10c0098e104184dfcd2a"
   integrity sha512-+0autS93xyXizIYiyL02FCY8N+KkKPhILhcUSA276HxzreZ16kl+cmwvV2qAM/PuCCwPXzOXOWhiPcw20uSFcA==
+
+"@types/react-lifecycles-compat@^3.0.1":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@types/react-lifecycles-compat/-/react-lifecycles-compat-3.0.3.tgz#659a8a343debdae2204b38bb356f813ce6367d69"
+  integrity sha512-HDRp5o0dZduY8eUfNkLYegJWGNcoIB6naumCNZP8O4x/5NRm8I/hh4ZS94kUTLgs/oLjBvYpe0OXQrlSkvM/Lg==
+  dependencies:
+    "@types/react" "*"
 
 "@types/react@*":
   version "18.2.34"
@@ -7208,10 +7261,15 @@ d3-array@2, d3-array@^2.3.0:
   dependencies:
     internmap "^1.0.0"
 
-"d3-color@1 - 2", d3-color@^2.0.0:
+"d3-color@1 - 2":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/d3-color/-/d3-color-2.0.0.tgz#8d625cab42ed9b8f601a1760a389f7ea9189d62e"
   integrity sha512-SPXi0TSKPD4g9tw0NMZFnR95XVgUZiBH+uUTqQuDu1OsE2zomHU7ho0FISciaPvosimixwHFl3WHLGabv6dDgQ==
+
+d3-color@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/d3-color/-/d3-color-3.1.0.tgz#395b2833dfac71507f12ac2f7af23bf819de24e2"
+  integrity sha512-zg/chbXyeBtMQ1LbD/WSoW2DpC3I0mpmPdW+ynRTj/x2DAWYrIY7qeZIHidozwV24m4iavr15lNwIwLxRmOxhA==
 
 "d3-format@1 - 2":
   version "2.0.0"
@@ -7254,7 +7312,7 @@ d3-scale@^3.2.3:
     d3-time "^2.1.1"
     d3-time-format "2 - 3"
 
-d3-shape@^1.2.2, d3-shape@^1.3.5:
+d3-shape@^1.3.5:
   version "1.3.7"
   resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.3.7.tgz#df63801be07bc986bc54f63789b4fe502992b5d7"
   integrity sha512-EUkvKjqPFUAZyOlhY5gzCxCeI0Aep04LwIRpsZ/mLFelJiUfnK56jo5JMDSE7yyP2kLSb6LtF+S5chMk7uqPqw==

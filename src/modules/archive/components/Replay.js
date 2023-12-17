@@ -3,7 +3,6 @@ import { useMenuState } from "reakit/Menu";
 import { Download, OndemandVideo, StackedBarChart } from "styled-icons/material";
 
 import { MenuButton, MenuButtonItem } from '../../../components/Button';
-import { API_ROOT } from "../api";
 import { useCallback, useState } from "react";
 import { Logo } from "../../../components/Logo";
 import { useFileContext } from "../../../components/FileLoaderContext";
@@ -73,20 +72,20 @@ const FileButton = ({ caption, disabled, downloadURL, viewIcon, viewPath }) => {
   );
 };
 
-const ReplayButton = ({ id }) => (
+const ReplayButton = ({ replay }) => (
   <FileButton
     caption='Replay'
-    downloadURL={`${API_ROOT}/download/${id}`}
+    downloadURL={replay.filename}
     viewIcon={OndemandVideo}
     viewPath='/replay'
   />
 );
 
-const AnalysisButton = ({ disabled, id }) => (
+const AnalysisButton = ({ disabled, replay }) => (
   <FileButton
     caption='Analysis'
     disabled={disabled}
-    downloadURL={`${API_ROOT}/analysis/${id}`}
+    downloadURL={replay.analysisFilename}
     viewIcon={StackedBarChart}
     viewPath='/file-analysis'
   />
@@ -116,10 +115,10 @@ export const Replay = ({ replay }) => {
         <Duration>
           {dayjs(replay.startTime * 1000).format('D MMM YYYY')}
         </Duration>
-        <ReplayButton id={replay.id} />
+        <ReplayButton replay={replay} />
         <AnalysisButton
           disabled={!replay.analysisFilename}
-          id={replay.id}
+          replay={replay}
         />
         <Duration>
           { timeWithHours(replay.duration) }

@@ -3985,9 +3985,9 @@
     mobx-state-tree "^5.1.7"
 
 "@timing71/services@^0.8.0":
-  version "0.8.0"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.8.0/c7b8d4d68e5bebbe9c8b5780f8d15bcd3e4ca5dd#c7b8d4d68e5bebbe9c8b5780f8d15bcd3e4ca5dd"
-  integrity sha512-GhqLJojH7ibbGO/ZFQBrRGXD/7KZx4GsstghVqKm2qu4r8eKmaDyu5tjgMY1GbyBu0v5yt0RiYrpPL7KtKuuLQ==
+  version "0.8.1"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.8.1/9b2b1b2a9dfe51968cc4163a6ca54a3940c57604#9b2b1b2a9dfe51968cc4163a6ca54a3940c57604"
+  integrity sha512-hcoejdN1ZrorUheu7gFodNffLV5TPo2I4QVEXNg4Ww2Ly/CD7ii6CBhBopiKJLBYyGLxsZX/VBz4fyWG7YORhg==
   dependencies:
     "@microsoft/signalr" "^7.0.4"
     cookie "^0.5.0"
@@ -8744,9 +8744,9 @@ fb-watchman@^2.0.0:
     bser "2.1.1"
 
 fetch-cookie@^2.0.3:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/fetch-cookie/-/fetch-cookie-2.1.0.tgz#6e127909912f9e527533b045aab555c06b33801b"
-  integrity sha512-39+cZRbWfbibmj22R2Jy6dmTbAWC+oqun1f1FzQaNurkPDUP4C38jpeZbiXCR88RKRVDp8UcDrbFXkNhN+NjYg==
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/fetch-cookie/-/fetch-cookie-2.2.0.tgz#01086b6b5b1c3e08f15ffd8647b02ca100377365"
+  integrity sha512-h9AgfjURuCgA2+2ISl8GbavpUdR+WGAM2McW/ovn4tVccegp8ZqCKWSBR8uRdM8dDNlx5WdKRWxBYUwteLDCNQ==
   dependencies:
     set-cookie-parser "^2.4.8"
     tough-cookie "^4.0.0"
@@ -11842,12 +11842,7 @@ mobx-state-tree@^5.0.5:
   resolved "https://registry.yarnpkg.com/mobx-state-tree/-/mobx-state-tree-5.2.0.tgz#784fb22b7d2b1598c6b4fb8987d68d86eaf66d8b"
   integrity sha512-TAKfMHEF9F59iAcLbD1Y9D8Kand4NoYM1h8Yv3Ol5la9X0I7T4Y/mhVN/oK/bi3g0v7dYy9wsoni2T66zCohGQ==
 
-mobx-state-tree@^5.1.6:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/mobx-state-tree/-/mobx-state-tree-5.3.0.tgz#fb743c4bfe770628aaed2f4d961a4b61fdd74126"
-  integrity sha512-2XInCjIxGQx/UmTbpAreWKcHswmuOKOV23HJmy1x4gqyDqCcOHJcaClpWnD2/qQlGncg8gAUfP/mm+cLpTrtlQ==
-
-mobx-state-tree@^5.1.7:
+mobx-state-tree@^5.1.6, mobx-state-tree@^5.1.7:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/mobx-state-tree/-/mobx-state-tree-5.4.1.tgz#97182a1e2587db5ff7a2b5f11ac6971e50498aed"
   integrity sha512-eEBmfeYzbNSbNsdM+T1pchuOykZXT50B7eCXgf0E0O/jad/cigu4heBB9RwxzzyD/QGrXBPVctKYLypVXNHt3Q==
@@ -13136,9 +13131,9 @@ query-string@^7.1.1:
     strict-uri-encode "^2.0.0"
 
 query-string@^8.0.0:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/query-string/-/query-string-8.1.0.tgz#e7f95367737219544cd360a11a4f4ca03836e115"
-  integrity sha512-BFQeWxJOZxZGix7y+SByG3F36dA0AbTy9o6pSmKFcFz7DAj0re9Frkty3saBn3nHo3D0oZJ/+rx3r8H8r8Jbpw==
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/query-string/-/query-string-8.2.0.tgz#f0b0ef6caa85f525dbdb745a67d3f8c08d71cc6b"
+  integrity sha512-tUZIw8J0CawM5wyGBiDOAp7ObdRQh4uBor/fUR9ZjmbZVvw95OD9If4w3MQxr99rg0DJZ/9CIORcpEqU5hQG7g==
   dependencies:
     decode-uri-component "^0.4.1"
     filter-obj "^5.1.0"

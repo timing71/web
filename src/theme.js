@@ -43,6 +43,7 @@ export const Theme = {
     'gte': '#FF4F00',
     'lmgteam': '#FF4F00',
     'lmgtepro': '#01FF01',
+    'lmgt3': '#FF4F00',
     'gt': '#FF4F00',
     'gtc': '#A0A0A0',
     'gtd': '#00dc67',

@@ -2,6 +2,7 @@ import { CarMessages } from './CarMessages';
 import { Classification } from './Classification';
 import { DriverStints } from './driverStints';
 import { DriveTime } from './driveTime';
+import { FastLapClassification } from './FastLapClassification';
 import { LapHistory } from './lapHistory';
 import { Messages } from './Messages';
 import { PitStops } from './pitStops';
@@ -15,14 +16,19 @@ export const routes = [
     component: SessionStats
   },
   {
+    path: '/strategy',
+    name: 'Strategy overview',
+    component: StrategyOverview
+  },
+  {
     path: '/classification',
     name: 'Classification',
     component: Classification
   },
   {
-    path: '/strategy',
-    name: 'Strategy overview',
-    component: StrategyOverview
+    path: '/fastest-lap-classification',
+    name: 'Fastest lap classification',
+    component: FastLapClassification
   },
   {
     path: '/messages',

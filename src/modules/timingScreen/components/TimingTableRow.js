@@ -13,11 +13,11 @@ const Position = styled.td`
 `;
 
 const TimingTableRowInner = styled.tr`
-  background: ${ props => props.theme.settings.backgrounds && props.carState && (props.theme.carStates[props.carState]?.rowBackground || ['black'])[0] };
+  background: ${ props => props.theme.settings?.backgrounds && props.carState && (props.theme.carStates[props.carState]?.rowBackground || ['black'])[0] };
   font-style: ${ props => props.carState && (props.theme.carStates[props.carState]?.rowStyle || 'normal')};
 
   &:nth-of-type(odd) {
-    background: ${ props => (props.theme.settings.backgrounds && props.carState && (props.theme.carStates[props.carState]?.rowBackground || [null, '#202020'])[1]) || '#202020' };
+    background: ${ props => (props.theme.settings?.backgrounds && props.carState && (props.theme.carStates[props.carState]?.rowBackground || [null, '#202020'])[1]) || '#202020' };
   }
 
   ${
@@ -28,7 +28,7 @@ const TimingTableRowInner = styled.tr`
   }
 
   ${
-    props => (props.theme.settings.backgrounds && props.llState && props.llState[1] === 'sb-new') && css`
+    props => (props.theme.settings?.backgrounds && props.llState && props.llState[1] === 'sb-new') && css`
       background-color: ${ props.theme.modifiers['sb-new'] } !important;
       & td {
         color: black;

@@ -8,11 +8,22 @@ global.TransformStream = TransformStream;
 const packageJson = fs.readFileSync('package.json');
 const manifest = JSON.parse(packageJson);
 
+const commonJson = fs.readFileSync('node_modules/@timing71/common/package.json');
+const commonManifest = JSON.parse(commonJson);
+
+const servicesJson = fs.readFileSync('node_modules/@timing71/services/package.json') || '{}';
+const servicesManifest = JSON.parse(servicesJson);
+
 const OUTPUT_FILE = process.env.OUTPUT_FILE || './build/pluginConfig.json';
 
 const pluginConfig = {
   supportedURLs: [],
-  version: manifest.version
+  version: manifest.version,
+  versions: {
+    common: commonManifest.version,
+    services: servicesManifest.version,
+    web: manifest.version
+  }
 };
 
 import('@timing71/services').finally(

@@ -107,6 +107,7 @@ const commonConfig = {
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         'ARCHIVE_API_ROOT': JSON.stringify(process.env.ARCHIVE_API_ROOT),
         'GA_TRACKING_ID': JSON.stringify(process.env.GA_TRACKING_ID),
+        'REACT_APP_SENTRY_DSN': JSON.stringify(process.env.REACT_APP_SENTRY_DSN)
       }
     }),
     new webpack.ProvidePlugin({

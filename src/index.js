@@ -10,7 +10,7 @@ if (process.env.REACT_APP_SENTRY_DSN) {
     dsn: process.env.REACT_APP_SENTRY_DSN,
     environment: process.env.NODE_ENV,
     integrations: [
-      new Sentry.browserTracingIntegration(),
+      Sentry.browserTracingIntegration(),
       Sentry.replayIntegration()
     ],
     release: process.env.REACT_APP_COMMIT_REF || 'dev',

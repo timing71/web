@@ -7,14 +7,29 @@ import { Archive, History, OndemandVideo, Podcasts, Quiz, StackedBarChart } from
 import { Button } from "./Button";
 import { useFileContext } from "./FileLoaderContext";
 import { URLBox } from "./URLBox";
+import { SessionsPanel } from './SessionsPanel';
 
 const MenuButton = styled(Button)`
 
   background-color: black;
-  flex-basis: 21%;
+  color: white;
 
-  margin-bottom: 1em;
+  display: flex;
+  align-items: center;
 
+  & > svg {
+    max-width: 64px;
+    margin-right: 1.5em;
+    color: ${props => props.theme.site.highlightColor};
+  }
+
+  &:hover > svg {
+    color: black;
+  }
+
+  &:not(:first-child) {
+    margin-top: 0.5em;
+  }
 `;
 
 const MenuContainer = styled.div`
@@ -25,8 +40,16 @@ const MenuContainer = styled.div`
   min-width: 600px;
 
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-gap: 3vw;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-gap: 1vw;
+
+  height: 70vh;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 `;
 
 export const MainMenu = () => {
@@ -55,43 +78,45 @@ export const MainMenu = () => {
   return (
     <MenuContainer>
       <URLBox />
-      <MenuButton
-        onClick={() => history.push('/hosted')}
-      >
-        <Podcasts />
-        Hosted events
-      </MenuButton>
-      <MenuButton
-        onClick={() => history.push('/services')}
-      >
-        <History />
-        Recent sessions
-      </MenuButton>
-      <MenuButton
-        onClick={() => history.push('/archive')}
-      >
-        <Archive />
-        Replay archive
-      </MenuButton>
-      <MenuButton
-        onClick={() => history.push('faq')}
-      >
-        <Quiz />
-        FAQ
-      </MenuButton>
-      <MenuButton
-        onClick={loadReplay}
-      >
-        <OndemandVideo />
-        Load replay file
-      </MenuButton>
-      <MenuButton
-        onClick={loadAnalysis}
-      >
-        <StackedBarChart />
-        Load analysis file
-      </MenuButton>
-
+      <SessionsPanel />
+      <ButtonContainer>
+        <MenuButton
+          onClick={() => history.push('/hosted')}
+        >
+          <Podcasts />
+          Hosted events
+        </MenuButton>
+        <MenuButton
+          onClick={() => history.push('/services')}
+        >
+          <History />
+          Recent sessions
+        </MenuButton>
+        <MenuButton
+          onClick={() => history.push('/archive')}
+        >
+          <Archive />
+          Replay archive
+        </MenuButton>
+        <MenuButton
+          onClick={() => history.push('faq')}
+        >
+          <Quiz />
+          FAQ
+        </MenuButton>
+        <MenuButton
+          onClick={loadReplay}
+        >
+          <OndemandVideo />
+          Load replay file
+        </MenuButton>
+        <MenuButton
+          onClick={loadAnalysis}
+        >
+          <StackedBarChart />
+          Load analysis file
+        </MenuButton>
+      </ButtonContainer>
     </MenuContainer>
   );
 };

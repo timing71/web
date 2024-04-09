@@ -10,7 +10,7 @@ import { Autocomplete } from "./Autocomplete";
 
 const Wrapper = styled.div`
 
-  grid-column: 1 / span 4;
+  grid-column: 1 / span 2;
 
   background-color: black;
 

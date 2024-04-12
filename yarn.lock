@@ -2444,9 +2444,9 @@
     "@sinonjs/commons" "^3.0.0"
 
 "@socket.io/component-emitter@~3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz#96116f2a912e0c02817345b3c10751069920d553"
-  integrity sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.1.tgz#621270c02c0a5d4f4669eb1caa9723c91cf201de"
+  integrity sha512-dzJtaDAAoXx4GCOJpbB2eG/Qj8VDpdwkLsWGzGm+0L7E8/434RyMbAHmk9ubXWVAb9nXmc44jUf8GKqVDiKezg==
 
 "@storybook/addon-actions@6.5.16", "@storybook/addon-actions@^6.4.22":
   version "6.5.16"
@@ -3965,9 +3965,9 @@
     mobx-state-tree "^5.1.7"
 
 "@timing71/services@^0.8.0":
-  version "0.8.7"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.8.7/5ed3dba742250c28662a30e6c8151bdaf1206d7b#5ed3dba742250c28662a30e6c8151bdaf1206d7b"
-  integrity sha512-EqaJyHBCZdbgFp5XOHRr9fil/g2+gGYWj1EQ7AICvSymDTi7sTias8hzdCo5syUwnQ9FnPXfZDokGKmJ/5FgeA==
+  version "0.8.8"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.8.8/7b9a74ad56e98e7f41166d5254de0a50b846b14f#7b9a74ad56e98e7f41166d5254de0a50b846b14f"
+  integrity sha512-IW7vixPOpslUyL2JSWH7jetEkdLw6Y6noMkEBZW4Xf8eY9w9d4sHEXnPCIoz5/XMLD5hIhJcgjsaGrRVO+g5sw==
   dependencies:
     "@microsoft/signalr" "^7.0.4"
     cookie "^0.5.0"
@@ -4970,9 +4970,9 @@
   integrity sha512-E1Q8X0D+5mgHE/bfThb9zCslhhKvMOIpBV1/8Yo1LTforZbNk3U4cVDOfRAU6h+hgo45MxyICpRvovAazsGFyQ==
 
 "@zip.js/zip.js@^2.4.26":
-  version "2.7.40"
-  resolved "https://registry.yarnpkg.com/@zip.js/zip.js/-/zip.js-2.7.40.tgz#e53626cfe051119df97bf1672188b9f36dfe75b8"
-  integrity sha512-kSYwO0Wth6G66QM4CejZqG0nRhBsVVTaR18M/Ta8EcqcvaV0dYrnDDyKAstfy0V5+ejK4b9w5xc1W0ECATJTvA==
+  version "2.7.41"
+  resolved "https://registry.yarnpkg.com/@zip.js/zip.js/-/zip.js-2.7.41.tgz#582668dabe997c353b37f27edb95162f688d387a"
+  integrity sha512-EMxPWXlEqqvsK9jxPmNvEShrIXP2LYTdQnEfsBH6OQCnlZRVo/dJIgtzbKvtK9A8PBTDQdxwxulj+QKplmW2Xg==
 
 abab@^2.0.6:
   version "2.0.6"

@@ -72,6 +72,22 @@ export const DataPanel = () => {
             values
           }
         </tbody>
+        <tbody>
+          {
+            Object.keys(state.meta?.parameters || {}).length > 0 &&
+            Object.entries(manifest.parameters || {}).map(
+              ([key, spec]) => (
+                <tr key={key}>
+                  <th>{spec.label}</th>
+                  <td>
+                    {(state.meta?.parameters || {})[key]}
+                    {spec.unit}
+                  </td>
+                </tr>
+              )
+            )
+          }
+        </tbody>
       </DataTable>
     </Inner>
   );

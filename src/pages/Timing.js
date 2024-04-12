@@ -3,7 +3,7 @@ import { StackedBarChart } from '@styled-icons/material';
 
 import withGracefulUnmount from "../components/withGracefulUnmount";
 import { useConnectionService } from "../ConnectionServiceProvider";
-import { TimingScreen } from "../modules/timingScreen";
+import { ServiceParameters, TimingScreen } from "../modules/timingScreen";
 import { ServiceManifestContext, ServiceStateContext } from "../components/ServiceContext";
 import { StateStorer } from "../components/StateStorer";
 import { Debouncer } from "../components/Debouncer";
@@ -42,6 +42,7 @@ const TimingInner = ({ match: { params } }) => {
   const [state, setState] = useState(null);
   const [initialAnalysisState, setInitialAnalysisState] = useState(null);
   const [transientState, setTransientState] = useState(null);
+  const [serviceParameters, setServiceParameters] = useState({});
 
   const cs = useConnectionService();
 
@@ -117,7 +118,7 @@ const TimingInner = ({ match: { params } }) => {
   if (service) {
 
     return (
-      <ServiceManifestContext.Provider value={{ manifest: state?.manifest, updateManifest: doNothing }}>
+      <ServiceManifestContext.Provider value={{ manifest: state?.manifest, updateManifest: doNothing, setServiceParameters }}>
         <ServiceStateContext.Provider value={{ state, updateState }}>
           <SystemMessagesProvider>
             <ServiceProvider
@@ -126,6 +127,7 @@ const TimingInner = ({ match: { params } }) => {
               onReady={setReady}
               onSessionChange={onSessionChange}
               service={service}
+              serviceParameters={serviceParameters}
               storeTransientState={storeTransientState}
               transientState={transientState}
             />
@@ -155,6 +157,11 @@ const TimingInner = ({ match: { params } }) => {
                         <DelayIndicator />
                         {
                           process.env.NODE_ENV === 'development' && <span>[DEV]</span>
+                        }
+                        {
+                          state?.manifest?.parameters && (
+                            <ServiceParameters />
+                          )
                         }
                         <Menu>
                           <DelaySetting />

@@ -6,7 +6,16 @@ import { useServiceManifest, useServiceState } from "../../components/ServiceCon
 import { useConnectionService } from "../../ConnectionServiceProvider";
 import { useSystemMessagesContext } from '../systemMessages';
 
-export const ServiceProvider = ({ initialState, onAnalysisState, onReady, onSessionChange, storeTransientState, service, transientState }) => {
+export const ServiceProvider = ({
+  initialState,
+  onAnalysisState,
+  onReady,
+  onSessionChange,
+  storeTransientState,
+  service,
+  serviceParameters,
+  transientState
+}) => {
   const cs = useConnectionService();
 
   const { updateManifest } = useServiceManifest();
@@ -16,6 +25,8 @@ export const ServiceProvider = ({ initialState, onAnalysisState, onReady, onSess
   const [hasService, setHasService] = useState(false);
 
   const serviceInstance = useRef();
+
+  const hasSetParameters = Object.keys(serviceParameters).length > 0;
 
   useEffect(
     () => {
@@ -53,6 +64,16 @@ export const ServiceProvider = ({ initialState, onAnalysisState, onReady, onSess
           serviceInstance.current.restoreTransientState(transientState);
         }
 
+        if (serviceInstance.current?.parameters) {
+          addMessage({
+            severity: Severity.INFO,
+            title: 'Additional configuration',
+            message: 'This service supports additional configuration parameters. Click the button below to see and set these.',
+            timeout: 15000,
+            uuid: `${service.uuid}-params`
+          });
+        }
+
         serviceInstance.current.start(cs);
         setHasService(true);
         onReady();
@@ -62,6 +83,16 @@ export const ServiceProvider = ({ initialState, onAnalysisState, onReady, onSess
       }
     },
     [addMessage, cs, initialState, onAnalysisState, onSessionChange, onReady, removeMessage, service, transientState, updateManifest, updateState]
+  );
+
+  useEffect(
+    () => {
+      if (serviceInstance.current && hasSetParameters) {
+        serviceInstance.current.parameters = { ...serviceParameters };
+        removeMessage(`${service.uuid}-params`);
+      }
+    },
+    [hasSetParameters, removeMessage, service.uuid, serviceParameters]
   );
 
   useEffect(

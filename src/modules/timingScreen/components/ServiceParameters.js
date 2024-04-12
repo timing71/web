@@ -1,7 +1,7 @@
 import { Fragment, useCallback, useState } from "react";
 import { useDialogState } from "reakit";
 import styled from "styled-components";
-import { SettingsInputComponent } from "styled-icons/material";
+import { ListAlt } from "styled-icons/material";
 
 import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
 import { useFullscreenContext } from "../../../components/FullscreenContext";
@@ -17,7 +17,7 @@ const ParamLabel = styled.th`
 const HelpText = styled.td`
   display: block;
   font-weight: normal;
-  font-size: small;
+  font-size: large;
   color: white;
 
   && {
@@ -31,6 +31,7 @@ const ValueInputTd = styled.td.attrs({ rowSpan: 2 })`
 
 const TableWrapper = styled.div`
   flex-grow: 1;
+  font-size: x-large;
 `;
 
 const ParamsDialog = ({ dialog }) => {
@@ -102,7 +103,7 @@ const ParamsDialog = ({ dialog }) => {
 
 };
 
-const SettingsIcon = styled(SettingsInputComponent)`
+const SettingsIcon = styled(ListAlt)`
   fill: ${ props => props.theme.site.highlightColor };
 
   width: 32px;

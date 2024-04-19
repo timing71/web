@@ -3,7 +3,7 @@ import { EventEmitter } from '../../eventEmitter';
 
 export class WrappedWebsocket extends EventEmitter {
 
-  constructor(url, port, tag=uuid(), autoReconnect=true) {
+  constructor(url, port, tag=uuid(), autoReconnect=true, protocols=[]) {
     super();
     this.tag = tag;
     this._port = port;
@@ -35,7 +35,8 @@ export class WrappedWebsocket extends EventEmitter {
       tag: this.tag,
       type: 'OPEN_WEBSOCKET',
       url,
-      autoReconnect
+      autoReconnect,
+      protocols
     });
   }
 

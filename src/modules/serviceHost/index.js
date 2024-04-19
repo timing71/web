@@ -64,7 +64,7 @@ export const ServiceProvider = ({
           serviceInstance.current.restoreTransientState(transientState);
         }
 
-        if (serviceInstance.current?.parameters) {
+        if (Object.entries(serviceInstance.current?.parameters).length > 0) {
           addMessage({
             severity: Severity.INFO,
             title: 'Additional configuration',

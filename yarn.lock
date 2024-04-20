@@ -3971,14 +3971,16 @@
     mobx "^6.7.0"
     mobx-state-tree "^5.1.7"
 
-"@timing71/services@^0.8.0":
-  version "0.8.8"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.8.8/7b9a74ad56e98e7f41166d5254de0a50b846b14f#7b9a74ad56e98e7f41166d5254de0a50b846b14f"
-  integrity sha512-IW7vixPOpslUyL2JSWH7jetEkdLw6Y6noMkEBZW4Xf8eY9w9d4sHEXnPCIoz5/XMLD5hIhJcgjsaGrRVO+g5sw==
+"@timing71/services@^0.9.0":
+  version "0.9.1"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.9.1/b7e47de1665cd329d7ebccb60b8e56ec944a0a4e#b7e47de1665cd329d7ebccb60b8e56ec944a0a4e"
+  integrity sha512-2vdpfcPl3TASnEG2+u2BPHNqgmCHdXQUbnK7L0biQ9eXJLJJ78Itjl0m4GVqCvPUd8Qh+Pi2pONP0udM7JaDQg==
   dependencies:
     "@microsoft/signalr" "^7.0.4"
     cookie "^0.5.0"
     ejson "^2.2.3"
+    graphql "^16.8.1"
+    graphql-ws "^5.16.0"
     lodash.throttle "^4.1.1"
     lz-string "^1.4.4"
     mobx "^6.7.0"
@@ -9421,6 +9423,16 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.11.tgz#4183e4e8bf08bb6e05bbb2f7d2e0c8f712ca40e3"
   integrity sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==
 
+graphql-ws@^5.16.0:
+  version "5.16.0"
+  resolved "https://registry.yarnpkg.com/graphql-ws/-/graphql-ws-5.16.0.tgz#849efe02f384b4332109329be01d74c345842729"
+  integrity sha512-Ju2RCU2dQMgSKtArPbEtsK5gNLnsQyTNIo/T7cZNp96niC1x0KdJNZV0TIoilceBPQwfb5itrGl8pkFeOUMl4A==
+
+graphql@^16.8.1:
+  version "16.8.1"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.8.1.tgz#1930a965bef1170603702acdb68aedd3f3cf6f07"
+  integrity sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==
+
 gzip-size@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/gzip-size/-/gzip-size-6.0.0.tgz#065367fd50c239c0671cbcbad5be3e2eeb10e462"
@@ -11876,10 +11888,15 @@ mobx-react-lite@^3.2.2:
   resolved "https://registry.yarnpkg.com/mobx-react-lite/-/mobx-react-lite-3.4.3.tgz#3a4c22c30bfaa8b1b2aa48d12b2ba811c0947ab7"
   integrity sha512-NkJREyFTSUXR772Qaai51BnE1voWx56LOL80xG7qkZr6vo8vEaLF3sz1JNUVh+rxmUzxYaqOhfuxTfqUh0FXUg==
 
-mobx-state-tree@^5.0.5, mobx-state-tree@^5.1.6, mobx-state-tree@^5.1.7:
+mobx-state-tree@^5.0.5, mobx-state-tree@^5.1.7:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/mobx-state-tree/-/mobx-state-tree-5.4.1.tgz#97182a1e2587db5ff7a2b5f11ac6971e50498aed"
   integrity sha512-eEBmfeYzbNSbNsdM+T1pchuOykZXT50B7eCXgf0E0O/jad/cigu4heBB9RwxzzyD/QGrXBPVctKYLypVXNHt3Q==
+
+mobx-state-tree@^5.1.6:
+  version "5.4.2"
+  resolved "https://registry.yarnpkg.com/mobx-state-tree/-/mobx-state-tree-5.4.2.tgz#351bb49c9d08d2482688357cccc59ce51d773615"
+  integrity sha512-SGXAh2KCBQbWVcxeQbZEr5pchTgcfNZmGVRL2a2Me+pSMH98bZWXD6EOuuijbTGbc0hOoOsbab3JdwJyr+fW7Q==
 
 mobx@^6.3.7, mobx@^6.7.0:
   version "6.12.3"

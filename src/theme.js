@@ -222,7 +222,7 @@ export const Theme = {
       animation: flashyAnim
     },
     [FlagState.SLOW_ZONE]: {
-      background: 'linear-gradient(0deg, black, #DDDD00, black) top/400% 400%',
+      background: 'linear-gradient(135deg, rgba(0,153,0,1) 0%, rgba(0,153,0,1) 50%, rgba(221,221,0,1) 60%, rgba(221,221,0,1) 100%)',
       color: 'white',
       fill: 'url(#slow_zone)'
     },
@@ -247,7 +247,7 @@ export const Theme = {
       animation: flashyAnim
     },
     [FlagState.CODE_60_ZONE]: {
-      background: 'linear-gradient(0deg, black, #ff53e3, black) top/400% 400%',
+      background: 'linear-gradient(135deg, rgba(0,153,0,1) 0%, rgba(0,153,0,1) 50%, rgba(255,83,227,1) 60%, rgba(255,83,227,1) 100%)',
       color: 'white',
       fill: 'url(#code_60_zone)'
     },

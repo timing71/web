@@ -37,7 +37,7 @@ const TruncatingCell = styled(CellInner)`
 `;
 
 const CarClassCell = styled(CentredCell)`
-  color: ${ props => (props.value && props.theme.classColours[props.value.toLowerCase().replace(/[-/ ]/, '')]) || 'white' };
+  color: ${ props => (props.value && props.theme.classColours[String(props.value).toLowerCase().replace(/[-/ ]/, '')]) || 'white' };
 `;
 
 const CellTypes = {

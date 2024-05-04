@@ -91,7 +91,7 @@ export const Analysis = ({ analysisState, live=false, serviceUUID, sessionIndex 
 
   useEffect(
     () => {
-      if (analyser.current && analysisState.version === CURRENT_VERSION) {
+      if (analyser.current && analysisState?.version === CURRENT_VERSION) {
         applySnapshot(analyser.current, analysisState);
       }
     },

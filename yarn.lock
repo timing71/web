@@ -2453,9 +2453,9 @@
     "@sinonjs/commons" "^3.0.0"
 
 "@socket.io/component-emitter@~3.1.0":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.1.tgz#621270c02c0a5d4f4669eb1caa9723c91cf201de"
-  integrity sha512-dzJtaDAAoXx4GCOJpbB2eG/Qj8VDpdwkLsWGzGm+0L7E8/434RyMbAHmk9ubXWVAb9nXmc44jUf8GKqVDiKezg==
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.2.tgz#821f8442f4175d8f0467b9daf26e3a18e2d02af2"
+  integrity sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==
 
 "@storybook/addon-actions@6.5.16", "@storybook/addon-actions@^6.4.22":
   version "6.5.16"
@@ -3972,9 +3972,9 @@
     mobx-state-tree "^5.1.7"
 
 "@timing71/services@^0.9.0":
-  version "0.9.3"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.9.3/63b871d014e3e80a0e3ad88e5bad90394e640fd1#63b871d014e3e80a0e3ad88e5bad90394e640fd1"
-  integrity sha512-wYFqCoRiWNpwq45VHWi/7hRgpgbD8dK/fAbWhtmi4kTyBTM7Xy4KfRrXA0pAJMrpFwt3RL2ecqtUfZeIkBdC8A==
+  version "0.9.4"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.9.4/aae59518b804f8b441f5487bdc8211da35df0547#aae59518b804f8b441f5487bdc8211da35df0547"
+  integrity sha512-FcWvP2bZ8P1V0NOoN+HNoaBIMnzhLjXObBwa3GYMclrbVcWpDTaio5f0i2K14leN/eEoRCt1Ox311/ypA3HKVQ==
   dependencies:
     "@microsoft/signalr" "^7.0.4"
     cookie "^0.5.0"
@@ -15423,7 +15423,17 @@ totalist@^3.0.0:
   resolved "https://registry.yarnpkg.com/totalist/-/totalist-3.0.1.tgz#ba3a3d600c915b1a97872348f79c127475f6acf8"
   integrity sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==
 
-tough-cookie@^4.0.0, tough-cookie@^4.1.2:
+tough-cookie@^4.0.0:
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-4.1.4.tgz#945f1461b45b5a8c76821c33ea49c3ac192c1b36"
+  integrity sha512-Loo5UUvLD9ScZ6jh8beX1T6sO1w2/MpCRpEP7V280GKMVUQ0Jzar2U3UJPsrdbziLEMMhu3Ujnq//rhiFuIeag==
+  dependencies:
+    psl "^1.1.33"
+    punycode "^2.1.1"
+    universalify "^0.2.0"
+    url-parse "^1.5.3"
+
+tough-cookie@^4.1.2:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-4.1.3.tgz#97b9adb0728b42280aa3d814b6b999b2ff0318bf"
   integrity sha512-aX/y5pVRkfRnfmuX+OdbSdXvPe6ieKX/G2s7e98f4poJHnqH3281gDPm/metm6E/WRamfx7WC4HUqkWHfQHprw==

@@ -48,7 +48,6 @@ const commonConfig = {
       {
         test: /\.(js|jsx)$/,
         use: 'babel-loader',
-        exclude: /node_modules/,
         resolve: {
           fullySpecified: false
         }

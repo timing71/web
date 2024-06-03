@@ -1,5 +1,6 @@
 export { DelayIndicator } from './components/DelayIndicator';
 export { DelaySetting } from './components/DelaySetting';
+export { DonateLink } from './components/DonateLink';
 export { DownloadReplay } from './components/DownloadReplay';
 export { Menu } from './components/Menu';
 export { MenuBar } from './components/MenuBar';

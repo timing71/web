@@ -16,6 +16,7 @@ import { SystemMessagesProvider } from "../modules/systemMessages";
 import {
   DelayIndicator,
   DelaySetting,
+  DonateLink,
   DownloadReplay,
   Menu,
   MenuBar,
@@ -175,6 +176,7 @@ const TimingInner = ({ match: { params } }) => {
                           <MenuSeparator />
                           <ViewSettings />
                           <MenuSeparator />
+                          <DonateLink />
                           <DownloadReplay />
                         </Menu>
                       </MenuBar>

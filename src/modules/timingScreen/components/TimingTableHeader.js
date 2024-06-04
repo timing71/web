@@ -1,8 +1,7 @@
 import { Stat } from '@timing71/common';
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useSetting } from "../../settings";
 import { Popover, PopoverDisclosure, Tooltip, TooltipReference, usePopoverState, useTooltipState } from 'reakit';
-import { QuestionCircle } from 'styled-icons/fa-regular';
 import { useCallback } from 'react';
 import { Search } from 'styled-icons/material';
 import { Input } from '../../../components/Forms';
@@ -32,6 +31,13 @@ const HeaderInner = styled.th`
   &:focus-visible {
     outline: none;
   }
+
+  ${
+    props => props.$withTooltip && css`
+      text-decoration: underline dotted;
+      text-underline-offset: 4px;
+    `
+  }
 `;
 
 const Tip = styled.div`
@@ -43,6 +49,7 @@ const Tip = styled.div`
   padding: 0.5em;
 
   text-transform: none;
+  font-size: small;
 
   transition: opacity 250ms ease-in-out;
   opacity: 0;
@@ -53,12 +60,6 @@ const Tip = styled.div`
   & input {
     margin-left: 0.5em;
   }
-`;
-
-const Q = styled(QuestionCircle)`
-  padding-left: 0.25em;
-  margin-top: -0.25em;
-  display: inline;
 `;
 
 const Header = ({ stat, ...props }) => {
@@ -77,15 +78,15 @@ const Header = ({ stat, ...props }) => {
 const HeaderWithPopover = ({ stat }) => {
   const tooltip = useTooltipState({
     animated: 250,
-    gutter: -6
+    gutter: -1
   });
   return (
     <TooltipReference
+      $withTooltip
       as={HeaderInner}
       {...tooltip}
     >
       {stat[0]}
-      <Q size={14} />
       <Tooltip {...tooltip}>
         <Tip>
           {stat[2]}

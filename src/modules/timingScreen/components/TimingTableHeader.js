@@ -121,6 +121,9 @@ const CarNumberHeader = ({ setFocusedCarNum }) => {
         popover.hide();
         evt.target.value = '';
       }
+      else {
+        setFocusedCarNum(null);
+      }
     }
   };
 

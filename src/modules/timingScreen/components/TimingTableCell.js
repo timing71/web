@@ -17,12 +17,12 @@ const formatValue = (value, formatKey, manifest) => {
 };
 
 const CellInner = styled.td`
-  color: ${ props => (props.value && props.theme.modifiers[props.value]) || 'white' };
+  color: ${ props => (props.$value && props.theme.modifiers[props.$value]) || 'white' };
 `;
 
 const CarStateCell = styled.td`
-  color: ${ props => (props.value && props.theme.carStates[props.value]?.color) || 'white' };
-  background: ${ props => (props.value && props.theme.carStates[props.value]?.background) || 'transparent' };
+  color: ${ props => (props.$value && props.theme.carStates[props.$value]?.color) || 'white' };
+  background: ${ props => (props.$value && props.theme.carStates[props.$value]?.background) || 'transparent' };
 `;
 
 const CentredCell = styled(CellInner)`
@@ -37,7 +37,7 @@ const TruncatingCell = styled(CellInner)`
 `;
 
 const CarClassCell = styled(CentredCell)`
-  color: ${ props => (props.value && props.theme.classColours[String(props.value).toLowerCase().replace(/[-/ ]/, '')]) || 'white' };
+  color: ${ props => (props.$value && props.theme.classColours[String(props.$value).toLowerCase().replace(/[-/ ]/, '')]) || 'white' };
 `;
 
 const CellTypes = {
@@ -58,14 +58,14 @@ export const TimingTableCell = ({ manifest, stat, value }) => {
 
   if (Array.isArray(value)) {
     return (
-      <Cell value={value[1]}>
+      <Cell $value={value[1]}>
         {formatValue(value[0], stat[1], manifest)}
       </Cell>
     );
   }
 
   return (
-    <Cell value={value}>
+    <Cell $value={value}>
       {formatValue(value, stat[1], manifest)}
     </Cell>
   );

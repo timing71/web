@@ -134,7 +134,7 @@ const CarNumberHeader = ({ setFocusedCarNum }) => {
         as={HeaderInner}
         {...popover}
       >
-        Nom <Search size={14} />
+        Num <Search size={14} />
         <Popover
           aria-label="Jump to car"
           hideOnClickOutside

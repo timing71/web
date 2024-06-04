@@ -10,6 +10,7 @@ const blink = keyframes`
 const Position = styled.td`
   color: ${ props => props.theme.site.highlightColor };
   text-align: right;
+  user-select: none;
 `;
 
 const TimingTableRowInner = styled.tr`
@@ -42,18 +43,35 @@ const TimingTableRowInner = styled.tr`
 
   ${
     props => props.highlight && css`
-      animation: ${blink} 0.5s alternate 2;
+      animation: ${blink} 0.5s alternate ease-in-out 2;
     `
   }
+
+  ${
+    props => props.$focused && css`
+      animation: ${blink} 0.25s alternate ease-in-out 4;
+
+      & > td:first-child {
+        background-color: ${props => props.theme.site.highlightColor};
+        color: black;
+        cursor: pointer;
+      }
+    `
+  }
+
 `;
 
-export const TimingTableRow = ({ car, hiddenCols, highlight, manifest, position, statExtractor }) => (
+export const TimingTableRow = ({ car, focused, hiddenCols, highlight, manifest, position, setFocusedCarNum, statExtractor }) => (
   <TimingTableRowInner
+    $focused={focused}
     carState={statExtractor.get(car, Stat.STATE)}
+    data-car-number={statExtractor.get(car, Stat.NUM)}
     highlight={highlight}
     llState={statExtractor.get(car, Stat.LAST_LAP)}
   >
-    <Position>{position}</Position>
+    <Position onClick={() => setFocusedCarNum(null)}>
+      {position}
+    </Position>
     {
       manifest.colSpec && manifest.colSpec.filter(
         stat => !hiddenCols.includes(stat[0])

@@ -1,7 +1,11 @@
+import { Stat } from '@timing71/common';
 import styled from "styled-components";
 import { useSetting } from "../../settings";
-import { Tooltip, TooltipReference, useTooltipState } from 'reakit';
+import { Popover, PopoverDisclosure, Tooltip, TooltipReference, usePopoverState, useTooltipState } from 'reakit';
 import { QuestionCircle } from 'styled-icons/fa-regular';
+import { useCallback } from 'react';
+import { Search } from 'styled-icons/material';
+import { Input } from '../../../components/Forms';
 
 const HeaderRow = styled.tr`
   background-color: black;
@@ -13,12 +17,21 @@ const HeaderInner = styled.th`
   font-family: Play, sans-serif;
   text-transform: uppercase;
   text-align: left;
-  color: #54FFFF;
+  color: ${ props => props.theme.site.highlightColor };
   font-weight: normal;
 
-  border-bottom: 2px solid #54FFFF;
+  border-bottom: 2px solid ${ props => props.theme.site.highlightColor };
 
   user-select: none;
+  cursor: pointer;
+
+  &:hover {
+    color: white;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
 `;
 
 const Tip = styled.div`
@@ -29,10 +42,16 @@ const Tip = styled.div`
 
   padding: 0.5em;
 
+  text-transform: none;
+
   transition: opacity 250ms ease-in-out;
   opacity: 0;
   [data-enter] & {
     opacity: 1;
+  }
+
+  & input {
+    margin-left: 0.5em;
   }
 `;
 
@@ -76,7 +95,63 @@ const HeaderWithPopover = ({ stat }) => {
   );
 };
 
-export const TimingTableHeader = ({ manifest }) => {
+const CarNumberHeader = ({ setFocusedCarNum }) => {
+
+  const popover = usePopoverState({
+    animated: 250,
+    gutter: -6
+  });
+
+  const goToCar = useCallback(
+    (carNum) => {
+      const rowElem = document.querySelector(`tr[data-car-number="${carNum}"]`);
+      if (rowElem) {
+        rowElem.scrollIntoView({ block: 'center' });
+        setFocusedCarNum(`${carNum}`);
+        return true;
+      }
+      return false;
+    },
+    [setFocusedCarNum]
+  );
+
+  const handleKeyUp = (evt) => {
+    if (evt.key === 'Enter') {
+      if (goToCar(evt.target.value)) {
+        popover.hide();
+        evt.target.value = '';
+      }
+    }
+  };
+
+  return (
+    <>
+      <PopoverDisclosure
+        as={HeaderInner}
+        {...popover}
+      >
+        Nom <Search size={14} />
+        <Popover
+          aria-label="Jump to car"
+          hideOnClickOutside
+          {...popover }
+        >
+          <Tip>
+            Jump to:
+            <Input
+              defaultValue=''
+              onKeyUp={handleKeyUp}
+              size={5}
+              type="text"
+            />
+          </Tip>
+        </Popover>
+      </PopoverDisclosure>
+    </>
+  );
+};
+
+export const TimingTableHeader = ({ manifest, setFocusedCarNum }) => {
   const [hiddenCols] = useSetting('columns.hidden', []);
   return (
     <thead>
@@ -86,12 +161,22 @@ export const TimingTableHeader = ({ manifest }) => {
           manifest.colSpec && manifest.colSpec.filter(
             stat => !hiddenCols.includes(stat[0])
           ).map(
-            (stat, idx) => (
-              <Header
-                key={idx}
-                stat={stat}
-              />
-            )
+            (stat, idx) => {
+              if (stat[0] === Stat.NUM[0] && stat[1] === Stat.NUM[1] && stat[2] === Stat.NUM[2]) {
+                return (
+                  <CarNumberHeader
+                    key={idx}
+                    setFocusedCarNum={setFocusedCarNum}
+                  />
+                );
+              }
+              return (
+                <Header
+                  key={idx}
+                  stat={stat}
+                />
+              );
+            }
           )
         }
       </HeaderRow>

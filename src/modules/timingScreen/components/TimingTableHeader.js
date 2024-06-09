@@ -22,11 +22,6 @@ const HeaderInner = styled.th`
   border-bottom: 2px solid ${ props => props.theme.site.highlightColor };
 
   user-select: none;
-  cursor: pointer;
-
-  &:hover {
-    color: white;
-  }
 
   &:focus-visible {
     outline: none;
@@ -36,6 +31,11 @@ const HeaderInner = styled.th`
     props => props.$withTooltip && css`
       text-decoration: underline dotted;
       text-underline-offset: 4px;
+      cursor: pointer;
+
+      &:hover {
+        color: white;
+      }
     `
   }
 `;

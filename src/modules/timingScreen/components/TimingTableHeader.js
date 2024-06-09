@@ -78,7 +78,8 @@ const Header = ({ stat, ...props }) => {
 const HeaderWithPopover = ({ stat }) => {
   const tooltip = useTooltipState({
     animated: 250,
-    gutter: -1
+    gutter: -1,
+    portal: false
   });
   return (
     <TooltipReference

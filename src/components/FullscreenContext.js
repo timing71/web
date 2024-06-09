@@ -1,39 +1,38 @@
 import { createContext, useCallback, useContext } from "react";
 
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
+import fscreen from 'fscreen';
 import { useWakeLock } from 'react-screen-wake-lock';
 
 const FSContext = createContext();
 
 export const FullscreenContext = ({ children }) => {
 
-  const fsHandle = useFullScreenHandle();
   const wakeLock = useWakeLock();
 
   const toggle = useCallback(
     () => {
-      if (fsHandle.active) {
-        fsHandle.exit();
-        wakeLock.release();
-      }
-      else {
-        fsHandle.enter();
-        wakeLock.request();
+      if (fscreen.fullscreenEnabled) {
+        if (fscreen.fullscreenElement !== null) {
+          fscreen.exitFullscreen();
+          wakeLock.release();
+        }
+        else {
+          fscreen.requestFullscreen(document.body);
+          wakeLock.request();
+        }
       }
     },
-    [fsHandle, wakeLock]
+    [wakeLock]
   );
 
   return (
     <FSContext.Provider
       value={{
-        ...fsHandle,
+        active: fscreen.fullscreenElement !== null,
         toggle
       }}
     >
-      <FullScreen handle={fsHandle}>
-        { children }
-      </FullScreen>
+      { children }
     </FSContext.Provider>
   );
 

@@ -28,14 +28,19 @@ const HeaderInner = styled.th`
   }
 
   ${
-    props => props.$withTooltip && css`
-      text-decoration: underline dotted;
-      text-underline-offset: 4px;
+    props => props.$withAction && css`
       cursor: pointer;
 
       &:hover {
         color: white;
       }
+    `
+  }
+
+  ${
+    props => props.$withTooltip && css`
+      text-decoration: underline dotted;
+      text-underline-offset: 4px;
     `
   }
 `;
@@ -83,6 +88,7 @@ const HeaderWithPopover = ({ stat }) => {
   });
   return (
     <TooltipReference
+      $withAction
       $withTooltip
       as={HeaderInner}
       {...tooltip}
@@ -132,6 +138,7 @@ const CarNumberHeader = ({ setFocusedCarNum }) => {
   return (
     <>
       <PopoverDisclosure
+        $withAction
         as={HeaderInner}
         {...popover}
       >

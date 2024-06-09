@@ -1,5 +1,5 @@
 import { Stat, timeInSeconds } from '@timing71/common';
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const formatValue = (value, formatKey, manifest) => {
 
@@ -40,12 +40,26 @@ const CarClassCell = styled(CentredCell)`
   color: ${ props => (props.$value && props.theme.classColours[String(props.$value).toLowerCase().replace(/[-/ ]/, '')]) || 'white' };
 `;
 
+const DriverNameCell = styled(TruncatingCell)`
+  ${
+    props => props.theme.driverRanks[props.$value?.replace('driver-', '')] && css`
+      &::before {
+        color: ${props.theme.driverRanks[props.$value?.replace('driver-', '')]};
+        content: '●';
+        margin-right: 4px;
+        font-style: normal;
+        vertical-align: text-top;
+      }
+    `
+  }
+`;
+
 const CellTypes = {
   [Stat.CLASS]: CarClassCell,
   [Stat.NUM]: CentredCell,
   [Stat.POS_IN_CLASS]: CentredCell,
   [Stat.STATE]: CarStateCell,
-  [Stat.DRIVER]: TruncatingCell,
+  [Stat.DRIVER]: DriverNameCell,
   [Stat.CAR]: TruncatingCell,
   [Stat.TEAM]: TruncatingCell,
   [Stat.LAPS]: CentredCell,

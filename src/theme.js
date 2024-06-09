@@ -154,6 +154,12 @@ export const Theme = {
       rowBackground: ['#000000', '#202020'],
     }
   },
+  driverRanks: {
+    bronze: '#905921',
+    silver: '#777777',
+    gold: '#dbb700',
+    platinum: '#CCCCCC'
+  },
   messages: {
     'pit': {
       rowBackground: ['#550000', '#5C0000'],

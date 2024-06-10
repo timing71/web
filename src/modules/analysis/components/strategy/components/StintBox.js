@@ -4,6 +4,7 @@ import { darken } from 'polished';
 import styled from 'styled-components';
 
 import { StintSparklines } from './StintSparklines';
+import { DriverName } from '../../../../../components/DriverName';
 
 const Container = styled.div.attrs(
   props => ({
@@ -94,7 +95,12 @@ export const StintBox = animated(
           width={width}
         />
         <Line>
-          <Text bold>{stint.driver?.name || 'Unknown driver'}</Text>
+          <Text bold>
+            <DriverName
+              name={stint.driver?.name || 'Unknown driver'}
+              rank={stint.driver.ranking}
+            />
+          </Text>
           <Text
             bold
             right

@@ -4,10 +4,16 @@ import styled from "styled-components";
 
 import { useAnalysis } from "../context";
 import { Table, Row, Heading, Cell } from '../Table';
+import { DriverName } from '../../../../components/DriverName';
 
 const StintRow = ({ stint, timestamp }) => (
   <Row inProgress={stint.inProgress}>
-    <Cell>{stint.driver.name}</Cell>
+    <Cell>
+      <DriverName
+        name={stint.driver.name}
+        rank={stint.driver.ranking}
+      />
+    </Cell>
     <Cell right>{stint.startLap}</Cell>
     <Cell right>{dayjs(stint.startTime).format('HH:mm:ss')}</Cell>
     <Cell right>{stint.endLap || '-'}</Cell>

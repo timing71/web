@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Stat, StatExtractor } from '@timing71/common';
 import { useAnalysis } from '../context';
 import { Cell, Heading, Table } from '../Table';
+import { DriverName } from '../../../../components/DriverName';
 
 const CarClassCell = styled(Cell).attrs(
   props => ({
@@ -50,15 +51,23 @@ export const ClassLeaders = observer(
         <tbody>
           {
             Object.values(leaders).sort((a, b) => a[0] - b[0]).map(
-              ([position, car]) => (
-                <tr key={position}>
-                  <Position>{position}</Position>
-                  <CarClassCell value={se.get(car, Stat.CLASS)} />
-                  <Cell right>{se.get(car, Stat.NUM)}</Cell>
-                  <Cell>{se.get(car, Stat.TEAM)}</Cell>
-                  <Cell>{se.get(car, Stat.DRIVER)}</Cell>
-                </tr>
-              )
+              ([position, car]) => {
+                const driverName = se.get(car, Stat.DRIVER);
+                return (
+                  <tr key={position}>
+                    <Position>{position}</Position>
+                    <CarClassCell value={se.get(car, Stat.CLASS)} />
+                    <Cell right>{se.get(car, Stat.NUM)}</Cell>
+                    <Cell>{se.get(car, Stat.TEAM)}</Cell>
+                    <Cell>
+                      <DriverName
+                        name={Array.isArray(driverName) ? driverName[0] : driverName}
+                        rank={Array.isArray(driverName) ? driverName[1] : undefined}
+                      />
+                    </Cell>
+                  </tr>
+                );
+              }
             )
           }
         </tbody>

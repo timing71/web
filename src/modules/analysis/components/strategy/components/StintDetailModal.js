@@ -4,6 +4,7 @@ import { useTransition, animated } from '@react-spring/web';
 import { StintDetailTable } from './StintDetailTable';
 import { StintLapChart } from './StintLapChart';
 import { Button } from '../../../../../components/Button';
+import { DriverName } from '../../../../../components/DriverName';
 
 const ModalBackdrop = styled(animated.div)`
 
@@ -79,7 +80,11 @@ const ModalContents = ({ close, stint }) => {
   return (
     <Container>
       <Heading>
-        Car {stint.car?.raceNum} - { stint.driver?.name || 'Unknown driver' }
+        Car {stint.car?.raceNum} - { ' ' }
+        <DriverName
+          name={stint.driver?.name || 'Unknown driver'}
+          rank={stint.driver.ranking}
+        />
       </Heading>
       <StintDetailTable stint={stint} />
       <Controls>

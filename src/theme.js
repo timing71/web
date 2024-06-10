@@ -15,7 +15,7 @@ const blinkingAnim = keyframes`
   100% { background-color: #990000 }
 `;
 
-const flashyAnim = css`${flashyKeyframes} 0.5s alternate ease-in-out infinite`;
+export const flashyAnim = css`${flashyKeyframes} 0.5s alternate ease-in-out infinite`;
 
 export const Theme = {
   classColours: {

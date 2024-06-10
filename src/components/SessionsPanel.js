@@ -95,9 +95,9 @@ const Session = ({ session: { description, source, start, started } }) => {
   return (
     <SessionInner
       $live={started}
-      href={source}
+      href={started ? `/start?source=${encodeURIComponent(source)}` : source}
       rel="noreferrer"
-      target="_blank"
+      target={started ? null : "_blank"}
     >
       <h4 className="title">
         {description}

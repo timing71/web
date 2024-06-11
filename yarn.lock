@@ -4275,9 +4275,9 @@
     "@babel/runtime" "^7.12.5"
 
 "@timing71/common@^0.5.0":
-  version "0.5.0"
-  resolved "https://npm.pkg.github.com/download/@timing71/common/0.5.0/00cff7579450c67db850b70d5d3e3ea610ce90a4#00cff7579450c67db850b70d5d3e3ea610ce90a4"
-  integrity sha512-at7aU+QqlCJv2wEQz/JGo3rg2R4fDDN05kfTeBOnXnNiEQUsaZp1P/7348Ik47Euo84+CJuTQC1G5U+zn1kOwg==
+  version "0.5.1"
+  resolved "https://npm.pkg.github.com/download/@timing71/common/0.5.1/a29ae84f6cd03a1eed2458a2e284cb331b41faef#a29ae84f6cd03a1eed2458a2e284cb331b41faef"
+  integrity sha512-FOOn7Sbj1MKgOCfOqr7yyNFFoZb98TJh2+W/264Zn50bpXSwCOUNlITGYJcN75bZFmdEOJ/ZcCLpS5Kd4wHuqA==
   dependencies:
     "@zip.js/zip.js" "^2.4.26"
     dayjs "^1.11.6"
@@ -4286,9 +4286,9 @@
     mobx-state-tree "^5.1.7"
 
 "@timing71/services@^0.10.0":
-  version "0.10.0"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.10.0/52795c6e5417d5aa7c95040b0eee97af659f8eac#52795c6e5417d5aa7c95040b0eee97af659f8eac"
-  integrity sha512-Z1o1stwgCD0AasAMU0oDzT+pK06M8AqNJ8lUVmY/GJ6jBRh/eE7gB4QYWllzZp2+zwF/k/QjrHGKZDOJmtrHjQ==
+  version "0.10.1"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.10.1/5a06b65fc8e8e58f6cd34d801c1903c160c6727d#5a06b65fc8e8e58f6cd34d801c1903c160c6727d"
+  integrity sha512-2CQmmW4iae39c7HMmsdYA9Ka3U/elShOYtXVU/lhvMoFoeoc8yd2q2259DPMQWKiI7VOKhQycbIMV3DigK9wxA==
   dependencies:
     "@microsoft/signalr" "^7.0.4"
     cookie "^0.5.0"

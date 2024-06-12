@@ -12,6 +12,7 @@ const MenuWrapper = styled.ul`
   margin: 0;
   margin-left: 0.5em;
   padding: 0;
+  flex-grow: 1;
 
   overflow-y: auto;
 `;

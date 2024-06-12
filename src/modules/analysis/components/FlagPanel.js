@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import styled from 'styled-components';
 
 import { useAnalysis } from './context';
+import { useSetting } from '../../settings';
 
 const Outer = styled.div`
   grid-area: flag;
@@ -22,8 +23,9 @@ export const FlagPanel = observer(
   () => {
     const analysis = useAnalysis();
     const session = analysis.state.session;
+    const [delay] = useSetting('delay');
 
-    const delta = analysis.referenceTimestamp() - analysis.state.lastUpdated;
+    const delta = analysis.referenceTimestamp() - analysis.state.lastUpdated - (delay * 1000);
 
     return (
       <Outer>

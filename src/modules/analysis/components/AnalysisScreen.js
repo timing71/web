@@ -65,9 +65,6 @@ export const AnalysisScreen = ({ analyser, children, manifest }) => {
               {
                 children
               }
-              {
-                process.env.NODE_ENV === 'development' && <div>[DEV]</div>
-              }
             </MenuWrapper>
             <Contents selectedCar={selectedCar} />
           </Container>

@@ -3,7 +3,7 @@ import { Download } from "styled-icons/material";
 import { useConnectionService } from "../ConnectionServiceProvider";
 import { Button } from "./Button";
 
-const GeneratorButton = ({ children, finishMessage, progressMessage, sessionIndex, startMessage, uuid }) => {
+const GeneratorButton = ({ children, className, finishMessage, progressMessage, sessionIndex, startMessage, uuid }) => {
 
   const [isGenerating, setGenerating] = useState(false);
   const cs = useConnectionService();
@@ -43,6 +43,7 @@ const GeneratorButton = ({ children, finishMessage, progressMessage, sessionInde
 
   return (
     <Button
+      className={className}
       disabled={isGenerating}
       onClick={startGeneration}
     >
@@ -68,8 +69,9 @@ export const ReplayButton = ({ sessionIndex, uuid }) => (
   </GeneratorButton>
 );
 
-export const AnalysisButton = ({ label='Analysis', sessionIndex, uuid }) => (
+export const AnalysisButton = ({ className, label='Analysis', sessionIndex, uuid }) => (
   <GeneratorButton
+    className={className}
     finishMessage='ANALYSIS_GENERATION_FINISHED'
     sessionIndex={sessionIndex}
     startMessage='GENERATE_ANALYSIS_DOWNLOAD'

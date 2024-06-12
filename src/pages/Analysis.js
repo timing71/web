@@ -1,11 +1,27 @@
 import { createAnalyser } from '@timing71/common/analysis';
 import { applyPatch, applySnapshot } from 'mobx-state-tree';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useBroadcastChannel } from '../broadcastChannel';
 import { AnalysisButton } from '../components/GeneratorButton';
 import { LoadingScreen } from '../components/LoadingScreen';
 import { useConnectionService } from '../ConnectionServiceProvider';
 import { AnalysisScreen } from '../modules/analysis';
+import { useSetting } from '../modules/settings';
+import styled from 'styled-components';
+
+const DelayNote = styled.small`
+  padding: 0.25em;
+  text-align: center;
+`;
+
+const DownloadAnalysisButton = styled(AnalysisButton)`
+  margin: 0.5em;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 export const Analysis = ({ match: { params: { serviceUUID } } }) => {
   const cs = useConnectionService();
@@ -16,6 +32,20 @@ export const Analysis = ({ match: { params: { serviceUUID } } }) => {
 
   const analyser = useRef(createAnalyser(undefined, true));
   const initialised = useRef(false);
+
+  const [delay] = useSetting('delay');
+
+  const maybeDelay = useCallback(
+    (fn) => {
+    if (delay > 0) {
+      setTimeout(fn, delay * 1000);
+    }
+    else {
+      fn();
+    }
+  },
+  [delay]
+);
 
   useEffect(
     () => {
@@ -29,50 +59,76 @@ export const Analysis = ({ match: { params: { serviceUUID } } }) => {
             setManifest(msg.state.manifest);
           }
           if (msg.analysis?.state) {
-            applySnapshot(
-              analyser.current,
-              msg.analysis.state
+            maybeDelay(
+              () => {
+                applySnapshot(
+                  analyser.current,
+                  msg.analysis.state
+                );
+                initialised.current = true;
+              }
             );
-            initialised.current = true;
           }
         }
       );
 
     },
-    [cs, serviceUUID]
+    [cs, maybeDelay, serviceUUID]
   );
 
   useEffect(
     () => {
       if (channelData && analyser.current) {
         if (channelData.type === 'ANALYSIS_STATE') {
-          applySnapshot(
-            analyser.current,
-            channelData.data
+          maybeDelay(
+            ()  => {
+              applySnapshot(
+                analyser.current,
+                channelData.data
+              );
+              initialised.current = true;
+            }
           );
-          initialised.current = true;
         }
-        else if (channelData.type === 'ANALYSIS_DELTA' && initialised.current) {
-          applyPatch(
-            analyser.current,
-            channelData.data
+        else if (channelData.type === 'ANALYSIS_DELTA') {
+          maybeDelay(
+            () => {
+              if (initialised.current) {
+                applyPatch(
+                  analyser.current,
+                  channelData.data
+                );
+              }
+            }
           );
         }
       }
     },
-    [channelData]
+    [channelData, maybeDelay]
   );
 
-  if (analyser.current && manifest) {
+  if (analyser.current && manifest && initialised.current) {
     return (
       <AnalysisScreen
         analyser={analyser.current}
         manifest={manifest}
       >
-        <AnalysisButton
-          label='Download analysis'
-          uuid={serviceUUID}
-        />
+        <Container>
+          {
+            delay > 0 && (
+              <DelayNote>
+                Delayed by {delay} seconds to match timing screen
+              </DelayNote>
+            )
+          }
+          <DownloadAnalysisButton
+            label='Download analysis'
+            uuid={serviceUUID}
+          />
+          {
+            process.env.NODE_ENV === 'development' && <div>[DEV]</div>
+          }
+        </Container>
       </AnalysisScreen>
     );
   }

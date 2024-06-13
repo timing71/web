@@ -4286,9 +4286,9 @@
     mobx-state-tree "^5.1.7"
 
 "@timing71/services@^0.10.0":
-  version "0.10.1"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.10.1/5a06b65fc8e8e58f6cd34d801c1903c160c6727d#5a06b65fc8e8e58f6cd34d801c1903c160c6727d"
-  integrity sha512-2CQmmW4iae39c7HMmsdYA9Ka3U/elShOYtXVU/lhvMoFoeoc8yd2q2259DPMQWKiI7VOKhQycbIMV3DigK9wxA==
+  version "0.10.2"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.10.2/43c1774cd1fbdda0351be677829250523e2e972c#43c1774cd1fbdda0351be677829250523e2e972c"
+  integrity sha512-jdhxKl4NgRhbOvm/ZTRxfes6cDGZSmO9ghJVEbA7w7M/CYyXGaH4IIubMlz/ymkwHIU13CTuP6wWlfo+fb7XjA==
   dependencies:
     "@microsoft/signalr" "^7.0.4"
     cookie "^0.5.0"
@@ -9823,9 +9823,9 @@ graphql-ws@^5.16.0:
   integrity sha512-Ju2RCU2dQMgSKtArPbEtsK5gNLnsQyTNIo/T7cZNp96niC1x0KdJNZV0TIoilceBPQwfb5itrGl8pkFeOUMl4A==
 
 graphql@^16.8.1:
-  version "16.8.1"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.8.1.tgz#1930a965bef1170603702acdb68aedd3f3cf6f07"
-  integrity sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==
+  version "16.8.2"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.8.2.tgz#54771c7ff195da913f5e70af8044a026d32eca2a"
+  integrity sha512-cvVIBILwuoSyD54U4cF/UXDh5yAobhNV/tPygI4lZhgOIJQE/WLWC4waBRb4I6bDVYb3OVx3lfHbaQOEoUD5sg==
 
 gzip-size@^6.0.0:
   version "6.0.0"
@@ -12369,10 +12369,15 @@ mobx-state-tree@^6.0.0:
   resolved "https://registry.yarnpkg.com/mobx-state-tree/-/mobx-state-tree-6.0.0.tgz#c2a48246761b189c1789989b73d0017e9f05da44"
   integrity sha512-Aky3I5SMM1gKvI780TyxqSf+VDRpu03QONxqGerXG7DOemK3z1Ka2KfbPuiXm/znawsYDwqeZgmz0rjbCLSD8g==
 
-mobx@^6.3.7, mobx@^6.7.0:
+mobx@^6.3.7:
   version "6.12.3"
   resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.12.3.tgz#b6a0fde4268116be602d50bffb32f1b90a8fb077"
   integrity sha512-c8NKkO4R2lShkSXZ2Ongj1ycjugjzFFo/UswHBnS62y07DMcTc9Rvo03/3nRyszIvwPNljlkd4S828zIBv/piw==
+
+mobx@^6.7.0:
+  version "6.12.4"
+  resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.12.4.tgz#a1e176cd173bf45d3e5eb825eaff2c736c0a90cb"
+  integrity sha512-uIymg89x+HmItX1p3MG+d09irn2k63J6biftZ5Ok+UpNojS1I3NJPLfcmJT9ANnUltNlHi+HQqrVyxiAN8ISYg==
 
 move-concurrently@^1.0.1:
   version "1.0.1"

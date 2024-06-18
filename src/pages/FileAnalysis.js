@@ -43,6 +43,11 @@ export const FileAnalysis = () => {
           const json = await rawFile.json();
 
           analyser.current = createAnalyser(json, false);
+
+          if (process.env.NODE_ENV === 'development') {
+            window._a = analyser.current;
+          }
+
           setData(json);
           setLoadState(LoadState.LOADED);
 

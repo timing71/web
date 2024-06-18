@@ -8,6 +8,7 @@ import { Messages } from './Messages';
 import { PitStops } from './pitStops';
 import { SessionStats } from './sessionStats';
 import { StrategyOverview } from './strategy';
+import { TrackData } from './trackData';
 
 export const routes = [
   {
@@ -39,6 +40,11 @@ export const routes = [
     path: '/drive-time',
     name: 'Drive time',
     component: DriveTime
+  },
+  {
+    path: '/trackdata',
+    name: 'Track data',
+    component: TrackData
   }
 ];
 

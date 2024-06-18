@@ -8,6 +8,8 @@ const Grid = styled.div`
   grid-auto-rows: 33vh;
 `;
 
+const COLORS = ['#54ffff', '#ffa600', '#008000', '#a8dc5b', '#54f8cf', '#7cec96', '#d4c523'];
+
 export const TrackData = () => {
 
   const analysis = useAnalysis();
@@ -16,8 +18,9 @@ export const TrackData = () => {
     <Grid>
       {
         analysis.trackData.toArray.map(
-          s => (
+          (s, idx) => (
             <Chart
+              color={COLORS[idx % COLORS.length]}
               key={s.label}
               series={s}
             />

@@ -3,7 +3,7 @@ import { dayjs } from '@timing71/common';
 import { theme as chartTheme } from '../../../charts';
 
 
-export const Chart = ({ series }) => {
+export const Chart = ({ color='#54FFFF', series }) => {
 
   const chartData = [{
     id: series.label,
@@ -23,12 +23,16 @@ export const Chart = ({ series }) => {
           tickRotation: -60,
           format: formatTime
         }}
-        colors={[ '#54ffff', '#ffa600', '#008000', '#a8dc5b', '#54f8cf', '#7cec96', '#d4c523' ]}
+        axisLeft={{
+          tickCount: 5
+        }}
+        colors={[ color ]}
         curve='stepAfter'
         data={chartData}
         enablePoints={false}
         margin={{ top: 10, bottom: 80, left: 50, right: 10 }}
         theme={chartTheme}
+        useMesh
         xFormat={formatTime}
         xScale={{ type: 'time' }}
         yScale={{

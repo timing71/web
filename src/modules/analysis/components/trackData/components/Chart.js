@@ -1,9 +1,30 @@
 import { ResponsiveLine } from "@nivo/line";
 import { dayjs } from '@timing71/common';
 import { theme as chartTheme } from '../../../charts';
+import styled from 'styled-components';
 
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 
-export const Chart = ({ color='#54FFFF', series }) => {
+const MinMax = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-column-gap: 0.5em;
+  & > span.heading {
+    font-weight: bold;
+    &.heading-max {
+      color: #ffa600;
+    }
+    &.heading-min {
+      color: #54f8cf;
+    }
+  }
+`;
+
+export const Chart = ({ color='#54FFFF', minTime, maxTime, series }) => {
 
   const chartData = [{
     id: series.label,
@@ -12,12 +33,44 @@ export const Chart = ({ color='#54FFFF', series }) => {
 
   const formatTime = (t) => dayjs(t).format('HH:mm');
 
-  const minValue = Math.min(...chartData[0].data.map(d => d.y));
-  const maxValue = Math.max(...chartData[0].data.map(d => d.y), minValue + 10);
+  const minValue = chartData[0].data.reduce(
+    (prev, next) => {
+      if (!prev.value || next.y < prev.value) {
+        return { value: next.y, timestamp: next.x };
+      }
+      return prev;
+    },
+    { value: null }
+  );
+
+  const maxValue = chartData[0].data.reduce(
+    (prev, next) => {
+      if (!prev.value || next.y > prev.value) {
+        return { value: next.y, timestamp: next.x };
+      }
+      return prev;
+    },
+    { value: null }
+  );
+
+  const minAxisValue = Math.floor(minValue.value / 10) * 10;
+  const maxAxisValue = Math.ceil(maxValue.value / 10) * 10;
 
   return (
     <div>
-      <h2>{series.label} ({series.unit.trim()})</h2>
+      <Header>
+        <h2>
+          {series.label} ({series.unit.trim()})
+        </h2>
+        <MinMax>
+          <span className='heading heading-max'>Max:</span>
+          <span>{maxValue.value}{series.unit}</span>
+          <span>({ dayjs(maxValue.timestamp).format('HH:mm') })</span>
+          <span className='heading heading-min'>Min:</span>
+          <span>{minValue.value}{series.unit}</span>
+          <span>({ dayjs(minValue.timestamp).format('HH:mm') })</span>
+        </MinMax>
+      </Header>
       <ResponsiveLine
         axisBottom={{
           tickRotation: -60,
@@ -30,15 +83,40 @@ export const Chart = ({ color='#54FFFF', series }) => {
         curve='stepAfter'
         data={chartData}
         enablePoints={false}
-        margin={{ top: 10, bottom: 80, left: 50, right: 10 }}
+        margin={{ top: 10, bottom: 90, left: 30, right: 10 }}
+        markers={[
+          {
+            axis: 'x',
+            value: maxValue.timestamp,
+            lineStyle: { stroke: '#ffa600', strokeWidth: 1 },
+            textStyle: { fill: '#ffa600', fontSize: 12 },
+            legend: 'Max',
+            legendOrientation: 'horizontal'
+          },
+          {
+            axis: 'x',
+            value: minValue.timestamp,
+            lineStyle: { stroke: '#54f8cf', strokeWidth: 1 },
+            textStyle: { fill: '#54f8cf', fontSize: 12 },
+            legend: 'Min',
+            legendOrientation: 'horizontal',
+            legendPosition: 'bottom-left',
+          },
+        ]}
         theme={chartTheme}
         useMesh
         xFormat={formatTime}
-        xScale={{ type: 'time' }}
+        xScale={{
+          type: 'time',
+          nice: true,
+          min: minTime,
+          max: maxTime
+        }}
         yScale={{
-          max: Math.ceil(maxValue / 10) * 10,
-          min: Math.floor(minValue / 10) * 10,
-          type: 'linear'
+          max: Math.max(maxAxisValue, minAxisValue + 1),
+          min: minAxisValue,
+          type: 'linear',
+          nice: true
         }}
       />
     </div>

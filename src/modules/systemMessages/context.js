@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { v4 } from 'uuid';
 
@@ -12,31 +13,37 @@ export const SystemMessagesProvider = ({ children }) => {
   const [systemMessages, setSystemMessages] = useState([]);
   const timeouts = useRef({});
 
-  const addSystemMessage = (msg) => {
+  const removeSystemMessage = useCallback(
+    (uuid) => {
+      setSystemMessages(prev => prev.filter(m => m.uuid !== uuid));
+    },
+    []
+  );
 
-    if (!msg.uuid) {
-      msg.uuid = v4();
-    }
+  const addSystemMessage = useCallback(
+    (msg) => {
 
-    setSystemMessages(prev => [...prev, msg]);
+      if (!msg.uuid) {
+        msg.uuid = v4();
+      }
 
-    if (msg.timeout) {
-      const timeout = setTimeout(
-        () => {
-          removeSystemMessage(msg.uuid);
-          delete timeouts.current[msg.uuid];
-        },
-        msg.timeout
-      );
-      timeouts.current[msg.uuid] = timeout;
-    }
+      setSystemMessages(prev => [...prev, msg]);
 
-    return msg.uuid;
-  };
+      if (msg.timeout) {
+        const timeout = setTimeout(
+          () => {
+            removeSystemMessage(msg.uuid);
+            delete timeouts.current[msg.uuid];
+          },
+          msg.timeout
+        );
+        timeouts.current[msg.uuid] = timeout;
+      }
 
-  const removeSystemMessage = (uuid) => {
-    setSystemMessages(prev => prev.filter(m => m.uuid !== uuid));
-  };
+      return msg.uuid;
+    },
+    [removeSystemMessage]
+  );
 
   useEffect(
     () => () => {

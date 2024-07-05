@@ -208,6 +208,7 @@ export const Theme = {
     'attack-active': '#ff53e3',
     'lap-invalid': '#BBB',
     'red': '#FF0000',
+    'yellow': '#DDDD00',
     'green': '#00FF00'
   },
   flagStates: {

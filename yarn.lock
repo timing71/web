@@ -4286,9 +4286,9 @@
     mobx-state-tree "^5.1.7"
 
 "@timing71/services@^0.10.0":
-  version "0.10.4"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.10.4/5d2ca19f50160553c417f0dc135275a38061857b#5d2ca19f50160553c417f0dc135275a38061857b"
-  integrity sha512-oIK1JTfjF/WRbrFEd2yrjlLhB1FSbEbie75adaaIwOiThPz62fTbX3Uiy1tKxMBeTp5tyhAwzbzfdlz7WaW0pQ==
+  version "0.10.6"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.10.6/47acfa562fb15bd553fc9ea1b142ecc51b0c32f4#47acfa562fb15bd553fc9ea1b142ecc51b0c32f4"
+  integrity sha512-T83TwUo6nTdSYMW945DDoeoiGxLgtkGrq/MPqmWHic6oS8Nu9RuutV/xMK+i88W2lHJVbtDzdSMNOzOMl/ulDg==
   dependencies:
     "@microsoft/signalr" "^7.0.4"
     cookie "^0.5.0"
@@ -9823,9 +9823,9 @@ graphql-ws@^5.16.0:
   integrity sha512-Ju2RCU2dQMgSKtArPbEtsK5gNLnsQyTNIo/T7cZNp96niC1x0KdJNZV0TIoilceBPQwfb5itrGl8pkFeOUMl4A==
 
 graphql@^16.8.1:
-  version "16.8.2"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.8.2.tgz#54771c7ff195da913f5e70af8044a026d32eca2a"
-  integrity sha512-cvVIBILwuoSyD54U4cF/UXDh5yAobhNV/tPygI4lZhgOIJQE/WLWC4waBRb4I6bDVYb3OVx3lfHbaQOEoUD5sg==
+  version "16.9.0"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.9.0.tgz#1c310e63f16a49ce1fbb230bd0a000e99f6f115f"
+  integrity sha512-GGTKBX4SD7Wdb8mqeDLni2oaRGYQWjWHGKPQ24ZMnUtKfcsVoiv4uX8+LJr1K6U5VW2Lu1BwJnj7uiori0YtRw==
 
 gzip-size@^6.0.0:
   version "6.0.0"
@@ -12375,9 +12375,9 @@ mobx@^6.3.7:
   integrity sha512-c8NKkO4R2lShkSXZ2Ongj1ycjugjzFFo/UswHBnS62y07DMcTc9Rvo03/3nRyszIvwPNljlkd4S828zIBv/piw==
 
 mobx@^6.7.0:
-  version "6.12.4"
-  resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.12.4.tgz#a1e176cd173bf45d3e5eb825eaff2c736c0a90cb"
-  integrity sha512-uIymg89x+HmItX1p3MG+d09irn2k63J6biftZ5Ok+UpNojS1I3NJPLfcmJT9ANnUltNlHi+HQqrVyxiAN8ISYg==
+  version "6.13.0"
+  resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.13.0.tgz#791446e1a75f643aa2e7b96163e3d0bb237e91c1"
+  integrity sha512-1laWODrBWmB7mDJ8EClCjUQTyLwJ0ydJgE4FtK7t9r3JnjXgc9OhmYs2P4RtHrY1co5+4T6cKP2UswX2SU29mA==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
@@ -17306,10 +17306,15 @@ write-file-atomic@^4.0.2:
     imurmurhash "^0.1.4"
     signal-exit "^3.0.7"
 
-"ws@1.1.4 - 7", ws@^7.3.1, ws@^7.4.5:
+"ws@1.1.4 - 7", ws@^7.3.1:
   version "7.5.9"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.9.tgz#54fa7db29f4c7cec68b1ddd3a89de099942bb591"
   integrity sha512-F+P9Jil7UiSKSkppIiD94dN07AwvFixvLIj1Og1Rl9GGMuNipJnV9JzjD6XuqmAeiswGvUmNLjr5cFuXwNS77Q==
+
+ws@^7.4.5:
+  version "7.5.10"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.10.tgz#58b5c20dc281633f6c19113f39b349bd8bd558d9"
+  integrity sha512-+dbF1tHwZpXcbOJdVOkzLDxZP1ailvSxM6ZweXTegylPny803bFhA+vqBYw4s31NSAk4S2Qz+AKXK9a4wkdjcQ==
 
 ws@^8.11.0, ws@^8.2.3, ws@^8.5.0:
   version "8.16.0"

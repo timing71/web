@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { ListAlt } from "styled-icons/material";
 
 import { useServiceManifest, useServiceState } from "../../../components/ServiceContext";
-import { useFullscreenContext } from "../../../components/FullscreenContext";
 import { Dialog, DialogBackdrop } from "../../menu/components/Dialog";
 import { stopEventBubble } from "../../../utils";
 import { Input } from "../../../components/Forms";
@@ -137,23 +136,10 @@ const MyButton = styled(Button)`
 export const ServiceParameters = () => {
   const dialog = useDialogState();
 
-  const fs = useFullscreenContext();
-
-  const show = useCallback(
-    () => {
-      if (fs.active) {
-        fs.exit();
-      }
-      dialog.toggle();
-    },
-    [dialog, fs]
-  );
-
-
   return (
     <>
       <MyButton
-        onClick={show}
+        onClick={dialog.toggle}
         title='Set session parameters'
       >
         <SettingsIcon />

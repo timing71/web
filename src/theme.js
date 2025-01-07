@@ -44,7 +44,7 @@ export const Theme = {
     'gte': '#FF4F00',
     'lmgteam': '#FF4F00',
     'lmgtepro': '#01FF01',
-    'lmgt3': '#FE5000',
+    'lmgt3': '#01FF01',
     'gt': '#FF4F00',
     'gtc': '#A0A0A0',
     'gtd': '#00dc67',
@@ -64,7 +64,7 @@ export const Theme = {
     'gt3pro': '#dbb700',
     'gt3am': '#CCCCCC',
     'at': '#CCCCCC',
-    'gtx': '#FF0000',
+    'gtx': '#e35a25',
     'sp2': '#77AAFF',
     'sp3': '#FF00FF',
     'tcx': '#FF00FF',
@@ -86,6 +86,7 @@ export const Theme = {
     'vt3': '#CCCCCC',
     'vt2': '#cb67ec',
     '991': '#01FF01',
+    '992': '#58bdf3',
     'a2': '#ffb8b8',
     'tc': '#c5b6ff',
     'cup-x': '#FFFFFF',
@@ -208,7 +209,6 @@ export const Theme = {
     'attack-active': '#ff53e3',
     'lap-invalid': '#BBB',
     'red': '#FF0000',
-    'yellow': '#DDDD00',
     'green': '#00FF00'
   },
   flagStates: {

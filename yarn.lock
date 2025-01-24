@@ -4286,9 +4286,9 @@
     mobx-state-tree "^5.1.7"
 
 "@timing71/services@^0.12.0":
-  version "0.12.1"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.12.1/f99afa49f1d8d56c281ca1b85121834524dd474b#f99afa49f1d8d56c281ca1b85121834524dd474b"
-  integrity sha512-v5+bGfSc7s7EQJ038YzfmYZa1itshcqNASJlDKhXTbprQRHnN/u4BuP3OP4ptkyW1wnyCumTOkwNTnJkcTyztw==
+  version "0.12.2"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.12.2/4992fff1378db6fba89a86a1ad3e9e647442b9a8#4992fff1378db6fba89a86a1ad3e9e647442b9a8"
+  integrity sha512-nnpayRFtGlAZSxYjHTObTI+NdW7n9T7bfwaweMwa1JYTKQCY5d5NbIhFJSVsmUop2s+f2FChDZlcgUBqLdObaQ==
   dependencies:
     "@microsoft/signalr" "^7.0.4"
     cookie "^0.5.0"
@@ -9818,9 +9818,9 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6
   integrity sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==
 
 graphql-ws@^5.16.0:
-  version "5.16.0"
-  resolved "https://registry.yarnpkg.com/graphql-ws/-/graphql-ws-5.16.0.tgz#849efe02f384b4332109329be01d74c345842729"
-  integrity sha512-Ju2RCU2dQMgSKtArPbEtsK5gNLnsQyTNIo/T7cZNp96niC1x0KdJNZV0TIoilceBPQwfb5itrGl8pkFeOUMl4A==
+  version "5.16.2"
+  resolved "https://registry.yarnpkg.com/graphql-ws/-/graphql-ws-5.16.2.tgz#7b0306c1bdb0e97a05e800ccd523f46fb212e37c"
+  integrity sha512-E1uccsZxt/96jH/OwmLPuXMACILs76pKF2i3W861LpKBCYtGIyPQGtWLuBLkND4ox1KHns70e83PS4te50nvPQ==
 
 graphql@^16.8.1:
   version "16.10.0"

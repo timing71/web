@@ -3,9 +3,9 @@ import styled, { css } from 'styled-components';
 const DriverNameInner = styled.span`
 
 ${
-  props => props.theme.driverRanks[props.$rank?.replace('driver-', '')] && css`
+  props => typeof(props.$rank?.replace) === 'function' && props.theme.driverRanks[props.$rank.replace('driver-', '')] && css`
     &::before {
-      color: ${props.theme.driverRanks[props.$rank?.replace('driver-', '')]};
+      color: ${props.theme.driverRanks[props.$rank.replace('driver-', '')]};
       content: '●';
       margin-right: 4px;
       font-style: normal;

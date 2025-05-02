@@ -9,6 +9,7 @@ const FooterInner = styled.div`
   display: flex;
   justify-content: space-around;
   align-self: stretch;
+  justify-self: stretch;
 
   padding: 1em;
 

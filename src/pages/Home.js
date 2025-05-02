@@ -17,14 +17,17 @@ import { Footer } from '../components/Footer';
 import { Button } from '../components/Button';
 import { Logo as LogoComponent } from '../components/Logo';
 import { useConnectionService } from '../ConnectionServiceProvider';
-import { ServicesList } from '../modules/network/components/ServicesList';
+import { SessionsPanel } from '../components/SessionsPanel';
 
 const HomeInner = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
 
-  height: 100vh;
+  align-items: start;
+  justify-items: center;
+
+  height: 100%;
 
   background: top center / cover no-repeat fixed url(${background});
 `;
@@ -40,7 +43,7 @@ const LogosBox = styled.div`
 `;
 
 const Logo = styled(LogoComponent).attrs(
-  () => ({ alt: 'Timing71.org BETA' })
+  () => ({ alt: 'Timing71.org' })
 )`
   max-width: 50%;
   max-height: 180px;
@@ -61,14 +64,13 @@ const StartNow = styled.div`
 const Content = styled.div`
   flex-grow: 1;
   align-self: stretch;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+  justify-self: stretch;
 
-  & ${Section} {
-    width: unset;
-    flex: 1 1 50%;
-  }
+  padding: 1rem;
+  min-height: 0;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 `;
 
 const LaunchButtonInner = styled(Button)`
@@ -83,6 +85,7 @@ const LaunchButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   flex: 1 1 50%;
+  align-self: center;
 `;
 
 const LaunchButton = () => {
@@ -164,24 +167,16 @@ export const Home = () => (
           />
         </a>
       </LogosBox>
-      <Content>
-        <Section>
-          <h2>Hosted events</h2>
-          <ServicesList />
-          <p style={{ fontSize: 'small' }}>
-            Hosted events are run on the Timing71 network by Timing71 or by
-            syndicated partners. Support for other timing providers is via the
-            { ' ' } <a href={CHROME_STORE_URL}>Chrome extension</a>.
-          </p>
-        </Section>
-        <PluginDetector
-          beforeDetection={DefaultContent}
-        >
+      <PluginDetector
+        beforeDetection={DefaultContent}
+      >
+        <Content>
+          <SessionsPanel />
           <LaunchButtonWrapper>
             <LaunchButton />
           </LaunchButtonWrapper>
-        </PluginDetector>
-      </Content>
+        </Content>
+      </PluginDetector>
       <Footer />
     </HomeInner>
   </Page>

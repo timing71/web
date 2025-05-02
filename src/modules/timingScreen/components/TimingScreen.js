@@ -12,6 +12,7 @@ import { Logo } from "../../../components/Logo";
 import { useSetting } from "../../settings";
 import { Spinner } from "../../../components/Spinner";
 import { stopEventBubble } from "../../../utils";
+import { FocusedCarContextProvider } from '../context';
 
 const LoadingMessageInner = styled.div`
   display: flex;
@@ -92,29 +93,31 @@ export const TimingScreen = ({ children }) => {
         <Helmet>
           <title>{ manifest?.name }</title>
         </Helmet>
-        <TimingScreenInner>
-          {
-            manifest && <TimingScreenHeader />
-          }
-          {
-            showTable && <TimingTable />
-          }
-          {
-            !showTable && (
-              <LoadingMessage>
-                Waiting for data...
-                {
-                  delay > 0 && <DelaySetting />
-                }
-              </LoadingMessage>
-            )
-          }
-          <Messages />
-          <DataPanel />
-          {
-            children
-          }
-        </TimingScreenInner>
+        <FocusedCarContextProvider>
+          <TimingScreenInner>
+            {
+              manifest && <TimingScreenHeader />
+            }
+            {
+              showTable && <TimingTable />
+            }
+            {
+              !showTable && (
+                <LoadingMessage>
+                  Waiting for data...
+                  {
+                    delay > 0 && <DelaySetting />
+                  }
+                </LoadingMessage>
+              )
+            }
+            <Messages />
+            <DataPanel />
+            {
+              children
+            }
+          </TimingScreenInner>
+        </FocusedCarContextProvider>
       </Page>
     </FullscreenContext>
   );

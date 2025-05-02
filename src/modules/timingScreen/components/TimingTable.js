@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Stat, StatExtractor } from '@timing71/common';
 import styled from "styled-components";
 
@@ -6,8 +6,7 @@ import { useServiceManifest, useServiceState } from "../../../components/Service
 import { useSetting } from "../../settings";
 import { TimingTableHeader } from "./TimingTableHeader";
 import { TimingTableRow } from "./TimingTableRow";
-import { useCallback } from 'react';
-import { useState } from 'react';
+import { useFocusedCarContext } from '../context';
 
 const TimingTableWrapper = styled.div`
   grid-area: timing;
@@ -40,7 +39,7 @@ export const TimingTable = () => {
   const highlights = useRef({});
   const now = Date.now();
 
-  const [focusedCarNum, setFocusedCarNum] = useState(null);
+  const { focusedCarNum } = useFocusedCarContext();
 
   const statExtractor = new StatExtractor(manifest?.colSpec || []);
 
@@ -75,10 +74,7 @@ export const TimingTable = () => {
   return (
     <TimingTableWrapper>
       <TimingTableInner>
-        <TimingTableHeader
-          manifest={manifest}
-          setFocusedCarNum={setFocusedCarNum}
-        />
+        <TimingTableHeader manifest={manifest} />
         <tbody>
           {
             (state.cars || []).map(
@@ -92,13 +88,11 @@ export const TimingTable = () => {
                 return (
                   <TimingTableRow
                     car={car}
-                    focused={focusedCarNum === carNum}
                     hiddenCols={hiddenCols}
                     highlight={doHighlight && ((state.highlight || []).includes(carNum) || (highlights.current[carNum] || 0) > now)}
                     key={ident.join(',')}
                     manifest={manifest}
                     position={idx + 1}
-                    setFocusedCarNum={setFocusedCarNum}
                     statExtractor={statExtractor}
                   />
                 );

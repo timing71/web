@@ -5,6 +5,7 @@ import { Popover, PopoverDisclosure, Tooltip, TooltipReference, usePopoverState,
 import { useCallback } from 'react';
 import { Search } from 'styled-icons/material';
 import { Input } from '../../../components/Forms';
+import { useFocusedCarContext } from '../context';
 
 const HeaderRow = styled.tr`
   background-color: black;
@@ -103,7 +104,9 @@ const HeaderWithPopover = ({ stat }) => {
   );
 };
 
-const CarNumberHeader = ({ setFocusedCarNum }) => {
+const CarNumberHeader = () => {
+
+  const { setFocusedCarNum } = useFocusedCarContext();
 
   const popover = usePopoverState({
     animated: 250,
@@ -163,7 +166,7 @@ const CarNumberHeader = ({ setFocusedCarNum }) => {
   );
 };
 
-export const TimingTableHeader = ({ manifest, setFocusedCarNum }) => {
+export const TimingTableHeader = ({ manifest }) => {
   const [hiddenCols] = useSetting('columns.hidden', []);
   return (
     <thead>
@@ -178,7 +181,6 @@ export const TimingTableHeader = ({ manifest, setFocusedCarNum }) => {
                 return (
                   <CarNumberHeader
                     key={idx}
-                    setFocusedCarNum={setFocusedCarNum}
                   />
                 );
               }

@@ -4286,9 +4286,9 @@
     mobx-state-tree "^5.1.7"
 
 "@timing71/services@^0.12.0":
-  version "0.12.4"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.12.4/322fbe01b27142acf248e4a703613db4c9824bce#322fbe01b27142acf248e4a703613db4c9824bce"
-  integrity sha512-es4Db6k2wdfXKWTercew2RjKpZn7aXPzetsq0nmz4AU2/koZ59d/21InNb+K14/SHtW6OcNfr/qTnx1Rdl0QbQ==
+  version "0.12.5"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.12.5/f3a29bb503528d800ddd783773e0e1aa0a6814cd#f3a29bb503528d800ddd783773e0e1aa0a6814cd"
+  integrity sha512-6iSJHKIZvQST0CEXFls9yWYUv4DhiIOfDZomcFrcqyrxuG2nLQhSiEsqbFpyGtCoA428+AXhMFw1HsQxlheUMg==
   dependencies:
     "@microsoft/signalr" "^7.0.4"
     cookie "^0.5.0"
@@ -9823,9 +9823,9 @@ graphql-ws@^5.16.0:
   integrity sha512-E1uccsZxt/96jH/OwmLPuXMACILs76pKF2i3W861LpKBCYtGIyPQGtWLuBLkND4ox1KHns70e83PS4te50nvPQ==
 
 graphql@^16.8.1:
-  version "16.10.0"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.10.0.tgz#24c01ae0af6b11ea87bf55694429198aaa8e220c"
-  integrity sha512-AjqGKbDGUFRKIRCP9tCKiIGHyriz2oHEbPIbEtcSLSs4YjReZOIPQQWek4+6hjw62H9QShXHyaGivGiYVLeYFQ==
+  version "16.11.0"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.11.0.tgz#96d17f66370678027fdf59b2d4c20b4efaa8a633"
+  integrity sha512-mS1lbMsxgQj6hge1XZ6p7GPhbrtFwUFYi3wRzXAC/FmYnyXMTvvI3td3rjmQ2u8ewXueaSvRPWaEcgVVOT9Jnw==
 
 gzip-size@^6.0.0:
   version "6.0.0"
@@ -12375,9 +12375,9 @@ mobx@^6.3.7:
   integrity sha512-c8NKkO4R2lShkSXZ2Ongj1ycjugjzFFo/UswHBnS62y07DMcTc9Rvo03/3nRyszIvwPNljlkd4S828zIBv/piw==
 
 mobx@^6.7.0:
-  version "6.13.6"
-  resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.13.6.tgz#3b80895c7c9df456efc86ae0b6983ccea1da6cc6"
-  integrity sha512-r19KNV0uBN4b+ER8Z0gA4y+MzDYIQ2SvOmn3fUrqPnWXdQfakd9yfbPBDBF/p5I+bd3N5Rk1fHONIvMay+bJGA==
+  version "6.13.7"
+  resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.13.7.tgz#70e5dda7a45da947f773b3cd3b065dfe7c8a75de"
+  integrity sha512-aChaVU/DO5aRPmk1GX8L+whocagUUpBQqoPtJk+cm7UOXUk87J4PeWCh6nNmTTIfEhiR9DI/+FnA8dln/hTK7g==
 
 move-concurrently@^1.0.1:
   version "1.0.1"

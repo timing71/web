@@ -36,6 +36,7 @@ export const Theme = {
     'p3': '#DD00DD',
     'p31': '#FF661C',
     'p32': '#549FFF',
+    'js2r': '#33a7ff',
     'jsp4': '#FF5050',
     'cn': '#dbb700',
     'cn1': '#dbb700',

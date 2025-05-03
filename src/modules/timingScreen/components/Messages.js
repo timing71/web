@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useServiceState } from "../../../components/ServiceContext";
 import { Message } from "../../../components/Message";
 import { stopEventBubble } from "../../../utils";
+import { useFocusedCarContext } from '../context';
 
 const Wrapper = styled.div`
   grid-area: messages;
@@ -21,6 +22,7 @@ const MessagesTable = styled.table`
 export const Messages = () => {
 
   const { state } = useServiceState();
+  const { setFocusedCarNum } = useFocusedCarContext();
 
   return (
     <Wrapper
@@ -39,6 +41,7 @@ export const Messages = () => {
                 <Message
                   key={idx}
                   message={m}
+                  setFocusedCarNum={setFocusedCarNum}
                 />
               )
             )

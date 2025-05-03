@@ -28,6 +28,7 @@ import {
   ViewSettings,
   WallClock,
 } from "../modules/menu";
+import { FocusedCarIndicator } from '../modules/menu/components/FocusedCarIndicator';
 
 
 const doNothing = () => {};
@@ -153,6 +154,7 @@ const TimingInner = ({ match: { params } }) => {
                       <MenuBar>
                         <WallClock />
                         <UpdateTime />
+                        <FocusedCarIndicator />
                         <Spacer />
                         <SystemMessages />
                         <DelayIndicator />

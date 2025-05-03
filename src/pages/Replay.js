@@ -9,6 +9,7 @@ import { PlaybackControls, ReplayProvider } from "../modules/replay";
 import { RateControls } from "../modules/replay/components/RateControls";
 import { useReplayState } from "../modules/replay/state";
 import { TimingScreen } from "../modules/timingScreen";
+import { FocusedCarIndicator } from '../modules/menu/components/FocusedCarIndicator';
 
 export const Replay = () => {
 
@@ -46,6 +47,7 @@ export const Replay = () => {
       >
         <TimingScreen>
           <MenuBar>
+            <FocusedCarIndicator />
             <PlaybackControls replayState={replayState} />
             <Menu>
               <RateControls replayState={replayState} />

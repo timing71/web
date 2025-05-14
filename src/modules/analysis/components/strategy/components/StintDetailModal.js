@@ -83,7 +83,7 @@ const ModalContents = ({ close, stint }) => {
         Car {stint.car?.raceNum} - { ' ' }
         <DriverName
           name={stint.driver?.name || 'Unknown driver'}
-          rank={stint.driver.ranking}
+          rank={stint.driver?.ranking}
         />
       </Heading>
       <StintDetailTable stint={stint} />

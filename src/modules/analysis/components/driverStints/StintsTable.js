@@ -10,8 +10,8 @@ const StintRow = ({ stint, timestamp }) => (
   <Row inProgress={stint.inProgress}>
     <Cell>
       <DriverName
-        name={stint.driver.name}
-        rank={stint.driver.ranking}
+        name={stint.driver?.name || 'Unknown driver'}
+        rank={stint.driver?.ranking}
       />
     </Cell>
     <Cell right>{stint.startLap}</Cell>

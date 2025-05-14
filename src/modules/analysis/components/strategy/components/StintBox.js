@@ -98,7 +98,7 @@ export const StintBox = animated(
           <Text bold>
             <DriverName
               name={stint.driver?.name || 'Unknown driver'}
-              rank={stint.driver.ranking}
+              rank={stint.driver?.ranking}
             />
           </Text>
           <Text

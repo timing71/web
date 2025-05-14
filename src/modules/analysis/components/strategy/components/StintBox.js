@@ -76,7 +76,7 @@ const Text = styled.div`
 export const StintBox = animated(
   ({ height, onClick, stint, width, x }) => {
 
-    const laps = stint.inProgress ? stint.car.currentLap - stint.startLap : stint.durationLaps;
+    const laps = (stint.inProgress && stint.car) ? stint.car.currentLap - stint.startLap : stint.durationLaps;
 
     const best = stint.bestLap;
     const mean = stint.meanLap;

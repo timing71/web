@@ -6,6 +6,7 @@ import { Helmet } from "react-helmet-async";
 import { useAnalysis } from "./context";
 import { ServiceManifestContext, ServiceStateContext } from "../../../components/ServiceContext";
 import { TimingTable } from '../../timingScreen';
+import { FocusedCarContextProvider } from '../../timingScreen/context';
 
 export const FastLapClassification = () => {
 
@@ -30,7 +31,9 @@ export const FastLapClassification = () => {
           <title>Fastest lap classification</title>
         </Helmet>
         <h3>Fastest lap classification</h3>
-        <TimingTable />
+        <FocusedCarContextProvider>
+          <TimingTable />
+        </FocusedCarContextProvider>
       </ServiceStateContext.Provider>
     </ServiceManifestContext.Provider>
   );

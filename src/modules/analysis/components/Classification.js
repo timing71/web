@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { ServiceManifestContext, ServiceStateContext } from "../../../components/ServiceContext";
 import { TimingTable } from "../../timingScreen";
 import { useAnalysis } from "./context";
+import { FocusedCarContextProvider } from '../../timingScreen/context';
 
 export const Classification = () => {
 
@@ -13,7 +14,9 @@ export const Classification = () => {
         <Helmet>
           <title>Classification</title>
         </Helmet>
-        <TimingTable />
+        <FocusedCarContextProvider>
+          <TimingTable />
+        </FocusedCarContextProvider>
       </ServiceStateContext.Provider>
     </ServiceManifestContext.Provider>
   );

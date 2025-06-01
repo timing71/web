@@ -74,6 +74,10 @@ export const ServiceProvider = ({
           });
         }
 
+        if (process.env.NODE_ENV === 'development') {
+          window.serviceInstance = serviceInstance.current;
+        }
+
         serviceInstance.current.start(cs);
         setHasService(true);
         onReady();

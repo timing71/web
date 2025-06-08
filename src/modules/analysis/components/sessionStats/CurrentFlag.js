@@ -11,14 +11,15 @@ export const CurrentFlag = observer(
     const analysis = useAnalysis();
 
     const current = analysis.session.flagStats[analysis.session.flagStats.length - 1];
+    const startTime = current.startTime;
 
     const [duration, setDuration] = useState(current ? Math.max(0, analysis.referenceTimestamp() - current.startTime) : 0);
 
     const updateDuration = useCallback(
       () => {
-        current && setDuration(Math.max(0, analysis.referenceTimestamp() - current.startTime));
+        startTime && setDuration(Math.max(0, analysis.referenceTimestamp() - startTime));
       },
-      [analysis, current]
+      [analysis, startTime]
     );
 
     useEffect(

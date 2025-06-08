@@ -87,12 +87,12 @@ export const FlagHistoryChart = observer(
     const [shown, setShown] = useState(null);
 
     const startTime = analysis.session.flagStats.length > 0 ? analysis.session.flagStats[0].startTime : null;
+    const endTime = analysis.session.flagStats[analysis.session.flagStats.length - 1].endTime || analysis.latestTimestamp || Date.now();
+    const flagStats = analysis.session.flagStats;
 
     if (!startTime) {
       return null;
     }
-
-    const endTime = analysis.session.flagStats[analysis.session.flagStats.length - 1].endTime || analysis.latestTimestamp || Date.now();
 
     return (
       <div>
@@ -101,7 +101,7 @@ export const FlagHistoryChart = observer(
             <GradientDefs />
           </defs>
           {
-            analysis.session.flagStats.map(
+            flagStats.map(
               (stat, idx) => (
                 <FlagRect
                   flag={stat.flag}

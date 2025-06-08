@@ -24,6 +24,22 @@ const MinMax = styled.div`
   }
 `;
 
+const TooltipInner = styled.div`
+  background-color: #000000AA;
+  padding: 2px;
+  color: white;
+`;
+
+const formatTime = (t) => dayjs(t).format('HH:mm');
+
+const makeTooltip = (unit) => ({ point }) => {
+  return (
+    <TooltipInner>
+      {point.data.xFormatted}: <b>{point.data.yFormatted}{unit}</b>
+    </TooltipInner>
+  );
+};
+
 export const Chart = ({ color='#54FFFF', minTime, maxTime, series }) => {
 
   const chartData = [{
@@ -31,7 +47,7 @@ export const Chart = ({ color='#54FFFF', minTime, maxTime, series }) => {
     data: series.data.map(d => ({ x: d.timestamp, y: d.value }))
   }];
 
-  const formatTime = (t) => dayjs(t).format('HH:mm');
+
 
   const minValue = chartData[0].data.reduce(
     (prev, next) => {
@@ -55,6 +71,7 @@ export const Chart = ({ color='#54FFFF', minTime, maxTime, series }) => {
 
   const minAxisValue = Math.floor(minValue.value / 10) * 10;
   const maxAxisValue = Math.ceil(maxValue.value / 10) * 10;
+  const minComesFirst = maxValue.timestamp > minValue.timestamp;
 
   return (
     <div>
@@ -91,7 +108,8 @@ export const Chart = ({ color='#54FFFF', minTime, maxTime, series }) => {
             lineStyle: { stroke: '#ffa600', strokeWidth: 1 },
             textStyle: { fill: '#ffa600', fontSize: 12 },
             legend: 'Max',
-            legendOrientation: 'horizontal'
+            legendOrientation: 'horizontal',
+            legendPosition: minComesFirst ? 'top-right' : 'top-left'
           },
           {
             axis: 'x',
@@ -100,10 +118,11 @@ export const Chart = ({ color='#54FFFF', minTime, maxTime, series }) => {
             textStyle: { fill: '#54f8cf', fontSize: 12 },
             legend: 'Min',
             legendOrientation: 'horizontal',
-            legendPosition: 'bottom-left',
+            legendPosition: minComesFirst ? 'top-left' : 'top-right',
           },
         ]}
         theme={chartTheme}
+        tooltip={makeTooltip(series.unit.trim())}
         useMesh
         xFormat={formatTime}
         xScale={{

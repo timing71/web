@@ -136,8 +136,12 @@ export const Analysis = ({ match: { params: { serviceUUID } } }) => {
     );
   }
   else {
+    let message = 'Loading data...';
+    if (delay > 0) {
+      message += ` (delayed by ${delay} seconds to match timing screen)`;
+    }
     return (
-      <LoadingScreen message='Loading data...' />
+      <LoadingScreen message={message} />
     );
   }
 };

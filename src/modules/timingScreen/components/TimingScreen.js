@@ -13,6 +13,7 @@ import { useSetting } from "../../settings";
 import { Spinner } from "../../../components/Spinner";
 import { stopEventBubble } from "../../../utils";
 import { FocusedCarContextProvider } from '../context';
+import { CursorHider } from '../../../components/CursorHider';
 
 const LoadingMessageInner = styled.div`
   display: flex;
@@ -94,29 +95,31 @@ export const TimingScreen = ({ children }) => {
           <title>{ manifest?.name }</title>
         </Helmet>
         <FocusedCarContextProvider>
-          <TimingScreenInner>
-            {
-              manifest && <TimingScreenHeader />
-            }
-            {
-              showTable && <TimingTable />
-            }
-            {
-              !showTable && (
-                <LoadingMessage>
-                  Waiting for data...
-                  {
-                    delay > 0 && <DelaySetting />
-                  }
-                </LoadingMessage>
-              )
-            }
-            <Messages />
-            <DataPanel />
-            {
-              children
-            }
-          </TimingScreenInner>
+          <CursorHider delay={5000}>
+            <TimingScreenInner>
+              {
+                manifest && <TimingScreenHeader />
+              }
+              {
+                showTable && <TimingTable />
+              }
+              {
+                !showTable && (
+                  <LoadingMessage>
+                    Waiting for data...
+                    {
+                      delay > 0 && <DelaySetting />
+                    }
+                  </LoadingMessage>
+                )
+              }
+              <Messages />
+              <DataPanel />
+              {
+                children
+              }
+            </TimingScreenInner>
+          </CursorHider>
         </FocusedCarContextProvider>
       </Page>
     </FullscreenContext>

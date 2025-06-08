@@ -108,6 +108,9 @@ export const Analysis = ({ match: { params: { serviceUUID } } }) => {
   );
 
   if (analyser.current && manifest && initialised.current) {
+    if (process.env.NODE_ENV === 'development') {
+      window._analyser = analyser.current;
+    }
     return (
       <AnalysisScreen
         analyser={analyser.current}

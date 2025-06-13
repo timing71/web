@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
@@ -56,10 +56,7 @@ export const Messages = observer(
       )
     )].sort();
 
-    const filteredMessages = useMemo(
-      () => !activeCategory ? messages : messages.filter(m => m.category === activeCategory),
-      [activeCategory, messages]
-    );
+    const filteredMessages = !activeCategory ? messages : messages.filter(m => m.category === activeCategory);
 
     return (
       <>

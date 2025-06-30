@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Delete, OpenInBrowser, StackedBarChart } from '@styled-icons/material';
+import { Delete, Lock, LockOpen, OpenInBrowser, StackedBarChart } from '@styled-icons/material';
 import { dayjs, timeWithHours } from '@timing71/common';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -36,7 +36,7 @@ const RouteryButton = ({ to, ...props }) => {
   );
 };
 
-const DeleteButton = ({ reload, uuid }) => {
+const DeleteButton = ({ disabled, reload, uuid }) => {
   const [ isDeleting, setDeleting ] = useState(false);
 
   const cs = useConnectionService();
@@ -56,7 +56,7 @@ const DeleteButton = ({ reload, uuid }) => {
   return (
     <Button
       danger
-      disabled={isDeleting}
+      disabled={disabled || isDeleting}
       onClick={doDelete}
       title='Delete'
     >
@@ -136,7 +136,7 @@ const Actions = styled.div`
   column-gap: 1em;
 `;
 
-const ServiceEntry = ({ openAnalysis, reload, service }) => {
+const ServiceEntry = ({ openAnalysis, reload, service, setProtection }) => {
   const finalState = service.sessions ? service.sessions[service.sessions.length - 1] : null;
 
   const duration = service.startTime && finalState?.lastUpdated ?
@@ -164,7 +164,14 @@ const ServiceEntry = ({ openAnalysis, reload, service }) => {
           >
             <StackedBarChart size={24} /> Analysis
           </Button>
+          <Button
+            onClick={() => setProtection(service.uuid, !service.protectFromDeletion)}
+          >
+            { service.protectFromDeletion && (<><Lock size={24} /> Unprotect</>)}
+            { !service.protectFromDeletion && (<><LockOpen size={24} /> Protect</>)}
+          </Button>
           <DeleteButton
+            disabled={service.protectFromDeletion}
             reload={reload}
             uuid={service.uuid}
           />
@@ -224,6 +231,13 @@ export const Services = () => {
     [cs]
   );
 
+  const setProtection = useCallback(
+    (uuid, protectFromDeletion) => {
+      cs.send({ type: 'SET_SERVICE_PROTECTION', uuid, protectFromDeletion }).then(reload);
+    },
+    [cs, reload]
+  );
+
   useEffect(reload, [reload]);
 
   return (
@@ -241,16 +255,16 @@ export const Services = () => {
           Recent sessions
         </PageTitle>
         <p>
-          This page lists recent timing sessions. You can reconnect to them,
-          launch the analysis screen, or download a replay file. Unless marked
-          as "protected", sessions will automatically be deleted after 7 days,
-          or you can delete them manually.
+          This page lists your recent timing sessions. You can reconnect to
+          them, launch the analysis screen, or download a replay file. Unless
+          marked as "protected", sessions will automatically be deleted after 7
+          days, or you can delete them manually.
         </p>
         {
           services !== null && (
             <ServiceTable>
               <Heading>
-                Started at
+                Date started
               </Heading>
               <Heading>
                 Source
@@ -269,6 +283,7 @@ export const Services = () => {
                         openAnalysis={openAnalysis}
                         reload={reload}
                         service={service}
+                        setProtection={setProtection}
                       />
                     )
                   )

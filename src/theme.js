@@ -210,7 +210,7 @@ export const Theme = {
     'fb-used': '#808080',
     'fb-active': '#00FF00',
     'attack-active': '#ff53e3',
-    'lap-invalid': '#BBB',
+    'invalid': '#888',
     'red': '#FF0000',
     'green': '#00FF00'
   },

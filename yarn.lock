@@ -4275,9 +4275,9 @@
     "@babel/runtime" "^7.12.5"
 
 "@timing71/common@^0.6.0":
-  version "0.6.0"
-  resolved "https://npm.pkg.github.com/download/@timing71/common/0.6.0/b3b7b08dd7433d0168131ca2b3a5609b096368fa#b3b7b08dd7433d0168131ca2b3a5609b096368fa"
-  integrity sha512-0OooqXTQKxhKAZWF1Y57bB/bOuXBQ4CwDh74SFcVxxdG/RjnxQdoibulLkaxY3SwjRuDXbrOncvMph7oSXffow==
+  version "0.6.1"
+  resolved "https://npm.pkg.github.com/download/@timing71/common/0.6.1/dce2174444f07bb01a744294ff90b87d6a8182d1#dce2174444f07bb01a744294ff90b87d6a8182d1"
+  integrity sha512-cHSv/7AN4eX/O3q3NFZAzKMxBAMTjDH9CINGqkN1wPjyfBNEYMGpjQPXDAo6waogGe+/6pMqqvu3n4y2AaDEYQ==
   dependencies:
     "@zip.js/zip.js" "^2.4.26"
     dayjs "^1.11.6"
@@ -5274,9 +5274,9 @@
   integrity sha512-EMxPWXlEqqvsK9jxPmNvEShrIXP2LYTdQnEfsBH6OQCnlZRVo/dJIgtzbKvtK9A8PBTDQdxwxulj+QKplmW2Xg==
 
 "@zip.js/zip.js@^2.4.26":
-  version "2.7.62"
-  resolved "https://registry.yarnpkg.com/@zip.js/zip.js/-/zip.js-2.7.62.tgz#6650f84c3a89d918215a936637214b09688656c8"
-  integrity sha512-OaLvZ8j4gCkLn048ypkZu29KX30r8/OfFF2w4Jo5WXFr+J04J+lzJ5TKZBVgFXhlvSkqNFQdfnY1Q8TMTCyBVA==
+  version "2.7.63"
+  resolved "https://registry.yarnpkg.com/@zip.js/zip.js/-/zip.js-2.7.63.tgz#5464340b0d19cd41e5a5de0d71b1fed80df78d88"
+  integrity sha512-B02i6QDMUQ4c+5F9LmliBGA+jFsiEHIlF0eLQ6rWLaQOD3YwI6vyWwGkVCNJnVVguE2xYyr9fAwSD/3valm1/Q==
 
 abab@^2.0.6:
   version "2.0.6"
@@ -8495,14 +8495,7 @@ es-module-lexer@^1.2.1:
   resolved "https://registry.yarnpkg.com/es-module-lexer/-/es-module-lexer-1.5.0.tgz#4878fee3789ad99e065f975fdd3c645529ff0236"
   integrity sha512-pqrTKmwEIgafsYZAGw9kszYzmagcE/n4dbgwGWLEXg7J4QFJVQRBld8j3Q3GNez79jzxZshq0bcT962QHOghjw==
 
-es-object-atoms@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/es-object-atoms/-/es-object-atoms-1.0.0.tgz#ddb55cd47ac2e240701260bc2a8e31ecb643d941"
-  integrity sha512-MZ4iQ6JwHOBQjahnjwaC1ZtIBH+2ohjamzAO3oaHcXYup7qxjF2fixyH+Q71voWHeOkI2q/TnJao/KfXYIZWbw==
-  dependencies:
-    es-errors "^1.3.0"
-
-es-object-atoms@^1.1.1:
+es-object-atoms@^1.0.0, es-object-atoms@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/es-object-atoms/-/es-object-atoms-1.1.1.tgz#1c4f2c4837327597ce69d2ca190a7fdd172338c1"
   integrity sha512-FGgH2h8zKNim9ljj7dankFPcICIK9Cp5bm+c2gQSYePhpaG5+esrLODihIorn+Pe6FGJzWhXQotPv73jTaldXA==
@@ -9879,9 +9872,9 @@ has-ansi@^2.0.0:
     ansi-regex "^2.0.0"
 
 has-bigints@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/has-bigints/-/has-bigints-1.0.2.tgz#0871bd3e3d51626f6ca0966668ba35d5602d6eaa"
-  integrity sha512-tSvCKtBr9lkF0Ex0aQiP9N+OpV4zi2r/Nee5VkRDbaqv35RLYMzbwQfFSZZH0kR+Rd6302UJZ2p/bJCEoR3VoQ==
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/has-bigints/-/has-bigints-1.1.0.tgz#28607e965ac967e03cd2a2c70a2636a1edad49fe"
+  integrity sha512-R3pbpkcIqv2Pm3dUwgjclDRVmWpTJW2DcMzcIhEXEx1oh/CEMObMm3KLmRJOdvhM7o4uQBnwr8pzRK2sJWIqfg==
 
 has-flag@^3.0.0:
   version "3.0.0"

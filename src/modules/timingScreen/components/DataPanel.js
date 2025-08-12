@@ -80,7 +80,16 @@ export const DataPanel = () => {
                 <tr key={key}>
                   <th>{spec.label}</th>
                   <td>
-                    {(state.meta?.parameters || {})[key]}
+                    {
+                      spec.type === 'boolean' && (
+                        <>
+                          { ((state.meta?.parameters || {})[key] && 'Yes') || 'No' }
+                        </>
+                      )
+                    }
+                    {
+                      spec.type !== 'boolean' && ((state.meta?.parameters || {})[key])
+                    }
                     {spec.unit}
                   </td>
                 </tr>

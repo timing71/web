@@ -72,12 +72,27 @@ const ParamsDialog = ({ dialog }) => {
                           {pspec.label}
                         </ParamLabel>
                         <ValueInputTd>
-                          <Input
-                            onChange={e => changeParam(key, pspec.type === 'number' ? e.target.valueAsNumber : e.target.value)}
-                            type={pspec.type}
-                            value={workingParams[key] || ''}
-                          />
-                          {pspec.unit}
+                          {
+                            pspec.type === 'boolean' && (
+                              <Input
+                                checked={workingParams[key] || false}
+                                onChange={e => changeParam(key, e.target.checked)}
+                                type='checkbox'
+                              />
+                            )
+                          }
+                          {
+                            pspec.type !== 'boolean' && (
+                              <>
+                                <Input
+                                  onChange={e => changeParam(key, pspec.type === 'number' ? e.target.valueAsNumber : e.target.value)}
+                                  type={pspec.type}
+                                  value={workingParams[key] || ''}
+                                />
+                                {pspec.unit}
+                              </>
+                            )
+                          }
                         </ValueInputTd>
                       </tr>
                       <tr>
@@ -90,6 +105,10 @@ const ParamsDialog = ({ dialog }) => {
             </tbody>
           </table>
         </TableWrapper>
+
+        <p>
+          Parameter changes will take effect from the next timing data update.
+        </p>
 
         <Button
           onClick={() => { setServiceParameters(workingParams); dialog.toggle(); }}

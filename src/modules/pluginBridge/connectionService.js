@@ -18,7 +18,7 @@ export class WebConnectionService extends EventEmitter {
   }
 
   receive({ data, origin }) {
-    if (origin === this._expectedOrigin) {
+    if (origin === this._expectedOrigin && data) {
       if (data.id !== undefined && this._promises[data.id]) {
         // Handle replies being received
         if (data.message?.error) {

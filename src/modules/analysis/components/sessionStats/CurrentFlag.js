@@ -11,7 +11,7 @@ export const CurrentFlag = observer(
     const analysis = useAnalysis();
 
     const current = analysis.session.flagStats[analysis.session.flagStats.length - 1];
-    const startTime = current.startTime;
+    const startTime = current?.startTime || 0;
 
     const [duration, setDuration] = useState(current ? Math.max(0, analysis.referenceTimestamp() - current.startTime) : 0);
 

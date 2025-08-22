@@ -29,7 +29,7 @@ jobs:
           echo "always-auth=true" >> .npmrc
 
       - name: Update Timing71 packages
-        uses: romoh/dependencies-autoupdate@v1.1
+        uses: romoh/dependencies-autoupdate@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           update-command: "'yarn upgrade @timing71/common @timing71/services'"

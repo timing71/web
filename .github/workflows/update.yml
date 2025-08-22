@@ -1,6 +1,9 @@
 name: Update T71 packages
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  registry_package:
+    types: [published]
 
 jobs:
   update:
@@ -30,3 +33,4 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           update-command: "'yarn upgrade @timing71/common @timing71/services'"
+          pr-branch: "master"

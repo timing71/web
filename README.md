@@ -2,8 +2,6 @@
 
 ![AGPL v3.0](https://img.shields.io/github/license/timing71/web)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/timing71/web/main.yml)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/a6ffa430-f8ec-4276-8775-b86dadcfda29/deploy-status)](https://app.netlify.com/sites/beta-timing71/deploys)
-![Twitter Follow](https://img.shields.io/twitter/follow/timing_71?style=social)
 
 This repo hosts the source code for the Timing71 website.
 

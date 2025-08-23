@@ -116,7 +116,10 @@ export const Theme = {
     'sil': '#CCCCCC',
     'pam': '#FFFF00',
     'h4': '#FFFFAA',
-    'pa991': '#d22730'
+    'pa991': '#d22730',
+    // Mustang Challenge
+    'dh': '#FF4F00',
+    'dhl': '#33a7ff'
   },
   carStates: {
     'RUN': {

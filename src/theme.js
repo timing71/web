@@ -216,7 +216,8 @@ export const Theme = {
     'attack-active': '#ff53e3',
     'invalid': '#888',
     'red': '#FF0000',
-    'green': '#00FF00'
+    'green': '#00FF00',
+    'yellow': '#DDDD00'
   },
   flagStates: {
     [FlagState.GREEN]: {

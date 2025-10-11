@@ -4286,9 +4286,9 @@
     mobx-state-tree "^5.1.7"
 
 "@timing71/services@^0.14.0":
-  version "0.14.4"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.14.4/150dbfade37f00048642dd5fb678ff18353c817e#150dbfade37f00048642dd5fb678ff18353c817e"
-  integrity sha512-wwYDiuQkRocUCFtIQs4sMTSVK2QqLn6/FiuzGw27ipDRaaNEDKnpWTxh+TM6NZGCxu10U3MzOq2umSriIgtZeQ==
+  version "0.14.5"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.14.5/1f24346d51149eafe9dce621170fc73ca44b4af9#1f24346d51149eafe9dce621170fc73ca44b4af9"
+  integrity sha512-JRECf1o11NcL+PzMVdRQ+DhHECp6PVlWQtvAMrL8w/oKdli8t/rBt5K0eSuck/2aKpiTxShRO4XgArfpNFlcnw==
   dependencies:
     "@microsoft/signalr" "^7.0.4"
     cookie "^0.5.0"
@@ -5274,9 +5274,9 @@
   integrity sha512-EMxPWXlEqqvsK9jxPmNvEShrIXP2LYTdQnEfsBH6OQCnlZRVo/dJIgtzbKvtK9A8PBTDQdxwxulj+QKplmW2Xg==
 
 "@zip.js/zip.js@^2.4.26":
-  version "2.8.2"
-  resolved "https://registry.yarnpkg.com/@zip.js/zip.js/-/zip.js-2.8.2.tgz#08a8bbc050c9fae1db67818d19602e00c34415e1"
-  integrity sha512-PI6UdgpSeVoGvzguKHmy2bwOqI3UYkntLZOCpyJSKIi7234c5aJmQYkJB/P4P2YUJkqhbqvu7iM2/0eJZ178nA==
+  version "2.8.7"
+  resolved "https://registry.yarnpkg.com/@zip.js/zip.js/-/zip.js-2.8.7.tgz#ea828f03af80dc1a3f3cc5b9146f193587485715"
+  integrity sha512-8daf29EMM3gUpH/vSBSCYo2bY/wbamgRPxPpE2b+cDnbOLBHAcZikWad79R4Guemth/qtipzEHrZMq1lFXxWIA==
 
 abab@^2.0.6:
   version "2.0.6"
@@ -12454,9 +12454,9 @@ mobx@^6.3.7:
   integrity sha512-c8NKkO4R2lShkSXZ2Ongj1ycjugjzFFo/UswHBnS62y07DMcTc9Rvo03/3nRyszIvwPNljlkd4S828zIBv/piw==
 
 mobx@^6.7.0:
-  version "6.13.7"
-  resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.13.7.tgz#70e5dda7a45da947f773b3cd3b065dfe7c8a75de"
-  integrity sha512-aChaVU/DO5aRPmk1GX8L+whocagUUpBQqoPtJk+cm7UOXUk87J4PeWCh6nNmTTIfEhiR9DI/+FnA8dln/hTK7g==
+  version "6.15.0"
+  resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.15.0.tgz#78b9b82d383724eebb4b6e50c2eb4ae2da861cb5"
+  integrity sha512-UczzB+0nnwGotYSgllfARAqWCJ5e/skuV2K/l+Zyck/H6pJIhLXuBnz+6vn2i211o7DtbE78HQtsYEKICHGI+g==
 
 move-concurrently@^1.0.1:
   version "1.0.1"

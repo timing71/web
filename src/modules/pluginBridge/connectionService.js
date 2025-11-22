@@ -53,7 +53,13 @@ export class WebConnectionService extends EventEmitter {
 
   async fetch(url, { returnHeaders=false, ...options }={}) {
     const response = await this.send({ type: 'FETCH', options, url });
-    return returnHeaders ? [response.data, response.headers] : response.data;
+
+    if (response.type === 'FETCH_FAILED') {
+      throw new ConnectionServiceException(response.error);
+    }
+    else {
+      return returnHeaders ? [response.data, response.headers] : response.data;
+    }
   }
 
   createWebsocket(url, { tag=undefined, autoReconnect=true, protocols=[] }={}) {
@@ -87,3 +93,5 @@ export class WebConnectionService extends EventEmitter {
   }
 
 }
+
+class ConnectionServiceException extends Error {}

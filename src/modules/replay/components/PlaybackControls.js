@@ -1,41 +1,14 @@
 import { timeWithHours } from "@timing71/common";
 import styled from "styled-components";
-import Slider from 'rc-slider';
-import 'rc-slider/assets/index.css';
 
 import { PlayPauseButton } from "./PlayPauseButton";
 import { SkipBackwards, SkipForwards } from "./SkipButton";
+import { TimeSlider } from './TimeSlider';
 
 const Container = styled.div`
-
   flex-grow: 1;
-
   display: flex;
   align-items: center;
-
-  .rc-slider {
-    margin: 0 0.5em;
-  }
-
-  .rc-slider-track {
-    background-color: ${ props => props.theme.site.highlightColor };
-  }
-
-  .rc-slider-rail {
-    background-color: #808080;
-  }
-
-  .rc-slider-handle {
-    background-color: ${ props => props.theme.site.highlightColor };
-    border-color: ${ props => props.theme.site.highlightColor };
-    cursor: pointer;
-
-    &:hover {
-      background-color: white;
-      border-color: white;
-    }
-  }
-
 `;
 
 export const PlaybackControls = ({ replayState }) => (
@@ -46,7 +19,7 @@ export const PlaybackControls = ({ replayState }) => (
     <div>
       { timeWithHours(replayState.state.position) }
     </div>
-    <Slider
+    <TimeSlider
       max={replayState.state.duration}
       min={0}
       onChange={replayState.setPosition}

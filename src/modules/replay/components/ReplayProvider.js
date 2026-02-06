@@ -1,12 +1,14 @@
-import { useEffect, useRef, useState } from "react";
-
 import { loadReplayFromFile } from '@timing71/common';
+
+import { useCallback, useEffect, useRef, useState } from 'react';
+import throttle from 'lodash.throttle';
 
 import { Button } from "../../../components/Button";
 import { ErrorScreen } from "../../../components/ErrorScreen";
 
 import { LoadingScreen } from '../../../components/LoadingScreen';
 import { ServiceManifestContext, ServiceStateContext } from "../../../components/ServiceContext";
+import { useConnectionService } from '../../../ConnectionServiceProvider';
 
 const cancellable = promise => {
   let rejectFn;
@@ -32,6 +34,23 @@ export const ReplayProvider = ({ children, replayFile, replayState: { setDuratio
   const [error, setError] = useState(null);
 
   const [currentFrame, setCurrentFrame] = useState(null);
+
+  const connectionService = useConnectionService();
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const storePosition = useCallback(
+    throttle(
+      (uuid, position) => {
+        connectionService.send({
+          type: 'STORE_REPLAY_POSITION',
+          uuid,
+          position
+        });
+      },
+      1000
+    ),
+    [connectionService]
+  );
 
   useEffect(
     () => {
@@ -61,14 +80,17 @@ export const ReplayProvider = ({ children, replayFile, replayState: { setDuratio
         const seek = cancellable(replay.getStateAtRelative(position));
         prevSeek.current = seek;
         seek.then(
-          f => setCurrentFrame({
-            ...f,
-            manifest: replay.manifest,
-            session: {
-              ...f.session,
-              pauseClocks: f.session?.pauseClocks || !state.playing
-            }
-          })
+          f => {
+            setCurrentFrame({
+              ...f,
+              manifest: replay.manifest,
+              session: {
+                ...f.session,
+                pauseClocks: f.session?.pauseClocks || !state.playing
+              }
+            });
+            storePosition(replay.manifest.uuid, position);
+          }
         ).catch(
           e => {
             if (!e.cancelled) {
@@ -78,7 +100,7 @@ export const ReplayProvider = ({ children, replayFile, replayState: { setDuratio
         );
       }
     },
-    [replay, position, state.playing]
+    [replay, position, state.playing, storePosition]
   );
 
   useEffect(

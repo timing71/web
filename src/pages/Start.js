@@ -19,6 +19,10 @@ export const Start = ({ location: { search } }) => {
     () => {
       const myUUID = uuid();
 
+      if (typeof(window.gtag) === 'function') {
+        window.gtag('event', 'start_timing_service', { source });
+      }
+
       cs.send({
         type: 'START_SERVICE',
         uuid: myUUID,

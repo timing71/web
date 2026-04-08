@@ -26,8 +26,6 @@ export const ServiceProvider = ({
 
   const serviceInstance = useRef();
 
-  const hasSetParameters = Object.keys(serviceParameters).length > 0;
-
   useEffect(
     () => {
       const serviceClass = mapServiceProvider(service.source);
@@ -91,12 +89,14 @@ export const ServiceProvider = ({
 
   useEffect(
     () => {
-      if (serviceInstance.current && hasSetParameters) {
+      if (serviceInstance.current) {
         serviceInstance.current.parameters = { ...serviceParameters };
-        removeMessage(`${service.uuid}-params`);
+        if (Object.keys(serviceParameters).length > 0) {
+          removeMessage(`${service.uuid}-params`);
+        }
       }
     },
-    [hasSetParameters, removeMessage, service.uuid, serviceParameters]
+    [removeMessage, service.uuid, serviceParameters]
   );
 
   useEffect(

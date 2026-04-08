@@ -46,7 +46,16 @@ const ParamsDialog = ({ dialog }) => {
   const changeParam = useCallback(
     (key, value) => {
       setWorkingParams(
-        prev => ({ ...prev, [key]: value })
+        prev => {
+          const next = { ...prev };
+          if ((typeof(value) === 'string' && value !== '') || (typeof(value) === 'number' && value > 0)) {
+            next[key] = value;
+          }
+          else {
+            delete next[key];
+          }
+          return next;
+        }
       );
     },
     []
@@ -85,6 +94,7 @@ const ParamsDialog = ({ dialog }) => {
                             pspec.type !== 'boolean' && (
                               <>
                                 <Input
+                                  min={pspec.minimum}
                                   onChange={e => changeParam(key, pspec.type === 'number' ? e.target.valueAsNumber : e.target.value)}
                                   type={pspec.type}
                                   value={workingParams[key] || ''}

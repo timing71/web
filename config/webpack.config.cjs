@@ -131,7 +131,8 @@ const commonConfig = {
       process: "process/browser"
     },
     fallback: {
-      "stream": require.resolve("stream-browserify")
+      "stream": require.resolve("stream-browserify"),
+      'process/browser': require.resolve('process/browser')
     }
   },
   target: ['browserslist']

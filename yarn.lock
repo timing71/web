@@ -4310,9 +4310,9 @@
     mobx-state-tree "^5.1.7"
 
 "@timing71/services@^0.16.0":
-  version "0.16.0"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.16.0/16769109ff85b968e47aa8dfda60283eca9e15a7#16769109ff85b968e47aa8dfda60283eca9e15a7"
-  integrity sha512-9opeaVJpv4ZhRPaWNyqPzevO2uPQR5XCMAcvP7+xkKJ7LJU9IOsFK0zClAp5ZZKZmul6Xiba8AdONddogXCzGQ==
+  version "0.16.1"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.16.1/5c5d5027f7fac8dcf53a1ab4471730fbbb775946#5c5d5027f7fac8dcf53a1ab4471730fbbb775946"
+  integrity sha512-LR8t2Y+uMKikDuCuDfOILiXGYyDq6qtrSEQJ4mIJv9tSrIHp0dWxlQm0Z7J651fPbBUtKYP4OoY9dSGj1Ja54w==
   dependencies:
     "@microsoft/signalr" "^7.0.4"
     "@microsoft/signalr-protocol-msgpack" "^10.0.0"
@@ -9866,9 +9866,9 @@ graphql-ws@^5.16.0:
   integrity sha512-E1uccsZxt/96jH/OwmLPuXMACILs76pKF2i3W861LpKBCYtGIyPQGtWLuBLkND4ox1KHns70e83PS4te50nvPQ==
 
 graphql@^16.8.1:
-  version "16.14.0"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.14.0.tgz#f1128a74b16a34d1245c8436bb07b488d87b83e1"
-  integrity sha512-BBvQ/406p+4CZbTpCbVPSxfzrZrbnuWSP1ELYgyS6B+hNeKzgrdB4JczCa5VZUBQrDa9hUngm0KnexY6pJRN5Q==
+  version "16.14.1"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.14.1.tgz#e692888b5103480a71e48cd9c3ed1dd8b0c5af7f"
+  integrity sha512-cQOsSMS/IrDz82PVyRDvf/Q1F/bRbBVjJlh+xYOkI1qw2bWRvWGiWc+m2O0d6l4Bt1fyY+8kzJ8JFWGJqNeDBg==
 
 gzip-size@^6.0.0:
   version "6.0.0"
@@ -12496,9 +12496,9 @@ mobx@^6.3.7:
   integrity sha512-c8NKkO4R2lShkSXZ2Ongj1ycjugjzFFo/UswHBnS62y07DMcTc9Rvo03/3nRyszIvwPNljlkd4S828zIBv/piw==
 
 mobx@^6.7.0:
-  version "6.15.3"
-  resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.15.3.tgz#9ba303d2220fcd4253e34f0702a2a266aa29871f"
-  integrity sha512-6+ZSYDs5zgH5CdGfEU2q2Lsa5PztVryL1ys7kAImTU25n2A9LAMj/yneVsQpd03MfwMLDQF+7kakJR9Z+cQxSw==
+  version "6.16.0"
+  resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.16.0.tgz#94d0c53459ddf152dc9fe4c5772b4221cd0f7c67"
+  integrity sha512-qFIcwox4Mc4xRUVBGm0mt2uXmm4zCnfpwBRVkm59Y7zDei498NmpyKvEDsjCR3OYPbnQCKyhV6mLDs0vt2hBxA==
 
 move-concurrently@^1.0.1:
   version "1.0.1"

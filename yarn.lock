@@ -4310,9 +4310,9 @@
     mobx-state-tree "^5.1.7"
 
 "@timing71/services@^0.16.0":
-  version "0.16.2"
-  resolved "https://npm.pkg.github.com/download/@timing71/services/0.16.2/c22f38262b4f1e9d44f7a97012b8404171c20a40#c22f38262b4f1e9d44f7a97012b8404171c20a40"
-  integrity sha512-I+hEkMNAcO+6gfj+1gnuYAGQi2t5A24wg52SuBZeXvww/Bnubyl8LNz1B16Epof8F21zRanTP0NLM8VaMEt8ag==
+  version "0.16.4"
+  resolved "https://npm.pkg.github.com/download/@timing71/services/0.16.4/e4bed6fccd0de8ac8ede4b384be04fe8a7063349#e4bed6fccd0de8ac8ede4b384be04fe8a7063349"
+  integrity sha512-oX6eNq2QpGF5Wahv4A2s650J9vlIMiyae+HdBS5ym8OLrsHMirfOLbqoawaKZ2JZ6Qv271ImWi6joqxdytMMtg==
   dependencies:
     "@microsoft/signalr" "^7.0.4"
     "@microsoft/signalr-protocol-msgpack" "^10.0.0"

@@ -6,6 +6,7 @@ import { FastLapClassification } from './FastLapClassification';
 import { LapHistory } from './lapHistory';
 import { Messages } from './Messages';
 import { PitStops } from './pitStops';
+import { Radar } from './radar/Radar';
 import { SessionStats } from './sessionStats';
 import { StrategyOverview } from './strategy';
 
@@ -19,6 +20,11 @@ export const routes = [
     path: '/strategy',
     name: 'Strategy overview',
     component: StrategyOverview
+  },
+  {
+    path: '/radar',
+    name: 'Track radar',
+    component: Radar
   },
   {
     path: '/classification',

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import { perCarRoutes, routes } from './routes';
+import { useAnalysis } from './context';
 
 const Container = styled.div`
   grid-area: main;
@@ -32,6 +33,8 @@ export const Contents = () => {
   const { path, url } = useRouteMatch();
   const location = useLocation();
   const nodeRef = useRef();
+  const analysis = useAnalysis();
+
   return (
     <Container>
       <TransitionGroup>
@@ -51,13 +54,18 @@ export const Contents = () => {
               </Route>
               {
                 routes.map(
-                  (route, idx) => (
-                    <Route
-                      component={route.component}
-                      key={idx}
-                      path={`${path}${route.path}`}
-                    />
-                  )
+                  (route, idx) => {
+                    if (typeof(route.component?.test) === 'function' && !route.component.test(analysis)) {
+                      return null;
+                    }
+                    return (
+                      <Route
+                        component={route.component}
+                        key={idx}
+                        path={`${path}${route.path}`}
+                      />
+                    );
+                  }
                 )
               }
               {

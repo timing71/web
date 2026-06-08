@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 
 import { AnalysisDataDecorator } from ".";
-import { HelmetDecorator, ThemeDecorator } from "../../../stories/decorators";
+import { HelmetDecorator, SettingsDecorator, ThemeDecorator } from "../../../stories/decorators";
 import { FastLapClassification as FLC } from "../components/FastLapClassification";
 
 export default {
@@ -10,6 +10,7 @@ export default {
   decorators: [
     ThemeDecorator,
     HelmetDecorator,
+    SettingsDecorator,
     AnalysisDataDecorator()
   ]
 };

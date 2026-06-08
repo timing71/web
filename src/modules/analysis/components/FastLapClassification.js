@@ -7,10 +7,19 @@ import { useAnalysis } from "./context";
 import { ServiceManifestContext, ServiceStateContext } from "../../../components/ServiceContext";
 import { TimingTable } from '../../timingScreen';
 import { FocusedCarContextProvider } from '../../timingScreen/context';
+import { useSetting } from '../../settings';
+import { Control, Controls, TypeSelector } from './Controls';
+
+const Mode = {
+  BEST_LAP: 1,
+  LAST_LAP: 2,
+};
 
 export const FastLapClassification = () => {
 
   const analysis = useAnalysis();
+
+  const [mode, setMode] = useSetting('analysis.fastLapClassification.displayMode', Mode.BEST_LAP);
 
   const manifest = analysis.manifest;
 
@@ -20,8 +29,21 @@ export const FastLapClassification = () => {
   );
 
   const filteredCarRows = useMemo(
-    () => filterCarRows(analysis.state.cars, filteredColspec),
-    [analysis.state.cars, filteredColspec]
+    () => {
+      return analysis.state.cars.map(
+        car => filteredColspec.map(
+          ([idx, _, mapFunc]) => {
+            if (typeof(mapFunc) === 'function') {
+              return mapFunc(car);
+            }
+            return car[idx];
+          }
+        )
+      ).sort(
+        (a, b) => (a[a.length - mode][0] || 99999) - (b[b.length - mode][0] || 99999)
+      );
+    },
+    [analysis.state.cars, filteredColspec, mode]
   );
 
   return (
@@ -30,7 +52,22 @@ export const FastLapClassification = () => {
         <Helmet>
           <title>Fastest lap classification</title>
         </Helmet>
-        <h3>Fastest lap classification</h3>
+        <Controls>
+          <h3>Fastest lap classification</h3>
+          <Control>
+            <label htmlFor='chart-type'>
+              Sort by:
+            </label>
+            <TypeSelector
+              id='chart-type'
+              onChange={(e) => setMode(e.target.value)}
+              value={mode}
+            >
+              <option value={Mode.BEST_LAP}>Best lap</option>
+              <option value={Mode.LAST_LAP}>Last lap</option>
+            </TypeSelector>
+          </Control>
+        </Controls>
         <FocusedCarContextProvider>
           <TimingTable />
         </FocusedCarContextProvider>
@@ -71,19 +108,4 @@ const filterColspec = (colSpec, analysis) => {
   }
 
   return filtered;
-};
-
-const filterCarRows = (carRows, filteredColspec) => {
-  return carRows.map(
-    car => filteredColspec.map(
-      ([idx, _, mapFunc]) => {
-        if (typeof(mapFunc) === 'function') {
-          return mapFunc(car);
-        }
-        return car[idx];
-      }
-    )
-  ).sort(
-    (a, b) => (a[a.length - 1][0] || 99999) - (b[b.length - 1][0] || 99999)
-  );
 };

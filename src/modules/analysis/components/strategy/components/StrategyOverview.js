@@ -1,4 +1,5 @@
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
 import Slider from 'rc-slider';
@@ -13,7 +14,7 @@ import { StintDetailModal } from './StintDetailModal';
 import throttle from 'lodash.throttle';
 import { CarOption } from '../../CarOption';
 import { useAnalysis } from '../../context';
-import { observer } from 'mobx-react-lite';
+import { Control, Controls, TypeSelector } from '../../Controls';
 
 const Container = styled.div`
   position: relative;
@@ -102,53 +103,6 @@ const chartType = {
   [DisplayMode.LAPS]: LapsChart,
   [DisplayMode.TIME]: TimeChart
 };
-
-const TypeSelector = styled.select`
-  font-family: ${ props => props.theme.site.textFont };
-
-  background-color: black;
-  color: white;
-
-  padding: 0.5em;
-
-  border: 1px solid ${ props => props.theme.site.highlightColor };
-  border-radius: 0.25em;
-
-  &:focus-visible {
-    outline: none;
-  }
-`;
-
-const Controls = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-
-  & div {
-    flex-grow: 1;
-  }
-
-  label {
-    margin: 0 0.5em;
-  }
-`;
-
-const Control = styled.div`
-  display: flex;
-  align-items: center;
-
-  .rc-slider-track {
-    background-color: ${ props => props.theme.site.highlightColor };
-  }
-
-  .rc-slider-rail {
-    background-color: #808080;
-  }
-
-  .rc-slider-handle {
-    border-color: ${ props => props.theme.site.highlightColor };
-    background-color: ${ props => props.theme.site.highlightColor };
-  }
-`;
 
 export const StrategyOverview = observer(
   () => {

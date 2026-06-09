@@ -1,5 +1,4 @@
 import { useRef, useEffect } from 'react';
-import * as Sentry from "@sentry/browser";
 import { CURRENT_VERSION, createAnalyser } from '@timing71/common/analysis';
 import { applySnapshot, onPatch, onSnapshot } from 'mobx-state-tree';
 
@@ -88,7 +87,8 @@ export const Analysis = ({ analysisState, live=false, serviceUUID, sessionIndex 
       }
       catch (e) {
         // Report and move on
-        Sentry.captureException(e);
+        // eslint-disable-next-line no-console
+        console.warn(e);
       }
 
       prevState.current = state;

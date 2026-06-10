@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useAnalysis } from '../context';
 import { tryReference } from 'mobx-state-tree';
 import { useEffect, useState } from 'react';
+import { readableColor } from 'polished';
 
 const OUTER_RADIUS = 100;
 const RADIUS_STEP = 15;
@@ -19,9 +20,14 @@ const CarCircle = styled.g`
   }
 
   & text {
+    fill: ${ props => readableColor(props.theme.classColours[props.carClass] || '#808080') };
     fill: contrast-color(${
       props => props.theme.classColours[props.carClass] || '#808080'
     });
+  }
+
+  & line {
+    stroke: ${ props => props.theme.classColours[props.carClass] || '#808080' };
   }
 `;
 
@@ -37,7 +43,6 @@ const Wrapper = styled.svg`
   }
 
   text {
-    fill: white;
     font-size: 4px;
   }
 
@@ -50,13 +55,8 @@ const Wrapper = styled.svg`
       visibility: hidden;
     }
 
-    ${CarCircle} {
-      stroke: black;
-      stroke-width: 0.2px;
-    }
-
     &.leader {
-      ${CarCircle} {
+      circle {
         stroke: yellow;
         stroke-width: 0.5px;
       }
@@ -73,7 +73,7 @@ const Wrapper = styled.svg`
     }
 
     &.selected {
-      ${CarCircle} {
+      circle {
         stroke: ${props => props.theme.site.highlightColor};
         stroke-width: 0.5px;
       }
@@ -85,7 +85,6 @@ const Wrapper = styled.svg`
 
     line {
       visibility: hidden;
-      stroke: #606060;
       stroke-width: 0.5px;
     }
 

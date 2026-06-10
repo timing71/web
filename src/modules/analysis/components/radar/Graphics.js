@@ -1,6 +1,8 @@
 import { observer } from 'mobx-react-lite';
 import styled from 'styled-components';
 import { useAnalysis } from '../context';
+import { tryReference } from 'mobx-state-tree';
+import { useEffect, useState } from 'react';
 
 const OUTER_RADIUS = 100;
 const RADIUS_STEP = 15;
@@ -151,7 +153,7 @@ export const BaseLayer = ({ leaderLap, numberOfRings = MAX_LEVELS }) => {
 const CarPosition = ({ isLeader, raceNum, ringIndex, relativeDistance }) => {
   const minRadius = OUTER_RADIUS - (MAX_LEVELS - 1) * RADIUS_STEP;
   const radius = Math.max(minRadius, OUTER_RADIUS - (ringIndex * RADIUS_STEP));
-  const angle = 2 * Math.PI * relativeDistance;
+  const angle = -2 * Math.PI * relativeDistance;
 
   const xPos = Math.sin(angle) * -radius;
   const yPos = Math.cos(angle) * -radius;
@@ -188,35 +190,54 @@ const CarPosition = ({ isLeader, raceNum, ringIndex, relativeDistance }) => {
   );
 };
 
-const CarsLayer = ({ cars, leaderLap, useLaps }) => {
-  return (
-    <g>
-      {
-        cars.slice(1).filter(c => !!c.position).map(
-          (car, idx) => (
-            <CarPosition
-              key={car.raceNum}
-              raceNum={car.raceNum}
-              relativeDistance={car.position.relativeDistance}
-              ringIndex={useLaps ? leaderLap - car.currentLap : 0}
-            />
+const CarsLayer = observer(
+  ({ cars, leaderLap, useLaps }) => {
+    if (cars.length === 0) {
+      return <g />;
+    }
+    return (
+      <g>
+        {
+          [...cars].reverse().map(
+            (car, idx) => {
+              const maybePosition = tryReference(() => car.position);
+              if (!maybePosition) {
+                return null;
+              }
+              return (
+                <CarPosition
+                  isLeader={idx === cars.length - 1}
+                  key={car.raceNum}
+                  raceNum={car.raceNum}
+                  relativeDistance={maybePosition.relativeDistance}
+                  ringIndex={useLaps ? leaderLap - car.currentLap : 0}
+                />
+              );
+            }
           )
-        )
-      }
-      <CarPosition
-        isLeader
-        raceNum={cars[0].raceNum}
-        relativeDistance={cars[0].position.relativeDistance}
-        ringIndex={0}
-      />
-    </g>
-  );
-};
+        }
+      </g>
+    );
+  }
+);
 
 export const RadarChart = observer(
   ({ useLaps }) => {
 
     const analysis = useAnalysis();
+
+    // eslint-disable-next-line no-unused-vars
+    const [_, setForceUpdate] = useState(false);
+
+    useEffect(
+      () => {
+        const interval = setInterval(() => setForceUpdate(u => !u), 1000);
+        return () => {
+          clearInterval(interval);
+        };
+      },
+      []
+    );
 
     return (
       <Wrapper

@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { observer } from 'mobx-react-lite';
+
 import { useSetting } from '../../../settings';
 import { useAnalysis } from '../context';
 import { Controls } from '../Controls';
@@ -12,36 +14,38 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 
-export const Radar = () => {
-  const analysis = useAnalysis();
+export const Radar = observer(
+  () => {
+    const analysis = useAnalysis();
 
-  const [useLaps, setUseLaps] = useSetting('analysis.radar.useLaps', false);
+    const [useLaps, setUseLaps] = useSetting('analysis.radar.useLaps', false);
 
-  if (!Radar.test(analysis)) {
-    return null;
-  }
+    if (!Radar.test(analysis)) {
+      return null;
+    }
 
-  return (
-    <>
-      <Controls>
-        <h3>Track radar</h3>
-        <label>
-          <input
-            checked={useLaps}
-            onChange={(e) => setUseLaps(e.target.checked)}
-            type='checkbox'
+    return (
+      <>
+        <Controls>
+          <h3>Track radar</h3>
+          <label>
+            <input
+              checked={useLaps}
+              onChange={(e) => setUseLaps(e.target.checked)}
+              type='checkbox'
+            />
+            Separate by laps
+          </label>
+        </Controls>
+        <Wrapper>
+          <RadarChart
+            useLaps={useLaps}
           />
-          Separate by laps
-        </label>
-      </Controls>
-      <Wrapper>
-        <RadarChart
-          useLaps={useLaps}
-        />
-      </Wrapper>
-    </>
-  );
-};
+        </Wrapper>
+      </>
+    );
+  }
+);
 
 
 Radar.test = (analysis) => {

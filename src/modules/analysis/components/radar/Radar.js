@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react-lite';
 
 import { useSetting } from '../../../settings';
-import { useAnalysis } from '../context';
+import { useAnalysis, useSelectedCar } from '../context';
 import { Controls } from '../Controls';
 import { RadarChart } from './Graphics';
 
@@ -19,6 +19,8 @@ export const Radar = observer(
     const analysis = useAnalysis();
 
     const [useLaps, setUseLaps] = useSetting('analysis.radar.useLaps', false);
+
+    const [selectedCar, setSelectedCar] = useSelectedCar();
 
     if (!Radar.test(analysis)) {
       return null;
@@ -39,6 +41,8 @@ export const Radar = observer(
         </Controls>
         <Wrapper>
           <RadarChart
+            selectedCar={selectedCar}
+            setSelectedCar={setSelectedCar}
             useLaps={useLaps}
           />
         </Wrapper>

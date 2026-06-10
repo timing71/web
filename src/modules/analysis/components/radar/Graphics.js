@@ -24,6 +24,7 @@ const CarCircle = styled.g`
     fill: contrast-color(${
       props => props.theme.classColours[props.carClass] || '#808080'
     });
+    pointer-events: none;
   }
 
   & line {
@@ -164,7 +165,7 @@ export const BaseLayer = ({ leaderLap, numberOfRings = MAX_LEVELS }) => {
 };
 
 
-const CarPosition = ({ carClass, isLeader, raceNum, ringIndex, relativeDistance }) => {
+const CarPosition = ({ carClass, isLeader, isSelected, onClick, raceNum, ringIndex, relativeDistance }) => {
   const minRadius = OUTER_RADIUS - (MAX_LEVELS - 1) * RADIUS_STEP;
   const radius = Math.max(minRadius, OUTER_RADIUS - (ringIndex * RADIUS_STEP));
   const angle = -2 * Math.PI * relativeDistance;
@@ -175,7 +176,7 @@ const CarPosition = ({ carClass, isLeader, raceNum, ringIndex, relativeDistance 
   return (
     <CarCircle
       carClass={carClass}
-      className={`car ${ isLeader ? 'leader' : '' }`}
+      className={`car ${ isLeader ? 'leader' : '' } ${ isSelected ? 'selected' : '' }`}
     >
       <line
         strokeLinecap='square'
@@ -187,6 +188,7 @@ const CarPosition = ({ carClass, isLeader, raceNum, ringIndex, relativeDistance 
       <circle
         cx={xPos}
         cy={yPos}
+        onClick={onClick}
         r={6}
       />
       <text
@@ -208,7 +210,7 @@ const CarPosition = ({ carClass, isLeader, raceNum, ringIndex, relativeDistance 
 };
 
 const CarsLayer = observer(
-  ({ cars, leaderLap, useLaps }) => {
+  ({ cars, leaderLap, selectedCar, setSelectedCar, useLaps }) => {
     if (cars.length === 0) {
       return <g />;
     }
@@ -225,7 +227,9 @@ const CarsLayer = observer(
                 <CarPosition
                   carClass={car.classColorString}
                   isLeader={idx === cars.length - 1}
+                  isSelected={car.raceNum === selectedCar}
                   key={car.raceNum}
+                  onClick={() => setSelectedCar(car.raceNum)}
                   raceNum={car.raceNum}
                   relativeDistance={maybePosition.relativeDistance}
                   ringIndex={useLaps ? leaderLap - car.currentLap : 0}
@@ -240,7 +244,7 @@ const CarsLayer = observer(
 );
 
 export const RadarChart = observer(
-  ({ useLaps }) => {
+  ({ selectedCar, setSelectedCar, useLaps }) => {
 
     const analysis = useAnalysis();
 
@@ -285,6 +289,8 @@ export const RadarChart = observer(
         <CarsLayer
           cars={analysis.carsInRunningOrder}
           leaderLap={analysis.session.leaderLap}
+          selectedCar={selectedCar}
+          setSelectedCar={setSelectedCar}
           useLaps={useLaps}
         />
       </Wrapper>

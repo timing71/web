@@ -1,14 +1,17 @@
 import { useEffect } from 'react';
 import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+
 import { CarSelection } from "./CarSelection";
 import { MenuItem } from './MenuItem';
 import { perCarRoutes } from './routes';
+import { useSelectedCar } from './context';
 
-export const PerCarMenu = ({ selectedCar, setSelectedCar }) => {
+export const PerCarMenu = () => {
 
   const match = useRouteMatch();
   const location = useLocation();
   const history = useHistory();
+  const [selectedCar, setSelectedCar] = useSelectedCar();
 
   const { url } = match;
   useEffect(

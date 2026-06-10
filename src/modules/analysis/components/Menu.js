@@ -18,7 +18,7 @@ const MenuWrapper = styled.ul`
   overflow-y: auto;
 `;
 
-export const Menu = ({ selectedCar, setSelectedCar }) => {
+export const Menu = () => {
 
   const { url } = useRouteMatch();
   const location = useLocation();
@@ -47,10 +47,7 @@ export const Menu = ({ selectedCar, setSelectedCar }) => {
           }
         )
       }
-      <PerCarMenu
-        selectedCar={selectedCar}
-        setSelectedCar={setSelectedCar}
-      />
+      <PerCarMenu />
     </MenuWrapper>
   );
 };

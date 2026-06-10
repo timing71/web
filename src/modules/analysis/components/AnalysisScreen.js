@@ -1,9 +1,8 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 
 import { FullscreenContext, useFullscreenContext } from "../../../components/FullscreenContext";
 import { Page } from '../../../components/Page';
-import { AnalysisProvider } from './context';
+import { AnalysisProvider, SelectedCarProvider } from './context';
 import { Contents } from './Contents';
 import { Menu } from './Menu';
 import { FlagPanel } from './FlagPanel';
@@ -48,26 +47,23 @@ const MenuWrapper = styled.div`
 
 export const AnalysisScreen = ({ analyser, children, manifest }) => {
 
-  const [selectedCar, setSelectedCar] = useState(null);
-
   return (
     <Page>
       <FullscreenContext>
         <AnalysisProvider analysis={analyser}>
-          <Container>
-            <Title>{manifest.name} - {manifest.description}</Title>
-            <FlagPanel />
-            <MenuWrapper>
-              <Menu
-                selectedCar={selectedCar}
-                setSelectedCar={setSelectedCar}
-              />
-              {
-                children
-              }
-            </MenuWrapper>
-            <Contents selectedCar={selectedCar} />
-          </Container>
+          <SelectedCarProvider>
+            <Container>
+              <Title>{manifest.name} - {manifest.description}</Title>
+              <FlagPanel />
+              <MenuWrapper>
+                <Menu />
+                {
+                  children
+                }
+              </MenuWrapper>
+              <Contents />
+            </Container>
+          </SelectedCarProvider>
         </AnalysisProvider>
       </FullscreenContext>
     </Page>

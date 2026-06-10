@@ -8,6 +8,23 @@ const OUTER_RADIUS = 100;
 const RADIUS_STEP = 15;
 const MAX_LEVELS = 3;
 
+const CarCircle = styled.g`
+  & circle {
+    stroke: black;
+    stroke-width: 0.2px;
+
+    fill: ${
+      props => props.theme.classColours[props.carClass] || '#808080'
+    };
+  }
+
+  & text {
+    fill: contrast-color(${
+      props => props.theme.classColours[props.carClass] || '#808080'
+    });
+  }
+`;
+
 const Wrapper = styled.svg`
   & .base {
     stroke: #808080;
@@ -33,17 +50,15 @@ const Wrapper = styled.svg`
       visibility: hidden;
     }
 
-    circle {
+    ${CarCircle} {
       stroke: black;
       stroke-width: 0.2px;
-      fill: #808080;
     }
 
     &.leader {
-      circle {
+      ${CarCircle} {
         stroke: yellow;
         stroke-width: 0.5px;
-        z-index: 200;
       }
       line {
         stroke: yellow;
@@ -58,7 +73,7 @@ const Wrapper = styled.svg`
     }
 
     &.selected {
-      circle {
+      ${CarCircle} {
         stroke: ${props => props.theme.site.highlightColor};
         stroke-width: 0.5px;
       }
@@ -150,7 +165,7 @@ export const BaseLayer = ({ leaderLap, numberOfRings = MAX_LEVELS }) => {
 };
 
 
-const CarPosition = ({ isLeader, raceNum, ringIndex, relativeDistance }) => {
+const CarPosition = ({ carClass, isLeader, raceNum, ringIndex, relativeDistance }) => {
   const minRadius = OUTER_RADIUS - (MAX_LEVELS - 1) * RADIUS_STEP;
   const radius = Math.max(minRadius, OUTER_RADIUS - (ringIndex * RADIUS_STEP));
   const angle = -2 * Math.PI * relativeDistance;
@@ -159,7 +174,10 @@ const CarPosition = ({ isLeader, raceNum, ringIndex, relativeDistance }) => {
   const yPos = Math.cos(angle) * -radius;
 
   return (
-    <g className={`car ${ isLeader ? 'leader' : '' }`}>
+    <CarCircle
+      carClass={carClass}
+      className={`car ${ isLeader ? 'leader' : '' }`}
+    >
       <line
         strokeLinecap='square'
         x1={0}
@@ -186,7 +204,7 @@ const CarPosition = ({ isLeader, raceNum, ringIndex, relativeDistance }) => {
         />
         <text>{raceNum}</text>
       </g>
-    </g>
+    </CarCircle>
   );
 };
 
@@ -206,6 +224,7 @@ const CarsLayer = observer(
               }
               return (
                 <CarPosition
+                  carClass={car.classColorString}
                   isLeader={idx === cars.length - 1}
                   key={car.raceNum}
                   raceNum={car.raceNum}

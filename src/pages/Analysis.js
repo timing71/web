@@ -33,6 +33,10 @@ export const Analysis = ({ match: { params: { serviceUUID } } }) => {
   const analyser = useRef(createAnalyser(undefined, true));
   const initialised = useRef(false);
 
+  if (process.env.NODE_ENV === 'development') {
+    window.analyser = analyser;
+  }
+
   const [delay] = useSetting('delay');
 
   const maybeDelay = useCallback(

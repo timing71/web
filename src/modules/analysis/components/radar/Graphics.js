@@ -4,6 +4,7 @@ import { useAnalysis } from '../context';
 import { tryReference } from 'mobx-state-tree';
 import { useEffect, useState } from 'react';
 import { readableColor } from 'polished';
+import { FlagState } from '@timing71/common';
 
 const OUTER_RADIUS = 100;
 const RADIUS_STEP = 15;
@@ -98,13 +99,14 @@ const Wrapper = styled.svg`
   }
 `;
 
-export const Ring = ({ r, caption }) => (
+export const Ring = ({ r, caption, color }) => (
   <>
     <circle
       className="base"
       cx={0}
       cy={0}
       r={r}
+      style={{ stroke: color }}
     />
     {
       caption && (
@@ -129,7 +131,26 @@ export const Ring = ({ r, caption }) => (
   </>
 );
 
-export const BaseLayer = ({ leaderLap, numberOfRings = MAX_LEVELS }) => {
+export const BaseLayer = ({ leaderLap, flagState, numberOfRings = MAX_LEVELS }) => {
+  let outerColor = undefined;
+
+  switch(flagState) {
+    case FlagState.RED:
+      outerColor = 'red';
+      break;
+    case FlagState.FCY:
+    case FlagState.SC:
+    case FlagState.CAUTION:
+    case FlagState.VSC:
+      outerColor = 'yellow';
+      break;
+    case FlagState.CODE_60:
+      outerColor = 'pink';
+      break;
+    default:
+      break;
+  }
+
   return (
     <g>
       {
@@ -137,6 +158,7 @@ export const BaseLayer = ({ leaderLap, numberOfRings = MAX_LEVELS }) => {
           level => (
             <Ring
               caption={numberOfRings === 1 ? undefined : (level < numberOfRings - 1) ? `Lap ${leaderLap - level}` : 'Others'}
+              color={level === 0 ? outerColor : undefined}
               key={level}
               r={OUTER_RADIUS - (level * RADIUS_STEP)}
             />
@@ -283,6 +305,7 @@ export const RadarChart = observer(
           </marker>
         </defs>
         <BaseLayer
+          flagState={analysis.state.session.flagState}
           leaderLap={analysis.session.leaderLap}
           numberOfRings={useLaps ? MAX_LEVELS : 1}
         />

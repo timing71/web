@@ -8,13 +8,15 @@ import { Logo } from '../../../components/Logo';
 
 const COLOURS_BY_SEVERITY = {
   [Severity.DEBUG]: 'grey',
-  [Severity.WARNING]: 'yellow'
+  [Severity.WARNING]: 'yellow',
+  [Severity.ERROR]: 'red',
 };
 
 const ICONS_BY_SEVERITY = {
   [Severity.DEBUG]: ChevronRight,
   [Severity.INFO]: Info,
-  [Severity.WARNING]: Warning
+  [Severity.WARNING]: Warning,
+  [Severity.ERROR]: Warning,
 };
 
 const DefaultIcon = (props) => (

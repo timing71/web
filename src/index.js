@@ -15,7 +15,7 @@ if (process.env.REACT_APP_SENTRY_DSN) {
     ],
     release: process.env.REACT_APP_COMMIT_REF || 'dev',
     tracesSampleRate: 1.0,
-    replaysSessionSampleRate: 0.1,
+    replaysSessionSampleRate: 0.01,
     replaysOnErrorSampleRate: 1.0,
     ignoreErrors: ['ResizeObserver loop limit exceeded'],
   });
